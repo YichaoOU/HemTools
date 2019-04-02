@@ -1,7 +1,7 @@
 
 
-# Paired-end ChIP-seq
-
+Paired-end ChIP-seq
+===================
 
 
 

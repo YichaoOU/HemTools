@@ -1,7 +1,7 @@
 
 
-# Single-end ChIP-seq
-
+Single-end ChIP-seq
+===================
 
 
 
