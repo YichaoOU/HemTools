@@ -8,9 +8,11 @@ Welcome to HemTools's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :glob:
-
-   *
+   :caption: Contents:
+   
+   cut_run
+   diffpeaks
+   
 
 
 Indices and tables
