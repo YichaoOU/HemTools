@@ -12,6 +12,11 @@ Welcome to HemTools's documentation!
    
    cut_run
    diffpeaks
+   crispr_seq
+   chip_seq_pair
+   chip_seq_single
+   atac_seq
+   methylmotifs
    
 
 
