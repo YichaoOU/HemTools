@@ -9,25 +9,8 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
    
-   cut_run
-   diffpeaks
-   crispr_seq
-   chip_seq_pair
-   chip_seq_single
-   atac_seq
-   methylmotifs
+   content/NGS_pipelines/NGS_pipelines
    
-|                         | CUT&amp;RUN        | ATAC-seq           | ChIP-seq           |
-|-------------------------|--------------------|--------------------|--------------------|
-| QC1                     | FASTQC             | FASTQC             | FASTQC             |
-| Trimming                | skewer             |                    |                    |
-| Mapping                 | BWA                | BWA                | BWA                |
-| Filtering               | samtools           | samtools           | samtools           |
-| bamTobw                 | bamCoverage        | bamCoverage        | bamCoverage        |
-| QC2                     | library complexity | library complexity | library complexity |
-| QC3 (cross correlation) |                    |                    | run_spp.R          |
-| peak calling            | MACS2              | MACS3              | MACS4              |
-| bdgTobw                 | wigToBigwig        | wigToBigwig        | wigToBigwig        |
+
 
