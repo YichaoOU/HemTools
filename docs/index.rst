@@ -11,6 +11,19 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    :maxdepth: 2
    
    content/NGS_pipelines/NGS_pipelines
+   content/Installation/Installation
    
+General principles
+^^^^^^^^^^^^^^^^^^
 
+A typical HemTools command looks like this:
 
+.. code:: bash
+
+    $ HemTools cut_run -f fastq.tsv -d peakcall.tsv
+
+You can always see all available sub-commands by:
+
+.. code:: bash
+
+    $ HemTools -h
