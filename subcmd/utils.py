@@ -880,18 +880,18 @@ def run_upload_tracks(jid,bw_files,bw_types,dir=False):
 	password = pickle.load(file)
 	file.close()
 
-	print "connecting to server"
+	# print "connecting to server"
 	ssh_client =paramiko.SSHClient()
 	ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 	ssh_client.connect(hostname="10.220.19.239",username="yli11",password=password)
 
 	if dir:
-		print "creating user's dir"
+		# print "creating user's dir"
 		stdin,stdout,stderr=ssh_client.exec_command("mkdir /research/rgs01/resgen/legacy/gb_customTracks/tp/HemPipelines/"+username)
 		stdin,stdout,stderr=ssh_client.exec_command("mkdir /research/rgs01/resgen/legacy/gb_customTracks/tp/HemPipelines/"+username+"/"+jid)
 	user_dir = "/research/rgs01/resgen/legacy/gb_customTracks/tp/HemPipelines/"+username+"/"+jid+"/"
 
-	print "generating json file"
+	# print "generating json file"
 	tracks_template = '{"type":"bigwig","scale":{"auto": 1},"file": "{{relative_path}}","stackheight":20,"stackspace":1,"onerow":1,"name":"{{track_name}}"}'
 	tmp_file = "/tmp/"+str(uuid.uuid4()).split("-")[-1]
 	tmp_file_handle = open(tmp_file,"wb")
@@ -906,7 +906,7 @@ def run_upload_tracks(jid,bw_files,bw_types,dir=False):
 	lines = lines.replace("{{tracks_json_list}}",",\n".join(tracks_json_list))	
 	print >>tmp_file_handle,lines
 	tmp_file_handle.close()
-	print "transfering file"
+	# print "transfering file"
 	ftp_client=ssh_client.open_sftp()
 	for b in bw_files:
 		ftp_client.put(b,user_dir+b)
@@ -983,14 +983,14 @@ def prepare_paired_end_input():
 	flag = False
 	fname = "fastq.tsv"
 	if os.path.isfile(fname):
-		print fname,"exists!"
+		# print fname,"exists!"
 		fname = "fastq."+str(uuid.uuid4()).split("-")[-1]+".tsv"
-		print "Will use new file name:",fname
+		# print "Will use new file name:",fname
 	f = open(fname,"wb")
 	used_files = []
 	for k in myDict:
 		if len(myDict[k]) != 1:
-			print "FILE:",k,"didn't find a pair",myDict[k]
+			# print "FILE:",k,"didn't find a pair",myDict[k]
 			flag = 	True
 		else:
 
@@ -1010,13 +1010,13 @@ def prepare_paired_end_input():
 	f.close()
 	flag = False
 	if len(unused_files) == 0:
-		print "Input fastq files preparation complete! ALL GOOD!"
-		print "Please check if you like the computer-generated labels in :",fname
+		# print "Input fastq files preparation complete! ALL GOOD!"
+		# print "Please check if you like the computer-generated labels in :",fname
 		flag = True
 	else:
-		print "Input fastq files preparation complete! There are some unmatched files."
+		# print "Input fastq files preparation complete! There are some unmatched files."
 		for f in unused_files:
-			print f
+			# print f
 	return flag,fname
 
 def prepare_single_end_input():
@@ -1024,16 +1024,16 @@ def prepare_single_end_input():
 	files = glob.glob("*.fastq.gz")
 	fname = "fastq.tsv"
 	if os.path.isfile(fname):
-		print fname,"exists!"
+		# print fname,"exists!"
 		fname = "fastq."+str(uuid.uuid4()).split("-")[-1]+".tsv"
-		print "Will use new file name:",fname
+		# print "Will use new file name:",fname
 	f = open(fname,"wb")
 	for fastq in files:
 		label = define_fastq_label(fastq)
 		if len(label) == 0:
 			label = fastq[:5]		
 		print >>f,"\t".join([fastq,label])
-	print "Input fastq files preparation complete! ALL GOOD!"
+	# print "Input fastq files preparation complete! ALL GOOD!"
 	f.close()
 	return True,fname
 
@@ -1049,13 +1049,13 @@ def prepare_design_matrix(file):
 	items = map(lambda x:x.strip().split()[-1],open(file).readlines())
 	control = find_control(items)
 	if control == "no_control_found":
-		print "No control sample found."
+		# print "No control sample found."
 		return
 	fname = "peakcall.tsv"
 	if os.path.isfile(fname):
-		print fname,"exists!"
+		# print fname,"exists!"
 		fname = "peakcall."+str(uuid.uuid4()).split("-")[-1]+".tsv"
-		print "Will use new file name:",fname
+		# print "Will use new file name:",fname
 	f = open(fname,"wb")
 
 
@@ -1063,7 +1063,7 @@ def prepare_design_matrix(file):
 		if i == control:
 			continue	
 		print >>f,"\t".join([i,control,i+".vs."+control])
-	print "Input peakcall file preparation complete! File name:",fname	
+	# print "Input peakcall file preparation complete! File name:",fname	
 	f.close()
 	pass
 
