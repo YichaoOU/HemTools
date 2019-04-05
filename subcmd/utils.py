@@ -1016,7 +1016,7 @@ def prepare_paired_end_input():
 	else:
 		# print "Input fastq files preparation complete! There are some unmatched files."
 		for f in unused_files:
-			print f
+			print (f)
 	# return flag,fname
 
 def prepare_single_end_input():
