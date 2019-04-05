@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to HemTools's documentation!
-====================================
+=====================================================
+HemTools: *a collection of NGS pipelines and bioinformatic analyses*
+=====================================================
 
 .. toctree::
    :maxdepth: 2
@@ -18,11 +19,15 @@ Welcome to HemTools's documentation!
    atac_seq
    methylmotifs
    
+|                         | CUT&amp;RUN        | ATAC-seq           | ChIP-seq           |
+|-------------------------|--------------------|--------------------|--------------------|
+| QC1                     | FASTQC             | FASTQC             | FASTQC             |
+| Trimming                | skewer             |                    |                    |
+| Mapping                 | BWA                | BWA                | BWA                |
+| Filtering               | samtools           | samtools           | samtools           |
+| bamTobw                 | bamCoverage        | bamCoverage        | bamCoverage        |
+| QC2                     | library complexity | library complexity | library complexity |
+| QC3 (cross correlation) |                    |                    | run_spp.R          |
+| peak calling            | MACS2              | MACS3              | MACS4              |
+| bdgTobw                 | wigToBigwig        | wigToBigwig        | wigToBigwig        |
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
