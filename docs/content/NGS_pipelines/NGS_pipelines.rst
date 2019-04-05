@@ -37,7 +37,7 @@ Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv.
 	Please check if you like the computer-generated labels in : fastq.tsv
 	Input peakcall file preparation complete! File name: peakcall.tsv
 
-Step 2: Check the computer-generated input list (Manually).
+Step 2: Check the computer-generated input list (manually), make sure they are correct.
 
 .. code:: bash
 
@@ -52,7 +52,6 @@ Step 3: Submit your job.
 .. code:: bash
 
     $ HemTools [subcmd] -f fastq.tsv -d peakcall.tsv
-
 
 You can always see all available sub-commands by:
 

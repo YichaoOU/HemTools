@@ -1,0 +1,135 @@
+#!/hpcf/apps/python/install/2.7.13/bin/python
+from __future__ import print_function,division
+import sys
+import logging
+import argparse
+import os
+import subprocess 
+import re
+import getpass
+import datetime
+import uuid
+'''
+HemTools dir structure
+-bin/
+	HemTools
+	exec
+-subcmd/
+	*.py
+-hg19/
+-hg38/
+-genomes
+	
+'''
+
+# ---------------- import subcmd libraries -------------------
+# p_dir = os.path.dirname(os.path.realpath(__file__)) + "/"
+# username = getpass.getuser()
+sys.path.append(os.path.abspath("../subcmd/"))
+from cut_run import *
+from chip_seq_pair import *
+from chip_seq_single import *
+from atac_seq import *
+from report_bug import *
+# from hichip import *
+# from rna_seq import *
+# from read_align import *
+# from bam_to_bw import *
+# from STJtracks import *
+# from volcano_plot import *
+# from diffpeaks import *
+# from crispr_seq import *
+# from grna_heatmap import *
+# from methylmotifs import *
+# from chromhmm import *
+# from csaw import *
+# from bed_heatmap import *
+# from demultiplex import *
+
+
+
+
+
+def HemTools_parser():
+	
+
+	main_parser = argparse.ArgumentParser(description="HemTools: performs NGS pipelines and other common analyses. Contact: Yichao.Li@stjude.org or Yong.Cheng@stjude.org",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+	main_parser.add_argument('-v', '--version',action='version',version='%(prog)s 1.0')
+	# main_parser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default='{{subcmd}}_'+username+"_"+str(datetime.date.today()))	
+	# main_parser.add_argument('-x','--dry_run',  help=" 1 or 0. 1: dry run, check file names", default=0,type=int)
+	# main_parser.add_argument('--short',  help="1 or 0. 1: Force to use the short queue. (only if R1+R2 fastq.gz size <=250M)", default=0,type=int)
+	subparser=main_parser.add_subparsers(help='Available APIs in HemTools',dest='subcmd')
+
+	arg_cut_run(subparser)
+	arg_chip_seq_pair(subparser)
+	arg_chip_seq_single(subparser)
+	arg_atac_seq(subparser)
+	arg_report_bug(subparser)
+	# arg_hichip(subparser)
+	# arg_rna_seq(subparser)
+	# arg_read_align(subparser)
+	# arg_bam_to_bw(subparser)
+	# arg_STJtracks(subparser)
+	# arg_volcano_plot(subparser)
+	# arg_diffpeaks(subparser)
+	# arg_crispr_seq(subparser)
+	# arg_grna_heatmap(subparser)
+	# arg_methylmotifs(subparser)
+	# arg_chromhmm(subparser)
+	# arg_csaw(subparser)
+	# arg_bed_heatmap(subparser)
+	# arg_demultiplex(subparser)
+
+	args = main_parser.parse_args()
+
+	if args.subcmd == None:
+		main_parser.print_help()
+		sys.exit(1)
+	args.jid = args.jid.replace("{{subcmd}}",args.subcmd)
+	if os.path.isdir(args.jid):
+		addon_string = str(uuid.uuid4()).split("-")[-1]
+		args.jid = args.jid+"_"+addon_string	
+
+	## set up logging system, please use rootLogger to send messages to users
+	logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
+	rootLogger = logging.getLogger()
+	fileHandler = logging.FileHandler(args.jid+".log")
+	fileHandler.setFormatter(logFormatter)
+	rootLogger.addHandler(fileHandler)
+	consoleHandler = logging.StreamHandler()
+	consoleHandler.setFormatter(logFormatter)
+	rootLogger.addHandler(consoleHandler)
+	rootLogger.setLevel(logging.INFO)
+	
+
+
+	run_cut_run(args,rootLogger)
+	run_chip_seq_pair(args,rootLogger)
+	run_chip_seq_single(args,rootLogger)
+	run_atac_seq(args,rootLogger)
+	run_report_bug(args,rootLogger)
+	# run_hichip(args,rootLogger)
+	# run_rna_seq(args,rootLogger)
+	# run_read_align(args,rootLogger)
+	# run_bam_to_bw(args,rootLogger)
+	# run_STJtracks(args,rootLogger)
+	# run_volcano_plot(args,rootLogger)
+	# run_diffpeaks(args,rootLogger)
+	# run_crispr_seq(args,rootLogger)
+	# run_grna_heatmap(args,rootLogger)
+	# run_methylmotifs(args,rootLogger)
+	# run_chromhmm(args,rootLogger)
+	# run_csaw(args,rootLogger)
+	# run_bed_heatmap(args,rootLogger)
+	# run_demultiplex(args,rootLogger)
+
+
+
+HemTools_parser()
+
+
+
+
+
+
+

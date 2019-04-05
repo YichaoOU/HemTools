@@ -1,0 +1,11 @@
+ATAC-seq
+========
+
+.. argparse::
+   :filename../../bin/HemTools
+   :func: parser
+   :prog: HemTools
+   :path: atac_seq
+
+
+
