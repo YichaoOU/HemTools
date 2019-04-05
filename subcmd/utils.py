@@ -1017,7 +1017,7 @@ def prepare_paired_end_input():
 		# print "Input fastq files preparation complete! There are some unmatched files."
 		for f in unused_files:
 			# print f
-	return flag,fname
+	# return flag,fname
 
 def prepare_single_end_input():
 	
@@ -1035,7 +1035,7 @@ def prepare_single_end_input():
 		print >>f,"\t".join([fastq,label])
 	# print "Input fastq files preparation complete! ALL GOOD!"
 	f.close()
-	return True,fname
+	# return True,fname
 
 def find_control(myList):
 	for x in myList:
@@ -1050,7 +1050,7 @@ def prepare_design_matrix(file):
 	control = find_control(items)
 	if control == "no_control_found":
 		# print "No control sample found."
-		return
+		return 1
 	fname = "peakcall.tsv"
 	if os.path.isfile(fname):
 		# print fname,"exists!"
