@@ -45,6 +45,104 @@
             
   <div class="section" id="atac-seq">
 <h1>ATAC-seq<a class="headerlink" href="#atac-seq" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">atac_seq</span> <span class="n">atac_seq</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JID</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">short</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="p">]</span>
+                         <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="n">INPUT</span> <span class="o">|</span> <span class="o">--</span><span class="n">guess_input</span><span class="p">)</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INDEX_FILE</span><span class="p">]</span>
+                         <span class="p">[</span><span class="o">-</span><span class="n">g</span> <span class="n">GENOME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span> <span class="n">BLACKLIST</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">CHROM_SIZE</span><span class="p">]</span>
+                         <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">EFFECTIVEGENOMESIZE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">x</span> <span class="n">ADAPTOR_X</span><span class="p">]</span>
+                         <span class="p">[</span><span class="o">-</span><span class="n">y</span> <span class="n">ADAPTOR_Y</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-j, --jid</kbd></td>
+<td><p class="first">enter a job ID, which is used to make a new directory. Every output will be moved into this folder.</p>
+<p class="last">Default: “{{subcmd}}_yli11_2019-04-05”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--short</kbd></td>
+<td><p class="first">Force to use the short queue. (only if R1+R2 fastq.gz size &lt;=250M)</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--debug</kbd></td>
+<td><p class="first">Not for end-user.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, --input</kbd></td>
+<td>tab delimited 3 columns (tsv file): Read 1 fastq, Read 2 fastq, sample ID</td></tr>
+<tr><td class="option-group">
+<kbd>--guess_input</kbd></td>
+<td><p class="first">Let the program generate the input files for you.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Genome Info">
+<h2>Genome Info<a class="headerlink" href="#Genome Info" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>-i, --index_file</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">BWA index file</p>
+<p class="last">Default: “D:HemToolssubcmd/../hg19/bwa_16a_index/hg19.fa”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-g, --genome</kbd></td>
+<td><p class="first">genome version: hg19, hg38, mm10, mm9.</p>
+<p class="last">Default: “hg19”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-b, --Blacklist</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Blacklist file</p>
+<p class="last">Default: “D:HemToolssubcmd/../hg19/Hg19_Blacklist.bed”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-s, --chrom_size</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">chrome size</p>
+<p class="last">Default: “D:HemToolssubcmd/../hg19/hg19.chrom.sizes”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-e, --effectiveGenomeSize</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">effectiveGenomeSize for bamCoverage</p>
+<p class="last">Default: “2451960000”</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Adaptor Info">
+<h2>Adaptor Info<a class="headerlink" href="#Adaptor Info" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>-x, --adaptor_x</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Adapter sequence 5’end</p>
+<p class="last">Default: “CTGTCTCTTATACACATCT”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-y, --adaptor_y</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Adapter sequence 3’end</p>
+<p class="last">Default: “CTGTCTCTTATACACATCT”</p>
+</td></tr>
+</tbody>
+</table>
+</div>
 <table border="1" class="docutils">
 <colgroup>
 <col width="100%" />
@@ -62,6 +160,16 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ATAC-seq</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#Genome Info">Genome Info</a></li>
+<li><a class="reference internal" href="#Adaptor Info">Adaptor Info</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="NGS_pipelines.html"
                         title="previous chapter">A collection of NGS_pipelines</a></p>

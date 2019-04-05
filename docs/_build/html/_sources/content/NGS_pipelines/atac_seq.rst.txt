@@ -4,8 +4,6 @@ ATAC-seq
 .. argparse::
    :filename: ../bin/HemTools
    :func: main_parser
-   :prog: HemTools
+   :prog: atac_seq
    :path: atac_seq
-
-
 
