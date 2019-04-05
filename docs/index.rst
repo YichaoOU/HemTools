@@ -20,6 +20,8 @@ A typical HemTools command looks like this:
 
 .. code:: bash
 
+    $ module load python/2.7.13
+
     $ HemTools cut_run -f fastq.tsv -d peakcall.tsv
 
 You can always see all available sub-commands by:

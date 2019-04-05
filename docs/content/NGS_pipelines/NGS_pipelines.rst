@@ -11,13 +11,19 @@ A collection of NGS_pipelines
    chip_seq_single
    chip_seq_pair
 
-.. image:: images/logo_mpi-ie.jpg
+.. image:: ../../images/Pipelines_steps.png
 
 
 Typical Usage
 ^^^^^^^^^^^^^
 
 Go to your data directory and type the following.
+
+Step 0: Load python version 2.7.13.
+
+.. code:: bash
+
+    $ module load python/2.7.13
 
 Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. 
 
