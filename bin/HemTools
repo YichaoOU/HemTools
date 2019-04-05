@@ -80,34 +80,34 @@ def HemTools_parser():
 	# arg_bed_heatmap(subparser)
 	# arg_demultiplex(subparser)
 
-	args = main_parser.parse_args()
+	# args = main_parser.parse_args()
 
-	if args.subcmd == None:
-		main_parser.print_help()
-		sys.exit(1)
-	args.jid = args.jid.replace("{{subcmd}}",args.subcmd)
-	if os.path.isdir(args.jid):
-		addon_string = str(uuid.uuid4()).split("-")[-1]
-		args.jid = args.jid+"_"+addon_string	
+	# if args.subcmd == None:
+	# 	main_parser.print_help()
+	# 	sys.exit(1)
+	# args.jid = args.jid.replace("{{subcmd}}",args.subcmd)
+	# if os.path.isdir(args.jid):
+	# 	addon_string = str(uuid.uuid4()).split("-")[-1]
+	# 	args.jid = args.jid+"_"+addon_string	
 
-	## set up logging system, please use rootLogger to send messages to users
-	logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
-	rootLogger = logging.getLogger()
-	fileHandler = logging.FileHandler(args.jid+".log")
-	fileHandler.setFormatter(logFormatter)
-	rootLogger.addHandler(fileHandler)
-	consoleHandler = logging.StreamHandler()
-	consoleHandler.setFormatter(logFormatter)
-	rootLogger.addHandler(consoleHandler)
-	rootLogger.setLevel(logging.INFO)
+	# ## set up logging system, please use rootLogger to send messages to users
+	# logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
+	# rootLogger = logging.getLogger()
+	# fileHandler = logging.FileHandler(args.jid+".log")
+	# fileHandler.setFormatter(logFormatter)
+	# rootLogger.addHandler(fileHandler)
+	# consoleHandler = logging.StreamHandler()
+	# consoleHandler.setFormatter(logFormatter)
+	# rootLogger.addHandler(consoleHandler)
+	# rootLogger.setLevel(logging.INFO)
 	
 
 
-	run_cut_run(args,rootLogger)
-	run_chip_seq_pair(args,rootLogger)
-	run_chip_seq_single(args,rootLogger)
-	run_atac_seq(args,rootLogger)
-	run_report_bug(args,rootLogger)
+	# run_cut_run(args,rootLogger)
+	# run_chip_seq_pair(args,rootLogger)
+	# run_chip_seq_single(args,rootLogger)
+	# run_atac_seq(args,rootLogger)
+	# run_report_bug(args,rootLogger)
 	# run_hichip(args,rootLogger)
 	# run_rna_seq(args,rootLogger)
 	# run_read_align(args,rootLogger)
@@ -122,10 +122,10 @@ def HemTools_parser():
 	# run_csaw(args,rootLogger)
 	# run_bed_heatmap(args,rootLogger)
 	# run_demultiplex(args,rootLogger)
+	return main_parser
 
 
-
-HemTools_parser()
+main_parser = HemTools_parser()
 
 
 
