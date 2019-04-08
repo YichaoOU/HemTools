@@ -55,10 +55,10 @@ def run_crispr_seq(args,rootLogger):
 	crispr_seq.run_mageck_MLE()
 
 	# DESEQ (TODO), RRA
-	crispr_seq.combined_sgRNA_level_results()
+	# crispr_seq.combined_sgRNA_level_results()
 
 	# MLE, RRA, and/or CRISPhieRmix (TODO)
-	crispr_seq.combined_gene_level_results()
+	# crispr_seq.combined_gene_level_results()
 
 	if args.bed:
 		crispr_seq.run_STJtracks()
