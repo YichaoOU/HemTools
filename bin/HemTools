@@ -38,7 +38,7 @@ from report_bug import *
 # from STJtracks import *
 # from volcano_plot import *
 # from diffpeaks import *
-# from crispr_seq import *
+from crispr_seq import *
 # from grna_heatmap import *
 # from methylmotifs import *
 # from chromhmm import *
@@ -72,7 +72,7 @@ def HemTools_parser():
 	# arg_STJtracks(subparser)
 	# arg_volcano_plot(subparser)
 	# arg_diffpeaks(subparser)
-	# arg_crispr_seq(subparser)
+	arg_crispr_seq(subparser)
 	# arg_grna_heatmap(subparser)
 	# arg_methylmotifs(subparser)
 	# arg_chromhmm(subparser)
