@@ -68,7 +68,7 @@ id=$LSB_JOBINDEX
 COL1=`head -n $id {{sample_list}}|tail -n1|awk '{print $1}'`
 COL2=`head -n $id {{sample_list}}|tail -n1|awk '{print $2}'`
 COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
-
+LINE=`head -n $id {{sample_list}}|tail -n1`
 {{commands}}
 
 		"""
@@ -919,9 +919,9 @@ COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
 			t = self.pairwise_comparisons[k]['treatment']
 			c = self.pairwise_comparisons[k]['control']
 			name = self.pairwise_comparisons[k]['name']
-			tmp = multireplace(command, {'name':name\
+			tmp = multireplace(command, {'name':name,\
 				'treatment_col_names':t,\
-				'control_col_names',c\
+				'control_col_names':c\
 				})
 			commands.append(tmp)
 
@@ -968,14 +968,19 @@ COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
 		# step 1
 		# Note: all the commands should be directly executable in bash
 		commands=[]
-		command = "mageck mle -d {{design_matrix}} --count-table "+self.args.jid+"_raw_counts.count.txt"+" --norm-method control --output-prefix {{name}}_MLE_results --control-sgrna "+self.args.gRNA_library	
+		command = "mageck mle -d {{design_matrix}} --count-table "+self.args.jid+"_raw_counts.count.txt"+" --norm-method control --output-prefix {{name}}_MLE_results --control-sgrna "+self.args.gRNA_library	+ " -i {{selected_samples}}" 
+		to_mageck_design_matrix(treatment_list,control_list,count_df,comparison_id):
+
 		for k in self.pairwise_comparisons:
 			t = self.pairwise_comparisons[k]['treatment']
 			c = self.pairwise_comparisons[k]['control']
+			design_matrix = ['1,0']*len(c.split(","))+['1,1']*len(t.split(","))
+			design_matrix = '"'+";".join(design_matrix)+'"'
+			
 			name = self.pairwise_comparisons[k]['name']
-			tmp = multireplace(command, {'name':name\
-				'treatment_col_names':t,\
-				'control_col_names',c\
+			tmp = multireplace(command, {'name':name,\
+				'design_matrix':design_matrix,\
+				'selected_samples':t+","+c\
 				})
 			commands.append(tmp)
 
@@ -984,9 +989,9 @@ COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
 		# step 2 
 		# define 10 LSF parameters
 		self.parameter_dict['output_message']=self.args.jid +".mageck_MLE.message"
-		self.parameter_dict['number_cores']=1
+		self.parameter_dict['number_cores']=8
 		self.parameter_dict['queue']="standard"
-		self.parameter_dict['memory_request']=8000
+		self.parameter_dict['memory_request']=2000
 		self.parameter_dict['job_id']="mageck_MLE"
 		self.parameter_dict['sample_list']=self.args.design_matrix
 		self.parameter_dict['number_lines']=1
@@ -1004,6 +1009,7 @@ COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
 
 		# step 4
 		# organize output
+		test_MLE.gene_summary.txt  test_MLE.log  test_MLE.sgrna_summary.txt
 
 		self.outputs_dict['mageck_MLE_files'] = []
 		for k in self.pairwise_comparisons:
