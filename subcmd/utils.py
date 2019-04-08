@@ -868,6 +868,157 @@ COL3=`head -n $id {{sample_list}}|tail -n1|awk '{print $3}'`
 
 		pass
 
+	def run_mageck_count(self):
+
+		# step 1
+		# Note: all the commands should be directly executable in bash
+		files = glob.glob("*.gz")
+		commands = "mageck count --output-prefix "+self.args.jid+"_raw_counts -l "+self.args.gRNA_library+" --fastq "+",".join(files)+"  --pdf-report --sample-label "+",".join(files)	
+		# outputs
+		# all.count_normalized.txt  all_countsummary.R  all_countsummary.Rnw  all.countsummary.txt  all.count.txt  all.log
+		# step 2 
+		# define 10 LSF parameters
+		self.parameter_dict['output_message']=self.args.jid +".mageck_count.message"
+		self.parameter_dict['number_cores']=1
+		self.parameter_dict['queue']="standard"
+		self.parameter_dict['memory_request']=8000
+		self.parameter_dict['job_id']="mageck_count"
+		self.parameter_dict['sample_list']=self.args.design_matrix
+		self.parameter_dict['number_lines']=1
+		# depends on rmdup
+		dependencies = ['module load python/2.7.5']
+		self.parameter_dict['dependencies']="\n".join(dependencies)
+		self.parameter_dict['commands']=commands
+		self.parameter_dict['job_script_file']=self.args.jid +".mageck_count.lsf"
+
+		# step 3
+		# submit job
+		self.submit_array_job()
+
+		# step 4
+		# organize output
+
+		self.outputs_dict['log_files'].append(self.args.jid+"_raw_counts_countsummary.R")
+		self.outputs_dict['log_files'].append(self.args.jid+"_raw_counts_countsummary.Rnw")
+		self.outputs_dict['log_files'].append(self.args.jid+"_raw_counts.log")
+		self.outputs_dict['mageck_count_files'] = []
+		self.outputs_dict['mageck_count_files'].append(self.args.jid+"_raw_counts.countsummary.txt")
+		self.outputs_dict['mageck_count_files'].append(self.args.jid+"_raw_counts.count.txt")
+		self.outputs_dict['mageck_count_files'].append(self.args.jid+"_raw_counts.count_normalized.txt")
+
+
+
+		pass		
+	def run_mageck_RRA(self):
+
+		# step 1
+		# Note: all the commands should be directly executable in bash
+		commands=[]
+		command = "mageck test --count-table "+self.args.jid+"_raw_counts.count.txt"+" --norm-method control --output-prefix {{name}}_RRA_results --control-sgrna "+self.args.gRNA_library+" -t {{treatment_col_names}} -c {{control_col_names}}"	
+		for k in self.pairwise_comparisons:
+			t = self.pairwise_comparisons[k]['treatment']
+			c = self.pairwise_comparisons[k]['control']
+			name = self.pairwise_comparisons[k]['name']
+			tmp = multireplace(command, {'name':name\
+				'treatment_col_names':t,\
+				'control_col_names',c\
+				})
+			commands.append(tmp)
+
+		# outputs
+		
+		# step 2 
+		# define 10 LSF parameters
+		self.parameter_dict['output_message']=self.args.jid +".mageck_RRA.message"
+		self.parameter_dict['number_cores']=1
+		self.parameter_dict['queue']="standard"
+		self.parameter_dict['memory_request']=8000
+		self.parameter_dict['job_id']="mageck_RRA"
+		self.parameter_dict['sample_list']=self.args.design_matrix
+		self.parameter_dict['number_lines']=1
+		# depends on mageck_count
+		dependencies = ['module load python/2.7.5']
+		if self.dep:
+			dependencies=['#BSUB -w "ended('+self.submission_id_dict['mageck_count']+')"']+dependencies
+		self.parameter_dict['dependencies']="\n".join(dependencies)
+		self.parameter_dict['commands']="\n".join(commands)
+		self.parameter_dict['job_script_file']=self.args.jid +".mageck_RRA.lsf"
+
+		# step 3
+		# submit job
+		self.submit_array_job()
+
+		# step 4
+		# organize output
+		self.outputs_dict['mageck_RRA_files'] = []
+		for k in self.pairwise_comparisons:
+			name = self.pairwise_comparisons[k]['name']
+			self.outputs_dict['log_files'].append(name+"_RRA_results.log")
+			self.outputs_dict['log_files'].append(name+"_RRA_results_summary.Rnw")
+			self.outputs_dict['log_files'].append(name+"_RRA_results.R")
+			self.outputs_dict['mageck_RRA_files'].append(name+"_RRA_results.gene_summary.txt")
+			self.outputs_dict['mageck_RRA_files'].append(name+"_RRA_results.sgrna_summary.txt")
+
+
+
+		pass		
+
+	def run_mageck_MLE(self):
+
+		# step 1
+		# Note: all the commands should be directly executable in bash
+		commands=[]
+		command = "mageck mle -d {{design_matrix}} --count-table "+self.args.jid+"_raw_counts.count.txt"+" --norm-method control --output-prefix {{name}}_MLE_results --control-sgrna "+self.args.gRNA_library	
+		for k in self.pairwise_comparisons:
+			t = self.pairwise_comparisons[k]['treatment']
+			c = self.pairwise_comparisons[k]['control']
+			name = self.pairwise_comparisons[k]['name']
+			tmp = multireplace(command, {'name':name\
+				'treatment_col_names':t,\
+				'control_col_names',c\
+				})
+			commands.append(tmp)
+
+		# outputs
+		
+		# step 2 
+		# define 10 LSF parameters
+		self.parameter_dict['output_message']=self.args.jid +".mageck_MLE.message"
+		self.parameter_dict['number_cores']=1
+		self.parameter_dict['queue']="standard"
+		self.parameter_dict['memory_request']=8000
+		self.parameter_dict['job_id']="mageck_MLE"
+		self.parameter_dict['sample_list']=self.args.design_matrix
+		self.parameter_dict['number_lines']=1
+		# depends on mageck_count
+		dependencies = ['module load python/2.7.5']
+		if self.dep:
+			dependencies=['#BSUB -w "ended('+self.submission_id_dict['mageck_count']+')"']+dependencies
+		self.parameter_dict['dependencies']="\n".join(dependencies)
+		self.parameter_dict['commands']="\n".join(commands)
+		self.parameter_dict['job_script_file']=self.args.jid +".mageck_MLE.lsf"
+
+		# step 3
+		# submit job
+		self.submit_array_job()
+
+		# step 4
+		# organize output
+
+		self.outputs_dict['mageck_MLE_files'] = []
+		for k in self.pairwise_comparisons:
+			name = self.pairwise_comparisons[k]['name']
+			self.outputs_dict['log_files'].append(name+"_MLE_results.log")
+			self.outputs_dict['log_files'].append(name+"_MLE_results_summary.Rnw")
+			self.outputs_dict['log_files'].append(name+"_MLE_results.R")
+			self.outputs_dict['mageck_MLE_files'].append(name+"_MLE_results.gene_summary.txt")
+			self.outputs_dict['mageck_MLE_files'].append(name+"_MLE_results.sgrna_summary.txt")
+
+
+
+
+		pass
+
 	# def run_fastqc(self):
 
 	# 	pass
@@ -1068,7 +1219,22 @@ def prepare_design_matrix(file):
 	pass
 
 
+def to_mageck_design_matrix(treatment_list,control_list,count_df,comparison_id):
+	design_matrix = pd.DataFrame(columns = ["samples","control","treatment"])
+	count = 0
+	for s in control_list:
+		design_matrix.loc[count] = [s,1,0]
+		count += 1	
+	for s in treatment_list:
+		design_matrix.loc[count] = [s,1,1]
+		count += 1
 
+	design_matrix["control"] = design_matrix["control"].astype(int)
+	design_matrix["treatment"] = design_matrix["treatment"].astype(int)
+	design_matrix.to_csv(comparison_id+".desing_matrix",index=False,sep="\t")
+
+	count_df[['sgRNA','Gene']+control_list+treatment_list].to_csv(comparison_id+".count_table",index=False,sep="\t")
+	return comparison_id+".desing_matrix",comparison_id+".count_table"
 
 
 
