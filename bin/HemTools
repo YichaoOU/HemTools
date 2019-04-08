@@ -36,7 +36,7 @@ from report_bug import *
 # from read_align import *
 # from bam_to_bw import *
 # from STJtracks import *
-# from volcano_plot import *
+from volcano_plot import *
 # from diffpeaks import *
 from crispr_seq import *
 # from grna_heatmap import *
@@ -70,7 +70,7 @@ def HemTools_parser():
 	# arg_read_align(subparser)
 	# arg_bam_to_bw(subparser)
 	# arg_STJtracks(subparser)
-	# arg_volcano_plot(subparser)
+	arg_volcano_plot(subparser)
 	# arg_diffpeaks(subparser)
 	arg_crispr_seq(subparser)
 	# arg_grna_heatmap(subparser)
