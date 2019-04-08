@@ -791,7 +791,7 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 		self.pairwise_comparisons={}
 		try:			
 			for row in my_list:
-				if not self.pairwise_comparisons.has_key(row[0])
+				if not self.pairwise_comparisons.has_key(row[0]):
 					self.pairwise_comparisons[row[0]] = {}
 					self.pairwise_comparisons[row[0]]['control'] = []
 					self.pairwise_comparisons[row[0]]['treatment'] = []
