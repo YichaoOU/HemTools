@@ -10,6 +10,7 @@ A collection of NGS_pipelines
    cut_run
    chip_seq_single
    chip_seq_pair
+   crispr_seq
 
 .. image:: ../../images/Pipelines_steps.png
 
@@ -27,7 +28,7 @@ Step 0: Load python version 2.7.13.
 
 Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. 
 
-.. tip:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq.
+.. tip:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. `--guess_input` option is not available for crispr_seq subcmd.
 
 .. code:: bash
 
