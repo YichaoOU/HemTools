@@ -28,7 +28,7 @@ Step 0: Load python version 2.7.13.
 
 Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. 
 
-.. tip:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. `--guess_input` option is not available for crispr_seq subcmd.
+.. note:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. `--guess_input` option is not available for crispr_seq subcmd.
 
 .. code:: bash
 
@@ -46,7 +46,7 @@ Step 2: Check the computer-generated input list (manually), make sure they are c
 
     $ less peakcall.tsv
 
-.. tip:: a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.
+.. note:: a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.
 
 Step 3: Submit your job.
 

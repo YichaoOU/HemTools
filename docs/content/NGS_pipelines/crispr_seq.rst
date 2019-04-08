@@ -11,19 +11,19 @@ Genome-wide CRISPR Screening
 Input file
 ^^^^^^^^^^
 
-0. fastq files.
+**INPUT 0. fastq files.**
 
-`No options to input a list of fastq files`. All *.fastq.gz files in the current directory will be used.
+``No options to input a list of fastq files``. All *.fastq.gz files in the current directory will be used.
 
-In you don't want to use all fastq files, please create a new directory, cd to that directory, and create soft links for the files you need. A soft link is similar to file shortcut used in Windows.
+Inf you don't want to use all fastq files, please create a new directory, cd to that directory, and create soft links for the files you need. A soft link is similar to file shortcut used in Windows.
 
-The command to create a sotf link is:
+The command to create a soft link is:
 
 .. code:: bash
 
     $ ln -s [original filename] [link name]
 
-1. Design matrix (-d option, required).
+**INPUT 1. Design matrix (-d option, required).**
 
 This file specifies a list of pairwise comparisons. Each comparison has a comparison name, a list of control group files, and a list of treatment group files. The format is a 3-column tsv file. An example file is shown below.
 
@@ -39,9 +39,9 @@ This file specifies a list of pairwise comparisons. Each comparison has a compar
 	APC_pos_vs_plasmid	treatment CRM-APC-positive-rep1_S4_L001_R1_001.fastq.gz,CRM-APC-positive-rep2_S5_L001_R1_001.fastq.gz
 
 
-.. tip:: Comparison name should be unique. Control & treatment in the 2nd column are keywords, misspelling can cause error. 
+.. note:: Comparison names (column 1) should be unique. Control & treatment (column 2) are keywords, misspelling can cause error. 
 
-2. gRNA library csv file (--gRNA_library option, required).
+**INPUT 2. gRNA library csv file (--gRNA_library option, required).**
 
 This file specifies your gRNA library. It is a csv file where the columns are sgRNA, sgRNA sequence, and the targeted gene. An example file is shown below.
 
@@ -52,13 +52,13 @@ This file specifies your gRNA library. It is a csv file where the columns are sg
 	Please_no_space_anywhere,ACAAGCAACAGTTGACCAAC,Gene1
 	could_be_anything,ACATGAGACTGGAAACCGCC,positive_control
 
-3. control gRNA list (--control_gRNAs option, optional).
+**INPUT 3. control gRNA list (--control_gRNAs option, optional).**
 
 The file specifies a list of control gRNA names. The names should match to the gRNA library file. Each line is a control gRNA name.
 
 .. tip:: control gRNAs are optional. If provided, normalization will be performed based on these controls, instead of median normalization.
 
-4. Genomic coordinate bed file of gRNA (--bed option, optional).
+**INPUT 4. Genomic coordinate bed file of gRNA (--bed option, optional).**
 
 Genomic coordinates for gRNAs (Format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization. An example file is shown below.
 
@@ -106,7 +106,7 @@ Once the job is finished, you will be notified by email with some attachments.  
 TODO
 ^^^^
 
-The HPC doesn't have the latest version of Mageck. A request has been submitted.
+HPC doesn't have the latest version of Mageck. A request has been submitted.
 
 
 
