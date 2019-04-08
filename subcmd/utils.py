@@ -788,6 +788,16 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 				if len(line) == 3:
 					my_list.append([line[0],line[1],line[2]])
 		self.design_matrix = my_list
+		self.pairwise_comparisons={}
+		try:			
+			for row in my_list:
+				if not self.pairwise_comparisons.has_key(row[0])
+					self.pairwise_comparisons[row[0]] = {}
+					self.pairwise_comparisons[row[0]]['control'] = []
+					self.pairwise_comparisons[row[0]]['treatment'] = []
+				self.pairwise_comparisons[row[0]][row[1]]=row[2]
+		except:
+			pass
 		pass
 
 	def dry_run(self):
@@ -918,7 +928,7 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 		for k in self.pairwise_comparisons:
 			t = self.pairwise_comparisons[k]['treatment']
 			c = self.pairwise_comparisons[k]['control']
-			name = self.pairwise_comparisons[k]['name']
+			name = k
 			tmp = multireplace(command, {'name':name,\
 				'treatment_col_names':t,\
 				'control_col_names':c\
@@ -958,7 +968,7 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 		# organize output
 		self.outputs_dict['mageck_RRA_files'] = []
 		for k in self.pairwise_comparisons:
-			name = self.pairwise_comparisons[k]['name']
+			name = k
 			self.outputs_dict['log_files'].append(name+"_RRA_results.log")
 			self.outputs_dict['log_files'].append(name+"_RRA_results_summary.Rnw")
 			self.outputs_dict['log_files'].append(name+"_RRA_results.R")
@@ -983,7 +993,7 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 			design_matrix = ['1,0']*len(c.split(","))+['1,1']*len(t.split(","))
 			design_matrix = '"'+";".join(design_matrix)+'"'
 			
-			name = self.pairwise_comparisons[k]['name']
+			name = k
 			tmp = multireplace(command, {'name':name,\
 				'design_matrix':design_matrix,\
 				'selected_samples':t+","+c\
@@ -1023,7 +1033,7 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 
 		self.outputs_dict['mageck_MLE_files'] = []
 		for k in self.pairwise_comparisons:
-			name = self.pairwise_comparisons[k]['name']
+			name = k
 			self.outputs_dict['log_files'].append(name+"_MLE_results.log")
 			self.outputs_dict['log_files'].append(name+"_MLE_results.sgrna_summary.txt")
 			self.outputs_dict['mageck_MLE_files'].append(name+"_MLE_results.gene_summary.txt")

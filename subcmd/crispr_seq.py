@@ -54,16 +54,16 @@ def run_crispr_seq(args,rootLogger):
 	crispr_seq.run_mageck_RRA()
 	crispr_seq.run_mageck_MLE()
 
-	# DESEQ, RRA
+	# DESEQ (TODO), RRA
 	crispr_seq.combined_sgRNA_level_results()
 
-	# MLE, RRA, and/or CRISPhieRmix
+	# MLE, RRA, and/or CRISPhieRmix (TODO)
 	crispr_seq.combined_gene_level_results()
 
 	if args.bed:
 		crispr_seq.run_STJtracks()
 
-	crispr_seq.run_output_organization()
+	crispr_seq.run_output_organization(report_flag=False)
 	if args.debug:
 		os.system("rm "+args.jid+"*")
 		os.system("rm *bwDict")
