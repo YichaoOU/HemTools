@@ -3,15 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-=====================================================
+====================================================================
 HemTools: *a collection of NGS pipelines and bioinformatic analyses*
-=====================================================
+====================================================================
+
 
 .. toctree::
    :maxdepth: 2
    
    content/NGS_pipelines/NGS_pipelines
    content/Installation/Installation
+   content/Visualization/data_visualization
+   content/Motif_analysis/motif_analysis
+   content/Integrative_analysis/Integrative_analysis
    
 General principles
 ^^^^^^^^^^^^^^^^^^

@@ -1,8 +1,6 @@
 Data Visualization
 ==================
 
-.. contents:: 
-    :local:
 .. toctree::
    :maxdepth: 1
 

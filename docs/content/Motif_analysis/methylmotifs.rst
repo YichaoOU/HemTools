@@ -1,7 +1,5 @@
-
-
-# Methylated Motif Discovery
-
+Methylated Motif Discovery
+==========================
 
 
 
