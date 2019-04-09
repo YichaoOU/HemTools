@@ -43,7 +43,7 @@ def run_volcano_plot(args,rootLogger):
 		rootLogger.info ("The job id is: "+args.jid)			
 		
 	commands = ['module load R/3.5.1']	
-	volcano_plot_command = ""p_dir+""
+	# volcano_plot_command = ""p_dir+""
 	
 
 
