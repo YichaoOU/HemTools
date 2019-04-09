@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>CRISPR-seq &#8212; HemTools  documentation</title>
+    <title>Genome-wide CRISPR Screening &#8212; HemTools  documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
@@ -17,7 +17,9 @@
     <script type="text/javascript" src="../../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Data Visualization" href="../Visualization/data_visualization.html" />
+    <link rel="prev" title="Paired-end ChIP-seq" href="chip_seq_pair.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -25,7 +27,14 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li> 
+        <li class="right" >
+          <a href="../Visualization/data_visualization.html" title="Data Visualization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="chip_seq_pair.html" title="Paired-end ChIP-seq"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="NGS_pipelines.html" accesskey="U">A collection of NGS_pipelines</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -34,8 +43,147 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="crispr-seq">
-<h1>CRISPR-seq<a class="headerlink" href="#crispr-seq" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="genome-wide-crispr-screening">
+<h1>Genome-wide CRISPR Screening<a class="headerlink" href="#genome-wide-crispr-screening" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">HemTools</span> <span class="n">crispr_seq</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JID</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">short</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="p">]</span>
+                           <span class="p">[</span><span class="o">--</span><span class="n">control_gRNAs</span> <span class="n">CONTROL_GRNAS</span><span class="p">]</span> <span class="o">-</span><span class="n">d</span> <span class="n">DESIGN_MATRIX</span>
+                           <span class="o">--</span><span class="n">gRNA_library</span> <span class="n">GRNA_LIBRARY</span> <span class="p">[</span><span class="o">--</span><span class="n">bed</span> <span class="n">BED</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">g</span> <span class="n">GENOME</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-j, --jid</kbd></td>
+<td><p class="first">enter a job ID, which is used to make a new directory. Every output will be moved into this folder.</p>
+<p class="last">Default: “{{subcmd}}_yli11_2019-04-09”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--short</kbd></td>
+<td><p class="first">Force to use the short queue.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--debug</kbd></td>
+<td><p class="first">Not for end-user.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Input files">
+<h2>Input files<a class="headerlink" href="#Input files" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>--control_gRNAs</kbd></td>
+</tr>
+<tr><td>&#160;</td><td>a list of control gRNAs. If provided, normalization will be performed based on these controls, instead of median normalization.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-d, --design_matrix</kbd></td>
+</tr>
+<tr><td>&#160;</td><td>tab delimited 3 columns (tsv file): treatment sample ID, control sample ID, peakcall ID</td></tr>
+<tr><td class="option-group">
+<kbd>--gRNA_library</kbd></td>
+<td>mageck format</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Genome Info">
+<h2>Genome Info<a class="headerlink" href="#Genome Info" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>--bed</kbd></td>
+<td>Genomic coordinates for gRNAs (Format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization.</td></tr>
+<tr><td class="option-group">
+<kbd>-g, --genome</kbd></td>
+<td><p class="first">genome version: hg19, hg38</p>
+<p class="last">Default: “hg19”</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input-file">
+<h2>Input file<a class="headerlink" href="#input-file" title="Permalink to this headline">¶</a></h2>
+<p><strong>INPUT 0. fastq files.</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">options</span> <span class="pre">to</span> <span class="pre">input</span> <span class="pre">a</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">fastq</span> <span class="pre">files</span></code>. All <a href="#id1"><span class="problematic" id="id2">*</span></a>.fastq.gz files in the current directory will be used.</p>
+<p>Inf you don’t want to use all fastq files, please create a new directory, cd to that directory, and create soft links for the files you need. A soft link is similar to file shortcut used in Windows.</p>
+<p>The command to create a soft link is:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ ln -s [original filename] [link name]
+</pre></div>
+</div>
+<p><strong>INPUT 1. Design matrix (-d option, required).</strong></p>
+<p>This file specifies a list of pairwise comparisons. Each comparison has a comparison name, a list of control group files, and a list of treatment group files. The format is a 3-column tsv file. An example file is shown below.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">APC</span>     <span class="n">control</span> <span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep1_S10_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep2_S11_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">APC</span>     <span class="n">treatment</span>       <span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">positive</span><span class="o">-</span><span class="n">rep1_S4_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">positive</span><span class="o">-</span><span class="n">rep2_S5_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">GFP</span>     <span class="n">control</span> <span class="n">CRM</span><span class="o">-</span><span class="n">GFP</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep1_S7_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">GFP</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep2_S8_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">GFP</span>     <span class="n">treatment</span>       <span class="n">CRM</span><span class="o">-</span><span class="n">GFP</span><span class="o">-</span><span class="n">Positive</span><span class="o">-</span><span class="n">rep1_S1_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">GFP</span><span class="o">-</span><span class="n">Positive</span><span class="o">-</span><span class="n">rep2_S2_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">APC_neg_vs_plasmid</span>      <span class="n">control</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">APC_neg_vs_plasmid</span>      <span class="n">treatment</span> <span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep1_S10_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">Negative</span><span class="o">-</span><span class="n">rep2_S11_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">APC_pos_vs_plasmid</span>      <span class="n">control</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">APC_pos_vs_plasmid</span>      <span class="n">treatment</span> <span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">positive</span><span class="o">-</span><span class="n">rep1_S4_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span><span class="p">,</span><span class="n">CRM</span><span class="o">-</span><span class="n">APC</span><span class="o">-</span><span class="n">positive</span><span class="o">-</span><span class="n">rep2_S5_L001_R1_001</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Comparison names (column 1) should be unique. Control &amp; treatment (column 2) are keywords, misspelling can cause error.</p>
+</div>
+<p><strong>INPUT 2. gRNA library csv file (–gRNA_library option, required).</strong></p>
+<p>This file specifies your gRNA library. It is a csv file where the columns are sgRNA, sgRNA sequence, and the targeted gene. An example file is shown below.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sgRNA</span><span class="p">,</span><span class="n">Sequence</span><span class="p">,</span><span class="n">Gene</span>
+<span class="n">chr11</span><span class="p">:</span><span class="mi">4167629</span><span class="o">-</span><span class="n">AAATTTCCTCAGCAGATTAC</span><span class="p">,</span><span class="n">AAATTTCCTCAGCAGATTAC</span><span class="p">,</span><span class="n">Gene1</span>
+<span class="n">Please_no_space_anywhere</span><span class="p">,</span><span class="n">ACAAGCAACAGTTGACCAAC</span><span class="p">,</span><span class="n">Gene1</span>
+<span class="n">could_be_anything</span><span class="p">,</span><span class="n">ACATGAGACTGGAAACCGCC</span><span class="p">,</span><span class="n">positive_control</span>
+</pre></div>
+</div>
+<p><strong>INPUT 3. control gRNA list (–control_gRNAs option, optional).</strong></p>
+<p>The file specifies a list of control gRNA names. The names should match to the gRNA library file. Each line is a control gRNA name.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">control gRNAs are optional. If provided, normalization will be performed based on these controls, instead of median normalization.</p>
+</div>
+<p><strong>INPUT 4. Genomic coordinate bed file of gRNA (–bed option, optional).</strong></p>
+<p>Genomic coordinates for gRNAs (Format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization. An example file is shown below.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">gRNAs locations are optional. If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Go to your data directory and type the following.</p>
+<p>Step 0: Load python version 2.7.13.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
+</pre></div>
+</div>
+<p>Step 1: Prepare the input files, see the format above.</p>
+<p>Step 3: Submit your job.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv
+</pre></div>
+</div>
+<p>OR:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed
+</pre></div>
+</div>
+</div>
+<div class="section" id="report-bug">
+<h2>Report bug<a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
+<p>Once the job is finished, you will be notified by email with some attachments.  If no attachment can be found, it might be caused by an error. In such case, please go to the result directory (where the log_files folder is located) and type:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools report_bug
+</pre></div>
+</div>
+</div>
+<div class="section" id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<p>HPC doesn’t have the latest version of Mageck. A request has been submitted.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="100%" />
@@ -46,6 +194,7 @@
 </tbody>
 </table>
 </div>
+</div>
 
 
           </div>
@@ -53,6 +202,26 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Genome-wide CRISPR Screening</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#Input files">Input files</a></li>
+<li><a class="reference internal" href="#Genome Info">Genome Info</a></li>
+<li><a class="reference internal" href="#input-file">Input file</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#report-bug">Report bug</a></li>
+<li><a class="reference internal" href="#todo">TODO</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="chip_seq_pair.html"
+                        title="previous chapter">Paired-end ChIP-seq</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Visualization/data_visualization.html"
+                        title="next chapter">Data Visualization</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -82,7 +251,14 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li> 
+        <li class="right" >
+          <a href="../Visualization/data_visualization.html" title="Data Visualization"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="chip_seq_pair.html" title="Paired-end ChIP-seq"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="NGS_pipelines.html" >A collection of NGS_pipelines</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

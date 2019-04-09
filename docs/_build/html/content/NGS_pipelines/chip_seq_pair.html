@@ -18,7 +18,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Installation" href="../Installation/Installation.html" />
+    <link rel="next" title="Genome-wide CRISPR Screening" href="crispr_seq.html" />
     <link rel="prev" title="Single-end ChIP-seq" href="chip_seq_single.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../Installation/Installation.html" title="Installation"
+          <a href="crispr_seq.html" title="Genome-wide CRISPR Screening"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="chip_seq_single.html" title="Single-end ChIP-seq"
@@ -45,11 +45,10 @@
             
   <div class="section" id="paired-end-chip-seq">
 <h1>Paired-end ChIP-seq<a class="headerlink" href="#paired-end-chip-seq" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">chip_seq_pair</span> <span class="n">chip_seq_pair</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JID</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">short</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="p">]</span>
-                                   <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">INPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">DESIGN_MATRIX</span><span class="p">]</span>
-                                   <span class="p">[</span><span class="o">--</span><span class="n">guess_input</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INDEX_FILE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">g</span> <span class="n">GENOME</span><span class="p">]</span>
-                                   <span class="p">[</span><span class="o">-</span><span class="n">b</span> <span class="n">BLACKLIST</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">CHROM_SIZE</span><span class="p">]</span>
-                                   <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">EFFECTIVEGENOMESIZE</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">HemTools</span> <span class="n">chip_seq_pair</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JID</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">short</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">INPUT</span><span class="p">]</span>
+                              <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">DESIGN_MATRIX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">guess_input</span><span class="p">]</span>
+                              <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INDEX_FILE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">g</span> <span class="n">GENOME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span> <span class="n">BLACKLIST</span><span class="p">]</span>
+                              <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">CHROM_SIZE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">EFFECTIVEGENOMESIZE</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="section" id="Named Arguments">
@@ -61,7 +60,7 @@
 <tr><td class="option-group">
 <kbd>-j, --jid</kbd></td>
 <td><p class="first">enter a job ID, which is used to make a new directory. Every output will be moved into this folder.</p>
-<p class="last">Default: “{{subcmd}}_yli11_2019-04-05”</p>
+<p class="last">Default: “{{subcmd}}_yli11_2019-04-09”</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>--short</kbd></td>
@@ -126,6 +125,48 @@
 </tbody>
 </table>
 </div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Go to your data directory and type the following.</p>
+<p><strong>Step 0: Load python version 2.7.13.</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
+</pre></div>
+</div>
+<p><strong>Step 1: Prepare input files, generate fastq.tsv.</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools chip_seq_pair --guess_input
+
+    Input fastq files preparation complete! ALL GOOD!
+    Please check if you like the computer-generated labels in : fastq.tsv
+    Input peakcall file preparation complete! File name: peakcall.tsv
+</pre></div>
+</div>
+<p><strong>Step 2: Check the computer-generated input list (manually), make sure they are correct.</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ less fastq.tsv
+
+$ less peakcall.tsv
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.</p>
+</div>
+<p><strong>Step 3: Submit your job.</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv
+</pre></div>
+</div>
+</div>
+<div class="section" id="report-bug">
+<h2>Report bug<a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
+<p>Once the job is finished, you will be notified by email with some attachments.  If no attachment can be found, it might be caused by an error. In such case, please go to the result directory (where the log_files folder is located) and type:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools report_bug
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-different-genome-index">
+<h2>Use different genome index<a class="headerlink" href="#use-different-genome-index" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
+</pre></div>
+</div>
 <table border="1" class="docutils">
 <colgroup>
 <col width="100%" />
@@ -135,6 +176,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 
 
@@ -148,6 +190,9 @@
 <li><a class="reference internal" href="#">Paired-end ChIP-seq</a><ul>
 <li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
 <li><a class="reference internal" href="#Genome Info">Genome Info</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#report-bug">Report bug</a></li>
+<li><a class="reference internal" href="#use-different-genome-index">Use different genome index</a></li>
 </ul>
 </li>
 </ul>
@@ -156,8 +201,8 @@
   <p class="topless"><a href="chip_seq_single.html"
                         title="previous chapter">Single-end ChIP-seq</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../Installation/Installation.html"
-                        title="next chapter">Installation</a></p>
+  <p class="topless"><a href="crispr_seq.html"
+                        title="next chapter">Genome-wide CRISPR Screening</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -188,7 +233,7 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../Installation/Installation.html" title="Installation"
+          <a href="crispr_seq.html" title="Genome-wide CRISPR Screening"
              >next</a> |</li>
         <li class="right" >
           <a href="chip_seq_single.html" title="Single-end ChIP-seq"
