@@ -1,4 +1,4 @@
-Integrative Analysis 
+Motif Analysis Suite
 ====================
 
 .. toctree::

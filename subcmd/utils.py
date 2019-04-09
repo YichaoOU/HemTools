@@ -140,6 +140,70 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 
 		pass
 
+	def submit_single_command(self,command,output_dict={},attachments=[],queue="standard",number_cores=1,memory_request=4000):
+
+		# most jobs should be split and then submit
+		header="""
+
+#BSUB -P {{project_name}}
+#BSUB -o {{output_message}}_%J_%I.out -e {{output_message}}_%J_%I.err
+#BSUB -n {{number_cores}}
+#BSUB -q {{queue}}
+#BSUB -R "span[hosts=1] rusage[mem={{memory_request}}]"
+#BSUB -J "{{job_id}}[1-{{number_lines}}]"
+
+{{commands}}
+
+		"""
+
+		# define LSF parameters
+		self.parameter_dict['output_message']=self.args.jid +"."+self.args.subcmd+".message"
+		self.parameter_dict['number_cores']=number_cores
+		self.parameter_dict['queue']=queue
+		self.parameter_dict['memory_request']=memory_request
+		self.parameter_dict['job_id']=self.args.subcmd
+		self.parameter_dict['number_lines']=1
+		self.parameter_dict['commands']=command
+		self.parameter_dict['job_script_file']=self.args.jid +"."+self.args.subcmd+".lsf"
+		if self.args.short:
+			self.parameter_dict['queue']="short"	
+		# prepare job lsf
+		header = multireplace(header,self.parameter_dict)
+		write_file(self.parameter_dict['job_script_file'],header)
+		dos2unix(self.parameter_dict['job_script_file'])
+		# submit job and extract submission id
+		job_id_regex = b"Job <([0-9]+)>"
+		pipe = subprocess.Popen('bsub < '+self.parameter_dict['job_script_file'], shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+		output = pipe.communicate()[0]
+		match = re.match(job_id_regex,output)
+		try:
+			submission_id = match.group(1).decode('utf-8')
+		except:
+			self.logger.error(self.parameter_dict['job_script_file']+' Job is failed to submit. Exit program...')
+			exit()
+
+		# lsf outputs
+		# every lsf job will have:
+		# - .lsf
+		# - .err
+		# - .out
+		self.outputs_dict['log_files'].append(self.parameter_dict['job_script_file'])
+		for i in range(1,int(self.parameter_dict['number_lines'])+1):
+			self.outputs_dict['log_files'].append(self.parameter_dict['output_message']+"_"+submission_id+"_"+str(i)+".out")
+			self.outputs_dict['log_files'].append(self.parameter_dict['output_message']+"_"+submission_id+"_"+str(i)+".err")
+		self.logger.info(self.parameter_dict['job_id']+" has been submitted. Job ID: "+submission_id)
+		self.submission_id_dict[self.parameter_dict['job_id']] = submission_id
+
+		# commmand-specific outputs
+		for k in output_dict:
+			try:
+				self.outputs_dict[k] += output_dict[k]
+			except:
+				self.outputs_dict[k] = output_dict[k]
+		self.attachments+=attachments
+
+		pass		
+
 	def run_skewer(self):
 		Num_cores = "4"
 		commands = p_dir+"../bin/skewer-0.2.2-linux-x86_64 -t {{Num_cores}} -x {{adaptor_x}} -y {{adaptor_y}} ${COL1} \
@@ -631,6 +695,8 @@ LINE=`head -n $id {{sample_list}}|tail -n1`
 			commands = [self.send_email_command(),'mkdir '+self.args.jid]
 		# print "attachments",self.attachments
 		for k in self.outputs_dict:
+			if len(self.outputs_dict[k]) == 0:
+				continue
 			commands.append('mkdir '+self.args.jid+"/"+k)
 			for v in self.outputs_dict[k]:
 				commands.append('mv '+v+" "+self.args.jid+"/"+k)
