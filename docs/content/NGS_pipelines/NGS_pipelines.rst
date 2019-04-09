@@ -1,8 +1,6 @@
 A collection of NGS_pipelines
 =============================
 
-.. contents:: 
-    :local:
 .. toctree::
    :maxdepth: 1
 
