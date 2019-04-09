@@ -12,11 +12,11 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    :maxdepth: 2
    
    content/NGS_pipelines/NGS_pipelines
-   content/Installation/Installation
    content/Visualization/data_visualization
    content/Motif_analysis/motif_analysis
    content/Integrative_analysis/Integrative_analysis
-   
+   content/Installation/Installation
+
 General principles
 ^^^^^^^^^^^^^^^^^^
 
