@@ -19,7 +19,7 @@ Go to your data directory and type the following.
 
     $ module load python/2.7.13
 
-**Step 1: Prepare input files, generate fastq.tsv. **
+**Step 1: Prepare input files, generate fastq.tsv.**
 
 .. code:: bash
 
