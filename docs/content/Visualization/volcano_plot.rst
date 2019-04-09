@@ -21,7 +21,7 @@ Usage
 
     $ HemTools volcano_plot -f input_data
 
-.. note:: EnhancedVolcano is installed on rhel7. This subcmd is not interative. Please wait for the job finished in order to see the figure.
+.. note:: EnhancedVolcano is installed on rhel7. This subcmd is not interative, meaning that you can't see this figure in a minute. Once the figure is made, it will be emailed to you.
 
 
 
