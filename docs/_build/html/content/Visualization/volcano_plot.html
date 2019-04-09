@@ -1,0 +1,340 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Volcano plot for logFC and P-value/FDR &#8212; HemTools  documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="gRNA_intensity_plot.html" />
+    <link rel="prev" title="Data Visualization" href="data_visualization.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gRNA_intensity_plot.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data_visualization.html" title="Data Visualization"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="data_visualization.html" accesskey="U">Data Visualization</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="volcano-plot-for-logfc-and-p-value-fdr">
+<h1>Volcano plot for logFC and P-value/FDR<a class="headerlink" href="#volcano-plot-for-logfc-and-p-value-fdr" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">HemTools</span> <span class="n">volcano_plot</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">short</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no_email</span><span class="p">]</span> <span class="o">-</span><span class="n">f</span> <span class="n">INPUT</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JID</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SEPERATOR</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">LFC_column</span> <span class="n">LFC_COLUMN</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">LFC_cutoff</span> <span class="n">LFC_CUTOFF</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">LFC_axis_name</span> <span class="n">LFC_AXIS_NAME</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">FDR_column</span> <span class="n">FDR_COLUMN</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">FDR_cutoff</span> <span class="n">FDR_CUTOFF</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">FDR_axis_name</span> <span class="n">FDR_AXIS_NAME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">title</span> <span class="n">TITLE</span><span class="p">]</span>
+                             <span class="p">[</span><span class="o">--</span><span class="n">do_not_submit</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">output_figure</span> <span class="n">OUTPUT_FIGURE</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>--short</kbd></td>
+<td><p class="first">Force to use the short queue, don’t use it for volcano_plot</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--no_email</kbd></td>
+<td><p class="first">Not for end-user</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, --input</kbd></td>
+<td>data table to be plot</td></tr>
+<tr><td class="option-group">
+<kbd>-j, --jid</kbd></td>
+<td><p class="first">enter a job ID, which is used to make a new directory. Every output will be moved into this folder.</p>
+<p class="last">Default: “{{subcmd}}_yli11_2019-04-09”</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="options">
+<h2>options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>-s, --seperator</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">column seperator, comma(,), space(” “), or tab( )</p>
+<p class="last">Default: “,”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--LFC_column</kbd></td>
+<td><p class="first">column name for log fold change</p>
+<p class="last">Default: “LFC”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--LFC_cutoff</kbd></td>
+<td><p class="first">log fold change cutoff</p>
+<p class="last">Default: “2”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--LFC_axis_name</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">The axis name for log fold change</p>
+<p class="last">Default: “LFC”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--FDR_column</kbd></td>
+<td><p class="first">column name for p-value or FDR</p>
+<p class="last">Default: “FDR”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--FDR_cutoff</kbd></td>
+<td><p class="first">p-value or FDR cutoff</p>
+<p class="last">Default: “0.01”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--FDR_axis_name</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">The axis name for p-value or FDR</p>
+<p class="last">Default: “FDR”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--title</kbd></td>
+<td><p class="first">Figure title</p>
+<p class="last">Default: “Volcano plot”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--do_not_submit</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">EnhancedVolcano is installed on rhel7 nodes, by default you are on rhel6 nodes, unless you did <code class="docutils literal notranslate"><span class="pre">hpcf_interactive</span> <span class="pre">-q</span> <span class="pre">standard</span></code>, please don’t use this option.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--output_figure</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">output file name</p>
+<p class="last">Default: “Volcano_plot_yli11_2019-04-09.png”</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input-file">
+<h2>Input file<a class="headerlink" href="#input-file" title="Permalink to this headline">¶</a></h2>
+<p><strong>INPUT: data table (-f option, required).</strong></p>
+<p>This is a data table, could be csv (default) or tsv. Seperator is provided by user. Basically, two columns (provided by user) will be used to make volcano plot.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools volcano_plot -f input_data
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">EnhancedVolcano is installed on rhel7. This subcmd is not interative, meaning that you can’t see this figure in a minute. Once the figure is made, it will be emailed to you.</p>
+</div>
+</div>
+<div class="section" id="report-bug">
+<h2>Report bug<a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
+<p>Once the job is finished, you will be notified by email with some attachments.  If no attachment can be found, it might be caused by an error. In such case, please go to the result directory (where the log_files folder is located) and type:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools report_bug
+</pre></div>
+</div>
+</div>
+<div class="section" id="r-code">
+<h2>R code<a class="headerlink" href="#r-code" title="Permalink to this headline">¶</a></h2>
+<p>If you are not satisfied with the figure (figsize, dpi, point size, etc), here’s the source code for you to customize your figure.</p>
+<div class="highlight-R notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">EnhancedVolcano</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">&lt;-</span> <span class="nf">commandArgs</span><span class="p">(</span><span class="n">trailingOnly</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="n">input_table</span> <span class="o">=</span> <span class="n">args[1]</span>
+<span class="n">seperator</span> <span class="o">=</span> <span class="n">args[2]</span>
+<span class="n">LFC_column</span> <span class="o">=</span> <span class="n">args[3]</span>
+<span class="n">LFC_cutoff</span> <span class="o">=</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="n">args[4]</span><span class="p">)</span>
+<span class="n">LFC_axis_name</span> <span class="o">=</span> <span class="n">args[5]</span>
+<span class="n">FDR_column</span> <span class="o">=</span> <span class="n">args[6]</span>
+<span class="n">FDR_cutoff</span> <span class="o">=</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="n">args[7]</span><span class="p">)</span>
+<span class="n">FDR_axis_name</span> <span class="o">=</span> <span class="n">args[8]</span>
+<span class="n">Title</span> <span class="o">=</span> <span class="n">args[9]</span>
+<span class="n">output_figure</span> <span class="o">=</span> <span class="n">args[10]</span>
+
+<span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="n">input_table</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="n">seperator</span><span class="p">)</span>
+
+<span class="n">keyvals</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="nf">nrow</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+
+<span class="nf">names</span><span class="p">(</span><span class="n">keyvals</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="s">&#39;Not Significant&#39;</span><span class="p">,</span> <span class="nf">nrow</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+
+<span class="n">keyvals</span><span class="nf">[which</span><span class="p">(</span><span class="n">res[</span><span class="o">$</span><span class="n">LFC_column]</span> <span class="o">&gt;</span> <span class="n">LFC_cutoff</span> <span class="o">&amp;</span> <span class="n">res[</span><span class="o">$</span><span class="n">FDR_column]</span> <span class="o">&lt;</span> <span class="n">FDR_cutoff</span><span class="p">)</span><span class="n">]</span> <span class="o">&lt;-</span> <span class="s">&#39;red&#39;</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">keyvals</span><span class="p">)</span><span class="nf">[which</span><span class="p">(</span><span class="n">res[</span><span class="o">$</span><span class="n">LFC_column]</span> <span class="o">&gt;</span> <span class="n">LFC_cutoff</span> <span class="o">&amp;</span> <span class="n">res[</span><span class="o">$</span><span class="n">FDR_column]</span> <span class="o">&lt;</span> <span class="n">FDR_cutoff</span><span class="p">)</span><span class="n">]</span> <span class="o">&lt;-</span> <span class="s">&#39;Increased&#39;</span>
+
+
+<span class="n">keyvals</span><span class="nf">[which</span><span class="p">(</span><span class="n">res[</span><span class="o">$</span><span class="n">LFC_column]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">LFC_cutoff</span> <span class="o">&amp;</span> <span class="n">res[</span><span class="o">$</span><span class="n">FDR_column]</span> <span class="o">&lt;</span> <span class="n">FDR_cutoff</span><span class="p">)</span><span class="n">]</span> <span class="o">&lt;-</span> <span class="s">&#39;blue&#39;</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">keyvals</span><span class="p">)</span><span class="nf">[which</span><span class="p">(</span><span class="n">res[</span><span class="o">$</span><span class="n">LFC_column]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">LFC_cutoff</span> <span class="o">&amp;</span> <span class="n">res[</span><span class="o">$</span><span class="n">FDR_column]</span> <span class="o">&lt;</span> <span class="n">FDR_cutoff</span><span class="p">)</span><span class="n">]</span> <span class="o">&lt;-</span> <span class="s">&#39;Decreased&#39;</span>
+
+
+ <span class="nf">EnhancedVolcano</span><span class="p">(</span><span class="n">res</span><span class="p">,</span>
+    <span class="n">lab</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">res</span><span class="p">),</span>
+    <span class="n">selectLab</span> <span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">),</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">LFC_axis_name</span><span class="p">,</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">FDR_axis_name</span><span class="p">,</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">Title</span><span class="p">,</span>
+    <span class="n">colOverride</span> <span class="o">=</span> <span class="n">keyvals</span><span class="p">,</span>
+    <span class="n">colConnectors</span> <span class="o">=</span> <span class="s">&#39;grey50&#39;</span><span class="p">,</span>
+    <span class="n">pCutoff</span> <span class="o">=</span> <span class="n">FDR_cutoff</span><span class="p">,</span>
+    <span class="n">FCcutoff</span> <span class="o">=</span> <span class="n">LFC_cutoff</span><span class="p">,</span>
+    <span class="n">transcriptPointSize</span> <span class="o">=</span> <span class="m">1.5</span><span class="p">,</span>
+    <span class="n">transcriptLabSize</span> <span class="o">=</span> <span class="m">3.0</span><span class="p">)</span>
+
+<span class="nf">ggsave</span><span class="p">(</span><span class="n">output_figure</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="m">300</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/YichaoOU/HemTools/">code &#64; github</a>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Volcano plot for logFC and P-value/FDR</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#options">options</a></li>
+<li><a class="reference internal" href="#input-file">Input file</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#report-bug">Report bug</a></li>
+<li><a class="reference internal" href="#r-code">R code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data_visualization.html"
+                        title="previous chapter">Data Visualization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gRNA_intensity_plot.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/content/Visualization/volcano_plot.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gRNA_intensity_plot.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="data_visualization.html" title="Data Visualization"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="data_visualization.html" >Data Visualization</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Yichao Li, Yong Cheng.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

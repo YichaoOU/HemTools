@@ -44,32 +44,27 @@
             
   <div class="section" id="a-collection-of-ngs-pipelines">
 <h1>A collection of NGS_pipelines<a class="headerlink" href="#a-collection-of-ngs-pipelines" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="contents">
-<ul class="simple">
-<li><a class="reference internal" href="#typical-usage" id="id1">Typical Usage</a></li>
-<li><a class="reference internal" href="#report-bug" id="id2">Report bug</a></li>
-</ul>
-</div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="atac_seq.html">ATAC-seq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cut_run.html">CUT &amp; RUN pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chip_seq_single.html">Single-end ChIP-seq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chip_seq_pair.html">Paired-end ChIP-seq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crispr_seq.html">Genome-wide CRISPR Screening</a></li>
 </ul>
 </div>
 <img alt="../../_images/Pipelines_steps.png" src="../../_images/Pipelines_steps.png" />
 <div class="section" id="typical-usage">
-<h2><a class="toc-backref" href="#id1">Typical Usage</a><a class="headerlink" href="#typical-usage" title="Permalink to this headline">¶</a></h2>
+<h2>Typical Usage<a class="headerlink" href="#typical-usage" title="Permalink to this headline">¶</a></h2>
 <p>Go to your data directory and type the following.</p>
-<p>Step 0: Load python version 2.7.13.</p>
+<p><strong>Step 0: Load python version 2.7.13.</strong></p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
 </pre></div>
 </div>
-<p>Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv.</p>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq.</p>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. **</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. <cite>–guess_input</cite> option is not available for crispr_seq subcmd.</p>
 </div>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools [subcmd] --guess_input
 
@@ -78,17 +73,17 @@
     Input peakcall file preparation complete! File name: peakcall.tsv
 </pre></div>
 </div>
-<p>Step 2: Check the computer-generated input list (manually), make sure they are correct.</p>
+<p><strong>Step 2: Check the computer-generated input list (manually), make sure they are correct.</strong></p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ less fastq.tsv
 
 $ less peakcall.tsv
 </pre></div>
 </div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p class="last">a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.</p>
 </div>
-<p>Step 3: Submit your job.</p>
+<p><strong>Step 3: Submit your job.</strong></p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools [subcmd] -f fastq.tsv -d peakcall.tsv
 </pre></div>
 </div>
@@ -98,7 +93,7 @@ $ less peakcall.tsv
 </div>
 </div>
 <div class="section" id="report-bug">
-<h2><a class="toc-backref" href="#id2">Report bug</a><a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
+<h2>Report bug<a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
 <p>Once the job is finished, you will be notified by email with some attachments.  If no attachment can be found, it might be caused by an error. In such case, please go to the result directory (where the log_files folder is located) and type:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools report_bug
 </pre></div>
