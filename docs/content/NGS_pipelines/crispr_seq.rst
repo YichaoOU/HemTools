@@ -84,7 +84,7 @@ Step 3: Submit your job.
 
 .. code:: bash
 
-    $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv
+    $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list
 
 OR:
 

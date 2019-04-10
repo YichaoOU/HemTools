@@ -1,4 +1,5 @@
 library(EnhancedVolcano)
+
 args <- commandArgs(trailingOnly = TRUE)
 
 input_table = args[1]
@@ -18,19 +19,22 @@ keyvals <- rep('black', nrow(res))
 
 names(keyvals) <- rep('Not Significant', nrow(res))
 
-keyvals[which(res[$LFC_column] > LFC_cutoff & res[$FDR_column] < FDR_cutoff)] <- 'red'
-names(keyvals)[which(res[$LFC_column] > LFC_cutoff & res[$FDR_column] < FDR_cutoff)] <- 'Increased'
+
+keyvals[which(res[LFC_column] > LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'red'
+names(keyvals)[which(res[LFC_column] > LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'Increased'
 
 
-keyvals[which(res[$LFC_column] < -LFC_cutoff & res[$FDR_column] < FDR_cutoff)] <- 'blue'
-names(keyvals)[which(res[$LFC_column] < -LFC_cutoff & res[$FDR_column] < FDR_cutoff)] <- 'Decreased'
+keyvals[which(res[LFC_column] < -LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'blue'
+names(keyvals)[which(res[LFC_column] < -LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'Decreased'
 
 
- EnhancedVolcano(res,
+EnhancedVolcano(res,
     lab = rownames(res),
     selectLab =c(""),
-    x = LFC_axis_name,
-    y = FDR_axis_name,
+    x = LFC_column,
+    y = FDR_column,
+    xlab = LFC_axis_name,
+    ylab = FDR_axis_name,
     title = Title,
     colOverride = keyvals,
     colConnectors = 'grey50',
@@ -39,4 +43,4 @@ names(keyvals)[which(res[$LFC_column] < -LFC_cutoff & res[$FDR_column] < FDR_cut
     transcriptPointSize = 1.5,
     transcriptLabSize = 3.0)
 
-ggsave(output_figure,dpi=300)
+ggsave(output_figure,dpi=600,type="cairo")
