@@ -15,6 +15,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Visualization/data_visualization
    content/Motif_analysis/motif_analysis
    content/Integrative_analysis/Integrative_analysis
+   content/Linux_Art/linux_art
    content/Installation/Installation
 
 General principles
