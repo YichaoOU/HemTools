@@ -14,6 +14,21 @@ Open a terminal and do the following 4 steps.
 
 	ssh-keygen -t rsa -N "" -F ~/.ssh/id_rsa
 
+``Please check if you can see this rsa file``
+
+.. code:: bash
+
+	less ~/.ssh/id_rsa
+
+``If not, type:``
+
+.. code:: bash
+
+	ssh-keygen -t rsa
+
+``If will ask for the generated file name and a passphrase, just type Enter twice.``
+
+	
 **Step 2. Create a folder on HPC. (Enter your HPC password).**
 
 .. code:: bash
