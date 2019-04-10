@@ -6,7 +6,7 @@ Make sure you are connected to ``$ecureNet``
 For non-Windows users
 ^^^^^^^^^^^^^^^^^^^^^
 
-Open a terminal and do the following 3 steps.
+Open a terminal and do the following 4 steps.
 
 **Step 1. Create public/private RSA keys.**
 
@@ -25,6 +25,12 @@ Open a terminal and do the following 3 steps.
 .. code:: bash
 
 	cat ~/.ssh/id_rsa.pub | ssh hpc 'cat >> .ssh/authorized_keys'
+
+**Step 4. Enjoy logging in without password**
+
+.. code:: bash
+
+	ssh hpc
 
 For Windows users
 ^^^^^^^^^^^^^^^^^
