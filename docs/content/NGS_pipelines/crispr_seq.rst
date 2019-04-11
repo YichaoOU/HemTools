@@ -72,15 +72,17 @@ Usage
 
 Go to your data directory and type the following.
 
-Step 0: Load python version 2.7.13.
+**Step 0: Load python version 2.7.13.**
 
 .. code:: bash
 
     $ module load python/2.7.13
 
-Step 1: Prepare the input files, see the format above. 
+**Step 1: Prepare the input files, see the format above. **
 
-Step 3: Submit your job.
+.. note:: Please make sure there is ``no space anywhere`` in file name, sgRNA names, and gene names. 
+
+**Step 2: Submit your job.**
 
 .. code:: bash
 

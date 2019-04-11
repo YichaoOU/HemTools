@@ -24,9 +24,9 @@ Go to your data directory and type the following.
 
     $ module load python/2.7.13
 
-**Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. **
+**Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv.**
 
-.. note:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. `--guess_input` option is not available for crispr_seq subcmd.
+.. note:: peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for ATAC-seq. `--guess_input` option is not available for crispr_seq subcmd.
 
 .. code:: bash
 
@@ -35,6 +35,8 @@ Go to your data directory and type the following.
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv
 	Input peakcall file preparation complete! File name: peakcall.tsv
+
+.. note:: If you are preparing fastq.tsv and peakcall.tsv yourself, please make sure ``no space anywhere`` in the file. Note that the seperator is tab. Spaces in file name will cause errors.
 
 **Step 2: Check the computer-generated input list (manually), make sure they are correct.**
 
