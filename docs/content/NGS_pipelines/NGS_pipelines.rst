@@ -9,6 +9,7 @@ A collection of NGS_pipelines
    chip_seq_single
    chip_seq_pair
    crispr_seq
+   bcl2fastq
 
 .. image:: ../../images/Pipelines_steps.png
 
