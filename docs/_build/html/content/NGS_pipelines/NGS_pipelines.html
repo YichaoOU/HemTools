@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="chip_seq_single.html">Single-end ChIP-seq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chip_seq_pair.html">Paired-end ChIP-seq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crispr_seq.html">Genome-wide CRISPR Screening</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bcl2fastq.html">Convert BCL basecall files to FASTQ files</a></li>
 </ul>
 </div>
 <img alt="../../_images/Pipelines_steps.png" src="../../_images/Pipelines_steps.png" />
@@ -61,10 +62,10 @@
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
 </pre></div>
 </div>
-<p><a href="#id1"><span class="problematic" id="id2">**</span></a>Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv. **</p>
+<p><strong>Step 1: Prepare input files, generate fastq.tsv and peakcall.tsv.</strong></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for atac_seq. <cite>–guess_input</cite> option is not available for crispr_seq subcmd.</p>
+<p class="last">peakcall.tsv is not generated for atac_seq subcmd, since no control is needed for ATAC-seq. <cite>–guess_input</cite> option is not available for crispr_seq subcmd.</p>
 </div>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools [subcmd] --guess_input
 
@@ -72,6 +73,10 @@
     Please check if you like the computer-generated labels in : fastq.tsv
     Input peakcall file preparation complete! File name: peakcall.tsv
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are preparing fastq.tsv and peakcall.tsv yourself, please make sure <code class="docutils literal notranslate"><span class="pre">no</span> <span class="pre">space</span> <span class="pre">anywhere</span></code> in the file. Note that the seperator is tab. Spaces in file name will cause errors.</p>
 </div>
 <p><strong>Step 2: Check the computer-generated input list (manually), make sure they are correct.</strong></p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ less fastq.tsv

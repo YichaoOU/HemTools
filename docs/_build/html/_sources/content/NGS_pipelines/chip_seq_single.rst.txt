@@ -29,6 +29,8 @@ Go to your data directory and type the following.
 	Please check if you like the computer-generated labels in : fastq.tsv
 	Input peakcall file preparation complete! File name: peakcall.tsv
 
+.. note:: If you are preparing fastq.tsv and peakcall.tsv yourself, please make sure ``no space anywhere`` in the file. Note that the seperator is tab. Spaces in file name will cause errors.
+
 **Step 2: Check the computer-generated input list (manually), make sure they are correct.**
 
 .. code:: bash
