@@ -15,6 +15,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Visualization/data_visualization
    content/Motif_analysis/motif_analysis
    content/Integrative_analysis/Integrative_analysis
+   content/Linux_Art/linux_art
    content/Installation/Installation
 
 General principles
@@ -24,12 +25,13 @@ A typical HemTools command looks like this:
 
 .. code:: bash
 
-    $ module load python/2.7.13
+    module load python/2.7.13
 
-    $ HemTools cut_run -f fastq.tsv -d peakcall.tsv
+    HemTools cut_run -f fastq.tsv -d peakcall.tsv
 
 You can always see all available sub-commands by:
 
 .. code:: bash
 
-    $ HemTools -h
+    HemTools -h
+

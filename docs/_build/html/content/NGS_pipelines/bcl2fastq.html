@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Data Visualization &#8212; HemTools  documentation</title>
+    <title>Convert BCL basecall files to FASTQ files &#8212; HemTools  documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
@@ -18,8 +18,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Volcano plot for logFC and P-value/FDR" href="volcano_plot.html" />
-    <link rel="prev" title="Convert BCL basecall files to FASTQ files" href="../NGS_pipelines/bcl2fastq.html" /> 
+    <link rel="next" title="Data Visualization" href="../Visualization/data_visualization.html" />
+    <link rel="prev" title="Genome-wide CRISPR Screening" href="crispr_seq.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,12 +28,13 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="volcano_plot.html" title="Volcano plot for logFC and P-value/FDR"
+          <a href="../Visualization/data_visualization.html" title="Data Visualization"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../NGS_pipelines/bcl2fastq.html" title="Convert BCL basecall files to FASTQ files"
+          <a href="crispr_seq.html" title="Genome-wide CRISPR Screening"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="NGS_pipelines.html" accesskey="U">A collection of NGS_pipelines</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -42,35 +43,29 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="data-visualization">
-<h1>Data Visualization<a class="headerlink" href="#data-visualization" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="volcano_plot.html">Volcano plot for logFC and P-value/FDR</a></li>
-</ul>
+  <div class="section" id="convert-bcl-basecall-files-to-fastq-files">
+<h1>Convert BCL basecall files to FASTQ files<a class="headerlink" href="#convert-bcl-basecall-files-to-fastq-files" title="Permalink to this headline">¶</a></h1>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">For demultiplexing, you must provide <code class="docutils literal notranslate"><span class="pre">SampleSheet.csv</span></code>, otherwise, all fastq.gz files will be named as <code class="docutils literal notranslate"><span class="pre">Undetermined</span></code>.</p>
 </div>
-<div class="section" id="typical-usage">
-<h2>Typical Usage<a class="headerlink" href="#typical-usage" title="Permalink to this headline">¶</a></h2>
-<p>Step 0: Load python version 2.7.13.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
+<p><strong>Step 1</strong></p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bsub</span> <span class="o">-</span><span class="n">R</span> <span class="s1">&#39;rusage[mem=32000]&#39;</span> <span class="o">-</span><span class="n">Is</span> <span class="o">-</span><span class="n">q</span> <span class="n">interactive</span> <span class="o">-</span><span class="n">P</span> <span class="n">Genomics</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
 </pre></div>
 </div>
-<p>Step 1: Plot your figure.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools [subcmd] -f input_data
+<p><strong>Step 2</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">bcl2fastq</span>
 </pre></div>
 </div>
-<p>You can always see all available sub-commands by:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools -h
+<p><strong>Step 3</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bcl2fastq</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">lane</span><span class="o">-</span><span class="n">splitting</span> <span class="o">-</span><span class="n">o</span> <span class="n">fastq_files</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="report-bug">
-<h2>Report bug<a class="headerlink" href="#report-bug" title="Permalink to this headline">¶</a></h2>
-<p>Most visualizations are done interactively. Error message will be displayed directly on your screen. Please copy those error msgs and email me, <a class="reference external" href="mailto:Yichao&#46;Li&#37;&#52;&#48;stjude&#46;org">Yichao<span>&#46;</span>Li<span>&#64;</span>stjude<span>&#46;</span>org</a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><cite>HemTools report_bug</cite> will not work in most data visualization subcmds.</p>
+<p class="last">Please note that there should be no spaces in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred.</p>
 </div>
+<img alt="../../_images/no_space_bcl2fastq.PNG" src="../../_images/no_space_bcl2fastq.PNG" />
 <table border="1" class="docutils">
 <colgroup>
 <col width="100%" />
@@ -81,7 +76,6 @@
 </tbody>
 </table>
 </div>
-</div>
 
 
           </div>
@@ -89,25 +83,16 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Data Visualization</a><ul>
-<li><a class="reference internal" href="#typical-usage">Typical Usage</a></li>
-<li><a class="reference internal" href="#report-bug">Report bug</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../NGS_pipelines/bcl2fastq.html"
-                        title="previous chapter">Convert BCL basecall files to FASTQ files</a></p>
+  <p class="topless"><a href="crispr_seq.html"
+                        title="previous chapter">Genome-wide CRISPR Screening</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="volcano_plot.html"
-                        title="next chapter">Volcano plot for logFC and P-value/FDR</a></p>
+  <p class="topless"><a href="../Visualization/data_visualization.html"
+                        title="next chapter">Data Visualization</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/content/Visualization/data_visualization.rst.txt"
+      <li><a href="../../_sources/content/NGS_pipelines/bcl2fastq.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -134,12 +119,13 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="volcano_plot.html" title="Volcano plot for logFC and P-value/FDR"
+          <a href="../Visualization/data_visualization.html" title="Data Visualization"
              >next</a> |</li>
         <li class="right" >
-          <a href="../NGS_pipelines/bcl2fastq.html" title="Convert BCL basecall files to FASTQ files"
+          <a href="crispr_seq.html" title="Genome-wide CRISPR Screening"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">HemTools  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="NGS_pipelines.html" >A collection of NGS_pipelines</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

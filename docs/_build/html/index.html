@@ -48,6 +48,7 @@
 <li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/chip_seq_single.html">Single-end ChIP-seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/chip_seq_pair.html">Paired-end ChIP-seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/crispr_seq.html">Genome-wide CRISPR Screening</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/bcl2fastq.html">Convert BCL basecall files to FASTQ files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/NGS_pipelines.html#typical-usage">Typical Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/NGS_pipelines/NGS_pipelines.html#report-bug">Report bug</a></li>
 </ul>
@@ -66,6 +67,10 @@
 <li class="toctree-l2"><a class="reference internal" href="content/Integrative_analysis/chromHMM.html">Chromatin State Discovery</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="content/Linux_Art/linux_art.html">Linux Art</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/Linux_Art/ssh_without_password.html">SSH to HPC without password</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="content/Installation/Installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="content/Installation/Installation.html#installation-for-running-methymotifs">Installation for running MethyMotifs</a></li>
 </ul>
@@ -75,13 +80,13 @@
 <div class="section" id="general-principles">
 <h2>General principles<a class="headerlink" href="#general-principles" title="Permalink to this headline">¶</a></h2>
 <p>A typical HemTools command looks like this:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">python</span><span class="o">/</span><span class="mf">2.7</span><span class="o">.</span><span class="mi">13</span>
 
-$ HemTools cut_run -f fastq.tsv -d peakcall.tsv
+<span class="n">HemTools</span> <span class="n">cut_run</span> <span class="o">-</span><span class="n">f</span> <span class="n">fastq</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">d</span> <span class="n">peakcall</span><span class="o">.</span><span class="n">tsv</span>
 </pre></div>
 </div>
 <p>You can always see all available sub-commands by:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools -h
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HemTools</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
 <table border="1" class="docutils">

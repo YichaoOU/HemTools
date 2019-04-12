@@ -18,7 +18,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Data Visualization" href="../Visualization/data_visualization.html" />
+    <link rel="next" title="Convert BCL basecall files to FASTQ files" href="bcl2fastq.html" />
     <link rel="prev" title="Paired-end ChIP-seq" href="chip_seq_pair.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../Visualization/data_visualization.html" title="Data Visualization"
+          <a href="bcl2fastq.html" title="Convert BCL basecall files to FASTQ files"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="chip_seq_pair.html" title="Paired-end ChIP-seq"
@@ -59,7 +59,7 @@
 <tr><td class="option-group">
 <kbd>-j, --jid</kbd></td>
 <td><p class="first">enter a job ID, which is used to make a new directory. Every output will be moved into this folder.</p>
-<p class="last">Default: “{{subcmd}}_yli11_2019-04-09”</p>
+<p class="last">Default: “{{subcmd}}_yli11_2019-04-11”</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>--short</kbd></td>
@@ -160,13 +160,17 @@
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Go to your data directory and type the following.</p>
-<p>Step 0: Load python version 2.7.13.</p>
+<p><strong>Step 0: Load python version 2.7.13.</strong></p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ module load python/2.7.13
 </pre></div>
 </div>
-<p>Step 1: Prepare the input files, see the format above.</p>
-<p>Step 3: Submit your job.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv
+<p><a href="#id3"><span class="problematic" id="id4">**</span></a>Step 1: Prepare the input files, see the format above. **</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please make sure there is <code class="docutils literal notranslate"><span class="pre">no</span> <span class="pre">space</span> <span class="pre">anywhere</span></code> in file name, sgRNA names, and gene names.</p>
+</div>
+<p><strong>Step 2: Submit your job.</strong></p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list
 </pre></div>
 </div>
 <p>OR:</p>
@@ -220,8 +224,8 @@
   <p class="topless"><a href="chip_seq_pair.html"
                         title="previous chapter">Paired-end ChIP-seq</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../Visualization/data_visualization.html"
-                        title="next chapter">Data Visualization</a></p>
+  <p class="topless"><a href="bcl2fastq.html"
+                        title="next chapter">Convert BCL basecall files to FASTQ files</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -252,7 +256,7 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../Visualization/data_visualization.html" title="Data Visualization"
+          <a href="bcl2fastq.html" title="Convert BCL basecall files to FASTQ files"
              >next</a> |</li>
         <li class="right" >
           <a href="chip_seq_pair.html" title="Paired-end ChIP-seq"
