@@ -3,10 +3,15 @@ Convert BCL basecall files to FASTQ files
 
 .. tip:: For demultiplexing, you must provide ``SampleSheet.csv``, otherwise, all fastq.gz files will be named as ``Undetermined``.
 
+this is 'asd'
 
 **Step 1**
 
-.. code:: 
+.. highlight:: none
+
+this is 'asd'
+
+:: 
 
 	bsub -R 'rusage[mem=32000]' -Is -q interactive -P Genomics /bin/bash
 
