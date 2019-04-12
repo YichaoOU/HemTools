@@ -10,13 +10,15 @@ Open a terminal and do the following 4 steps.
 
 **Step 1. Create public/private RSA keys.**
 
-.. code:: bash
+.. highlight:: none
+
+:: 
 
 	ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 
 You should be able to see an output like below:
 
-.. code:: bash
+:: 
 
 	The key's randomart image is:
 	+---[RSA 2048]----+
@@ -39,7 +41,7 @@ You should be able to see an output like below:
 
 **Step 3. Let HPC knows that it is you. (Enter your password for the last time).**
 
-.. code:: bash
+:: 
 
 	cat ~/.ssh/id_rsa.pub | ssh hpc 'cat >> .ssh/authorized_keys'
 
