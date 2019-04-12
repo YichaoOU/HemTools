@@ -1,12 +1,17 @@
 Convert BCL basecall files to FASTQ files
 =========================================
 
-.. tip:: For demultiplexing, you must provide ``SampleSheet.csv``, otherwise, all fastq.gz files will be named as ``Undetermined``.
+.. tip:: For demultiplexing, you must provide ``SampleSheet.csv``; otherwise, all fastq.gz files will be named as ``Undetermined``.
 
+.. note:: Please note that there should be no spaces in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred. 
+
+.. image:: ../../images/no_space_bcl2fastq.PNG
 
 **Step 1**
 
-.. code:: 
+.. highlight:: none
+
+:: 
 
 	bsub -R 'rusage[mem=32000]' -Is -q interactive -P Genomics /bin/bash
 
@@ -23,6 +28,3 @@ Convert BCL basecall files to FASTQ files
 
 	bcl2fastq --no-lane-splitting -o fastq_files
 
-.. note:: Please note that there should be no spaces in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred. 
-
-.. image:: ../../images/no_space_bcl2fastq.PNG

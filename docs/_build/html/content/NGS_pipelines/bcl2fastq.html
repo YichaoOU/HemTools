@@ -49,16 +49,18 @@
 <p class="first admonition-title">Tip</p>
 <p class="last">For demultiplexing, you must provide <code class="docutils literal notranslate"><span class="pre">SampleSheet.csv</span></code>, otherwise, all fastq.gz files will be named as <code class="docutils literal notranslate"><span class="pre">Undetermined</span></code>.</p>
 </div>
+<p>this is ‘asd’</p>
 <p><strong>Step 1</strong></p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bsub</span> <span class="o">-</span><span class="n">R</span> <span class="s1">&#39;rusage[mem=32000]&#39;</span> <span class="o">-</span><span class="n">Is</span> <span class="o">-</span><span class="n">q</span> <span class="n">interactive</span> <span class="o">-</span><span class="n">P</span> <span class="n">Genomics</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<p>this is ‘asd’</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bsub -R &#39;rusage[mem=32000]&#39; -Is -q interactive -P Genomics /bin/bash
 </pre></div>
 </div>
 <p><strong>Step 2</strong></p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">bcl2fastq</span>
+<div class="code bash highlight-none notranslate"><div class="highlight"><pre><span></span>module load bcl2fastq
 </pre></div>
 </div>
 <p><strong>Step 3</strong></p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bcl2fastq</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">lane</span><span class="o">-</span><span class="n">splitting</span> <span class="o">-</span><span class="n">o</span> <span class="n">fastq_files</span>
+<div class="code bash highlight-none notranslate"><div class="highlight"><pre><span></span>bcl2fastq --no-lane-splitting -o fastq_files
 </pre></div>
 </div>
 <div class="admonition note">
