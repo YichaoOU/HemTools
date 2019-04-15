@@ -35,3 +35,28 @@ You can always see all available sub-commands by:
 
     HemTools -h
 
+.. highlight:: none
+
+:: 
+
+  usage: HemTools [-h] [-v]
+                  {cut_run,chip_seq_pair,chip_seq_single,atac_seq,report_bug,volcano_plot,crispr_seq}
+                  ...
+
+  HemTools: performs NGS pipelines and other common analyses. Contact:
+  Yichao.Li@stjude.org or Yong.Cheng@stjude.org
+
+  positional arguments:
+    {cut_run,chip_seq_pair,chip_seq_single,atac_seq,report_bug,volcano_plot,crispr_seq}
+                          Available APIs in HemTools
+      cut_run             CUT & RUN pipeline
+      chip_seq_pair       Paired-end ChIP-seq pipeline
+      chip_seq_single     Single-end ChIP-seq pipeline
+      atac_seq            ATAC-seq pipeline
+      report_bug          Email the log files to the developer.
+      volcano_plot        Data visualization: Volcano plot
+      crispr_seq          Genome-wide CRISPR Screening pipeline
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit

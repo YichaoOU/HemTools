@@ -52,6 +52,7 @@ extensions = [
 #     'sphinxarg.ext'
 # ]
 extensions += ['sphinxarg.ext']
+extensions += ['sphinxcontrib.disqus']
 # extensions = ['recommonmark']
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -191,5 +192,9 @@ epub_title = project
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
 
+disqus_shortname = "hemtools"
+
+extensions.append('sphinxcontrib.googleanalytics')
+googleanalytics_id = 'UA-138345948-1'
 
 # -- Extension configuration -------------------------------------------------

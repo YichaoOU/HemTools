@@ -47,11 +47,14 @@
 <h1>Convert BCL basecall files to FASTQ files<a class="headerlink" href="#convert-bcl-basecall-files-to-fastq-files" title="Permalink to this headline">¶</a></h1>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">For demultiplexing, you must provide <code class="docutils literal notranslate"><span class="pre">SampleSheet.csv</span></code>, otherwise, all fastq.gz files will be named as <code class="docutils literal notranslate"><span class="pre">Undetermined</span></code>.</p>
+<p class="last">For demultiplexing, you must provide <code class="docutils literal notranslate"><span class="pre">SampleSheet.csv</span></code>; otherwise, all fastq.gz files will be named as <code class="docutils literal notranslate"><span class="pre">Undetermined</span></code>.</p>
 </div>
-<p>this is ‘asd’</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note that there should be no spaces in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred.</p>
+</div>
+<img alt="../../_images/no_space_bcl2fastq.PNG" class="align-center" src="../../_images/no_space_bcl2fastq.PNG" />
 <p><strong>Step 1</strong></p>
-<p>this is ‘asd’</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bsub -R &#39;rusage[mem=32000]&#39; -Is -q interactive -P Genomics /bin/bash
 </pre></div>
 </div>
@@ -63,11 +66,14 @@
 <div class="code bash highlight-none notranslate"><div class="highlight"><pre><span></span>bcl2fastq --no-lane-splitting -o fastq_files
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Please note that there should be no spaces in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred.</p>
+<p>Once finished, you should be able to see the fastq files in folder <cite>fastq_files</cite>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">By default, one mismatch is allowed for demultiplexing. If you want to allow for two mismatches, type the command below:</p>
 </div>
-<img alt="../../_images/no_space_bcl2fastq.PNG" src="../../_images/no_space_bcl2fastq.PNG" />
+<div class="code bash highlight-none notranslate"><div class="highlight"><pre><span></span>bcl2fastq --no-lane-splitting -o fastq_files --barcode-mismatches 2
+</pre></div>
+</div>
 <table border="1" class="docutils">
 <colgroup>
 <col width="100%" />

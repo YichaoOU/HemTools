@@ -71,5 +71,9 @@ Once the job is finished, you will be notified by email with some attachments.  
     $ HemTools report_bug
 
 
+Comments
+========
 
+.. disqus::
+    :disqus_identifier: NGS_pipeline
 
