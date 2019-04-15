@@ -194,7 +194,4 @@ epub_exclude_files = ['search.html']
 
 disqus_shortname = "hemtools"
 
-extensions.append('sphinxcontrib.googleanalytics')
-googleanalytics_id = 'UA-138345948-1'
-
 # -- Extension configuration -------------------------------------------------
