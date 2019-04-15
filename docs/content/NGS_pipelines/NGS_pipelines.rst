@@ -75,5 +75,3 @@ Comments
 ========
 
 .. disqus::
-    :disqus_identifier: NGS_pipeline
-
