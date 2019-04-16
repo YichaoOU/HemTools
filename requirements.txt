@@ -1,2 +1,3 @@
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
+pandas
