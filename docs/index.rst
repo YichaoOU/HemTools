@@ -17,6 +17,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Integrative_analysis/Integrative_analysis
    content/Linux_Art/linux_art
    content/Installation/Installation
+   jupyter_notebooks/notebooks
 
 General principles
 ^^^^^^^^^^^^^^^^^^
