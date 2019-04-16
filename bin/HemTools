@@ -32,8 +32,8 @@ from chip_seq_single import *
 from atac_seq import *
 from report_bug import *
 # from hichip import *
-# from rna_seq import *
-# from read_align import *
+from rna_seq import *
+from my_dir import *
 # from bam_to_bw import *
 # from STJtracks import *
 from volcano_plot import *
@@ -66,8 +66,8 @@ def HemTools_parser():
 	arg_atac_seq(subparser)
 	arg_report_bug(subparser)
 	# arg_hichip(subparser)
-	# arg_rna_seq(subparser)
-	# arg_read_align(subparser)
+	arg_rna_seq(subparser)
+	arg_my_dir(subparser)
 	# arg_bam_to_bw(subparser)
 	# arg_STJtracks(subparser)
 	arg_volcano_plot(subparser)

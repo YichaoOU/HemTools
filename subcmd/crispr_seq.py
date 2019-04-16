@@ -9,13 +9,14 @@ def arg_crispr_seq(parser):
 	cmd.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default='{{subcmd}}_'+username+"_"+str(datetime.date.today()))	
 	cmd.add_argument('--short',  help="Force to use the short queue.", action='store_true')	
 	cmd.add_argument('--debug',  help="Not for end-user.", action='store_true')	
+	cmd.add_argument('--count_only',  help="Only perform Mageck count", action='store_true')	
 
 	input=cmd.add_argument_group(title='Input files')
 
 	# input.add_argument('--CRISPhieRmix',  help="run CRISPhieRmix in addition to Mageck MLE and RRA.", action='store_true')	
 	input.add_argument('--control_gRNAs',  help="a list of control gRNAs. If provided, normalization will be performed based on these controls, instead of median normalization.")	
 	
-	input.add_argument('-d', "--design_matrix", help="tab delimited 3 columns (tsv file): treatment sample ID, control sample ID, peakcall ID", required=True)
+	input.add_argument('-d', "--design_matrix", help="tab delimited 3 columns (tsv file): treatment sample ID, control sample ID, peakcall ID")
 	input.add_argument("--gRNA_library", help="mageck format", required=True)
 
 	genome=cmd.add_argument_group(title='Genome Info')
@@ -28,7 +29,7 @@ def run_crispr_seq(args,rootLogger):
 	if str(args.subcmd).lower() != "crispr_seq":
 		return 0		
 	if not os.path.isfile(args.design_matrix):
-		rootLogger.error("Input files do not exist!")
+		rootLogger.error(args.design_matrix+" Input files do not exist!")
 		os.system("HemTools crispr_seq -h")
 		# rootLogger.close()
 		os.system("rm "+args.jid+".log")
@@ -46,21 +47,31 @@ def run_crispr_seq(args,rootLogger):
 	
 	crispr_seq.parse_treatment_control()
 	crispr_seq.dry_run()
-
 	crispr_seq.run_mageck_count()
+	
+		
 	# crispr_seq.run_DESEQ2()
 	# if args.CRISPhieRmix:
 	# 		crispr_seq.run_CRISPhieRmix()
-	crispr_seq.run_mageck_RRA()
-	crispr_seq.run_mageck_MLE()
+	if not args.count_only:
+		crispr_seq.run_mageck_RRA()
+		crispr_seq.run_mageck_MLE()
 
 	# DESEQ (TODO), RRA
 	# crispr_seq.combined_sgRNA_level_results()
 
 	# MLE, RRA, and/or CRISPhieRmix (TODO)
 	# crispr_seq.combined_gene_level_results()
+	
+	# sgRNA level
+	# crispr_seq.run_volcano_plot()
+	# gene level
+	# crispr_seq.run_volcano_plot()
+	
+	
 
 	if args.bed:
+		crispr_seq.create_CRISPR_bw_files()
 		crispr_seq.run_STJtracks()
 
 	crispr_seq.run_output_organization(report_flag=False)
