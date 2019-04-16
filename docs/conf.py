@@ -52,7 +52,7 @@ extensions = [
 #     'sphinxarg.ext'
 # ]
 extensions += ['sphinxarg.ext']
-# extensions += ['sphinxcontrib.disqus']
+extensions += ['sphinxcontrib.disqus']
 disqus_shortname = "hemtools"
 # extensions = ['recommonmark']
 # Add any paths that contain templates here, relative to this directory.
