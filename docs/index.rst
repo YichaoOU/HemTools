@@ -61,8 +61,3 @@ You can always see all available sub-commands by:
     -h, --help            show this help message and exit
     -v, --version         show program's version number and exit
 
-Comments
-========
-
-.. disqus::
-    :disqus_identifier: index
