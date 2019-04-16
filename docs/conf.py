@@ -41,6 +41,7 @@ release = u''
 extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
+    'nbsphinx'
 ]
 # extensions = [
 #     'sphinx.ext.autodoc',
