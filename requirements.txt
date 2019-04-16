@@ -1,3 +1,7 @@
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
 pandas
+nbconvert!=5.4
+ipykernel
+matplotlib
+git+https://github.com/spatialaudio/nbsphinx.git@master

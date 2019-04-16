@@ -1,4 +1,4 @@
-A collection of NGS_pipelines
+A collection of NGS pipelines
 =============================
 
 .. toctree::
