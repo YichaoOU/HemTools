@@ -7,22 +7,38 @@ A collection of Jupyter Notebooks
    *
 
 
-Use R in Jupyter Notebook
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Use R and Python in Jupyter Notebook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First, create a conda environment: `conda create -n Rplot`.
+First, create a conda environment: 
 
-Then, activate this envrionment: `conda activate Rplot`. In Linux, do `source activate Rplot`
+.. code:: bash
+
+	conda create -n Rplot
+
+Then, activate this envrionment: 
+
+.. code:: bash
+
+	(Windows OS) conda activate Rplot
+
+	(Linux / Mac) source activate Rplot
 
 Then, do the following:
 
-`conda install -c bioconda r-pheatmap`
+.. code:: bash
 
-`conda install -c r r-irkernel`
+	conda install -c bioconda r-pheatmap
 
-`conda install -c anaconda jupyter`
+	conda install -c r r-irkernel
 
-Last, type `jupyter notebook` and you should be able to run R in the jupyter notebook.
+	conda install -c anaconda jupyter
+
+	conda install -c anaconda pandas
+
+	conda install -c anaconda seaborn
+
+Last, type ``jupyter notebook`` and you should be able to run R and Python in the same jupyter notebook.
 
 FAQ
 ^^^
