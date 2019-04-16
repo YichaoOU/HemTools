@@ -44,6 +44,15 @@ Go to your data directory and type the following.
 
     $ HemTools rna_seq -f fastq.tsv --kallisto
 
+Sample input format
+^^^^^^^^^^^^^^^^^^^
+
+**fastq.tsv**
+
+This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sample ID.
+
+.. image:: ../../images/fastq.tsv.png
+
 
 Report bug
 ^^^^^^^^^^
