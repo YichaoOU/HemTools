@@ -48,6 +48,21 @@ Go to your data directory and type the following.
 
     $ HemTools cut_run -f fastq.tsv -d peakcall.tsv
 
+Sample input format
+^^^^^^^^^^^^^^^^^^^
+
+**fastq.tsv**
+
+This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sample ID.
+
+.. image:: ../../images/fastq.tsv.png
+
+**peakcall.tsv**
+
+This is also a tab-seperated-value format file. The 3 columns are: treatment sample ID, control/input sample ID, peakcall ID.
+
+.. image:: ../../images/peakcall.tsv.png
+
 
 Report bug
 ^^^^^^^^^^

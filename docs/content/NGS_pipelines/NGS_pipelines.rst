@@ -9,6 +9,7 @@ A collection of NGS_pipelines
    chip_seq_single
    chip_seq_pair
    crispr_seq
+   rna_seq
    bcl2fastq
 
 .. image:: ../../images/Pipelines_steps.png
@@ -61,6 +62,23 @@ You can always see all available sub-commands by:
 
     $ HemTools -h
 
+
+Sample input format
+^^^^^^^^^^^^^^^^^^^
+
+**fastq.tsv**
+
+This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sample ID.
+
+.. image:: ../../images/fastq.tsv.png
+
+**peakcall.tsv**
+
+This is also a tab-seperated-value format file. The 3 columns are: treatment sample ID, control/input sample ID, peakcall ID.
+
+.. image:: ../../images/peakcall.tsv.png
+
+
 Report bug
 ^^^^^^^^^^   
 
@@ -69,4 +87,5 @@ Once the job is finished, you will be notified by email with some attachments.  
 .. code:: bash
 
     $ HemTools report_bug
+
 
