@@ -39,47 +39,113 @@ ATAC-seq example
 
     module load python/2.7.13
 
-Go to your data directory and type the following.
+    HemTools atac_seq --guess_input
 
-**Step 0: Load python version 2.7.13.**
+    HemTools atac_seq -f fastq.tsv --short
 
-.. code:: bash
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
-    $ module load python/2.7.13
+ATAC-seq example
+^^^^^^^^^^^^^^^^
 
-**Step 1: Prepare input files, generate fastq.tsv.**
-
-.. code:: bash
-
-    $ HemTools atac_seq --guess_input
-
-	Input fastq files preparation complete! ALL GOOD!
-	Please check if you like the computer-generated labels in : fastq.tsv
-
-.. note:: If you are preparing fastq.tsv yourself, please make sure ``no space anywhere`` in the file. Note that the seperator is tab. Spaces in file name will cause errors.
-
-**Step 2: Check the computer-generated input list (manually), make sure they are correct.**
+**Copy data**
 
 .. code:: bash
 
-    $ less fastq.tsv
+    mkdir atac_seq
 
-.. note:: a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.
+    cd atac_seq
 
-**Step 3: Submit your job.**
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+
+**Run HemTools**
 
 .. code:: bash
 
-    $ HemTools atac_seq -f fastq.tsv
+    module load python/2.7.13
 
-Sample input format
-^^^^^^^^^^^^^^^^^^^
+    HemTools atac_seq --guess_input
 
-**fastq.tsv**
+    HemTools atac_seq -f fastq.tsv --short
 
-This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sample ID.
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
-.. image:: ../../images/fastq.tsv.png
+ATAC-seq example
+^^^^^^^^^^^^^^^^
+
+**Copy data**
+
+.. code:: bash
+
+    mkdir atac_seq
+
+    cd atac_seq
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+
+**Run HemTools**
+
+.. code:: bash
+
+    module load python/2.7.13
+
+    HemTools atac_seq --guess_input
+
+    HemTools atac_seq -f fastq.tsv --short
+
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+
+ATAC-seq example
+^^^^^^^^^^^^^^^^
+
+**Copy data**
+
+.. code:: bash
+
+    mkdir atac_seq
+
+    cd atac_seq
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+
+**Run HemTools**
+
+.. code:: bash
+
+    module load python/2.7.13
+
+    HemTools atac_seq --guess_input
+
+    HemTools atac_seq -f fastq.tsv --short
+
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+
+ATAC-seq example
+^^^^^^^^^^^^^^^^
+
+**Copy data**
+
+.. code:: bash
+
+    mkdir atac_seq
+
+    cd atac_seq
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+
+**Run HemTools**
+
+.. code:: bash
+
+    module load python/2.7.13
+
+    HemTools atac_seq --guess_input
+
+    HemTools atac_seq -f fastq.tsv --short
+
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+
+
 
 
 Report bug
@@ -101,7 +167,7 @@ Use different genome index
 
 
 Comments
-========
+^^^^^^^^
 
 .. disqus::
     :disqus_identifier: NGS_pipelines
