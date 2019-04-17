@@ -20,55 +20,12 @@ Create a test run folder
 
     cd my_test_run
 
-ATAC-seq example
-^^^^^^^^^^^^^^^^
-
-**Copy data**
+Installation
+^^^^^^^^^^^^
 
 .. code:: bash
 
-    mkdir atac_seq
-
-    cd atac_seq
-
-    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
-
-**Run HemTools**
-
-.. code:: bash
-
-    module load python/2.7.13
-
-    HemTools atac_seq --guess_input
-
-    HemTools atac_seq -f fastq.tsv --short
-
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
-
-ATAC-seq example
-^^^^^^^^^^^^^^^^
-
-**Copy data**
-
-.. code:: bash
-
-    mkdir atac_seq
-
-    cd atac_seq
-
-    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
-
-**Run HemTools**
-
-.. code:: bash
-
-    module load python/2.7.13
-
-    HemTools atac_seq --guess_input
-
-    HemTools atac_seq -f fastq.tsv --short
-
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+	/research/dept/hem/common/sequencing/chenggrp/pipelines/bin/add_env.sh
 
 ATAC-seq example
 ^^^^^^^^^^^^^^^^
@@ -95,18 +52,20 @@ ATAC-seq example
 
 .. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
-ATAC-seq example
-^^^^^^^^^^^^^^^^
+Single-end ChIP-seq example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Copy data**
 
 .. code:: bash
 
-    mkdir atac_seq
+	cd ..
 
-    cd atac_seq
+    mkdir chip_seq_single
 
-    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+    cd chip_seq_single
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/chip_seq_single/*.gz .
 
 **Run HemTools**
 
@@ -114,24 +73,26 @@ ATAC-seq example
 
     module load python/2.7.13
 
-    HemTools atac_seq --guess_input
+    HemTools chip_seq_single --guess_input
 
-    HemTools atac_seq -f fastq.tsv --short
+    HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv --short
 
 .. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
-ATAC-seq example
-^^^^^^^^^^^^^^^^
+Paired-end ChIP-seq example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Copy data**
 
 .. code:: bash
 
-    mkdir atac_seq
+	cd ..
 
-    cd atac_seq
+    mkdir chip_seq_pair
 
-    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+    cd chip_seq_pair
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/chip_seq_pair/*.gz .
 
 **Run HemTools**
 
@@ -139,13 +100,11 @@ ATAC-seq example
 
     module load python/2.7.13
 
-    HemTools atac_seq --guess_input
+    HemTools chip_seq_pair --guess_input
 
-    HemTools atac_seq -f fastq.tsv --short
+    HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv --short
 
 .. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
-
-
 
 
 Report bug
@@ -156,15 +115,6 @@ Once the job is finished, you will be notified by email with some attachments.  
 .. code:: bash
 
     $ HemTools report_bug
-
-
-Use different genome index
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: bash
-
-    $ HemTools atac_seq -f fastq.tsv -i YOUR_GENOME_INDEX
-
 
 Comments
 ^^^^^^^^
