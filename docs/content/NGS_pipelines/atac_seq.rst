@@ -75,6 +75,12 @@ Use different genome index
     $ HemTools atac_seq -f fastq.tsv -i YOUR_GENOME_INDEX
 
 
+Comments
+========
+
+.. disqus::
+    :disqus_identifier: NGS_pipelines
+
 
 
 

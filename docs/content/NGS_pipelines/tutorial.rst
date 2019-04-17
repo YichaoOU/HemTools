@@ -1,16 +1,22 @@
-CUT & RUN pipeline
-==================
+HemTools Tutorial 4-18-2019
+===========================
+
+.. contents::
+    :local:
+
+**Step 0: set up RSA authentication with HPC**
+
+:doc:`How to ssh without password <../Linux_Art/ssh_without_password>`
+     
+
+Create a test run folder
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. argparse::
-   :filename: ../bin/HemTools
-   :func: main_parser
-   :prog: HemTools
-   :path: cut_run
 
+.. code:: bash
 
-Usage
-^^^^^
+    ssh hpc
 
 Go to your data directory and type the following.
 
@@ -24,13 +30,12 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools cut_run --guess_input
+    $ HemTools atac_seq --guess_input
 
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv
-	Input peakcall file preparation complete! File name: peakcall.tsv
 
-.. note:: If you are preparing fastq.tsv and peakcall.tsv yourself, please make sure ``no space anywhere`` in the file. Note that the seperator is tab. Spaces in file name will cause errors.
+.. note:: If you are preparing fastq.tsv yourself, please make sure ``no space anywhere`` in the file. Note that the seperator is tab. Spaces in file name will cause errors.
 
 **Step 2: Check the computer-generated input list (manually), make sure they are correct.**
 
@@ -38,15 +43,13 @@ Go to your data directory and type the following.
 
     $ less fastq.tsv
 
-    $ less peakcall.tsv
-
 .. note:: a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.
 
 **Step 3: Submit your job.**
 
 .. code:: bash
 
-    $ HemTools cut_run -f fastq.tsv -d peakcall.tsv
+    $ HemTools atac_seq -f fastq.tsv
 
 Sample input format
 ^^^^^^^^^^^^^^^^^^^
@@ -56,12 +59,6 @@ Sample input format
 This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sample ID.
 
 .. image:: ../../images/fastq.tsv.png
-
-**peakcall.tsv**
-
-This is also a tab-seperated-value format file. The 3 columns are: treatment sample ID, control/input sample ID, peakcall ID.
-
-.. image:: ../../images/peakcall.tsv.png
 
 
 Report bug
@@ -79,7 +76,7 @@ Use different genome index
 
 .. code:: bash
 
-    $ HemTools cut_run -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
+    $ HemTools atac_seq -f fastq.tsv -i YOUR_GENOME_INDEX
 
 
 Comments
@@ -87,18 +84,6 @@ Comments
 
 .. disqus::
     :disqus_identifier: NGS_pipelines
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -11,6 +11,7 @@ A collection of NGS pipelines
    crispr_seq
    rna_seq
    bcl2fastq
+   tutorial
 
 .. image:: ../../images/Pipelines_steps.png
 
@@ -93,6 +94,8 @@ Reference
 
 https://ngschool.eu/node/51
 
+Comments
+========
 
 .. disqus::
     :disqus_identifier: NGS_pipelines
