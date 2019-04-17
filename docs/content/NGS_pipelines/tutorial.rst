@@ -144,6 +144,13 @@ Once the job is finished, you will be notified by email with some attachments.  
 
     HemTools report_bug
 
+
+Questionnaire
+^^^^^^^^^^^^^
+
+`Please take a minute to complete this HemTools Tutorial questionnaire <https://docs.google.com/forms/d/e/1FAIpQLScDQkV2mMnSXtd-WsxpZhPcGMcqOT7W75Lkb6D1AMWDUPY77g/viewform?usp=pp_url>`_
+
+
 Comments
 ^^^^^^^^
 
