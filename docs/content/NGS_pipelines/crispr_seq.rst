@@ -112,7 +112,7 @@ HPC doesn't have the latest version of Mageck. A request has been submitted.
 
 
 Comments
-========
+^^^^^^^^
 
 .. disqus::
     :disqus_identifier: NGS_pipelines

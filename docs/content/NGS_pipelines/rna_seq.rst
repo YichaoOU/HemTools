@@ -65,7 +65,7 @@ Once the job is finished, you will be notified by email with some attachments.  
 
 
 Comments
-========
+^^^^^^^^
 
 .. disqus::
     :disqus_identifier: NGS_pipelines
