@@ -94,8 +94,6 @@ Reference
 
 https://ngschool.eu/node/51
 
-Comments
-========
 
 .. disqus::
     :disqus_identifier: NGS_pipelines
