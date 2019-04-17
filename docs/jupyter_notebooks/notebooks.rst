@@ -2,6 +2,7 @@ A collection of Jupyter Notebooks
 =================================
 
 .. toctree::
+   :maxdepth: 1
    :glob:
 
    *
@@ -75,6 +76,12 @@ sometime python will be installed on your local conda env when you specifying py
 `python -m pip install ipykernel`
 
 `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"`
+
+Comments
+========
+
+.. disqus::
+    :disqus_identifier: notebooks
 
 
 
