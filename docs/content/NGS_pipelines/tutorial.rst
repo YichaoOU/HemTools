@@ -7,16 +7,37 @@ HemTools Tutorial 4-18-2019
 **Step 0: set up RSA authentication with HPC**
 
 :doc:`How to ssh without password <../Linux_Art/ssh_without_password>`
-     
+
 
 Create a test run folder
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. code:: bash
 
+    cd ~
+
+    mkdir my_test_run
+
+    cd my_test_run
+
+ATAC-seq example
+^^^^^^^^^^^^^^^^
+
+**Copy data**
 
 .. code:: bash
 
-    ssh hpc
+    mkdir atac_seq
+
+    cd atac_seq
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/atac_seq/*.gz .
+
+**Run HemTools**
+
+.. code:: bash
+
+    module load python/2.7.13
 
 Go to your data directory and type the following.
 
