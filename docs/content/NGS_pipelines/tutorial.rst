@@ -25,7 +25,7 @@ Installation
 
 .. code:: bash
 
-	/research/dept/hem/common/sequencing/chenggrp/pipelines/bin/add_env.sh
+    /research/dept/hem/common/sequencing/chenggrp/pipelines/bin/add_env.sh
 
 ATAC-seq example
 ^^^^^^^^^^^^^^^^
@@ -59,7 +59,7 @@ Single-end ChIP-seq example
 
 .. code:: bash
 
-	cd ..
+    cd ..
 
     mkdir chip_seq_single
 
@@ -86,7 +86,7 @@ Paired-end ChIP-seq example
 
 .. code:: bash
 
-	cd ..
+    cd ..
 
     mkdir chip_seq_pair
 
@@ -114,7 +114,13 @@ Once the job is finished, you will be notified by email with some attachments.  
 
 .. code:: bash
 
-    $ HemTools report_bug
+    cd ..
+
+    cd atac_seq
+
+    cd [YOUR_JOB_ID]
+
+    HemTools report_bug
 
 Comments
 ^^^^^^^^
