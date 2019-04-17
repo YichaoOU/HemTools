@@ -48,8 +48,9 @@ ATAC-seq example
 
     HemTools atac_seq --guess_input
 
-    HemTools atac_seq -f fastq.tsv
+    HemTools atac_seq -f fastq.tsv --short
 
+.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
 Single-end ChIP-seq example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -74,7 +75,7 @@ Single-end ChIP-seq example
 
     HemTools chip_seq_single --guess_input
 
-    HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv
+    HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv --short
 
 
 Paired-end ChIP-seq example
@@ -100,7 +101,32 @@ Paired-end ChIP-seq example
 
     HemTools chip_seq_pair --guess_input
 
-    HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv
+    HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv --short
+
+CUT & RUN example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Copy data**
+
+.. code:: bash
+
+    cd ..
+
+    mkdir cut_run
+
+    cd cut_run
+
+    ln -s /research/dept/hem/common/sequencing/chenggrp/pipelines/example_data/cut_run/*.gz .
+
+**Run HemTools**
+
+.. code:: bash
+
+    module load python/2.7.13
+
+    HemTools cut_run --guess_input
+
+    HemTools cut_run -f fastq.tsv -d peakcall.tsv --short
 
 
 Report bug
