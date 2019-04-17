@@ -48,9 +48,8 @@ ATAC-seq example
 
     HemTools atac_seq --guess_input
 
-    HemTools atac_seq -f fastq.tsv --short
+    HemTools atac_seq -f fastq.tsv
 
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
 Single-end ChIP-seq example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -75,9 +74,8 @@ Single-end ChIP-seq example
 
     HemTools chip_seq_single --guess_input
 
-    HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv --short
+    HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv
 
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
 
 Paired-end ChIP-seq example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -102,9 +100,7 @@ Paired-end ChIP-seq example
 
     HemTools chip_seq_pair --guess_input
 
-    HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv --short
-
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+    HemTools chip_seq_pair -f fastq.tsv -d peakcall.tsv
 
 
 Report bug
