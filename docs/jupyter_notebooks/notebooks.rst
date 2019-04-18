@@ -79,6 +79,12 @@ sometime python will be installed on your local conda env when you specifying py
 
 
 
+Comments
+^^^^^^^^
+
+.. disqus::
+    :disqus_identifier: notebooks
+
 
 
 

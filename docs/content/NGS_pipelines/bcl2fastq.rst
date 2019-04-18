@@ -36,3 +36,9 @@ Once finished, you should be able to see the fastq files in folder `fastq_files`
 
 	bcl2fastq --no-lane-splitting -o fastq_files --barcode-mismatches 2
 
+Comments
+^^^^^^^^
+
+.. disqus::
+    :disqus_identifier: NGS_pipelines
+
