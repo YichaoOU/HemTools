@@ -82,16 +82,6 @@ Use different genome index
     $ HemTools cut_run -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
 
 
-Comments
-^^^^^^^^
-
-.. disqus::
-    :disqus_identifier: NGS_pipelines
-
-
-
-
-
 
 
 
