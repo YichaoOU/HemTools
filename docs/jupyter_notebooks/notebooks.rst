@@ -77,13 +77,6 @@ sometime python will be installed on your local conda env when you specifying py
 
 `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"`
 
-Comments
-^^^^^^^^
-
-.. disqus::
-    :disqus_identifier: notebooks
-
-
 
 
 
