@@ -27,6 +27,37 @@ Installation
 
     /research/dept/hem/common/sequencing/chenggrp/pipelines/bin/add_env.sh
 
+Type ``HemTools -h`` to see a list of available pipelines.
+
+.. highlight:: none
+
+:: 
+
+    HemTools: performs NGS pipelines and other common analyses. Contact:
+    Yichao.Li@stjude.org or Yong.Cheng@stjude.org
+
+    positional arguments:
+      {cut_run,chip_seq_pair,chip_seq_single,atac_seq,report_bug,rna_seq,my_dir,volcano_plot,crispr_seq}
+                            Available APIs in HemTools
+        cut_run             CUT & RUN pipeline
+        chip_seq_pair       Paired-end ChIP-seq pipeline
+        chip_seq_single     Single-end ChIP-seq pipeline
+        atac_seq            ATAC-seq pipeline
+        report_bug          Email the log files to the developer.
+        rna_seq             RNA-seq pipeline
+        my_dir              CD, search, and list my dirs
+        volcano_plot        Data visualization: Volcano plot
+        crispr_seq          Genome-wide CRISPR Screening pipeline
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+
+Workflow
+^^^^^^^^
+
+.. image:: ../../images/workflow.png      
+
 ATAC-seq example
 ^^^^^^^^^^^^^^^^
 
@@ -149,13 +180,6 @@ Questionnaire
 ^^^^^^^^^^^^^
 
 `Please take a minute to complete this HemTools Tutorial questionnaire <https://docs.google.com/forms/d/e/1FAIpQLScDQkV2mMnSXtd-WsxpZhPcGMcqOT7W75Lkb6D1AMWDUPY77g/viewform?usp=pp_url>`_
-
-
-Comments
-^^^^^^^^
-
-.. disqus::
-    :disqus_identifier: NGS_pipelines
 
 
 
