@@ -182,5 +182,11 @@ Questionnaire
 `Please take a minute to complete this HemTools Tutorial questionnaire <https://docs.google.com/forms/d/e/1FAIpQLScDQkV2mMnSXtd-WsxpZhPcGMcqOT7W75Lkb6D1AMWDUPY77g/viewform?usp=pp_url>`_
 
 
+Comments
+^^^^^^^^
+
+.. disqus::
+    :disqus_identifier: NGS_pipelines
+
 
 

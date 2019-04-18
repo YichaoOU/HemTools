@@ -82,6 +82,12 @@ Use different genome index
 
 
 
+Comments
+^^^^^^^^
+
+.. disqus::
+    :disqus_identifier: NGS_pipelines
+
 
 
 
