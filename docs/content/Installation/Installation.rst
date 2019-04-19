@@ -20,3 +20,11 @@ Installation for running MethyMotifs
 	$ conda install -c conda-forge julia=0.6.1
 	$ conda install -c bioconda weblogo
 	$ source deactivate
+
+Other tools installation
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   *
