@@ -4,9 +4,10 @@ CRISPR Screening Demultiplexing
 .. note:: This protocol assumes your barcodes locating at 5'-end
 
 
-**Step 1: Prepare ``barcode.fa``**
+**Step 1: Prepare barcode.fa**
 
-.. note:: Your barcode file must look like:
+.. note::
+	Your barcode file must start with ``^``. The ``^`` is supposed to indicate the the adapter is "anchored" at the beginning of the read. 
 
 .. highlight:: none
 
@@ -23,9 +24,10 @@ CRISPR Screening Demultiplexing
 
 **Step 2: Submit job**
 
-.. tip:: Change the requested memory in rusage[mem=``10000``]. This example requests 10G memory. If the original fastq.gz file is less than 20G, then it doesn't need much memory. 
+.. tip::
+	You can change the requested memory in rusage[mem=``10000``]. This example requests 10G memory. If the original fastq.gz file is less than 20G, then it doesn't need much memory. 
 
-.. highlight:: none
+.. code:: bash
 
 	#BSUB -P split
 	#BSUB -oo split.out -eo split.err
