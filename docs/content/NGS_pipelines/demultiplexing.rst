@@ -37,7 +37,13 @@ CRISPR Screening Demultiplexing
 
 	module load python/3.7.0
 
-	cutadapt --no-indels -g file:barcode.fa --no-trim --untrimmed-output untrimmed.fastq.gz -o {name}.fastq.gz gRNA_S1_R1_001.fastq.gz 
+	cutadapt \
+	--no-indels \
+	-g file:barcode.fa \ # This is your barcode file
+	--no-trim \ 
+	--untrimmed-output untrimmed.fastq.gz \
+	-o {name}.fastq.gz \
+	gRNA_S1_R1_001.fastq.gz # This is your original fastq.gz
 
 
 
