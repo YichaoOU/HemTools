@@ -10,8 +10,6 @@ A collection of NGS pipelines
    chip_seq_pair
    crispr_seq
    rna_seq
-   bcl2fastq
-   demultiplexing
    tutorial
 
 .. image:: ../../images/Pipelines_steps.png
