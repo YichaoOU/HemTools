@@ -24,8 +24,8 @@ CRISPR Screening Demultiplexing
 
 **Step 2: Submit job**
 
-.. note::
-	You can change the requested memory in rusage[mem=``10000``]. This example requests 10G memory. If the original fastq.gz file is less than 20G, then it doesn't need much memory. 
+.. tip::
+	You can change the requested memory in ``rusage[mem=10000]``. This example requests 10G memory. If the original fastq.gz file is less than 20G, then it doesn't need much memory. 
 
 .. code:: bash
 
