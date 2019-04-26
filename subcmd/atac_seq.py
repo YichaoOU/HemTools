@@ -31,9 +31,6 @@ def arg_atac_seq(parser):
 	genome.add_argument('-b','--Blacklist',  help="Blacklist file", default=p_dir+'../hg19/Hg19_Blacklist.bed')
 	genome.add_argument('-s','--chrom_size',  help="chrome size", default=p_dir+"../hg19/hg19.chrom.sizes")
 	genome.add_argument('-e','--effectiveGenomeSize',  help="effectiveGenomeSize for bamCoverage", default="2451960000")
-	adaptor=cmd.add_argument_group(title='Adaptor Info')
-	adaptor.add_argument('-x', '--adaptor_x', help="Adapter sequence 5'end",type=str,default="CTGTCTCTTATACACATCT")
-	adaptor.add_argument('-y', '--adaptor_y', help="Adapter sequence 3'end",type=str,default="CTGTCTCTTATACACATCT")
 
 def run_atac_seq(args,rootLogger):
 	# rootLogger.info("this is atac_seq")
