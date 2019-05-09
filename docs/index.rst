@@ -19,6 +19,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Installation/Installation
    jupyter_notebooks/notebooks
    content/Bioinformatics_tools/tools
+   MetaData/metadata
 
 General principles
 ^^^^^^^^^^^^^^^^^^
@@ -63,3 +64,10 @@ You can always see all available sub-commands by:
     -h, --help            show this help message and exit
     -v, --version         show program's version number and exit
 
+FAQ
+^^^
+
+.. code:: bash 
+  /hpcf/apps/python/install/2.7.13/bin/python: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
+
+A: Missing python module. Just do ``module load python``
