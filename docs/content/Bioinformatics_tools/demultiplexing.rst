@@ -39,14 +39,16 @@ CRISPR Screening Demultiplexing
 
 	cutadapt \
 	--no-indels \
-	-g file:barcode.fa \ # This is your barcode file
+	-g file:barcode.fa \ 
 	--no-trim \ 
 	--untrimmed-output untrimmed.fastq.gz \
 	-o {name}.fastq.gz \
-	gRNA_S1_R1_001.fastq.gz # This is your original fastq.gz
+	gRNA_S1_R1_001.fastq.gz
 
 
+``barcode.fa`` is the barcode file
 
+``gRNA_S1_R1_001.fastq.gz`` is the fastq file to be demultiplexed.
 
 
 
