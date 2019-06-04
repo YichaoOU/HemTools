@@ -20,6 +20,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    jupyter_notebooks/notebooks
    content/Bioinformatics_tools/tools
    MetaData/metadata
+   content/Gallery/standalones
 
 General principles
 ^^^^^^^^^^^^^^^^^^
