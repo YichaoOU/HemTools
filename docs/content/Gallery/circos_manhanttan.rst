@@ -61,4 +61,6 @@ For that, you need two input files; they are all tsv files.
 	:align: center
 	
 
+.. code:: bash
 
+	circos_Manhattan -f your_numerical_values.tsv --genes your_genes.bed
