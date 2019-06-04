@@ -23,3 +23,14 @@ g++ main.o step1.o step2.o step3.o step4.o common.o -lm -o OnTAD
 rm main.o step1.o step2.o step3.o step4.o common.o
 
 
+Usage
+^^^^^
+
+module load gcc/6.3.0
+
+OnTAD
+
+OnTAD chr18_KR.matrix -penalty 0.1 -maxsz 200 -o OnTAD_KRnorm_pen0.1_max200_chr18.tad
+
+
+for i in *.matrix;do OnTAD $i -o $i.ontad;done
