@@ -10,6 +10,7 @@ Manhanttan plot is a way to visualize 1D values when you need to preserve the or
 .. image:: ../../gallery/circos_Manhanttan.png
 	:align: center
 	
+This image shows the base editor results (HbF high vs low) for 306 loci, each with ~20 gRNA. Red means positive log fold change; green means negative LFC. 
 
 .. note:: Please note that the following program assumes: (1) there are positive and negative values in your input values, and positive values are shown with red BG color and negative values are shown with green BG color. (2) The input coordinates are sorted (the plot uses the same order presented in your input file starting from 12 o'clock) and this circos plot only display the input regions, not any other genomic regions. 
 
@@ -17,6 +18,10 @@ Manhanttan plot is a way to visualize 1D values when you need to preserve the or
 
 Usage
 ^^^^^
+
+Make sure you have installed HemTools standalone tools.
+
+See [installation](https://hemtools.readthedocs.io/en/latest/content/Installation/Installation.html#installation-for-stand-alone-tools)
 
 **Step 1**
 
