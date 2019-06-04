@@ -11,6 +11,10 @@ Manhanttan plot is a way to visualize 1D values when you need to preserve the or
 	:align: center
 	
 
+.. note:: Please note that the following program assumes: (1) there are positive and negative values in your input values, and positive values are shown with red BG color and negative values are shown with green BG color. (2) The input coordinates are sorted (the plot uses the same order presented in your input file starting from 12 o'clock) and this circos plot only display the input regions, not any other genomic regions. 
+
+.. tip:: if you only have positive or negative values, you can still use this program. Just that, when you see the figure, there will be no points in either red tracks or green tracks. You can then turn off those tracks by removing the corresponding ``<plot>`` in ``circos.conf``, and do ``circos -conf circos.conf -noparanoid -param image/radius=2000p`` again.
+
 Usage
 ^^^^^
 
