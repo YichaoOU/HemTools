@@ -12,6 +12,13 @@ Gallery (stand-alone tools)
 .. image:: ../../gallery/circos_Manhanttan.png
 	:align: center
 	
+:doc:`Peak Annotation GREAT <pyGREAT>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: ../../gallery/pyGREAT.PNG
+	:align: center
+	
+
 
 
 

@@ -20,11 +20,14 @@ Column operations
 	awk -F "\t" '{print $2"\t"$3"\t"$4"\t"$1}' tmp.out > tmp.out.bed
 
 
+Calculating read average length in a Fastq file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+	awk '{if(NR%4==2) {count++; bases += length} } END{print bases/count}' <fastq_file>
 
 
 
-
-
-
+http://www.filiphusnik.com/content/bioinformatics-one-liners
 
 
