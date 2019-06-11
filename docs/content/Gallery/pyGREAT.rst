@@ -13,6 +13,8 @@ Peak Annotation using GREAT
 
 .. code:: bash
 
+	module purge
+
 	module load conda3
 
 	source activate /home/yli11/.conda/envs/share_url
@@ -21,7 +23,7 @@ Peak Annotation using GREAT
 
 .. code:: bash
 
-	pyGREAT.py [your narrowpeak or bed file] --email
+	pyGREAT.py -f [your narrowpeak or bed file] --email
 
 
 .. note:: Click on the URL in the email. You may need to wait for 1 minute to see the result.
