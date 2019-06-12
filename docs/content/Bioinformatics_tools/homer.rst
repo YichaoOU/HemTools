@@ -47,7 +47,7 @@ Motif co-occurrence in peaks
 
 .. code:: bash
 
-	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs ``-size -300,300`` > output.tsv
+	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs -size -300,300 > output.tsv
 
 [peak file]: for this ``size`` option, you might want to use the ``summits.bed`` file from HemTools.
 
