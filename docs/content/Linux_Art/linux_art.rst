@@ -3,8 +3,9 @@ Linux Art
 
 .. toctree::
    :maxdepth: 1
+   :glob:
 
-   ssh_without_password
+   *
 
 
 
