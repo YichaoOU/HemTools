@@ -18,19 +18,20 @@ Peak annotation with genomic features: TSS, intron, exon, etc.
 
 .. code:: bash
 
-	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log  > [output.tsv]
+	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log  > output.tsv
 
 [peak file] : narrowPeak file from HemTools
 
 [genome version] : hg18, hg19, mm9, mm10.
 
+**output.tsv** is the peak annotation file, such as TSS-promoter, exon, etc.
 
 Motif co-occurrence in peaks 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash
 
-	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs > [output.tsv]
+	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs > output.tsv
 
 [peak file] : narrowPeak file from HemTools
 
@@ -38,13 +39,17 @@ Motif co-occurrence in peaks
 
 [knownResults/*.motif] : findMotifsGenome.pl output dir
 
+**co_occur_motifs.stats.txt** contains the co-occuring statistics.
+
+**output.tsv** is the peak annotation file, with additional motif occurrence information.
+
 .. tip:: You can control the peak size from the peak mid-point and use it to look for co-occuring motifs. For example, ``-size -300,300`` will extend the peak to -300bp upstream from center and 300bp downstream.
 
 .. code:: bash
 
-	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs ``-size -300,300`` > [output.tsv]
+	annotatePeaks.pl [peak file] [genome version] -annStats annotate.log -m [knownResults/*.motif] -matrix co_occur_motifs ``-size -300,300`` > output.tsv
 
-
+[peak file]: for this ``size`` option, you might want to use the ``summits.bed`` file from HemTools.
 
 
 
