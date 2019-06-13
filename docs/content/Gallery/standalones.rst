@@ -19,6 +19,12 @@ Gallery (stand-alone tools)
 	:align: center
 	
 
+:doc:`Add gene annotations to CHANGE-seq off-targets table <change_seq>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: ../../gallery/change_seq_output.png
+	:align: center
+	
 
 
 
