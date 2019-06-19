@@ -26,6 +26,18 @@ Peak annotation with genomic features: TSS, intron, exon, etc.
 
 **output.tsv** is the peak annotation file, such as TSS-promoter, exon, etc.
 
+Find motifs 
+^^^^^^^^^^^
+
+.. code:: bash
+
+	findMotifsGenome.pl [peak_file] [genome_version] myOutput -size 200 -mask -preparsedDir parsing_genome_dir
+
+Ref: http://homer.ucsd.edu/homer/ngs/peakMotifs.html
+
+.. tip:: Need to add "-preparsedDir parsing_genome_dir"  homer will need to write a temp background files, you need some where that is writable.
+
+
 Motif co-occurrence in peaks 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
