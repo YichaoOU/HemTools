@@ -1,16 +1,10 @@
-A collection of NGS pipelines
+NGS pipelines
 =============================
 
 .. toctree::
    :maxdepth: 1
 
-   atac_seq
-   cut_run
-   chip_seq_single
-   chip_seq_pair
-   crispr_seq
-   rna_seq
-   tutorial
+   *
 
 .. image:: ../../images/Pipelines_steps.png
 

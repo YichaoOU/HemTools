@@ -4,12 +4,19 @@ ATAC-seq
 .. contents::
     :local:
 
+Flowchart
+^^^^^^^^^^^^^^^^^^
+
+.. image:: ../../images/atac_seq_pipeline.png
+
+Parameters
+^^^^^^^^^^^^^^^^^^
+
 .. argparse::
    :filename: ../bin/HemTools
    :func: main_parser
    :prog: HemTools
    :path: atac_seq
-
 
 Usage
 ^^^^^
