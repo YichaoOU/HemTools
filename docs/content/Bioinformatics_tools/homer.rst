@@ -49,7 +49,9 @@ Motif co-occurrence in peaks
 
 [genome version] : hg18, hg19, mm9, mm10.
 
-[knownResults/*.motif] : findMotifsGenome.pl output dir
+[knownResults/*.motif] : findMotifsGenome.pl output dir.
+
+.. tip:: You can also use ``-m /hpcf/apps/homer/install/4.9.1/motifs``. This is local homer motif database.
 
 **co_occur_motifs.stats.txt** contains the co-occuring statistics.
 
