@@ -31,3 +31,10 @@ Calculating read average length in a Fastq file
 http://www.filiphusnik.com/content/bioinformatics-one-liners
 
 
+Remove path and file ending suffix
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	for i in ../*; do echo $(basename $i .narrowPeak);done
+	
