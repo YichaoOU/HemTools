@@ -3,6 +3,7 @@ NGS pipelines
 
 .. toctree::
    :maxdepth: 1
+   :glob:
 
    *
 
