@@ -5,12 +5,12 @@ ATAC-seq
     :local:
 
 Flowchart
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
 
 .. image:: ../../images/atac_seq_pipeline.png
 
 Parameters
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^
 
 .. argparse::
    :filename: ../bin/HemTools
