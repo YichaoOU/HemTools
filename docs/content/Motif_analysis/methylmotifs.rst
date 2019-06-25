@@ -32,7 +32,33 @@ motif similarity between regular motifs and methyl-motifs.
 Usage
 ^^^^^
 
+**Step 0 | Install stand-alone tools**
 
+.. code:: bash
+
+	/home/yli11/HemTools/bin/add_standalones.sh
+
+**Step 1 | Run methyl-motif discovery pipeline**
+
+::
+
+	methyl_motif.py -h
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+	                        Every output will be moved into this folder. (default:
+	                        methyl_motif_username_date)
+	  -f BED_FILE, --bed_file BED_FILE
+	                        TSV file, make sure the first 3 columns are chr,
+	                        start, end (``required``)
+	  -o OUTPUT_PREFIX, --output_prefix OUTPUT_PREFIX
+	                        Output file name (prefix-) (``required``)
+	  --cellLine CELLLINE   available: hudep1, hudep2 (``required``)
+
+.. code:: bash
+
+	methyl_motif.py -f test.bed -o test_out --cellLine hudep1
 
 
 Prototype
