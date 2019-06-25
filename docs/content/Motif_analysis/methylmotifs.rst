@@ -5,7 +5,7 @@ Methylated Motif Discovery
 Summary
 ^^^^^^^
 
-Given a bed file, identify motifs (homer, meme) and methyl-motifs (mEpigram, meme). 
+Given a bed file, identify motifs (homer, fimo-known motifs) and methyl-motifs (mEpigram, meme). 
 
 **Input**
 
@@ -17,6 +17,7 @@ Flowchart
 ^^^^^^^^^
 
 .. image:: ../../images/methyl_motif_pipeline.png
+	:align: center
 
 Motif discovery pipeline usually contains 3 main steps: (1) motif discovery (2) motif scanning (3) motif evaluation. You may wonder that, during motif discovery step, one should already have the motif locations. However, this is almost never happended, mainly because the motif discovery process only tries to find the motif significant pattern, not really worrying about the significance of individual motif occurrence.
 
@@ -41,6 +42,8 @@ Usage
 **Step 1 | Run methyl-motif discovery pipeline**
 
 ::
+	
+	module load python/2.7.13
 
 	methyl_motif.py -h
 
