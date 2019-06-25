@@ -88,6 +88,10 @@ Reference
 
 https://ngschool.eu/node/51
 
+https://github.com/ENCODE-DCC/chip-seq-pipeline2
+
+
+
 Comments
 ^^^^^^^^
 
