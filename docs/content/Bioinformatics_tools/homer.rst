@@ -51,7 +51,7 @@ Motif co-occurrence in peaks
 
 [knownResults/*.motif] : findMotifsGenome.pl output dir.
 
-.. tip:: You can also use ``-m /hpcf/apps/homer/install/4.9.1/motifs``. This is local homer motif database.
+.. tip:: You can also use ``-m /hpcf/apps/homer/install/4.9.1/motifs/*.motif``. This is local homer motif database.
 
 **co_occur_motifs.stats.txt** contains the co-occuring statistics.
 
