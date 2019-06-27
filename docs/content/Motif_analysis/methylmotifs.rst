@@ -63,6 +63,26 @@ Usage
 
 	methyl_motif.py -f test.bed -o test_out --cellLine hudep1
 
+Output files
+^^^^^^^^^^^^
+
+Important output files have been emailed to you after the pipeline is finished.
+
+**1. meme methyl-motif discovery**
+
+Check on the ``meme.html`` to see the results.
+
+
+Addressed questions
+^^^^^^^^^^^^^^^^^^^
+
+**1. What percentage of TFBSs is methylated?**
+
+First, look at the homer known motif results, check if the top known motif make sense.
+
+Then, for the top known motifs from homer, check ``known_methyl_C_percent.tsv`` to see what percentage of that TFBSs is methylated.
+
+**TO DO**
 
 Prototype
 ^^^^^^^^^
