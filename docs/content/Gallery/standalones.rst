@@ -1,9 +1,11 @@
 Gallery (stand-alone tools)  
 ===========================
 
-.. contents::
-    :local:
+.. toctree::
+   :maxdepth: 1
+   :glob:
 
+   *
 
 
 :doc:`Circos Manhanttan plot <circos_manhanttan>`
@@ -23,6 +25,12 @@ Gallery (stand-alone tools)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: ../../gallery/change_seq_output.png
+	:align: center
+	
+:doc:`Upload your bw and bed files to protein paint <create_tracks>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: ../../gallery/ppr.png
 	:align: center
 	
 
