@@ -27,6 +27,7 @@ HemTools dir structure
 # username = getpass.getuser()
 sys.path.append(os.path.abspath("../subcmd/"))
 from cut_run import *
+from cut_run_histone import *
 from chip_seq_pair import *
 from chip_seq_single import *
 from atac_seq import *
@@ -61,6 +62,7 @@ def HemTools_parser():
 	subparser=main_parser.add_subparsers(help='Available APIs in HemTools',dest='subcmd')
 
 	arg_cut_run(subparser)
+	arg_cut_run_histone(subparser)
 	arg_chip_seq_pair(subparser)
 	arg_chip_seq_single(subparser)
 	arg_atac_seq(subparser)
