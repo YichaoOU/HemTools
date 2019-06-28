@@ -4,7 +4,7 @@ Upload your bw and bed files to protein paint
 Summary
 ^^^^^^^
 
-An easy way to visualizing your data. This program will upload all ``.bw``, ``.bed``, and ``Peak`` files to protein paint. Note that protein paint genome browser is only accessible inside stjude network.
+An easy way to visualizing your data. This program will upload all ``.bw``, ``.bed``, and ``Peak`` files to protein paint. Note that protein paint genome browser is only accessible inside stjude network. 
 
 
 .. image:: ../../gallery/ppr.png
@@ -43,8 +43,16 @@ Usage
 
 	create_tracks.py --current_dir -g hg19
 
+When finished, it will print out an url, similar like below:
 
+.. code:: bash
 
+	2019-06-28 14:41:43,232 - INFO - upload_bed_bw - connecting to server
+	2019-06-28 14:41:43,625 - INFO - upload_bed_bw - creating user's dir
+	2019-06-28 14:41:53,804 - INFO - upload_bed_bw - generating json file
+	2019-06-28 14:41:56,213 - INFO - upload_bed_bw - transfering file
+	Please copy the following url to your genome browser. Note that protein paint genome browser is only accessible inside stjude network.
+	https://ppr.stjude.org/?study=HemPipelines/yli11/create_tracks_yli11_2019-06-283a1f4cad5f47/tracks.json
 
 
 
