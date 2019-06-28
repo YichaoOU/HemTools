@@ -17,13 +17,13 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ module load python/2.7.13
+    module load python/2.7.13
 
 **Step 1: Prepare input files, generate fastq.tsv.**
 
 .. code:: bash
 
-    $ HemTools cut_run_histone --guess_input
+    HemTools cut_run_histone --guess_input
 
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv
@@ -35,9 +35,9 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ less fastq.tsv
+    less fastq.tsv
 
-    $ less peakcall.tsv
+    less peakcall.tsv
 
 .. note:: a random string will be added to the generated files (e.g., fastq.94c049cbff1f.tsv) if they exist before running step 1.
 
@@ -45,15 +45,35 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv
+    HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv
 
 **Step 3b: (Broad Peak) Submit your job.**
 
 .. code:: bash
 
-    $ HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv --broad    
+    HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv --broad    
 
-.. tip:: If you have both narrow peak histone and broad peak histone data in your fastq.tsv, then the simplest way to run is just run step3a and step3b at the same time. Or you can write those file names in different file. I think I won't do that, I will just run the narrow peak and broad peak pipeline for the same data, and peak the correct result later.
+.. tip:: If you have both narrow peak histone and broad peak histone data in your fastq.tsv, then the simplest way to run is just run step3a and step3b at the same time (see ``step3c``). Note that HemTools generates data in the current directory, then after everything is finished, move the files to the jid folder. That means, to run step3a and step3b at the same time, you have to create two new folders, see ``step3c``.
+
+**Step 3c: Run both narrow peak and broad peak for the same input**
+
+.. code:: bash
+
+	mkdir narrowPeak_call
+	cd narrowPeak_call
+	ln -s ../*.gz .
+	ln -s ../*.tsv .
+	HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv
+	cd ..
+
+.. code:: bash
+
+	mkdir broadPeak_call
+	cd broadPeak_call
+	ln -s ../*.gz .
+	ln -s ../*.tsv .
+	HemTools cut_run_histone -f fastq.tsv -d peakcall.tsv --broad
+
 
 Sample input format
 ^^^^^^^^^^^^^^^^^^^
@@ -78,7 +98,7 @@ Once the job is finished, you will be notified by email with some attachments.  
 
 .. code:: bash
 
-    $ HemTools report_bug
+    HemTools report_bug
 
 
 Use different genome index
@@ -86,7 +106,7 @@ Use different genome index
 
 .. code:: bash
 
-    $ HemTools cut_run -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
+    HemTools cut_run -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
 
 
 
