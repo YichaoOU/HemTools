@@ -8,6 +8,12 @@ RNA-seq: Transcript-level quantification
    :path: rna_seq
 
 
+Summary
+^^^^^^^
+
+This pipeline quantifies transcript-level abundance using kallisto and generates bam, bw files using STAR. The output file ``kallisto_files/{jid}_transcript.tpm.csv`` contains both transcript ID and gene name, which users can look for specific genes. For differential gene/transcript expression analysis, see :doc:`diff_genes <diff_genes>`. For volcano plot of differential genes, see :doc:`volcano <../Visualization/volcano_plot>`
+
+
 Usage
 ^^^^^
 
@@ -23,7 +29,7 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools rna_seq --guess_input
+    $ HemTools_dev rna_seq --guess_input
 
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv
@@ -42,7 +48,7 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools rna_seq -f fastq.tsv --kallisto
+    $ HemTools_dev rna_seq -f fastq.tsv
 
 Sample input format
 ^^^^^^^^^^^^^^^^^^^
@@ -53,6 +59,29 @@ This is a tab-seperated-value format file. The 3 columns are: Read 1, Read 2, sa
 
 .. image:: ../../images/fastq.tsv.png
 
+
+Common downstream analyses
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- differential expression analysis (transcript / gene level)
+
+- MA plot, volcano plot, heatmap
+
+- given a set of genes, show a boxplot / violin plot (gene counts, TPM, or other quantifiers)
+
+- gene set enrichment analysis
+
+Paired-end sequencing allows for various of additional analyses, including
+
+- isoform specific expression / differential isoform usage / alternative splicing / cryptic exons
+
+- RNA editing / variant calling / allel-specific expression
+
+- gene fusion
+
+If a large collection of RNA-seq data is available, one can perform clustering analysis, time-series analysis, infering biological network, and classification analysis.
+
+Integrative analyses with other data, etc ChIP-seq, ATAC-seq.
 
 Report bug
 ^^^^^^^^^^
