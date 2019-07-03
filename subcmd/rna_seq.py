@@ -10,7 +10,7 @@ def arg_rna_seq(parser):
 	cmd.add_argument('--debug',  help="Not for end-user.", action='store_true')
 	cmd.add_argument('--short',  help="Not for end-user.", action='store_true')
 	# cmd.add_argument('--tracks',  help="Upload bw files to protein paitn", action='store_true')
-	cmd.add_argument('--kallisto',  help="kallisto: quantifying abundances of transcripts from bulk RNA-Seq data.", action='store_true')
+	# cmd.add_argument('--kallisto',  help="kallisto: quantifying abundances of transcripts from bulk RNA-Seq data.", action='store_true')
 	
 	group = cmd.add_mutually_exclusive_group(required=True)
 	group.add_argument('-f',"--input",  help="tab delimited 3 columns (tsv file): Read 1 fastq, Read 2 fastq, sample ID")
@@ -19,6 +19,10 @@ def arg_rna_seq(parser):
 
 	genome=cmd.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38.", default='hg19',type=str)
+	genome.add_argument('-i','--index_file',  help="STAR index file", default=p_dir+'../hg19/hg19_star_253a_index/')
+	genome.add_argument('-b','--Blacklist',  help="Blacklist file", default=p_dir+'../hg19/hg19.blacklist.bed')
+	genome.add_argument('-s','--chrom_size',  help="chrome size", default=p_dir+"../hg19/hg19.chrom.sizes")
+	genome.add_argument('-e','--effectiveGenomeSize',  help="effectiveGenomeSize for bamCoverage", default="2451960000")
 
 
 def run_rna_seq(args,rootLogger):

@@ -7,6 +7,9 @@ Volcano plot for logFC and P-value/FDR
    :prog: HemTools
    :path: volcano_plot
 
+.. image:: ../../images/volcano.png
+	:align: center
+
 Input file
 ^^^^^^^^^^
 
@@ -19,7 +22,7 @@ Usage
 
 .. code:: bash
 
-    $ HemTools volcano_plot -f input_data
+    HemTools volcano_plot -f diffPeaks_output.txt -s "\t" --LFC_column logFC --FDR_column adj.P.Val
 
 .. note:: Once the figure is made, it will be emailed to you.
 
@@ -30,7 +33,7 @@ Once the job is finished, you will be notified by email with some attachments.  
 
 .. code:: bash
 
-    $ HemTools report_bug
+    HemTools report_bug
 
 
 R code
