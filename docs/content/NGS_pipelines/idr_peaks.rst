@@ -48,7 +48,7 @@ Please provide the file location to bam files. For single-end data, please use r
 
 .. note:: Currently, this pipeline doesn't support running multiple samples at the same time. If you have multiple samples, you need to provide the following input files seperately.
 
-** R1 Input **
+**R1 Input**
 
 This is a two-column tsv file (treatment R1 and contol R1). An example is shown below:
 
@@ -56,7 +56,7 @@ This is a two-column tsv file (treatment R1 and contol R1). An example is shown 
 
 /path_to_file/1047954_Hudep2_CTCF_IP_50bp.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp.markdup.bam
 
-** R2 Input **
+**R2 Input**
 
 This is a two-column tsv file (treatment R2 and contol R2). An example is shown below:
 
@@ -64,9 +64,16 @@ This is a two-column tsv file (treatment R2 and contol R2). An example is shown 
 
 /path_to_file/1047954_Hudep2_CTCF_IP_50bp_R2.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp_R2.markdup.bam
 
-** Merged Input **
+**Merged Input**
 
-This is a 4-column tsv file (treatment R1 and contol R1, treatment R2 and contol R2). 
+This is a 4-column tsv file (treatment R1 and contol R1, treatment R2 and contol R2), an example is shown below:
+
+::
+
+	/path_to_file/1047954_Hudep2_CTCF_IP_50bp.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp.markdup.bam	/path_to_file/1047954_Hudep2_CTCF_IP_50bp_R2.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp_R2.markdup.bam
+
+.. tip:: Once you have R1_input and R2_input, you can simply run the following command to generate this file.
+
 
 .. code:: bash
 
@@ -80,7 +87,7 @@ Note that if you are working on mouse genome, you have to change both ``-g`` and
 
 .. code:: bash
 
-	idr_peaks.py -r1 R1_input -r2 R2_input --merged_input m -g hg19 --macs_genome hs
+	idr_peaks.py -r1 R1_input -r2 R2_input --merged_input merged_input -g hg19 --macs_genome hs
 
 
 Output
