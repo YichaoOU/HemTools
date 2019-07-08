@@ -75,9 +75,15 @@ Usage
 Output
 ^^^^^^
 
-``_kallisto`` contains gene expression table.
+Look for ``*final*.csv`` in ``_sleuth`` folder.
 
-``_sleuth`` contains differential gene expression analysis results.
+``_sleuth`` contains differential analysis and normalized TPM/read count (ext_count) information for both transcript-level and gene-level.
+
+Fold change is calculated based on both TPM and ext_count, but they should be very similar to each other. TPM is recommended.
+
+Use ``{{output_name}}.transcript.final.combined.tpm.csv`` for transcript level estimation.
+
+Use ``{{output_name}}.gene.final.combined.tpm.csv`` for gene level estimation.
 
 For volcano plot of differential genes, see :doc:`volcano <../Visualization/volcano_plot>`
 
