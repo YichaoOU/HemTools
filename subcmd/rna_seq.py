@@ -18,7 +18,7 @@ def arg_rna_seq(parser):
 	
 
 	genome=cmd.add_argument_group(title='Genome Info')
-	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38.", default='hg19',type=str)
+	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10", default='hg19',type=str)
 	genome.add_argument('-i','--index_file',  help="STAR index file", default=p_dir+'../hg19/hg19_star_253a_index/')
 	genome.add_argument('-b','--Blacklist',  help="Blacklist file", default=p_dir+'../hg19/hg19.blacklist.bed')
 	genome.add_argument('-s','--chrom_size',  help="chrome size", default=p_dir+"../hg19/hg19.chrom.sizes")
