@@ -5,7 +5,13 @@ Inspection of multi-mapped reads
 Summary
 ^^^^^^^
 
-If duplication rate is high, for example, if STAR mapping statistics show less than 75% uniquely mapped reads, you might want to check if you have too many rRNA or chrM. This program also checks the HBG region.
+Most programs will discard or ignore multi-mapped reads, such as cellRanger, featureCount (default), GATK, etc. Some programs considers multi-mapped reads such as kallisto, salmon, MACS2.
+
+If duplication rate is high, for example, if STAR mapping statistics show less than 75% uniquely mapped reads, you might want to check if you have too many rRNA or chrM. 
+
+This program also checks the HBG region.
+
+In addition, this program will count number of reads mapped to hemoglobin genes.
 
 .. note:: Currently, this pipeline only work on hg19.
 
@@ -34,6 +40,10 @@ Sample input format
 
 This is a tab-seperated-value format file. The 2 columns are: bam file and output name.
 
+::
+
+	path_to_bam1	output_name1
+	path_to_bam2	output_name2
 
 
 Output
@@ -44,6 +54,12 @@ You can do ``head *.uniq.txt``.
 ``*.flag256.uniq.txt`` is the total number of multi-mapped reads, same as the number reported in STAR.
 
 ``*.flag256.{region}.uniq.txt`` is the number of multi-mapped reads in the input region, which is ``HBG``, ``chrM``, or ``rRNA``.
+
+``flag256`` means ``secondary alignment``. For multi-mapped reads, only the first match will be set as ``primary alginment``. So this is a parameter to extract multi-mapped reads.
+
+Number of mapped reads is shown in ``*.mapped.uniq.txt``.
+
+Number of mapped reads in hemoglobin gene is shown in ``*.hem.uniq.txt``
 
 Reference
 ^^^^^^^^^
