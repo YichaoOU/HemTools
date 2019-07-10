@@ -41,7 +41,7 @@ This program performs differential peak analysis by taking the union of input pe
 Flowchart
 ^^^^^^^^^
 
-
+.. image:: ../../images/deseq_diffpeak.png
 
 
 Usage
