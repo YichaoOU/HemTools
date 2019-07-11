@@ -39,7 +39,7 @@ This file specifies a list of pairwise comparisons. Each comparison has a compar
 	APC_pos_vs_plasmid	treatment CRM-APC-positive-rep1_S4_L001_R1_001.fastq.gz,CRM-APC-positive-rep2_S5_L001_R1_001.fastq.gz
 
 
-.. note:: Comparison names (column 1) should be unique. Control & treatment (column 2) are keywords, misspelling can cause error. 
+.. note:: Comparison names (column 1) should be unique. ``control`` & ``treatment`` (column 2) are keywords, misspelling can cause error. 
 
 **INPUT 2. gRNA library csv file (--gRNA_library option, required).**
 
@@ -93,6 +93,14 @@ OR:
 .. code:: bash
 
     $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed
+
+OR you can perform MaGeCK RRA paired test by add ``--paired`` option:
+
+.. note:: Paired test is only available for MaGeCK RRA method, not available for the MLE method.
+
+.. code:: bash
+
+    $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed --paired
 
 
 Report bug
