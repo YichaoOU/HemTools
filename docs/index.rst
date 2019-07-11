@@ -22,6 +22,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    MetaData/metadata
    content/Gallery/standalones
    content/Differential_analysis/index
+   content/Notes/notes
 
 General principles
 ^^^^^^^^^^^^^^^^^^
