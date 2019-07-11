@@ -10,7 +10,7 @@ def arg_crispr_seq(parser):
 	cmd.add_argument('--short',  help="Force to use the short queue.", action='store_true')	
 	cmd.add_argument('--debug',  help="Not for end-user.", action='store_true')	
 	cmd.add_argument('--count_only',  help="Only perform Mageck count", action='store_true')	
-
+	cmd.add_argument('--paired',  help="Mageck RRA paired test, this is not available for mageck MLE", action='store_true')	
 	input=cmd.add_argument_group(title='Input files')
 
 	# input.add_argument('--CRISPhieRmix',  help="run CRISPhieRmix in addition to Mageck MLE and RRA.", action='store_true')	
