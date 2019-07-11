@@ -49,7 +49,9 @@ This is a tab-seperated-value format file. The 2 columns are: bam file and outpu
 Output
 ^^^^^^
 
-You can do ``head *.uniq.txt``. 
+Once the job is finished, you will receive an email with the statistics attached.
+
+Basically, it shows the number (and percentage) of multi-mapped reads that are mapped to HBG, chrM, and rRNA. It also shows number of reads (including multi-mapped reads) mapped to hemoglobins.
 
 ``*.flag256.uniq.txt`` is the total number of multi-mapped reads, same as the number reported in STAR.
 
@@ -60,10 +62,6 @@ You can do ``head *.uniq.txt``.
 Number of mapped reads is shown in ``*.mapped.uniq.txt``.
 
 Number of mapped reads in hemoglobin gene is shown in ``*.hem.uniq.txt``
-
-Reference
-^^^^^^^^^
-
 
 
 Comments
