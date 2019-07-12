@@ -3,9 +3,10 @@ Data Visualization
 
 .. toctree::
    :maxdepth: 1
+   :glob:
 
-   volcano_plot
-   gRNA_intensity_plot
+   *
+
 
 Typical Usage
 ^^^^^^^^^^^^^
