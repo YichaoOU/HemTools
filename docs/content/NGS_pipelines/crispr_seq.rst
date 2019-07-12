@@ -98,6 +98,8 @@ OR you can perform MaGeCK RRA paired test by add ``--paired`` option:
 
 .. note:: Paired test is only available for MaGeCK RRA method, not available for the MLE method.
 
+.. note:: In paired mode, the number of control samples must be the same as the number of treatment samples.
+
 .. code:: bash
 
     $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed --paired

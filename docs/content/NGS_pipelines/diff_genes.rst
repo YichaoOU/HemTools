@@ -87,6 +87,16 @@ Use ``{{output_name}}.gene.final.combined.tpm.csv`` for gene level estimation.
 
 For volcano plot of differential genes, see :doc:`volcano <../Visualization/volcano_plot>`
 
+A known problem
+^^^^^^^^^^^^^^^
+
+Unlikely to happend. This piece of information is not for end-user.
+
+Calling ``Rscript`` from conda env will actually modify two files, namely ``ldpaths`` and ``Makeconf``. And there is no solution to let R not modifying these files, as discussed in https://github.com/conda-forge/r-base-feedstock/issues/67.
+
+Since I give 777 permission to my R program, users using this pipeline will actually change the status of these file, which make it un-accessible to me or other users. One possible solution is to let the user gives 777 again to these files, so that other people can use it again. However, I predict that if ``multiple users run this pipeline at the same time, it can cause a permission error again``. 
+
+
 Report bug
 ^^^^^^^^^^
 
