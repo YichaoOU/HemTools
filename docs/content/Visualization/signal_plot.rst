@@ -63,7 +63,6 @@ Summary
 
 Given a bed file and a bigwiggle file, plot the average signals (line plot) and heatmap.
 
---legendLocation none
 
 Example
 ^^^^^^^
