@@ -23,6 +23,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Gallery/standalones
    content/Differential_analysis/index
    content/Notes/notes
+   content/Machine_learning/index
 
 General principles
 ^^^^^^^^^^^^^^^^^^
