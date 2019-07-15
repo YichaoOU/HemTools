@@ -100,6 +100,8 @@ Chromatin states known associations
 Example output
 ^^^^^^^^^^^^^^
 
+These chromatin state definitions were obtained by comparing with known associations. For exploratory usage, this is OK. For publication purpose, you will probably need to redefine some states.
+
 .. image:: ../../images/chromHMM_example_output.png
 	:align: center
 
