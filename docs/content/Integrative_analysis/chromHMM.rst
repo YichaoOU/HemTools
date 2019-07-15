@@ -115,9 +115,38 @@ See ``Summary`` above for how these inputs are used.
 
 2 columns: file_location (with path if not in the current dir), UID.
 
+See an example below. This file is named as se.list.
+
+::
+
+	/path_to_file/1577764_ChIP_T_input_rep2_R1.fastq.gz	input_rep2
+	/path_to_file/1577763_ChIP_T_input_rep1_R1.fastq.gz	input_rep1
+	/path_to_file/1577762_ChIP_T_H3K36me3_rep2_R1.fastq.gz	H3K36me3_rep2
+	/path_to_file/1577761_ChIP_T_H3K36me3_rep1_R1.fastq.gz	H3K36me3_rep1
+	/path_to_file/1577760_ChIP_T_H3K27ac_rep2_R1.fastq.gz	H3K27ac_rep2
+	/path_to_file/1577759_ChIP_T_H3K27ac_rep1_R1.fastq.gz	H3K27ac_rep1
+	/path_to_file/1577758_ChIP_T_H3K27me3_rep2_R1.fastq.gz	H3K27me3_rep2
+	/path_to_file/1577757_ChIP_T_H3K27me3_rep1_R1.fastq.gz	H3K27me3_rep1
+	/path_to_file/1577756_ChIP_T_H3K9ac_rep2_R1.fastq.gz	H3K9ac_rep2
+	/path_to_file/1577755_ChIP_T_H3K9ac_rep1_R1.fastq.gz	H3K9ac_rep1
+	/path_to_file/1577754_ChIP_T_H3K9me3_rep2_R1.fastq.gz	H3K9me3_rep2
+	/path_to_file/1577753_ChIP_T_H3K9me3_rep1_R1.fastq.gz	H3K9me3_rep1
+	/path_to_file/1577752_ChIP_T_H3K4me3_rep2_R1.fastq.gz	H3K4me3_rep2
+	/path_to_file/1577751_ChIP_T_H3K4me3_rep1_R1.fastq.gz	H3K4me3_rep1
+	/path_to_file/1577750_ChIP_T_H3K4me1_rep2_R1.fastq.gz	H3K4me1_rep2
+	/path_to_file/1577749_ChIP_T_H3K4me1_rep1_R1.fastq.gz	H3K4me1_rep1
+
 **-pe: similar to fastq.tsv for paired-end data**
 
 3 columns: file_location for R1.fastq.gz, file_location for R2.fastq.gz, UID.
+
+See an example below. This file is named as pe.list.
+
+::
+
+	==> pe.list <==
+	/path_to_file/1448387_T_R1_ATAC_R1.fastq.gz	/path_to_file/1448387_T_R1_ATAC_R2.fastq.gz	R1_ATAC
+	/path_to_file/1448388_T_R2_ATAC_R1.fastq.gz	/path_to_file/1448388_T_R2_ATAC_R2.fastq.gz	R2_ATAC
 
 **-d1: similar to peakcall.tsv for chip-seq data**
 
@@ -127,6 +156,22 @@ Here, you want to compare everything to control, which could be input chip or Ig
 
 3 columns: UID, UID, label. 
 
+See an example below. This file is named as d1.tsv.
+
+::
+
+	==> d1.tsv <==
+	H3K36me3_rep2	input_rep2	H3K36me3
+	H3K36me3_rep1	input_rep1	H3K36me3
+	H3K27ac_rep2	input_rep2	H3K27ac
+	H3K27ac_rep1	input_rep1	H3K27ac
+	H3K27me3_rep2	input_rep2	H3K27me3
+	H3K27me3_rep1	input_rep1	H3K27me3
+	H3K9ac_rep2	input_rep2	H3K9ac
+	H3K9ac_rep1	input_rep1	H3K9ac
+	H3K9me3_rep2	input_rep2	H3K9me3
+	H3K9me3_rep1	input_rep1	H3K9me3
+
 **-d2: give your input files a label**
 
 For ATAC-seq data, you don't have control. Then, use ``-d2``.
@@ -134,6 +179,14 @@ For ATAC-seq data, you don't have control. Then, use ``-d2``.
 Here, you want to state the label for your input files.
 
 2 columns: UID, label. 
+
+See an example below. This file is named as d2.tsv.
+
+::
+
+	==> d2.tsv <==
+	R1_ATAC	ATAC
+	R2_ATAC	ATAC
 
 
 Usage
@@ -165,10 +218,29 @@ Go to your data directory and type the following.
 
     chromHMM.py -pe PE_list -d1 design_matrix_1 -d2 design_matrix_2 -n 25 -m 200000
 
+For the specific example shown in the `Input`_ section, my command is:
+
+::
+
+	[yli11@hpc01 chromHMM_pipeline]$ chromHMM.py -se se.list -pe pe.list -d1 d1.tsv -d2 d2.tsv -g hg38 --d2_bin_bam_addon " -paired" -m 200000
+	2019-07-15 17:35:12,714 - INFO - main - The job id is: chromHMM_yli11_2019-07-15
+	2019-07-15 17:35:12,714 - INFO - main - checking input files...
+	2019-07-15 17:35:12,715 - INFO - main - parsing se.list
+	2019-07-15 17:35:12,727 - INFO - main - parsing pe.list
+	2019-07-15 17:35:12,736 - INFO - main - All input files are found. Submitting jobs...
+	2019-07-15 17:35:12,742 - INFO - to_design_matrix - parsing d1.tsv
+	2019-07-15 17:35:12,758 - INFO - to_design_matrix - parsing d2.tsv
+	2019-07-15 17:35:12,843 - INFO - submit_pipeline_jobs - BWA_PE has been submitted; JobID: 83644249
+	2019-07-15 17:35:12,916 - INFO - submit_pipeline_jobs - BWA_SE has been submitted; JobID: 83644250
+	2019-07-15 17:35:13,160 - INFO - submit_pipeline_jobs - bin_bam has been submitted; JobID: 83644251
+	2019-07-15 17:35:13,666 - INFO - submit_pipeline_jobs - learn_model has been submitted; JobID: 83644252
+	2019-07-15 17:35:13,812 - INFO - submit_pipeline_jobs - infer_CS has been submitted; JobID: 83644253
+	2019-07-15 17:35:13,876 - INFO - submit_pipeline_jobs - email has been submitted; JobID: 83644254
+
 Output
 ^^^^^^
 
-Once the job is finished, you will receive a notification email with the learned chromatin states attached. 
+Once the job is finished, you will receive a notification email with the learned chromatin states attached (i.e., ``chromHMM_heatmap.pdf``). 
 
 ``learned_states`` contains the chromHMM chromatin state discovery results, look at ``webpage_{{number_states}}.html`` for detailed description. ``_segments.bed`` contains the genome segments.
 
