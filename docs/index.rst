@@ -19,6 +19,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Installation/Installation
    jupyter_notebooks/notebooks
    content/Bioinformatics_tools/tools
+   content/Data/data
    MetaData/metadata
    content/Gallery/standalones
    content/Differential_analysis/index
