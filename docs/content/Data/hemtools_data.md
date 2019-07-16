@@ -14,10 +14,8 @@ hg19_fasta | /home/yli11/Data/Human/hg19/fasta/hg19.fa
 hg19_motif | /home/yli11/Data/Motif_database/Human/human.meme
 hg19_rRNA | /home/yli11/Data/RSEQC_bed/hg19_rRNA.bed3
 hg19_HBG | /home/yli11/Data/Human/hg19/features/HBG.bed
-hg19_hem | /home/yli11/Data/Human/hg19/features/hg19.ENCODE_GENE.hem.bed3
+hg19_hemoglobin | /home/yli11/Data/Human/hg19/features/hg19.ENCODE_GENE.hem.bed3
 hg19_t2g | /home/yli11/Data/Human/hg19/index/kallisto/hg19.ensembl_v75.t2g
-
-
 hg19_FANTOM5_enhancer | /home/yli11/Data/Human/hg19/FANTOM/human_permissive_enhancers_phase_1_and_2.bed
 hg19_FANTOM5_TSS | /home/yli11/Data/Human/hg19/FANTOM/TSS_human.bed
 hg19_3UTR | /home/yli11/Data/Human/hg19/UCSC_table_browser/gene_3UTR.bed
@@ -37,7 +35,6 @@ hg19_promoter_up1000 | /home/yli11/Data/Human/hg19/UCSC_table_browser/gene_promo
 Name | Path
 --- | --- 
 hg38_motif|/home/yli11/Data/Motif_database/Human/human.meme
-
 hg38_t2g|/home/yli11/Data/Human/hg38/index/kallisto/hg38.ensembl_v67.t2g
 hg38_kallisto_index|/home/yli11/Data/Human/hg38/index/kallisto/hg38.idx
 
