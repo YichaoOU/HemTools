@@ -35,14 +35,6 @@ Average signal and heatmap over a bed file
 	                        add user-defined parameters to plotHeatmap (default: )
 	  -u U                  upstream flanking length (default: 5000)
 	  -d D                  downstream flanking length (default: 5000)
-	  --commands_list COMMANDS_LIST
-	                        not for end-user (default: None)
-	  --max_value MAX_VALUE
-	                        generally it is not used, only if you want to scale
-	                        all plots into the same range (default: 9999)
-	  --min_value MIN_VALUE
-	                        generally it is not used, only if you want to scale
-	                        all plots into the same range (default: 9999)
 	  --region_plot         By default, only the centers in bed files with
 	                        extended regions are used. This option enables
 	                        plotting signals on the given regions plus extended
@@ -109,6 +101,46 @@ Output
 ^^^^^^
 
 Once the job is finished, you will receive a notification email with figures attached.
+
+FAQ
+^^^
+
+
+**1.	In couple of runs there are files losing of the final picture figures.**
+
+We need to look at the log files. You can do HemTools report_bug, inside the [job ID] (e.g., signal_plot_yli11_2019-07-12) folder.
+
+.. code:: bash
+
+	module load python/2.7.13
+
+	cd [path_to_job_ID]
+
+	HemTools report_bug
+
+**2.	Is that possible to adjust the distance from center from 5Kb to 1 or 2 Kb?**
+
+There are two parameters for that, see below
+
+::
+
+	-u U                  upstream flanking length (default: 5000)
+	-d D                  downstream flanking length (default: 5000)
+
+
+**3.	For the blue color bar right to the main plot, is it possible to make all the plots in the same range? For example, From 1-8?**
+
+For heatmap scale, use ``--zMin 1 --zMax 8``.
+
+.. code:: bash
+
+	signal_plot.py --one_to_one input.list --plotHeatmap_addon_parameters " --zMin 1 --zMax 8"
+
+For y-axis range (line plot), use ``--yMin 1 --yMax 8``.
+
+.. code:: bash
+
+	signal_plot.py --one_to_one input.list --plotHeatmap_addon_parameters " --yMin 1 --yMax 8"
 
 
 Comments
