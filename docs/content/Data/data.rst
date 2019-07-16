@@ -6,6 +6,5 @@ Accessible Data in HemTools
    :glob:
 
    *
-   hemtools_data.md
-   
+
 
