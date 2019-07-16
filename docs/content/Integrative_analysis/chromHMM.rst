@@ -144,7 +144,6 @@ See an example below. This file is named as pe.list.
 
 ::
 
-	==> pe.list <==
 	/path_to_file/1448387_T_R1_ATAC_R1.fastq.gz	/path_to_file/1448387_T_R1_ATAC_R2.fastq.gz	R1_ATAC
 	/path_to_file/1448388_T_R2_ATAC_R1.fastq.gz	/path_to_file/1448388_T_R2_ATAC_R2.fastq.gz	R2_ATAC
 
@@ -160,7 +159,6 @@ See an example below. This file is named as d1.tsv.
 
 ::
 
-	==> d1.tsv <==
 	H3K36me3_rep2	input_rep2	H3K36me3
 	H3K36me3_rep1	input_rep1	H3K36me3
 	H3K27ac_rep2	input_rep2	H3K27ac
@@ -184,7 +182,6 @@ See an example below. This file is named as d2.tsv.
 
 ::
 
-	==> d2.tsv <==
 	R1_ATAC	ATAC
 	R2_ATAC	ATAC
 
