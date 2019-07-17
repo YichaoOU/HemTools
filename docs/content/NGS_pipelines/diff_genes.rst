@@ -72,6 +72,11 @@ Usage
 
     diffGenes.py -f fastq.tsv -d design.matrix -g hg19
 
+A note on logFC
+^^^^^^^^^^^^^^^
+
+Sleuth uses `beta` from wald test as a biased estimator for logFC. It gives lower fold change for high variance transcript/gene. "For instance, if there is a very little variation for a transcript, the beta-value is very close to being the fold change measure. For a transcript with high variability, the beta will account for less of the estimated counts."
+
 Output
 ^^^^^^
 
@@ -103,6 +108,13 @@ Report bug
 .. code:: bash
 
     $ HemTools report_bug
+
+Reference
+^^^^^^^^^
+
+https://bl.ocks.org/jaquol/03f41f57dc6b0eacef101e9920f24d78
+
+
 
 Comments
 ^^^^^^^^
