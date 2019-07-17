@@ -3,14 +3,15 @@ Call IDR peaks given bam files from two replicates
 
 ::
 
-	usage: idr_peaks.py [-h] [-j JID] -r1 R1_INPUT -r2 R2_INPUT --merged_input
-	                    MERGED_INPUT [-g GENOME] [--macs_genome MACS_GENOME]
+	usage: idr_peaks.py [-h] [-j JID] -r1 R1_INPUT -r2 R2_INPUT
+	                    [--merged_input MERGED_INPUT] [-g GENOME]
+	                    [--macs_genome MACS_GENOME]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        idr_peaks_yli11_2019-07-08)
+	                        idr_peaks_yli11_2019-07-17)
 	  -r1 R1_INPUT, --R1_input R1_INPUT
 	                        TSV file, 2 columns, treatment, control files for
 	                        replicate 1 (default: None)
@@ -18,8 +19,7 @@ Call IDR peaks given bam files from two replicates
 	                        TSV file, 2 columns, treatment, control files for
 	                        replicate 2 (default: None)
 	  --merged_input MERGED_INPUT
-	                        TSV file, 4 columns, treatment, control files for
-	                        replicate 2 (default: None)
+	                        Not for end-user anymore (default: None)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -54,7 +54,7 @@ This is a two-column tsv file (treatment R1 and contol R1). An example is shown 
 
 ::
 
-/path_to_file/1047954_Hudep2_CTCF_IP_50bp.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp.markdup.bam
+	/path_to_file/1047954_Hudep2_CTCF_IP_50bp.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp.markdup.bam
 
 **R2 Input**
 
@@ -62,33 +62,22 @@ This is a two-column tsv file (treatment R2 and contol R2). An example is shown 
 
 ::
 
-/path_to_file/1047954_Hudep2_CTCF_IP_50bp_R2.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp_R2.markdup.bam
-
-**Merged Input**
-
-This is a 4-column tsv file (treatment R1 and contol R1, treatment R2 and contol R2), an example is shown below:
-
-::
-
-	/path_to_file/1047954_Hudep2_CTCF_IP_50bp.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp.markdup.bam	/path_to_file/1047954_Hudep2_CTCF_IP_50bp_R2.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp_R2.markdup.bam
-
-.. tip:: Once you have R1_input and R2_input, you can simply run the following command to generate this file.
-
-
-.. code:: bash
-
-	paste R1_input R2_input > merged_input
+	/path_to_file/1047954_Hudep2_CTCF_IP_50bp_R2.markdup.bam	/path_to_file/1047955_Hudep2_input_50bp_R2.markdup.bam
 
 
 Usage
 ^^^^^
 
-Note that if you are working on mouse genome, you have to change both ``-g`` and ``--macs_genome`` options.
+.. code:: bash
+
+	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs
+
+
+Note that if you are working on mouse genome, you have to change both ``-g`` and ``--macs_genome`` options, for example:
 
 .. code:: bash
 
-	idr_peaks.py -r1 R1_input -r2 R2_input --merged_input merged_input -g hg19 --macs_genome hs
-
+	idr_peaks.py -r1 R1_input -r2 R2_input -g mm9 --macs_genome mm
 
 Output
 ^^^^^^
