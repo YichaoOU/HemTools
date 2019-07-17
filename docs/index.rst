@@ -25,6 +25,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Differential_analysis/index
    content/Notes/notes
    content/Machine_learning/index
+   content/CRISPR/index
 
 General principles
 ^^^^^^^^^^^^^^^^^^
