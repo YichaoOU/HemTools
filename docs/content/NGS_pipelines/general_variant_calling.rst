@@ -47,12 +47,19 @@ This is a general variant calling pipeline using samtools mpileup, which could b
 
 Currently, this pipeline only works on hg19. Additional reference data need to be generated for other genomes.
 
+Flowchart
+^^^^^^^^^
+
+.. image:: ../../images/general_variant_calling.png
+	:align: center
+
+
 Input
 ^^^^^
 
 **bam.list**
 
-A tsv file with 2 columns: path to bam file and a sample ID.
+A tsv file with 2 columns: path to bam file and a sample ID. Each line will produce a vcf file named as ``[sampleID].final.vcf``.
 
 ::
 
