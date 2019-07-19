@@ -23,7 +23,7 @@ This pipeline generates gene expression table and several figures described as b
 
 Note that Single-cell differential expression analysis is not implemented yet.
 
-.. note:: Should work for hg19, hg38, mm9, mm10. However, I only tested hg19.
+.. note:: Should work for hg19, hg38, mm10. However, I only tested hg19. No mm9 ref data.
 
 Flowchart
 ^^^^^^^^^
