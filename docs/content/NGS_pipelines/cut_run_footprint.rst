@@ -117,6 +117,8 @@ Go to your data directory and type the following.
 Output
 ^^^^^^
 
+You will receive a notification email when everything is finished.
+
 An example of the output structure (inside job ID folder) is shown below, files that you might need are highlighted.
 
 ::
