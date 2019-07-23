@@ -61,6 +61,12 @@ This pipeline takes in a bam file and a narrowPeak file (or any bed file), gener
 
 Only properly-paired reads are used. Users can control maximal fragment size, default is 150bp. For CUT & RUN, some people also use 120bp. You can also use a big number, like 9999, in that case, all sizes of fragment will be used.
 
+Flowchart
+^^^^^^^^^
+
+.. image:: ../../images/cut_run_footprint.png
+	:align: center
+	
 Example
 ^^^^^^^
 
