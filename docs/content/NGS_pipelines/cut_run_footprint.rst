@@ -121,25 +121,25 @@ An example of the output structure (inside job ID folder) is shown below, files 
 
 ::
 
-cut_run_footprint_yli11_2019-07-23
-├── banana
-│   ├── centipede
-│   ├── cut_sites
-│   │   ├── ``banana.bw``
-│   └── motif_mapping
-│       ├── JASPA_MA0035.3_GATA1
-│       │   ├── ``fimo.png``
-│       ├── JASPA_MA0050.2_IRF1
-│       │   ├── ``fimo.png``
-├── log_files
-└── out1
-    ├── centipede
-    ├── cut_sites
-    │   └── out1.bw
-    └── motif_mapping
-        ├── JASPA_MA0035.3_GATA1
-        ├── JASPA_MA0050.2_IRF1
-        └── JASPA_MA0148.3_FOXA1
+	cut_run_footprint_yli11_2019-07-23
+	├── banana
+	│   ├── centipede
+	│   ├── cut_sites
+	│   │   ├── ``banana.bw``
+	│   └── motif_mapping
+	│       ├── JASPA_MA0035.3_GATA1
+	│       │   ├── ``fimo.png``
+	│       ├── JASPA_MA0050.2_IRF1
+	│       │   ├── ``fimo.png``
+	├── log_files
+	└── out1
+	    ├── centipede
+	    ├── cut_sites
+	    │   └── out1.bw
+	    └── motif_mapping
+	        ├── JASPA_MA0035.3_GATA1
+	        ├── JASPA_MA0050.2_IRF1
+	        └── JASPA_MA0148.3_FOXA1
 
 motif footprint - cut probability
 """""""""""""""""""""""""""""""""
@@ -161,7 +161,7 @@ Go to your Job ID folder and do the following:
 
 	module load python/2.7.13
 
-    HemTools report_bug
+	HemTools report_bug
 
 Reference
 ^^^^^^^^^
