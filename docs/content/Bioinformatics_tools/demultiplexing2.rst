@@ -42,6 +42,7 @@ Edit and save the file in ``sublime text``, and then use ``FileZilla`` to upload
 	#BSUB -n 1
 	#BSUB -q standard
 	#BSUB -R "rusage[mem=10000]"
+	#BSUB -J "Demultiplex"
 
 	module load python/3.7.0
 
