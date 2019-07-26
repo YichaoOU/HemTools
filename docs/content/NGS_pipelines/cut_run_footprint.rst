@@ -147,6 +147,12 @@ Go to your data directory and type the following.
 
     cut_run_footprint.py -f input.tsv
 
+Multi-mapped reads may have MAPQ=0. If you want to keep it, use ``-q 0``
+
+.. code:: bash
+
+    cut_run_footprint.py -f input.tsv -q 0
+
 Output
 ^^^^^^
 
