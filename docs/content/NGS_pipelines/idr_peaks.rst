@@ -68,6 +68,16 @@ This is a two-column tsv file (treatment R2 and contol R2). An example is shown 
 Usage
 ^^^^^
 
+Go to your data directory and type the following.
+
+**Step 0: Load python version 2.7.13.**
+
+.. code:: bash
+
+    module load python/2.7.13
+
+**Step 1: Run the program**
+
 .. code:: bash
 
 	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs
