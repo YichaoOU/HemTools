@@ -202,6 +202,10 @@ Reference
 
 https://bedtools.readthedocs.io/en/latest/content/tools/genomecov.html
 https://www.ncbi.nlm.nih.gov/pubmed/21106904
+
+http://www.bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
+
+
 Pipeline script
 ^^^^^^^^^^^^^^^
 
