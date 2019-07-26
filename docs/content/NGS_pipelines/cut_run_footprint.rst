@@ -57,9 +57,9 @@ This pipeline uses the footprint.sh code from https://bitbucket.org/qzhudfci/cut
 
 This pipeline is also deposited at: https://github.com/YichaoOU/cut_run_footprinting
 
-This pipeline takes in a bam file and a narrowPeak file (or any bed file), generate footprint figures for all motifs (500+) in JASPAR database and output a cut_sites.bw file.
+This pipeline takes in a bam file and a narrowPeak file (or any bed file), generate footprint figures for all motifs identified by Homer, including known motifs.
 
-Only properly-paired reads are used. Users can control maximal fragment size, default is 150bp. For CUT & RUN, some people also use 120bp. You can also use a big number, like 9999, in that case, all sizes of fragment will be used.
+Only properly-paired reads are used. Users can control maximal fragment size, default is 150bp. For CUT & RUN, some people also use 120bp. You can also use a big number, like 9999, in that case, all sizes of fragment will be used. ``I haven't tested differences between fragment sizes.``
 
 Interpreting results
 ^^^^^^^^^^^^^^^^^^^^
@@ -78,17 +78,42 @@ Flowchart
 Example
 ^^^^^^^
 
+motif footprint HTML report (Main)
+"""""""""""""""""""""""""""""""""
+
+The html file is for quickly scanning through the results. For high-quality motif-occuring position density figures, go to ``homer_motifs_result/homer_all_motifs/*png``. For high-quality motif footprint figures, go to ``motif_mapping/``, here each motif has a folder, inside each folder, you will see ``footprint.lambda.strand_combined.png`` (this one is the figure in the html file). You can also find the ``footprint.png``, which shows two strands cut-probability. Sometimes we can see strand differences, we are not sure how to explain this right now.
+
+.. image:: ../../images/cut_run_footprint_html_result.png
+	:align: center
+
+motif footprint HTML report (not good ones)
+"""""""""""""""""""""""""""""""""
+
+.. image:: ../../images/cut_run_footprint_bed_result.png
+	:align: center
+
+
+cut sites count (Main)
+""""""""""""""""""""""
+
+.. image:: ../../images/cut_sites_bw.PNG
+	:align: center
+
 motif footprint - cut probability
 """""""""""""""""""""""""""""""""
+
+You can also find ``footprint.png`` inside the ``motif_mapping`` folder, which shows two strands cut-probability.
 
 .. image:: ../../images/cut_run_footprint_GATA1.png
 	:align: center
 
-cut sites count 
-"""""""""""""""
+More footprint figures for reference:
 
-.. image:: ../../images/cut_sites_bw.PNG
-	:align: center
+https://academic.oup.com/view-large/figure/84773029/btw209f1p.gif
+
+https://www.biorxiv.org/content/biorxiv/early/2019/01/22/525808.full.pdf
+
+https://www.regulatory-genomics.org/hint/tutorial/
 
 
 Input
@@ -127,29 +152,22 @@ Output
 
 You will receive a notification email when everything is finished.
 
-An example of the output structure (inside job ID folder) is shown below, files that you might need are highlighted.
+An example of the output structure (inside job ID folder) is shown below, files that you might need are commented ##.
 
 ::
 
-	cut_run_footprint_yli11_2019-07-23
-	├── banana
-	│   ├── centipede
+	├── Banana
+	│   ├── bam_file
+	│   ├── cut_sites ## cut sites bw is here ##
+	│   ├── homer_motifs_result ## take a look at the homer results, e.g., p-values ##
+	│   ├── motif_mapping ## footprint figures are here ##
+	│   ├── output.html ## this report has been emailed to you ##
+	├── test_out_name
+	│   ├── bam_file
 	│   ├── cut_sites
-	│   │   ├── ``banana.bw``
+	│   ├── homer_motifs_result
 	│   └── motif_mapping
-	│       ├── JASPA_MA0035.3_GATA1
-	│       │   ├── ``fimo.png``
-	│       ├── JASPA_MA0050.2_IRF1
-	│       │   ├── ``fimo.png``
-	├── log_files
-	└── out1
-	    ├── centipede
-	    ├── cut_sites
-	    │   └── out1.bw
-	    └── motif_mapping
-	        ├── JASPA_MA0035.3_GATA1
-	        ├── JASPA_MA0050.2_IRF1
-	        └── JASPA_MA0148.3_FOXA1
+
 
 motif footprint - cut probability
 """""""""""""""""""""""""""""""""
@@ -177,7 +195,7 @@ Reference
 ^^^^^^^^^
 
 https://bedtools.readthedocs.io/en/latest/content/tools/genomecov.html
-
+https://www.ncbi.nlm.nih.gov/pubmed/21106904
 Pipeline script
 ^^^^^^^^^^^^^^^
 
