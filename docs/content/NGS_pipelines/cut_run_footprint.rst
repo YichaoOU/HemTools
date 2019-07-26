@@ -83,13 +83,13 @@ motif footprint HTML report (Main)
 
 The html file is for quickly scanning through the results. For high-quality motif-occuring position density figures, go to ``homer_motifs_result/homer_all_motifs/*png``. For high-quality motif footprint figures, go to ``motif_mapping/``, here each motif has a folder, inside each folder, you will see ``footprint.lambda.strand_combined.png`` (this one is the figure in the html file). You can also find the ``footprint.png``, which shows two strands cut-probability. Sometimes we can see strand differences, we are not sure how to explain this right now.
 
-.. image:: ../../images/cut_run_footprint_html_result.png
+.. image:: ../../images/cut_run_footprint_html_result.PNG
 	:align: center
 
 motif footprint HTML report (not good ones)
 """""""""""""""""""""""""""""""""
 
-.. image:: ../../images/cut_run_footprint_bed_result.png
+.. image:: ../../images/cut_run_footprint_bed_result.PNG
 	:align: center
 
 
