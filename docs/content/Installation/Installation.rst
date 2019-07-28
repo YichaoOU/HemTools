@@ -1,7 +1,9 @@
 Installation
 ============
 
-Most APIs are free of installation. Just type the following:
+In all the following installation steps, simply copy-paste them into your terminal and hit enter. If no message returned, that means good!
+
+The main HemTools functionalities are only available for people in Hematology department.
 
 .. code:: bash
 
@@ -11,7 +13,7 @@ Most APIs are free of installation. Just type the following:
 Installation for stand-alone tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-These are quickly implemented small scripts, no need to integrate them into HemTools.
+These stand-alone tools are available for all users.
 
 .. code:: bash
 
