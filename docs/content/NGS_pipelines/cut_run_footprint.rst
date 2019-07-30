@@ -153,6 +153,12 @@ Multi-mapped reads may have MAPQ=0. If you want to keep it, use ``-q 0``
 
     cut_run_footprint.py -f input.tsv -q 0
 
+If you only want to generate ``cut_sites.bw``, use the following:
+
+.. code:: bash
+
+    cut_run_footprint.py -f input.tsv -q 0 --only_cut_sites_bw
+
 Output
 ^^^^^^
 
