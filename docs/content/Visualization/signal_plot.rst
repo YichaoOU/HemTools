@@ -10,9 +10,11 @@ Average signal and heatmap over a bed file
 	                      [--computeMatrix_addon_parameters COMPUTEMATRIX_ADDON_PARAMETERS]
 	                      [--plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS]
 	                      [-u U] [-d D] [--commands_list COMMANDS_LIST]
-	                      [--max_value MAX_VALUE] [--min_value MIN_VALUE]
-	                      [--region_plot] [--one_plot_per_bw]
-	                      (--bw BW | --one_to_one ONE_TO_ONE)
+	                      [--bw_files BW_FILES]
+	                      [--samplesLabel_list SAMPLESLABEL_LIST]
+	                      [--input_list INPUT_LIST] [--max_value MAX_VALUE]
+	                      [--min_value MIN_VALUE] [--one_plot_per_bw]
+	                      (--multi_bw_to_one_bed MULTI_BW_TO_ONE_BED | --one_to_one ONE_TO_ONE)
 
 	plot bigwiggle signals and heatmaps given a list of bed files
 
@@ -20,7 +22,7 @@ Average signal and heatmap over a bed file
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        signal_plot_yli11_2019-07-12)
+	                        signal_plot_yli11_2019-07-30)
 	  --pipeline_type PIPELINE_TYPE
 	                        Not for end-user. (default: signal_plot)
 	  --figure_type FIGURE_TYPE
@@ -32,23 +34,33 @@ Average signal and heatmap over a bed file
 	                        add user-defined parameters to computeMatrix (default:
 	                        )
 	  --plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS
-	                        add user-defined parameters to plotHeatmap (default: )
+	                        add user-defined parameters to plotHeatmap (default:
+	                        --regionsLabel ${COL2})
 	  -u U                  upstream flanking length (default: 5000)
 	  -d D                  downstream flanking length (default: 5000)
-	  --region_plot         By default, only the centers in bed files with
-	                        extended regions are used. This option enables
-	                        plotting signals on the given regions plus extended
-	                        flanking regions (default: False)
+	  --commands_list COMMANDS_LIST
+	                        not for end-user (default: None)
+	  --bw_files BW_FILES   not for end-user (default: None)
+	  --samplesLabel_list SAMPLESLABEL_LIST
+	                        not for end-user (default: None)
+	  --input_list INPUT_LIST
+	                        not for end-user (default: None)
+	  --max_value MAX_VALUE
+	                        generally it is not used, only if you want to scale
+	                        all plots into the same range (default: 9999)
+	  --min_value MIN_VALUE
+	                        generally it is not used, only if you want to scale
+	                        all plots into the same range (default: 9999)
 	  --one_plot_per_bw     Use this option when you want to edit the generated
 	                        pdf by yourself. (default: False)
-	  --bw BW               a list of bigwiggle files (default: None)
+	  --multi_bw_to_one_bed MULTI_BW_TO_ONE_BED
+	                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
+	                        bw_file_label, output_name. Most common usage.
+	                        (default: None)
 	  --one_to_one ONE_TO_ONE
 	                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
 	                        bw_file_label, output_name. Most common usage.
 	                        (default: None)
-
-
-.. note:: ``--bw`` and ``--bed`` options are not implemented.
 
 Summary
 ^^^^^^^
@@ -59,9 +71,16 @@ Given a bed file and a bigwiggle file, plot the average signals (line plot) and 
 Example
 ^^^^^^^
 
+1: ``--one_to_one`` result
+
 .. image:: ../../images/signal_plot.png
 	:align: center
 
+
+2: ``--multi_bw_to_one_bed`` result
+
+.. image:: ../../images/multi_bw_one_bed.png
+	:align: center
 
 Input
 ^^^^^
@@ -99,6 +118,12 @@ You can remove legend by adding ``--plotHeatmap_addon_parameters "--legendLocati
 .. code:: bash
 
     signal_plot.py --one_to_one input.list --plotHeatmap_addon_parameters "--legendLocation none"
+
+In you want to draw one figure containing multiple bw files over one bed file, use the following, note that heatmaps are sorted using the first bw file in your ``input.list``.
+
+.. code:: bash
+
+	signal_plot.py --multi_bw_to_one_bed input.list    
 
 Output
 ^^^^^^
