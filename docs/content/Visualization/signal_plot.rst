@@ -93,9 +93,6 @@ A tsv file containing 5 columns:
 
 You can input multiple lines, each line will produce two figures: one is the center (of your input regions) with extended flanking regions; the other is the actual region plus extended regions. Most likely, you want to look at the center plot. Unless you are looking at gene structure, e.g., TSS vs TES, which you will probably need a region plot.
 
-.. note::  The first column (path_to_bed_file) has to be unique. That means you can do plots with multiple bed to the same bw file, but you can't do plots with the same bed file to multiple bw files in one run. And if you want to do the second option, you have to run the pipeline seperatly, just make sure that the first column is unique, see `FAQ`_. 
-
-
 Usage
 ^^^^^
 
@@ -172,28 +169,9 @@ For y-axis range (line plot), use ``--yMin 1 --yMax 8``.
 
 **4.	``one_to_one`` plot: one bed to N bw files**
 
-As mentioned in the `Input`_ section, current ``one_to_one`` subcommand has to have unique bed files as input. Therefore, if you want to plot N bw files over one bed file, you want to run ``signal_plot.py`` N times. See an example below:
+As mentioned in the `Input`_ section, current ``one_to_one`` subcommand has to have unique bed files as input. 
 
-Suppose you have ``A.bed`` and you want to plot two signal files over A.bed, which are ``B1.bw``, and ``B2.bw``. Then you need to provide two input files. Let’s say they are input1.list and input2.list.
-
-::
-
-	----input1.list-----
-	A.bed    A             B1.bw   B1           Figure1
-
-	-----input2.list-----
-	A.bed    A             B2.bw   B2           Figure2
-
-Then run the command like:
-
-.. code:: bash
-
-	signal_plot.py --one_to_one input1.list --plotHeatmap_addon_parameters " --zMin 1 --zMax 8" -u 2000 -d 2000
-
-	signal_plot.py --one_to_one input2.list --plotHeatmap_addon_parameters " --zMin 1 --zMax 8" -u 2000 -d 2000
-
-
-
+.. note::  This limitation has been resolved.
 
 Comments
 ^^^^^^^^
