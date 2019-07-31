@@ -122,6 +122,11 @@ In you want to draw one figure containing multiple bw files over one bed file, u
 
 	signal_plot.py --multi_bw_to_one_bed input.list    
 
+Addon Parameters
+^^^^^^^^^^^^^^^^
+
+If you are familiar with DeepTools, ``--plotHeatmap_addon_parameters`` and ``--computeMatrix_addon_parameters`` should be very useful for you. These parameters are appended to the DeepTools computeMatrix and plotHeatmap commands, and thus can override existing previous arguments, you don't need to worry about repeated parameter definition in my program and deeptools. Possible addon could be ``--dpi``, ``--binSize``, etc.
+
 Output
 ^^^^^^
 
