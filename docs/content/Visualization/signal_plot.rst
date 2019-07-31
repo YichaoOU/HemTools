@@ -173,6 +173,28 @@ As mentioned in the `Input`_ section, current ``one_to_one`` subcommand has to h
 
 .. note::  This limitation has been resolved.
 
+**5.	Too many back lines?**
+
+.. image:: ../../images/signal_plot_FAQ.png
+	:align: center
+
+If you have a figure like above, it means you have missing values, because black means missing value. There are several ways to handle it, as described here: https://www.biostars.org/p/322414/
+
+Best way, set the missing values as zero:
+
+.. code:: bash
+
+	signal_plot.py --multi_bw_to_one_bed input.list --computeMatrix_addon_parameters " --missingDataAsZero"
+
+Or change the interpolation methods, I tried, not very impressive:
+
+.. code:: bash
+
+	signal_plot.py --multi_bw_to_one_bed input.list --plotHeatmap_addon_parameters " --interpolationMethod gaussian" -j interpolation_gaussian
+
+	signal_plot.py --multi_bw_to_one_bed input.list --plotHeatmap_addon_parameters " --interpolationMethod nearest" -j interpolation_nearest
+
+
 Comments
 ^^^^^^^^
 
