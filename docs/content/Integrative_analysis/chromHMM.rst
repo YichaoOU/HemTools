@@ -234,6 +234,37 @@ For the specific example shown in the `Input`_ section, my command is:
 	2019-07-15 17:35:13,812 - INFO - submit_pipeline_jobs - infer_CS has been submitted; JobID: 83644253
 	2019-07-15 17:35:13,876 - INFO - submit_pipeline_jobs - email has been submitted; JobID: 83644254
 
+**Resume chromHMM analysis from binBam step**
+
+The default memory request is only 10G, you can check if the reason of your failed jobs by looking at ``bin_bam*.out`` in the ``log_files`` folder. For example:
+
+:: 
+
+	TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+	Exited with exit code 143.
+
+	Resource usage summary:
+
+	    CPU time :                                   184.79 sec.
+	    Max Memory :                                 11402 MB
+	    Average Memory :                             5560.85 MB
+	    Total Requested Memory :                     10000.00 MB
+	    Delta Memory :                               -1402.00 MB
+	    Max Swap :                                   -
+	    Max Processes :                              4
+	    Max Threads :                                15
+	    Run time :                                   128 sec.
+	    Turnaround time :                            21017 sec.
+
+To resume the analysis just from this binBam step, add ``--from_binBam``. For example, (also, give it more memory ``-m 100000`` or ``-m 200000``):
+
+.. code:: bash
+
+    chromHMM.py --from_binBam -m 100000 -j [your last failed job ID, has to be exactly the same] [all other parameters has to be the same as previous run]
+
+
+This above script will go to the previous job ID folder, skip BWA steps and re-run other jobs. You can also just simply re-run everything and give it larger memory.
+
 Output
 ^^^^^^
 
