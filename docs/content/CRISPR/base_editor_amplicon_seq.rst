@@ -23,14 +23,15 @@ Running crispresso2 for base editor mode: https://github.com/pinellolab/CRISPRes
 
 The command is:
 
-::
+.. code:: bash
+
 	CRISPResso -r1 ${COL1} 
-		 -r2 ${COL2} 
-		 --amplicon_seq ${COL3} 
-		 --guide_seq ${COL4} 
-		 --quantification_window_size 10 
-		 --quantification_window_center -10
-		 --base_editor_output -o {{jid}}/${COL5}
+	-r2 ${COL2} 
+	--amplicon_seq ${COL3} 
+	--guide_seq ${COL4} 
+	--quantification_window_size 10 
+	--quantification_window_center -10
+	--base_editor_output -o {{jid}}/${COL5}
 
 Input
 ^^^^^
