@@ -114,7 +114,12 @@ Reference
 
 https://bl.ocks.org/jaquol/03f41f57dc6b0eacef101e9920f24d78
 
+Using TPM to compare samples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+See discuss here: https://groups.google.com/forum/#!topic/rsem-users/jJaeaSRG1eo
+
+Basically, TPM is a technology-independent measurement because it is just a relative abundance, so it can be used to compare gene expression across different samples. However, in order to say a gene is truely differentially expressed, you have to have ``absolute`` gene expression, therefore, DESEQ2, EdgeR, sleuth, etc. need to be used for that purposes, they can give you a normalized TPM.
 
 Comments
 ^^^^^^^^
