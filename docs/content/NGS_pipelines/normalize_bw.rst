@@ -53,9 +53,9 @@ Usage
 	
 	hpcf_interactive
 
-    module load python/2.7.13
+	module load python/2.7.13
 
-    normalize_bw.py -f bam.list
+	normalize_bw.py -f bam.list
 
 
 Output
