@@ -121,6 +121,12 @@ See discuss here: https://groups.google.com/forum/#!topic/rsem-users/jJaeaSRG1eo
 
 Basically, TPM is a technology-independent measurement because it is just a relative abundance, so it can be used to compare gene expression across different samples. However, in order to say a gene is truely differentially expressed, you have to have ``absolute`` gene expression, therefore, DESEQ2, EdgeR, sleuth, etc. need to be used for that purposes, they can give you a normalized TPM.
 
+That means:
+
+1. to get differentially expressed genes/transcripts, we need to apply statistical tests, e.g. using sleuth
+
+2. for data visualization, e.g. heatmap, PCA, we can just use TPM and gene-level TPM (ref: Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences)
+
 Comments
 ^^^^^^^^
 
