@@ -71,11 +71,11 @@ The following example will assume that the directory structure is::
 
 ::
 
-	project (this is the root dir)
-	- seq_data1
-	- Banana
-		- seq_data2
-		
+	├── project (this is the root dir)
+	│   ├── seq_data1
+	│   ├── Banana	
+	│   ├── ├── seq_data2	
+
 
 
 
