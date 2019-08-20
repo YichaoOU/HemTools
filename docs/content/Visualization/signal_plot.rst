@@ -165,6 +165,14 @@ Once you have generated the normalized bw files by :doc:`normalized-by-reads-in-
 
 	signal_plot.py --multi_bw_to_one_bed input.list --computeMatrix_addon_parameters " --missingDataAsZero" --plotHeatmap_addon_parameters " --averageTypeSummaryPlot median --colorList white,red"  
 
+Want more colors? See: https://matplotlib.org/examples/color/named_colors.html
+
+You can also give different colors for different heatmap, for example:
+
+.. code:: bash
+
+	signal_plot.py --multi_bw_to_one_bed input.list --computeMatrix_addon_parameters " --missingDataAsZero" --plotHeatmap_addon_parameters " --averageTypeSummaryPlot median --colorList white,red white,green white,blue"  
+
 FAQ
 ^^^
 
