@@ -173,6 +173,10 @@ You can also give different colors for different heatmap, for example:
 
 	signal_plot.py --multi_bw_to_one_bed input.list --computeMatrix_addon_parameters " --missingDataAsZero" --plotHeatmap_addon_parameters " --averageTypeSummaryPlot median --colorList white,red white,green white,blue"  
 
+.. image:: ../../images/signal_plot_multicolor.png
+	:align: center
+	:scale: 20 %
+
 FAQ
 ^^^
 
