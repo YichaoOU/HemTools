@@ -75,12 +75,14 @@ Example
 
 .. image:: ../../images/signal_plot.png
 	:align: center
+	:scale: 30 %
 
 
 2: ``--multi_bw_to_one_bed`` result
 
 .. image:: ../../images/multi_bw_one_bed.png
 	:align: center
+	:scale: 30 %
 
 Input
 ^^^^^
@@ -142,17 +144,20 @@ Due to sequencing depth and/or fraction of reads in peak (FRiP) differences, sig
 
 .. image:: ../../images/signal_plot_unnorm.png
 	:align: center
+	:scale: 30 %
 
 **normalized-by-sequencing-depth plot**
 
 .. image:: ../../images/signal_plot_SDnorm.png
 	:align: center
+	:scale: 30 %
 
 
 **normalized-by-reads-in-peak plot**
 
 .. image:: ../../images/signal_plot_FRIPnorm.png
 	:align: center
+	:scale: 30 %
 
 Once you have generated the normalized bw files by :doc:`normalized-by-reads-in-peak <../NGS_pipelines/normalize_bw_frip>`, you can then run ``signal_plot.py``. This particular example uses:
 
@@ -210,6 +215,7 @@ As mentioned in the `Input`_ section, current ``one_to_one`` subcommand has to h
 
 .. image:: ../../images/signal_plot_FAQ.png
 	:align: center
+	:scale: 30 %
 
 If you have a figure like above, it means you have missing values, because black means missing value. There are several ways to handle it, as described here: https://www.biostars.org/p/322414/
 
