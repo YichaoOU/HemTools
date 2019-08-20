@@ -1,4 +1,4 @@
-Normalized bigwiggle track
+Sequencing-depth and fragment-length normalized bigwiggle track
 ==========================
 
 ::
