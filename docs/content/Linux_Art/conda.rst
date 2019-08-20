@@ -8,4 +8,5 @@ This will create the environment in the root of your group's scratch directory. 
 
 source activate /panfs/pfs.local/scratch/<your_group>/conda/envs/<environment_name>
 
-
+::
+	jupyter notebook --ip='*' --NotebookApp.token='' --NotebookApp.password=''
