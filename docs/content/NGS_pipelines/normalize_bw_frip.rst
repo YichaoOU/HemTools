@@ -58,13 +58,21 @@ Usage
 
 	module load python/2.7.13
 
-	normalize_bw_given_peak.py -f input.list -g hg19 --paired_end_flag
+	normalize_bw_given_peak.py -f input.list --paired_end_flag
 
 For single-end data use:
 
 .. code:: bash
 
-	normalize_bw_given_peak.py -f input.list -g hg19
+	normalize_bw_given_peak.py -f input.list
+
+For other genomes use:
+
+.. code:: bash
+
+	normalize_bw_given_peak.py -f input.list -g hg38
+
+	normalize_bw_given_peak.py -f input.list -g mm10
 
 
 Output
