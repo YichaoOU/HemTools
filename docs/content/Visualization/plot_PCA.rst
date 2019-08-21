@@ -1,4 +1,4 @@
-Visualizing high-dimentional data
+Visualizing high-dimentional data using PCA or UMAP
 =================================
 
 ::
@@ -76,7 +76,7 @@ Visualizing high-dimentional data
 Summary
 ^^^^^^^
 
-Given a dataframe, make a PCA plot. 
+Given a dataframe, make a PCA or UMAP plot. 
 
 Example
 ^^^^^^^
@@ -131,10 +131,35 @@ Or try different parameters:
 .. code:: bash
 	plot_PCA.py -f merged_gene_exp.tsv --index --header --transpose --UMAP --label_by_meaningful_name --UMAP_min_dist 0.7 --UMAP_n_neighbors 7
 
+
 Output
 ^^^^^^
 
 This is an interactive figure, please open the html file.
+
+
+Data exploration for machine learning projects
+^^^^^^
+
+**Input**
+
+Standard ML format uses row for individual samples/instances and column for individual features/predictors. There is another column for the labels if it is supervised learning.
+
+**Aim**
+
+Visualze the sample distribution given selected features.
+
+**Usage**
+
+.. code:: bash
+
+	hpcf_interactive -q standard -R "rusage[mem=10000]"
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/py2/
+
+	plot_PCA.py -f input.csv --color_by_a_col label --header -s , --UMAP
 
 Comments
 ^^^^^^^^
