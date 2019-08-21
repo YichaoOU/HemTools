@@ -66,6 +66,55 @@ Output
 Once the job is finished, you will receive a notification email. Data is downloaded in the Job ID folder.
 
 
+Download large collection of data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Search NCBI SRA databases, find all the data you need**
+
+They are probably belong to different SRA project. In that case, I will download all info table and accession list, rename them has ``PRJNAxxxxxx.list`` and ``PRJNAxxxxxx.info``. For example:
+
+::
+
+	PRJNA396940.info
+	PRJNA401837.list
+	PRJNA413473.info
+	PRJNA396940.list
+	PRJNA401837.info
+	PRJNA413473.list
+
+**Submit multiple jobs**
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	for i in *.list ; do sra_download.py -f $i -j ${i%.list};done
+
+**Check downloaded data**
+
+For this latest sra-tools version, it should have no problem downloading files. However, if you see something like ``fasterq.tmp.nodecn002.23272`` in your result folder, then it means a corrupted data. And you have to download this particular SRR data again.
+
+I have a small script to check all .out files in log_files to see if there are any error occured:
+
+.. code:: python
+
+	import glob
+	files = glob.glob("*/log_files/*out")
+
+	def check(f):
+		lines = open(f).readlines()
+		flag = False
+		for l in lines:
+			if "spots read" in l:
+				flag = True
+		return flag
+
+	for f in files:
+		if not check(f):
+			print (f)
+
 Comments
 ^^^^^^^^
 
