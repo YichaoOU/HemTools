@@ -72,11 +72,9 @@ The following example will assume that the directory structure is::
 ::
 
 	├── project (this is the root dir)
-	│   ├── seq_data1
-	│   ├── Banana	
-	│   ├── ├── seq_data2	
-
-
+	│   ├── seq_data1
+	│   └── Banana
+	│      └── seq_data2
 
 
 Example 1 - download seq_data1
