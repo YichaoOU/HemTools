@@ -70,8 +70,7 @@ For example, all your data is store in some folder inside ``chengLab`` dir, say 
 The following example will assume that the directory structure is::
 
 ::
-
-	├── project (this is the root dir)
+	├── project
 	│   ├── seq_data1
 	│   └── Banana
 	│      └── seq_data2
