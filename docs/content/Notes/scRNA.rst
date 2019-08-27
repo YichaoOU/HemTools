@@ -69,12 +69,26 @@ https://github.com/logstar/scedar
 
 
 
+Seurat installation
+^^^^^^^^^^^^^
+
+::
+	conda create -n single_cell
+	conda activate single_cell
+	conda install -c bioconda r-seurat
+	conda install -c anaconda libopenblas
 
 
+Another installation: https://github.com/satijalab/seurat/issues/1619
+
+Seurat does not return batch-corrected expression values (if we did, we would not be able to compare expression values over different conditions, as these would be subtracted).
+
+https://github.com/satijalab/seurat/issues/283
 
 
+get batch corrected gene distance
 
-
+https://github.com/satijalab/seurat/issues/1118
 
 
 

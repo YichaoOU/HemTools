@@ -39,4 +39,11 @@ Remove path and file ending suffix
 .. code:: bash
 
 	for i in ../*; do echo $(basename $i .narrowPeak);done
-	
+
+Delete files/dir based on dates
+^^^^^^^^^^^^^^^^^^^^^^
+
+https://stackoverflow.com/questions/17945538/delete-directory-based-on-date
+
+::
+	python -m ipykernel install --user --name dash_env --display-name "Python (dash_env)"
