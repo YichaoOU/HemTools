@@ -177,6 +177,19 @@ You can also give different colors for different heatmap, for example:
 	:align: center
 	:scale: 20 %
 
+A note on normalization
+^^^
+
+The purpose of normalization is to compare things at the same "level", however, the definition of ``at the same level`` can be arbitrary. In practice, we want to remove unwanted differences so that expected differences can be enhanced.
+
+For the two normalization plots presented above, one is normalized on genome-wide total reads, the other is on peak-only total reads. 
+
+Using gene expression normalization as an example, the mostly used assumption is that, ``most genes (>50%) are not changed`` (i.e., median should be the same), therefore, median normalization is widely used. If you expect >50% of the genes should be different, then of course, median normalization should not be used. Now, if you know a list of gene should be different, and you use them for median normalization, you may still get differential genes, however, the result can be wierd.
+
+With that gene expression example in mind, let's say you want to do a signal plot given a bed file that contains differential peaks. Since these are differential peaks, you don't want to normalize the bw files using these peaks because the ``differential signal`` is likely to disappear and some wierd signal in the ``flanking regions`` can appear.
+
+
+
 FAQ
 ^^^
 
