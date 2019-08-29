@@ -178,7 +178,7 @@ You can also give different colors for different heatmap, for example:
 	:scale: 20 %
 
 A note on normalization
-^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 The purpose of normalization is to compare things at the same "level", however, the definition of ``at the same level`` can be arbitrary. In practice, we want to remove unwanted differences so that expected differences can be enhanced.
 
