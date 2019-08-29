@@ -81,6 +81,30 @@ Use different genome index
 
     $ HemTools atac_seq -f fastq.tsv -i YOUR_GENOME_INDEX
 
+Example of using different genome index
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Ruopeng masked index**
+
+
+.. image:: ../../images/ruopeng_mask.PNG
+  :align: center
+
+.. code:: bash
+
+    HemTools atac_seq -f fastq.tsv -i /home/yli11/Data/Human/hg19/index/masked_genome/ruopeng_hbg1_promoter/ruopeng_hbg1_promoter.mask.fa
+
+**Li masked index**
+
+
+.. image:: ../../images/Li_mask.PNG
+  :align: center
+
+.. code:: bash
+
+    HemTools atac_seq -f fastq.tsv -i /home/yli11/Data/Human/hg19/index/masked_genome/li_hgb1_promoter/li_hgb1_promoter.mask.fa
+
+
 Comments
 ^^^^^^^^
 

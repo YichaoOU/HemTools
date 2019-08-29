@@ -73,26 +73,34 @@ Go to your fastq files folder and do the following:
 
 	module load python/2.7.13
 
-	hic_hichiper.py --guess_input
+	hic_hichip.py --guess_input
+
+You will get the following message if everything goes as expected.
+
+::
+
+	2019-08-27 17:49:37,043 - INFO - main - preparing input files
+	2019-08-27 17:49:37,044 - INFO - prepare_paired_end_input - Input fastq files preparation complete! ALL GOOD!
+	2019-08-27 17:49:37,044 - INFO - prepare_paired_end_input - Please check if you like the computer-generated labels in : fastq.tsv
 
 
 **run HiC analysis only**
 
 .. code:: bash
 
-	hic_hichiper.py -f fastq.tsv --hicpro
+	hic_hichip.py -f fastq.tsv --hicpro
 
 **run HiChIP analysis (Hichipper only)**
 
 .. code:: bash
 
-	hic_hichiper.py -f fastq.tsv
+	hic_hichip.py -f fastq.tsv
 
 **run HiChIP analysis (Hichipper + MAPS)**
 
 .. code:: bash
 
-	hic_hichiper.py -f fastq.tsv -a anchor.bed
+	hic_hichip.py -f fastq.tsv -a anchor.bed
 
 
 Output

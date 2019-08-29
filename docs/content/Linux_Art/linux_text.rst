@@ -11,6 +11,12 @@ Remove the first line from a file
 	sed -i '1d' file.txt
 
 
+Replace string in file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	sed -i 's/original/new/g' file.txt
 
 Column operations
 ^^^^^^^^^^^^^^^^^
