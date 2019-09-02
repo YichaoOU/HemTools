@@ -59,13 +59,15 @@ Usage
 	atac_seq_footprint.py -f input.list
 
 
+
 Reference
 ^^^^^^^^^
 
 https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
 
+Include conservation may enhance the footprint plot:
 
-
+https://slowkow.github.io/CENTIPEDE.tutorial/
 
 
 

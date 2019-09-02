@@ -177,6 +177,20 @@ You can also give different colors for different heatmap, for example:
 	:align: center
 	:scale: 20 %
 
+Footprint plot
+^^^^^^^^^^^^^^
+
+Given cutsite bw and motif mapping bed file, you can run the following to get a footprint plot:
+
+.. code:: bash
+
+	signal_plot.py --one_to_one input.list --computeMatrix_addon_parameters " --binSize 1 --missingDataAsZero " -u 100 -d 100 --plotHeatmap_addon_parameters " --colorList white,red"
+
+
+
+
+
+
 A note on normalization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
