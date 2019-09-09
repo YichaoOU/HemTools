@@ -187,7 +187,18 @@ Given cutsite bw and motif mapping bed file, you can run the following to get a 
 	signal_plot.py --one_to_one input.list --computeMatrix_addon_parameters " --binSize 1 --missingDataAsZero " -u 100 -d 100 --plotHeatmap_addon_parameters " --colorList white,red"
 
 
+DNA methylation plot
+^^^^^^^^^^^^^^
 
+DNA methylation only occurs at CpG sites, which can be sparse. The key parameter to add is ``--averageTypeBins max``. By default, this is ``mean``, which decreases the signal.
+
+.. code:: bash
+
+	signal_plot.py --one_to_one input.list -u 5000 -d 5000 --plotHeatmap_addon_parameters " --averageTypeSummaryPlot mean --legendLocation none --colorMap jet" --computeMatrix_addon_parameters " --missingDataAsZero --averageTypeBins max --binSize 50 " -j summary_mean_compute_max_jet_bin_50
+
+.. image:: ../../images/mean_max_jet_50.png
+	:align: center
+	:scale: 30 %
 
 
 
