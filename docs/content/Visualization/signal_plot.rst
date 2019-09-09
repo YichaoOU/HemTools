@@ -192,6 +192,8 @@ DNA methylation plot
 
 DNA methylation only occurs at CpG sites, which can be sparse. The key parameter to add is ``--averageTypeBins max``. By default, this is ``mean``, which decreases the signal.
 
+Another cosmetic note: colorMaps like ``jet`` gives better visualization than colorMaps that constist of only 2 or 3 colors.
+
 .. code:: bash
 
 	signal_plot.py --one_to_one input.list -u 5000 -d 5000 --plotHeatmap_addon_parameters " --averageTypeSummaryPlot mean --legendLocation none --colorMap jet" --computeMatrix_addon_parameters " --missingDataAsZero --averageTypeBins max --binSize 50 " -j summary_mean_compute_max_jet_bin_50
