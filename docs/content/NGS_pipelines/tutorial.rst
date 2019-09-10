@@ -58,6 +58,8 @@ Workflow
 
 .. image:: ../../images/workflow.png      
 
+.. note:: Since the upgrade from Red Hat 6 to 7, the ``--short`` option is not working anymore. Just don't add this option to your program is OK.
+
 ATAC-seq example
 ^^^^^^^^^^^^^^^^
 
@@ -81,7 +83,7 @@ ATAC-seq example
 
     HemTools atac_seq -f fastq.tsv --short
 
-.. note:: When using real data, do not use ``--short`` option, since it will submit all jobs to the short queue.
+
 
 Single-end ChIP-seq example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
