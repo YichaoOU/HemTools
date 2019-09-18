@@ -4,7 +4,7 @@ Upload your bw and bed files to protein paint
 Summary
 ^^^^^^^
 
-An easy way to visualizing your data. This program will upload all ``.bw``, ``.bed``, and ``Peak`` files to protein paint. Note that protein paint genome browser is only accessible inside stjude network. 
+An easy way to visualizing your data. This program will upload all ``.bw``, ``.bed``, and ``Peak`` (newly added, ``.bedpe`` and ``.mango``) files to protein paint. Note that protein paint genome browser is only accessible inside stjude network. 
 
 
 .. image:: ../../gallery/ppr.png
