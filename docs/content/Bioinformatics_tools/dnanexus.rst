@@ -69,11 +69,7 @@ For example, all your data is store in some folder inside ``chengLab`` dir, say 
 
 The following example will assume that the directory structure is::
 
-::
-	project/
-	├── Banana
-	│   └── seq_data2
-	└── seq_data1
+.. image:: ../../images/stj_cloud_example_tree.png
 
 Example 1 - download seq_data1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
