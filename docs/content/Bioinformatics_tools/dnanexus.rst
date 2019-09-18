@@ -1,5 +1,5 @@
-DNAnexus download
-=================
+DNAnexus download and upload
+============================
 
 Summary
 ^^^^^^^
@@ -70,11 +70,10 @@ For example, all your data is store in some folder inside ``chengLab`` dir, say 
 The following example will assume that the directory structure is::
 
 ::
-	├── project
-	│   ├── seq_data1
-	│   └── Banana
-	│      └── seq_data2
-
+	project/
+	├── Banana
+	│   └── seq_data2
+	└── seq_data1
 
 Example 1 - download seq_data1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -126,3 +125,33 @@ Option 2: This option will download every file inside your current dir.
 
 	dx download -f *.gz
 
+Upload a dir
+^^^^^^^^^^^^
+
+.. image:: ../../images/stj_cloud_tree.png
+
+In this example, my root dir is ``Share_with_PSU``. My sub-dir is ``test``. In the ``test`` dir, I have ``test1`` folder. In the HPC, I have created a folder called ``test2`` and I want to upload this folder to ``test``. 
+
+So the first step to do is to go to the root dir:
+
+
+.. code:: bash
+
+	module load dx-toolkit
+
+	dx cd projectID
+
+
+Then go to the ``test`` dir:
+
+.. code:: bash
+
+	dx cd test
+
+Finally, upload your ``test2`` folder
+
+.. code:: bash
+
+	dx upload -r test2
+
+Note that ``dx upload -r test2/`` will upload all files in ``test2``. If you want to upload the dir, you should not include the back slash char.	
