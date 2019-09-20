@@ -116,3 +116,14 @@ chromHMM
 | chromatin\_state\_info   | /home/yli11/HemTools/share/misc/chromatin\_state\_info.tsv          |
 +--------------------------+---------------------------------------------------------------------+
 
+RNA-seq data
+------------
+
+Blood lineage data:
+
+Paired-end: /home/yli11/HemPortal/RNA_seq/blood/PRJNA299579
+
+Single-end: /home/yli11/HemPortal/RNA_seq/blood/GSE61566_GSE53983
+
+BE-editor: /research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Projects/BE_editor/GSE121668
+
