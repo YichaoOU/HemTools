@@ -35,3 +35,7 @@ Commonly used python libraries
 	import seaborn as sns
 	import glob
 
+Ignore python warning
+
+export PYTHONWARNINGS="ignore"
+
