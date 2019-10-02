@@ -36,7 +36,12 @@ DESEQ2 for differential peak analysis
 Summary
 ^^^^^^^
 
-This program performs differential peak analysis by taking the union of input peaks (i.e., bedtools merge), counting number of reads (for pair-end, it is number of fragments), then running DESEQ2. At the last step, peaks will be divided into gain or loss, each of which will be used to perform motif discovery using homer.
+This program performs differential peak analysis by taking the union of input peaks (i.e., bedtools merge), counting number of reads (for pair-end, it is number of fragments), then running DESEQ2. At the last step, peaks will be divided into gain or loss, each of which will be used to perform motif discovery using homer. 
+
+.. note:: By default, DESEQ2 normalization is performed on total reads in peaks. You can also do it on raw total reads (i.e., sequencing depth), by using ``--include_unmapped_reads``.
+
+
+
 
 Flowchart
 ^^^^^^^^^
@@ -49,7 +54,13 @@ Usage
 
 .. code:: bash
 
+	hpcf_interactive
+
 	module load python/2.7.12
+
+	dos2unix bams.list
+	dos2unix design_matrix
+	dos2unix peaks.list
 
 	diffPeak.py -b bams.list -d design_matrix -p peaks.list -z 1 
 
