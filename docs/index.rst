@@ -27,6 +27,11 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Machine_learning/index
    content/CRISPR/index
 
+Ask question here
+^^^^^^^^^^^^^^^^^
+
+https://gitter.im/hemtools/community
+
 General principles
 ^^^^^^^^^^^^^^^^^^
 
