@@ -86,6 +86,11 @@ Output
 
 The merged bw file ``merged.bw`` is located at jobID folder. You can also specify the output filename using ``-o`` option.
 
+FAQ
+^^^
+
+Known issue: ChIP-seq IgG or input tracks can't be merged. I don't know why.
+
 Comments
 ^^^^^^^^
 
