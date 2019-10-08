@@ -7,7 +7,11 @@ Merge tables by row names (Any number)
 
 ::
 
-	usage: dataframe_merge.py [-h] [-s SEP] [--intersection] [-o OUTPUT]
+	usage: dataframe_merge.py [-h] [-s SEP] [--index_col INDEX_COL] [--glob GLOB]
+	                          [--header_list HEADER_LIST] [--drop DROP]
+	                          [--name_col_with_filename NAME_COL_WITH_FILENAME]
+	                          [--rename_col_with_filename] [--intersection]
+	                          [-o OUTPUT]
 	                          file [file ...]
 
 	merge input dataframes using row index. Assume input tables contain both row
@@ -21,11 +25,22 @@ Merge tables by row names (Any number)
 	  -s SEP, --sep SEP     this program can infer separator automatically, but it
 	                        may fail. Use auto if the input tables contain
 	                        different separators. (default: auto)
+	  --index_col INDEX_COL
+	                        which col to use as index (default: 0)
+	  --glob GLOB           glob the current dir with file name match to given
+	                        string (default: None)
+	  --header_list HEADER_LIST
+	                        sep by , define your own colum names (default: None)
+	  --drop DROP           try drop this column(s), seperated by , (default:
+	                        None)
+	  --name_col_with_filename NAME_COL_WITH_FILENAME
+	  --rename_col_with_filename
 	  --intersection        merge dataframes only on overlapping row names
 	                        (default: False)
 	  -o OUTPUT, --output OUTPUT
 	                        output table name (default:
-	                        yli11_2019-08-05_e171029beab6.tsv)
+	                        yli11_2019-10-08_c88dbe184e44.tsv)
+
 
 .. note:: This program assumes input tables contain both row names and column names.
 
