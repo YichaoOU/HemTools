@@ -51,6 +51,10 @@ The following code will merge all bw files that match to ``*CTCF*all.bw``
 
 .. code:: bash
 
+	hpcf_interactive
+
+	module load python/2.7.13
+
 	bw_merge.py --glob "*CTCF*all.bw"
 
 .. note:: quotation mark here is required.

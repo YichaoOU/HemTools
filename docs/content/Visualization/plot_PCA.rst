@@ -7,15 +7,15 @@ Visualizing high-dimentional data using PCA or UMAP
 	                   INPUT [--index_using INDEX_USING] [-s SEP]
 	                   [--xlabel XLABEL] [--ylabel YLABEL]
 	                   [--remove_cols REMOVE_COLS]
-	                   [--color_by_a_col COLOR_BY_A_COL]
-	                   [--color_by_a_feature COLOR_BY_A_FEATURE]
-	                   [--UMAP_min_dist UMAP_MIN_DIST] [--UMAP_metric UMAP_METRIC]
+	                   [--color_using COLOR_USING | --color_by_a_col COLOR_BY_A_COL]
+	                   [-n MAXPC] [--UMAP_min_dist UMAP_MIN_DIST]
+	                   [--UMAP_metric UMAP_METRIC]
 	                   [--UMAP_n_neighbors UMAP_N_NEIGHBORS] [--title TITLE]
-	                   [--label_by_first_element] [--label_by_meaningful_name]
-	                   [--UMAP] [--save_projection_df] [--continous_color]
-	                   [--figure_type FIGURE_TYPE] [-o OUTPUT] [--header]
-	                   [--no_col_names] [--no_row_names] [-W WIDTH] [-H HEIGHT]
-	                   [--just_default] [--log2_transform] [--just_plot]
+	                   [--label_by_last3_element] [--label_by_first_element]
+	                   [--label_by_meaningful_name] [--UMAP]
+	                   [--save_projection_df] [--figure_type FIGURE_TYPE]
+	                   [-o OUTPUT] [--header] [-W WIDTH] [-H HEIGHT]
+	                   [--log2_transform]
 
 	plot heatmap given dataframe.
 
@@ -23,7 +23,7 @@ Visualizing high-dimentional data using PCA or UMAP
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        plot_PCA_yli11_2019-08-16)
+	                        plot_PCA_yli11_2019-10-08)
 	  --remove_zero         remove all rows or cols that are zero (default: False)
 	  --index               index is false (default: False)
 	  --transpose           df transpose (default: False)
@@ -40,37 +40,34 @@ Visualizing high-dimentional data using PCA or UMAP
 	  --xlabel XLABEL
 	  --ylabel YLABEL
 	  --remove_cols REMOVE_COLS
+	  --color_using COLOR_USING
+	                        input a file, index should be the same as the input
+	                        data frame (default: None)
 	  --color_by_a_col COLOR_BY_A_COL
-	  --color_by_a_feature COLOR_BY_A_FEATURE
+	                        input a column name to be used for coloring (default:
+	                        None)
+	  -n MAXPC, --maxPC MAXPC
 	  --UMAP_min_dist UMAP_MIN_DIST
 	  --UMAP_metric UMAP_METRIC
 	  --UMAP_n_neighbors UMAP_N_NEIGHBORS
 	  --title TITLE
+	  --label_by_last3_element
 	  --label_by_first_element
 	  --label_by_meaningful_name
 	  --UMAP
 	  --save_projection_df
-	  --continous_color
 	  --figure_type FIGURE_TYPE
 	                        pdf,png,jpeg (default: png)
 	  -o OUTPUT, --output OUTPUT
-	                        output table name (default: yli11_2019-08-16)
+	                        output table name (default: plot_PCA_yli11_2019-10-08)
 	  --header              input table has header (default: False)
-	  --no_col_names        Don't show column names in the heatmap (default:
-	                        False)
-	  --no_row_names        Don't show row names in the heatmap (default: False)
 	  -W WIDTH, --width WIDTH
 	                        Figure width, by default, w=N_row/4, if given, will
 	                        replace the default value (default: 500)
 	  -H HEIGHT, --height HEIGHT
 	                        Figure height, by default, w=N_col/4, if given, will
 	                        replace the default value (default: 500)
-	  --just_default        just plot using default seaborn parameters (default:
-	                        False)
 	  --log2_transform      input values will be log2 transformed (default: False)
-	  --just_plot           with this option, no filters will be applied. This
-	                        program will just plot a heatmap based on the input
-	                        dataframe (default: False)
 
 
 Summary
@@ -160,6 +157,31 @@ Visualze the sample distribution given selected features.
 	source activate /home/yli11/.conda/envs/py2/
 
 	plot_PCA.py -f input.csv --color_by_a_col label --header -s , --UMAP
+
+FAQ
+^^^^^^
+
+
+PCA plot for gene exp results from running ``diffgene.py`` or ``HemTools rna_seq``
+--------------
+
+We will use tpm values calculated from Kallisto. This is stored in individual ``abandunce.tsv`` file. Go to your result dir and do the following
+
+.. code:: bash
+
+	module load python/2.7.13
+
+	dataframe_merge.py --drop length,eff_length,est_counts --rename_col_with_filename -o merged_raw.tsv */*.tsv
+
+	dataframe.py --remove_zero --row --index --header -f merged_raw.tsv -o forPCA.tsv 
+
+	module load conda3
+	source activate /home/yli11/.conda/envs/py2
+
+	plot_PCA.py -f forPCA.tsv --index --header --transpose --label_by_last3_element --log2_transform -o PCA_plot_log2TPM.html
+
+	plot_PCA.py -f forPCA.tsv --index --header --transpose --label_by_last3_element -o PCA_plot_TPM.html
+
 
 Comments
 ^^^^^^^^
