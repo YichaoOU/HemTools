@@ -76,13 +76,47 @@ Input
 
 Sample input examples are shown here: https://benchling.com/s/etr-FHkOZSXjFTUTDROQ2xu2
 
+Input file syntax:
+
+1. File names are separated by comma. No space bettwen them.
+
+2. For design matrix, the first line ``control`` is a keyword. All the remaining lines will be compared to the ``control`` line.
+
+3. Leave the last line blank.
 
 
+Output
+^^^^^^
+
+1. Read count table is generated in DEseq2_results folder
+
+2. DESEQ2 result is generated in homer_motifs folder
+
+FAQ
+^^^^^^
+
+No significant differential peaks, too many adj pvalues = 1
+---------------------------------
+
+P-value calculated is based on mean and variance. If there are no significant results, it means that the estimated dispersion (i.e., variance) is large enough to decrease the significance. This could be due to many reasons. You can try the following:
+
+1. Low number of replicates.
+
+2. How we normalize the reads: try with or without this option. ``--include_unmapped_reads``
+
+3. try to identify outliers
+
+4. try different number of peaks. (MACS2, by varying its p-value threshold, you can get different number of peaks)
+
+5. data quality
+
+6. It is a fact that there is truly no difference.
 
 
+Ref
+^^^
 
+https://support.bioconductor.org/p/95949/
 
-
-
-
+https://www.biostars.org/p/251411/
 
