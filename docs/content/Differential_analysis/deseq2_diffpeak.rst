@@ -98,7 +98,7 @@ FAQ
 No significant differential peaks, too many adj pvalues = 1
 ---------------------------------
 
-P-value calculated is based on mean and variance. If there are no significant results, it means that the estimated dispersion (i.e., variance) is large enough to decrease the significance. This could be due to many reasons. You can try the following:
+P-value calculated is based on mean and variance. If there are no significant results, it means that the estimated dispersion (i.e., variance) is large enough to decrease the significance. This could be due to many reasons. You can try the following (ranked by likelihood):
 
 1. Low number of replicates.
 
