@@ -34,6 +34,14 @@ Gallery (stand-alone tools)
 	:align: center
 	
 
+:doc:`Plot hematopoiesis <plot_blood_lineage>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: ../../images/plot_blood_lineage.PNG
+  :align: center
+  :scale: 50 % 
+
+
 
 
 
