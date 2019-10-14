@@ -300,7 +300,7 @@ In one example I have worked on, H3K4me1 occurs frequently in most of the learne
 
 .. code:: bash
 
-	chromHMM.py -se default_histone_fastq.tsv -d1 default_histone_design.tsv -g mm9 -d_tf special_TF_design.tsv -tf special_TF_fastq.tsv -j p0000005_n8 -n 8 --design_matrix_His special_histone_design.tsv --His_fastq_list special_histone_fastq.tsv --adjust_histone_pvalue 0.0000005 --LearnModel_addon  -u /home/yli11/Share/Megan/figures/chromHMM_input --adjust_TF_pvalue 0.005.
+	chromHMM.py -se default_histone_fastq.tsv -d1 default_histone_design.tsv -g mm9 -d_tf special_TF_design.tsv -tf special_TF_fastq.tsv -j p0000005_n8 -n 8 --design_matrix_His special_histone_design.tsv --His_fastq_list special_histone_fastq.tsv --adjust_histone_pvalue 0.0000005 --LearnModel_addon  -u /path/chromHMM_input --adjust_TF_pvalue 0.005.
 
 In this above command:
 
@@ -309,6 +309,8 @@ In this above command:
 ``-tf`` , ``-d_tf`` and ``--adjust_TF_pvalue`` are the ones applied to user-defined p-value.
 
 ``--His_fastq_list``, ``--design_matrix_His`` and ``--adjust_histone_pvalue`` are the ones applied to user-defined p-value.
+
+``-u`` gives the path to annotation bed files. Note that these bed files have to be stored in a folder named with the genome assembly. For example, suppose my current working dir is ``/path/cwd``. Then I need to create ``/path/cwd/mm9/``, and inside ``mm9`` I can put some sorted 3-column chip-seq bed files or other kind of bed files. Then I have to use ``-u /path/cwd`` not ``/path/cwd/mm9``.
 
 
 Post Processing
