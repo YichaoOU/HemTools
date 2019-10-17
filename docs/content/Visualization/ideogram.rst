@@ -35,7 +35,7 @@ Input
 Output
 ^^^^^^
 
-.. image:: ../../images/bw_corr.png
+.. image:: ../../images/ideogram.PNG
 	:align: center
 
 
