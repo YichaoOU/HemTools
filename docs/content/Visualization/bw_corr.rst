@@ -26,7 +26,7 @@ Plot bw file correlation
 Summary
 ^^^^^^^
 
-Plot spearman correlation given all bw files in the current dir. 
+Plot spearman correlation given all bw files in the current dir. By default, bin size is 10kb.
 
 Input
 ^^^^^
@@ -61,6 +61,10 @@ Go to your data directory and type the following.
 
 	plot_bw_corr.py 
 
+	2019-10-18 14:40:49,646 - INFO - main - The job id is: plot_bw_corr_yli11_2019-10-18
+	2019-10-18 14:40:49,763 - INFO - submit_pipeline_jobs - cor has been submitted; JobID: 88117190
+
+
 .. note:: You can also control the bin size and a specific region to use when calculating correlations. See the example below.
 
 .. code:: bash
@@ -68,6 +72,22 @@ Go to your data directory and type the following.
 	plot_bw_corr.py -b 150 -r chr11:5267561-5277281
 
 
+Example 1 --- compare your ATAC-seq to public blood lineage ATAC-seq
+^^^^^
+
+Save the bw file list in :doc:`blood_data <../Data/blood_data>` as input.list.
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	for i in `cat input.list`;do ln -s $i;done
+
+	## ln -s your own bw files here
+
+	plot_bw_corr.py
 
 
 
