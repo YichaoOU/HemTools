@@ -39,7 +39,7 @@ Input
 
 This file contains 4 columns. The first 3 columns are read1.fastq.gz, read2.fastq.gz, and a UID for output. The 4th column is a group ID, which is used for differential gene expression analysis between any two groups.
 
-You can use HemTools rna_seq --guess_input to generate the first 3 columns and then add the 4th column manually.
+You can use ``HemTools_dev rna_seq --guess_input`` to generate the first 3 columns and then add the 4th column manually.
 
 An example is shown below.
 

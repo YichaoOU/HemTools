@@ -109,6 +109,12 @@ Output
 
 Once the job is finished, you will receive a notification email with the result attached.
 
+In the JobID folder:
+
+match.bed cas-offinder otput bed file (not standard format) showing the matches
+
+match.bed.sorted: sorted standard bed format that are ready to use.
+
 
 Comments
 ^^^^^^^^
