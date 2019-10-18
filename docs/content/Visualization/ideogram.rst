@@ -27,24 +27,17 @@ Plot Chromsome Ideogram
 Summary
 ^^^^^^^
 
+.. image:: ../../images/ideogram.PNG
+	:align: center
 
 Input
 ^^^^^
 
-
-Output
-^^^^^^
-
-.. image:: ../../images/ideogram.PNG
-	:align: center
+A bed file with the first 3 columns specifying chr, start, end. Additional columns are OK, but they are ignored.
 
 
 Usage
 ^^^^^
-
-Go to your data directory and type the following.
-
-**Step 0: Load python version 2.7.13.**
 
 .. code:: bash
 
@@ -52,22 +45,13 @@ Go to your data directory and type the following.
 
 	module load python/2.7.13
 
-**Step 1: Run the program**
+	plot_ideogram.py input.bed
 
-.. code:: bash
-
-	plot_bw_corr.py 
-
-.. note:: You can also control the bin size and a specific region to use when calculating correlations. See the example below.
-
-.. code:: bash
-
-	plot_bw_corr.py -b 150 -r chr11:5267561-5277281
+Note that multiple bed files are accepted. They should be separated by space.
 
 
+Output
+^^^^^
 
-
-
-
-
+An html will be emailed to you.
 
