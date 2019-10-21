@@ -4,14 +4,15 @@ Call IDR peaks given bam files from two replicates
 ::
 
 	usage: idr_peaks.py [-h] [-j JID] -r1 R1_INPUT -r2 R2_INPUT
-	                    [--merged_input MERGED_INPUT] [-g GENOME]
-	                    [--macs_genome MACS_GENOME]
+	                    [--merged_input MERGED_INPUT]
+	                    [--macs2_addon_parameters MACS2_ADDON_PARAMETERS]
+	                    [-g GENOME] [--macs_genome MACS_GENOME]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        idr_peaks_yli11_2019-07-17)
+	                        idr_peaks_yli11_2019-10-21)
 	  -r1 R1_INPUT, --R1_input R1_INPUT
 	                        TSV file, 2 columns, treatment, control files for
 	                        replicate 1 (default: None)
@@ -20,12 +21,14 @@ Call IDR peaks given bam files from two replicates
 	                        replicate 2 (default: None)
 	  --merged_input MERGED_INPUT
 	                        Not for end-user anymore (default: None)
+	  --macs2_addon_parameters MACS2_ADDON_PARAMETERS
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
 	                        genome version: hg19, mm10, mm9 (default: hg19)
 	  --macs_genome MACS_GENOME
 	                        genome version: hs, mm (default: hs)
+
 
 
 Summary
@@ -88,6 +91,13 @@ Note that if you are working on mouse genome, you have to change both ``-g`` and
 .. code:: bash
 
 	idr_peaks.py -r1 R1_input -r2 R2_input -g mm9 --macs_genome mm
+
+For PE-data use:
+
+.. code:: bash
+
+	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs --macs2_addon_parameters " -f BAMPE"
+
 
 Output
 ^^^^^^
