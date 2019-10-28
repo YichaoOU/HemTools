@@ -1,12 +1,10 @@
-Blood data inquiry
+Blood data enrichment test
 ==================
 
 Summary
 ^^^^^^^
 
 This is a suite of tools for users to do an enrichment test given a list of bed files.
-
-Output read counts over given bed.
 
 Input
 ^^^^^
@@ -24,6 +22,17 @@ Additional columns are OK. The first 3 columns have to be chr, start, end.
 	chr11	4167366	4167387	chr11:4167376-4167377
 	chr11	4167367	4167388	chr11:4167377-4167378
 	chr11	4167370	4167391	chr11:4167380-4167381
+
+Output
+^^^^^^^
+
+Blood traits variants/SNPs enrichment heatmap
+----------------------------
+
+.. image:: ../../images/enrichment_heatmap.png
+	:align: center
+
+
 
 Usage
 ^^^^^
@@ -50,5 +59,5 @@ Blood traits variants/SNPs enrichment
 
 .. code:: bash
 
-	GREGOR.py -f bed.lis
+	GREGOR.py -f bed.list
 
