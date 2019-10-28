@@ -54,6 +54,8 @@ Use ``--guess_input`` to automatically generate this.
 
 2. Target bait file (MUST end with ``.txt``)
 
+``Need absolute path to this file``
+
 Columns are: Name, chr, target_start, target_end, chr, exclusion_start, exclusion_end, 1, A.
 
 The last two columns are almost always 1 A, which means that I don't have a SNP defined.
@@ -72,7 +74,7 @@ Usage
 
 	module load python/2.7.13
 
-	captureC.py -f fastq.tsv -t HS3_Coordinate_File.txt
+	captureC.py -f fastq.tsv -t /path/to/HS3_Coordinate_File.txt
 
 
 Reference
