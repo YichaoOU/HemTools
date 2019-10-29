@@ -118,10 +118,23 @@ HiChIP anallysis (HiChipper): hichipper_results
 
 HiChIP anallysis (MAPS): MAPS_output, feather_output
 
+QC report
+^^^^^^^^^
+
+Multi-QC HTML report
+--------------------
+
+You should be able to find ``multiqc_report.html`` in the hicpro_results folder.
 
 
+.. image:: ../../images/hicpro-multiqc-report.png
+	:align: center
 
 
+HicPro QC figures
+-----------------
+
+They are in ``hicpro_results/hic_results/pic/``
 
 
 
