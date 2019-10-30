@@ -78,6 +78,14 @@ You can always see all available sub-commands by:
 FAQ
 ^^^
 
+How do I list all of my past analyses?
+---------------------------------
+
+All the locations of the past analyses are logged here:  ``~/.hemtools_meta/my_dir.csv``
+
+Error loading python
+---------------------------------
+
 .. code:: bash 
   /hpcf/apps/python/install/2.7.13/bin/python: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
 

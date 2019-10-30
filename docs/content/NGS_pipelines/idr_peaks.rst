@@ -6,13 +6,13 @@ Call IDR peaks given bam files from two replicates
 	usage: idr_peaks.py [-h] [-j JID] -r1 R1_INPUT -r2 R2_INPUT
 	                    [--merged_input MERGED_INPUT]
 	                    [--macs2_addon_parameters MACS2_ADDON_PARAMETERS]
-	                    [-g GENOME] [--macs_genome MACS_GENOME]
+	                    [-g GENOME] [--macs_genome MACS_GENOME] [-b BLACK_LIST]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        idr_peaks_yli11_2019-10-21)
+	                        idr_peaks_yli11_2019-10-30)
 	  -r1 R1_INPUT, --R1_input R1_INPUT
 	                        TSV file, 2 columns, treatment, control files for
 	                        replicate 1 (default: None)
@@ -28,6 +28,9 @@ Call IDR peaks given bam files from two replicates
 	                        genome version: hg19, mm10, mm9 (default: hg19)
 	  --macs_genome MACS_GENOME
 	                        genome version: hs, mm (default: hs)
+	  -b BLACK_LIST, --black_list BLACK_LIST
+	                        Blacklist file (default: /home/yli11/Data/Human/hg19/a
+	                        nnotations/hg19.blacklist.bed)
 
 
 
@@ -37,6 +40,13 @@ Summary
 IDR peaks are conserved binding peaks that usually can boost motif enrichment. Note that peaks called from individual replicate can be still useful.
 
 In the output, you will receive two emails. One is the link to the GREAT analysis (i.e., peak annotations). The other one is a notification of job completion.
+
+**10/30/2019**
+
+Parameters have been updated. Basically MACS2 callpeak uses ``-p 0.2`` cutoff to produce more peaks, then top 500K is used. With these changes, the number of final peaks should increase. We expect the number of IDR peaks (cutoff at 5%) should be around 10K to 40K. One can use ``--macs2_addon_parameters " -p 0.05"`` to control the number of called peaks, and these will decrease the number of final peaks.
+
+Current peak calling method does not apply to ATAC-seq by default. One can generate ATAC-seq peaks using ``--macs2_addon_parameters " --nomodel --shift -100 --extsize 200"`` option.
+
 
 Flowchart
 ^^^^^^^^^
@@ -102,7 +112,7 @@ For PE-data use:
 Output
 ^^^^^^
 
-IDR peaks is shown in ``idr_peaks.bed``
+IDR peaks is shown in ``idr_peaks.rmblck.bed``
 
 You can also find outputs from homer analysis: ``homer_motifs_result`` and ``idr_peaks.annotated.tsv``
 
