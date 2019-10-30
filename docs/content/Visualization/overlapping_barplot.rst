@@ -23,10 +23,14 @@ Overlapping Barplot
 Summary
 ^^^^^^^
 
+If you have many Venn Diagrams, this overlapping bar chart might be a good way to combine them into one figure. Note that this is only applicable to 2-set overlaps.
+
+Y-axis is the total number of items in each set. X-axis is the groups, which can be banana, apple and oranges. Legend shows the two conditions in each group, for example, it can be western vs. eastern or A vs. B.
 
 .. image:: ../../images/overlapping_barplot_full.PNG
 	:align: center
 
+If the range is too big, it might be helpful to zoom in. Here, the Y-axis limit is set to half of the maximal count.
 
 .. image:: ../../images/overlapping_barplot_hafl.PNG
 	:align: center
@@ -34,6 +38,8 @@ Summary
 
 Input
 ^^^^^^
+
+The input format is very strict. Header should be exactly the same. Groups column is most likely to be strings, e.g., banana, orange, apple. Total_count_each is the number of items in each set. Conditions are the names of the two sets. Intersection is the amount of overlaps.
 
 ::
 
