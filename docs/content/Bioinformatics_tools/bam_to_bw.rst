@@ -36,7 +36,7 @@ Filter bam files and generate bw files
 Summary
 ^^^^^^^
 
-Read all bam files in the current dir, keep only properly paired mapped reads (``-f 3``) and remove ummapped and duplicated reads (``-F 4 -F 8 -F 1024``). Lastly, generate bw files using the filtered bam files.
+Read all bam files in the current dir, keep only properly paired mapped reads (``-f 3``), remove ummapped and duplicated reads (``-F 4 -F 8 -F 1024``), and filter out low MAPQ reads (``-q 5``, this will also remove multi-mapped reads). Lastly, generate bw files using the filtered bam files.
 
 Input
 ^^^^^
@@ -91,7 +91,7 @@ Source code
 	cd {{jid}}
 
 	# filter
-	samtools view -b -h -f 3 -F 4 -F 8 -F 1024 -o $outbam $inbam
+	samtools view -b -h -f 3 -F 4 -F 8 -F 1024 -q 5 -o $outbam $inbam
 
 	# index filter bam
 
