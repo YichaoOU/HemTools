@@ -41,16 +41,13 @@ Read all bam files in the current dir, keep only properly paired mapped reads (`
 Input
 ^^^^^
 
-A list of bdg files.
+No need to prepare an input list of files. This program will parse all files in a specified pattern.
 
-::
+For example:
 
-	input.list
-	----------
+``*.bam`` will match all bam files in the current dir.
 
-	CADD.norm.bdg
-	DeepSEA.norm.bdg
-	EBM_FDR.norm.bdg
+``../../../*.rmdup.bam`` will match all rmdup.bam files in up 3 dir level. 
 
 Output
 ^^^^^^
