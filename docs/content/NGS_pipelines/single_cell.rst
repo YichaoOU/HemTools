@@ -3,9 +3,35 @@ Single-cell RNA-seq analysis
 
 :: 
 
+	usage: single_cell.py [-h] [-j JID] [--pipeline_type PIPELINE_TYPE] -f
+	                      INPUT_LIST [-g GENOME] [--genes GENES]
+	                      [--cellranger_refdata CELLRANGER_REFDATA]
+
+	perform 10X single-cell RNA-seq analysis
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+	                        Every output will be moved into this folder. (default:
+	                        single_cell_yli11_2019-11-01)
+	  -f INPUT_LIST, --input_list INPUT_LIST
+	                        A list of group name (fastq file prefix). (default:
+	                        None)
+	  -g GENOME, --genome GENOME
+	                        genome version: hg19, hg38, mm10. (default: hg38)
+	  --genes GENES         Genes to inspect, use Ensembl ID, separated by ,.
+	                        (default: ENSG00000213934,ENSG00000196565)
+	  --cellranger_refdata CELLRANGER_REFDATA
+	                        Not for end-user (default: /research/rgs01/application
+	                        s/hpcf/authorized_apps/rhel7_apps/cellranger/refdata
+	                        /refdata-cellranger-GRCh38-3.0.0/)
+
 
 Summary
 ^^^^^^^
+
+
+
 
 This pipeline generates gene expression table and several figures described as below:
 
@@ -23,13 +49,10 @@ This pipeline generates gene expression table and several figures described as b
 
 Note that Single-cell differential expression analysis is not implemented yet.
 
-.. note:: Should work for hg19, hg38, mm10. However, I only tested hg19. No mm9 ref data.
+.. note:: Available genomes are hg19, hg38, mm10. hg38 and mm10 supports lateset Chromium 3' gene expression library, including V3, V3.1 and V3.2. Hg19 only works with V2. Default genome is hg38.
 
-Flowchart
-^^^^^^^^^
+11/1/2019, currently only gene expression quantification is implemented.
 
-.. image:: ../../images/general_variant_calling.png
-	:align: center
 
 Input
 ^^^^^
