@@ -32,7 +32,13 @@ Blood traits variants/SNPs enrichment heatmap
 .. image:: ../../images/enrichment_heatmap.png
 	:align: center
 
+Blood traits variants/SNPs enrichment ranked list
+----------------------------
 
+::
+
+	[yli11@nodecn262 summary_files]$ ls *.list
+	P_value_ranked.list  SNP_count_ranked.list
 
 Usage
 ^^^^^
@@ -49,15 +55,18 @@ Blood traits variants/SNPs enrichment
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        GREGOR_yli11_2019-10-30)
+	                        GREGOR_yli11_2019-11-06)
 	  -s SNP_LIST, --SNP_list SNP_LIST
-	                        Please provide absolute path (default: /research/rgs01
-	                        /project_space/chenggrp/blood_regulome/chenggrp/Data_r
-	                        esource/blood_traits/VJ_2019/VJ075.list)
+	                        Please provide absolute path if you use custom SNP
+	                        list (default: /research/rgs01/project_space/chenggrp/
+	                        blood_regulome/chenggrp/Data_resource/blood_traits/VJ_
+	                        2019/VJ01.list)
 	  -n SNP_DATABASE_NAME, --SNP_database_name SNP_DATABASE_NAME
-	                        options are VJ01, VJ025, VJ05, VJ075 (default: VJ01)
+	                        options are custom, hg19_gwas, VJ01_combined, VJ01,
+	                        VJ025, VJ05, VJ075 (default: VJ01)
 	  -f BED_LIST, --bed_list BED_LIST
 	                        absolute or relative path (default: None)
+	  --template_config TEMPLATE_CONFIG
 
 
 
@@ -68,4 +77,23 @@ Blood traits variants/SNPs enrichment
 	module load python/2.7.13
 
 	GREGOR.py -f bed.list -n VJ01
+
+.. note:: You can provide your own SNP list using ``-n custom -s YOUR_list`` option. The SNP list file specifies the absolute paths to several trait-SNP lists. See below for an example of custom SNP list.
+
+**-s YOUR_list**
+
+You can have any number of list here.
+
+::
+	-----YOUR_list------
+
+	/path/to/banana.list
+
+**actual SNP locations (e.g., banana.list)**
+
+::
+	-banana.list--
+
+	chr2:423434234
+	chr4:463421444
 
