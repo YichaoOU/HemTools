@@ -4,16 +4,34 @@ Crispresso2 for Base editor
 
 ::
 
-	usage: crispresso2_BE.py [-h] [-j JID] [-f INPUT_LIST]
+	usage: crispresso2_BE.py [-h] [-j JID]
+	                         (-f INPUT_LIST | --gRNA_and_primers GRNA_AND_PRIMERS)
+	                         [-g GENOME] [--genome_fasta GENOME_FASTA]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        crispresso2_BE_yli11_2019-08-12)
+	                        crispresso2_BE_yli11_2019-11-07)
 	  -f INPUT_LIST, --input_list INPUT_LIST
 	                        tsv 5 columns, R1.fastq, R2.fastq, amplicon_seq,
 	                        gRNA_seq, output_name (default: None)
+	  --gRNA_and_primers GRNA_AND_PRIMERS
+	                        tsv 4 columns, unique ID that matches to fastq file
+	                        name, gRNA seq, Forward Primer, Reverse Primer
+	                        (default: None)
+
+	Genome Info:
+	  -g GENOME, --genome GENOME
+	                        genome version: hg19, hg38, mm9, mm10. By default,
+	                        specifying a genome version will automatically update
+	                        index file, black list, chrom size and
+	                        effectiveGenomeSize, unless a user explicitly sets
+	                        those options. (default: hg19)
+	  --genome_fasta GENOME_FASTA
+	                        BWA index file (default:
+	                        /home/yli11/Data/Human/hg19/fasta/hg19.fa)
+
 
 
 Summary
@@ -36,12 +54,44 @@ The command is:
 Input
 ^^^^^
 
+Option 1: User input amplicon sequence and gRNA sequence (``-f``)
+--------
+
 A 5-column tsv file: R1.fastq, R2.fastq, amplicon_seq,  gRNA_seq, output_name
 
 ::
 
 	12_S12_L001_R1_001.fastq.gz	12_S12_L001_R2_001.fastq.gz	Amplicon_seq	cttgaccaatagccttgaca	test1
 	XXXX_L001_R1_001.fastq.gz	XXXX_L001_R2_001.fastq.gz	Amplicon_seq	cttgaccaatagccttgaca	Bababa
+
+Option 2: User input Primer sequence and gRNA sequence (``--gRNA_and_primers``)
+-------------------
+
+This option requires a unique ID in the fastq file name.
+
+A 4-column tsv file: unique ID that matches to fastq file name, gRNA seq, Forward Primer, Reverse Primer
+
+My fastq file is like:
+
+::
+
+	gRNA1-ch19_S4_L001_R1_001.fastq.gz
+	gRNA2-ch19_S5_L001_R1_001.fastq.gz
+	gRNA5-ch2_S19_L001_R1_001.fastq.gz
+	gRNA8-ch8_S11_L001_R1_001.fastq.gz
+	gRNA1-ch19_S4_L001_R2_001.fastq.gz
+	gRNA2-ch19_S5_L001_R2_001.fastq.gz
+	gRNA5-ch2_S19_L001_R2_001.fastq.gz
+	gRNA10-ch8_S11_L001_R2_001.fastq.gz
+
+Here, I can use gRNA1, gRNA2, etc. as my unique IDs. However, note that ``gRNA1`` is a substring of ``gRNA10``, so it is better to specify ``gRNA1-`` in your input file. So you will have something like:
+
+::
+
+	gRNA1-	gRNA_seq	Forward_Primer	Reverse_Primer
+	gRNA2	gRNA_seq	Banana	Orange
+	gRNA10	XXXXX	BBBBBB	AAAAAA
+
 
 Usage
 ^^^^^
@@ -54,11 +104,17 @@ Usage
 
 	crispresso2_BE.py -f input.list
 
+OR
+
+.. code:: bash
+
+	crispresso2_BE.py --gRNA_and_primers input.list 
+
 
 Output
 ^^^^^^
 
-Once the job is finished, you will receive a notification email with the result attached. Unzip the file and open the HTML file.
+Once the job is finished, you will receive a notification email with the result attached for each CRISPResso run. Unzip the file and open the HTML file.
 
 
 Comments
