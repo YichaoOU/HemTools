@@ -61,6 +61,7 @@ HiC uses ``HiCPro``
 
 HiChIP uses ``HiCPro+Hichipper`` and ``MAPS``
 
+FitHiC results added after HiCPro, results locate at ``hic_results/matrix``
 
 Usage
 ^^^^^
@@ -135,6 +136,9 @@ HicPro QC figures
 -----------------
 
 They are in ``hicpro_results/hic_results/pic/``
+
+There is a known bug that the labels in `plotMapping.pdf` are wrong: https://github.com/nservant/HiC-Pro/issues/290.
+
 
 
 
