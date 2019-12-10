@@ -46,8 +46,8 @@ A list of gene names.
 
 ::
 
-HBB
-TP53
+	HBB
+	TP53
 
 Parameters
 ^^^^^^^^^^
