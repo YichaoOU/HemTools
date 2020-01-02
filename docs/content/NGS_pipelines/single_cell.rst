@@ -19,8 +19,6 @@ Single-cell RNA-seq analysis
 	                        None)
 	  -g GENOME, --genome GENOME
 	                        genome version: hg19, hg38, mm10. (default: hg38)
-	  --genes GENES         Genes to inspect, use Ensembl ID, separated by ,.
-	                        (default: ENSG00000213934,ENSG00000196565)
 	  --cellranger_refdata CELLRANGER_REFDATA
 	                        Not for end-user (default: /research/rgs01/application
 	                        s/hpcf/authorized_apps/rhel7_apps/cellranger/refdata
