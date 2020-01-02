@@ -182,6 +182,54 @@ We will use tpm values calculated from Kallisto. This is stored in individual ``
 
 	plot_PCA.py -f forPCA.tsv --index --header --transpose --label_by_last3_element -o PCA_plot_TPM.html
 
+**Example 2: merge and plot**
+
+In my current working dir, I have downloaded GSE116177, where it has SE RNA-seq and PE RNA-seq, so I analysized them differently. I also have my own data. ``The first step`` is to find the output from ``HemTools_dev rna_seq`` pipeline, shown below.
+
+
+.. code:: bash
+
+	module load python/2.7.13
+
+	find . -name "rna_seq_yli11_2019*.gene.abundance.csv"
+
+	./GSE116177/renamed_data/single/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv
+
+	./GSE116177/renamed_data/paired/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv
+
+	./combine_129304_134393_140290/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv
+
+Then merge the three datasets:
+
+.. code:: bash
+
+	dataframe_merge.py ./GSE116177/renamed_data/single/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv ./GSE116177/renamed_data/paired/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv ./combine_129304_134393_140290/rna_seq_yli11_2019-12-30/kallisto_files/rna_seq_yli11_2019-12-30.gene.abundance.csv --intersection -o merged_rwu_GSE116177.tsv --drop "Gene Name"
+
+	dataframe_merge.py ./GSE116177/renamed_data/single/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv ./GSE116177/renamed_data/paired/rna_seq_yli11_2019-12-24/kallisto_files/rna_seq_yli11_2019-12-24.gene.abundance.csv ./combine_129304_134393_140290/rna_seq_yli11_2019-12-30/kallisto_files/rna_seq_yli11_2019-12-30.gene.abundance.csv --intersection -o merged_rwu_GSE116177_with_gene_name.tsv
+
+Lastly make a UMAP plot:
+
+.. code:: bash
+
+	module load conda3
+	source activate /home/yli11/.conda/envs/py2
+
+	plot_PCA.py -f merged_rwu_GSE116177.tsv --index --header --transpose --log2_transform  --UMAP -o scaled_UMAP_log2TPM_filtered.html --smart_label --gene_filter_cutoff 1 --shape_by_str GSM --zero_mean_unit_variance
+
+
+
+Parameters in UMAP
+--------------------------
+
+1. Number of clusters
+
+less UMAP_min_dist and less number of neighbors will give more clusters.
+
+``UMAP_n_neighbors`` will have less impact when ``UMAP_min_dist`` <=0.1
+
+Range of ``UMAP_min_dist`` depends on the distance matrics. In most cases, you just need to pick a value from 0 to 1.
+
+
 
 Comments
 ^^^^^^^^
