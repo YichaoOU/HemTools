@@ -12,3 +12,5 @@ $ git push http://example.com/repo.git
 [your credentials are used automatically]
 
 
+https://stackoverflow.com/questions/11403407/git-asks-for-username-every-time-i-push
+

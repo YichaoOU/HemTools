@@ -29,7 +29,7 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools_dev rna_seq --guess_input
+    $ HemTools rna_seq --guess_input
 
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv
@@ -49,6 +49,15 @@ Go to your data directory and type the following.
 .. code:: bash
 
     $ HemTools_dev rna_seq -f fastq.tsv
+
+Single-end input
+^^^^^^^^^^^^^^^^
+
+The input is the same, leave the second column empty.
+
+.. code:: bash
+
+    $ HemTools_dev rna_seq -f fastq.tsv --single
 
 Sample input format
 ^^^^^^^^^^^^^^^^^^^
