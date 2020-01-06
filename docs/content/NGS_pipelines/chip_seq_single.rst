@@ -76,10 +76,13 @@ The quality metrics are provided in the html report. For ChIP-seq data, we also 
 +---------+-----------+
 | PBC1    | >0.9      |
 +---------+-----------+
-| PBC2    | >3        |
+| PBC2    | >10       |
 +---------+-----------+
-| N peaks | >100k     |
+| RSC     | >0.8      |
 +---------+-----------+
+| QTag    | >=1       |
++---------+-----------+
+
 
 https://www.encodeproject.org/atac-seq/
 
