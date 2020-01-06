@@ -63,6 +63,34 @@ This is also a tab-seperated-value format file. The 3 columns are: treatment sam
 .. image:: ../../images/peakcall.tsv.png
 
 
+Quality Control
+^^^^^^^^^^^^^^^
+
+The quality metrics are provided in the html report. For ChIP-seq data, we also provide strand cross-correlation metrics (i.e., those attached pdf files). 
+
+
++---------+-----------+
+| Metrics | Threshold |
++---------+-----------+
+| NRF     | >0.9      |
++---------+-----------+
+| PBC1    | >0.9      |
++---------+-----------+
+| PBC2    | >3        |
++---------+-----------+
+| N peaks | >100k     |
++---------+-----------+
+
+https://www.encodeproject.org/atac-seq/
+
+https://www.encodeproject.org/chip-seq/transcription_factor/
+https://www.encodeproject.org/chip-seq/histone/
+
+https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part0_quality_control.md
+
+
+
+
 Report bug
 ^^^^^^^^^^
 

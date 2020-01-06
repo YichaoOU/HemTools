@@ -69,10 +69,25 @@ Quality Control
 The quality metrics are provided in the html report. For ChIP-seq data, we also provide strand cross-correlation metrics (i.e., those attached pdf files). 
 
 
++---------+-----------+
+| Metrics | Threshold |
++---------+-----------+
+| NRF     | >0.9      |
++---------+-----------+
+| PBC1    | >0.9      |
++---------+-----------+
+| PBC2    | >10       |
++---------+-----------+
+| RSC     | >0.8      |
++---------+-----------+
+| QTag    | >=1       |
++---------+-----------+
+
 
 https://www.encodeproject.org/atac-seq/
 
-
+https://www.encodeproject.org/chip-seq/transcription_factor/
+https://www.encodeproject.org/chip-seq/histone/
 
 https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part0_quality_control.md
 
