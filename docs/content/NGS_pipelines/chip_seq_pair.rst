@@ -63,6 +63,21 @@ This is also a tab-seperated-value format file. The 3 columns are: treatment sam
 
 .. image:: ../../images/peakcall.tsv.png
 
+Quality Control
+^^^^^^^^^^^^^^^
+
+The quality metrics are provided in the html report. For ChIP-seq data, we also provide strand cross-correlation metrics (i.e., those attached pdf files). 
+
+
+
+https://www.encodeproject.org/atac-seq/
+
+
+
+https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part0_quality_control.md
+
+
+
 
 Report bug
 ^^^^^^^^^^
