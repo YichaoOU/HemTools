@@ -38,6 +38,10 @@ This program won't do clustering on genes or samples, purely put your input to a
 
 ::
 
+	hpcf_interactive
+
+	module load python/2.7.13
+
 	plot_gene_exp_heatmap.py -f fdr01.csv --remove_cols AveExpr,t,P.Value,adj.P.Val,B --sort_by logFC -W 8 -H 25 -pdf -o test_heatmap
 
 

@@ -79,6 +79,8 @@ by default ``-u 1000 -d 200``
 
 	module load python/2.7.13
 
+	module load bedtools
+
 	get_promoter.py -f genes.list
 
 
