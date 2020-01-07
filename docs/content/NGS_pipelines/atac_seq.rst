@@ -79,7 +79,7 @@ The quality metrics are provided in the html report. For ChIP-seq data, we also 
 +---------+-----------+
 | PBC2    | >3        |
 +---------+-----------+
-| Num peaks | >100k     |
+|Num peaks| >100k     |
 +---------+-----------+
 
 https://www.encodeproject.org/atac-seq/
