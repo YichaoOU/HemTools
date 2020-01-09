@@ -98,10 +98,6 @@ Pipeline script
 
 .. code-block:: shell
 
-	:linenos:
-
-
-
 
 	=cut GATK 1
 
