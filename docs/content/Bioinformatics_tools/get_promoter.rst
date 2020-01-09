@@ -36,7 +36,7 @@ Extract user-defined gene promoter from refseq TSS database
 Summary
 ^^^^^^^
 
-Currently only work in hg19.
+Currently only work for hg19 or mm9.
 
 
 Input
@@ -84,7 +84,11 @@ by default ``-u 1000 -d 200``
 	get_promoter.py -f genes.list
 
 
+For mouse genome, use:
 
+.. code:: bash
+
+	get_promoter.py -f genes.list -g mm9
 
 
 
