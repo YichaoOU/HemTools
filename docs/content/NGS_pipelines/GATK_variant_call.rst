@@ -35,7 +35,7 @@ Standard GATK variant calling for both human and non-human species
 Summary
 ^^^^^^^
 
-This pipeline is designed for non-human species but it also useful for human. Standard GATK pipeline includes `BWA-MEM mapping`, `bam sort and remove duplicates`, `GATK base recalibration`, `GATK haplotype caller`. Note that variant annotation is not included in this pipeline. 
+This germline variant calling pipeline is designed for non-human species but it also useful for human. Standard GATK pipeline includes `BWA-MEM mapping`, `bam sort and remove duplicates`, `GATK base recalibration`, `GATK haplotype caller`. Note that variant annotation is not included in this pipeline. 
 
 Ref: https://wiki.stjude.org/pages/viewpage.action?pageId=53318458
 
