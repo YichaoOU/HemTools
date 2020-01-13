@@ -66,7 +66,7 @@ Usage
 
 ``-z 1 `` tells the program to submit this job to HPC. Otherwise, diffPeak will just run interactively.
 
-If you want to include all reads for DESEQ normalization, please add ``--include_unmapped_reads`` option.
+If you want to include all reads for DESEQ normalization, please add ``--include_unmapped_reads`` option. Note that this option tends to give a little less significant p-value and logFC.
 
 If you are using single-end bam, please add ``-s`` option.
 
