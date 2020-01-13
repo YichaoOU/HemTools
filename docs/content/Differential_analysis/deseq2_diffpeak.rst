@@ -90,7 +90,8 @@ Output
 
 1. Read count table is generated in DEseq2_results folder
 
-2. DESEQ2 result is generated in homer_motifs folder
+2. DESEQ2 result (``control-[user_input_group].diffRegions.txt``) is generated in homer_motifs folder. ``A logFC < 0 means the peak has less read count in control group.``
+
 
 FAQ
 ^^^^^^
