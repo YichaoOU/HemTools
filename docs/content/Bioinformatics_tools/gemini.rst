@@ -59,7 +59,7 @@ Usage
 
 	source activate /home/yli11/.conda/envs/variant
 
-	gemini load --save-info-string -v input.vcf output.db
+	gemini --annotation-dir /home/yli11/.gemini/data load --save-info-string -v input.vcf output.db
 
 	## this output.db is a binary file
 
