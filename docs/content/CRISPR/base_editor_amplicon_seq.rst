@@ -5,18 +5,23 @@ Crispresso2 for Base editor
 ::
 
 	usage: crispresso2_BE.py [-h] [-j JID]
-	                         (-f INPUT_LIST | --gRNA_and_primers GRNA_AND_PRIMERS)
+	                         (-f INPUT_LIST | --gRNA_and_primers GRNA_AND_PRIMERS | --gRNA_and_primers_BWA GRNA_AND_PRIMERS_BWA)
 	                         [-g GENOME] [--genome_fasta GENOME_FASTA]
+	                         [--index_file INDEX_FILE]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        crispresso2_BE_yli11_2019-11-07)
+	                        crispresso2_BE_yli11_2020-01-14)
 	  -f INPUT_LIST, --input_list INPUT_LIST
 	                        tsv 5 columns, R1.fastq, R2.fastq, amplicon_seq,
 	                        gRNA_seq, output_name (default: None)
 	  --gRNA_and_primers GRNA_AND_PRIMERS
+	                        tsv 4 columns, unique ID that matches to fastq file
+	                        name, gRNA seq, Forward Primer, Reverse Primer
+	                        (default: None)
+	  --gRNA_and_primers_BWA GRNA_AND_PRIMERS_BWA
 	                        tsv 4 columns, unique ID that matches to fastq file
 	                        name, gRNA seq, Forward Primer, Reverse Primer
 	                        (default: None)
@@ -29,13 +34,18 @@ Crispresso2 for Base editor
 	                        effectiveGenomeSize, unless a user explicitly sets
 	                        those options. (default: hg19)
 	  --genome_fasta GENOME_FASTA
-	                        BWA index file (default:
+	                        genome fasta file (default:
 	                        /home/yli11/Data/Human/hg19/fasta/hg19.fa)
+	  --index_file INDEX_FILE
+	                        BWA index file (default: /home/yli11/Data/Human/hg19/i
+	                        ndex/bwa_16a_index/hg19.fa)
 
 
 
 Summary
 ^^^^^^^
+
+only work for hg19. But should be able to work on other genomes.
 
 Running crispresso2 for base editor mode: https://github.com/pinellolab/CRISPResso2
 
@@ -92,6 +102,29 @@ Here, I can use gRNA1, gRNA2, etc. as my unique IDs. However, note that ``gRNA1`
 	gRNA2	gRNA_seq	Banana	Orange
 	gRNA10	XXXXX	BBBBBB	AAAAAA
 
+
+Option 3: User input Primer sequence, gRNA sequence, and remove non-target matched reads (``--gRNA_and_primers_BWA``)
+-------------------
+
+Everything is the same as ``option2``, except that reads that mapped to other genomic regions will be removed from CrisprEsso2 analysis.
+
+Only properly paired reads will be used. Duplicated reads are OK, non-uniquely mapped reads are OK if both R1 and R2 mapped to the target region (determined by in silico PCR).
+
+Low-quality reads are filtered by CrisprEsso2: ``-q 10 -s 10``, default is all 0.
+
+Reads mapping quality is 40 and single base quality is Q40. See the table below. 
+
++---------------+----------------------+
+| Quality Score | Error Probability    |
++---------------+----------------------+
+| Q40           | 0.0001 (1 in 10,000) |
++---------------+----------------------+
+| Q30           | 0.001 (1 in 1,000)   |
++---------------+----------------------+
+| Q20           | 0.01 (1 in 100)      |
++---------------+----------------------+
+| Q10           | 0.1 (1 in 10)        |
++---------------+----------------------+
 
 Usage
 ^^^^^

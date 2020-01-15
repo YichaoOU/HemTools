@@ -56,6 +56,8 @@ Output
 The output file will be emailed to you.
 
 
+.. image:: ../../images/replicate_correlation_scatter.png
+	:align: center
 
 
 
