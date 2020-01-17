@@ -3,7 +3,7 @@ Plot hematopoiesis intensity, blood lineage
 
 ::
 
-	usage: plot_blood_lineage.py [-h] -f INPUT
+	usage: plot_blood_lineage.py [-h] -f INPUT [--min MIN]
 	                             [--custom_color_scale CUSTOM_COLOR_SCALE]
 	                             [--svg_template SVG_TEMPLATE] [-o OUTPUT]
 
@@ -12,6 +12,8 @@ Plot hematopoiesis intensity, blood lineage
 	  -f INPUT, --input INPUT
 	                        2 column tsv, no header, the values for each cell type
 	                        (default: None)
+	  --min MIN             set min value, otherwise infered from data (default:
+	                        None)
 	  --custom_color_scale CUSTOM_COLOR_SCALE
 	                        You can define your own color scheme (linear from
 	                        lowest to highest) using hex color, separated by comma
@@ -19,7 +21,7 @@ Plot hematopoiesis intensity, blood lineage
 	  --svg_template SVG_TEMPLATE
 	  -o OUTPUT, --output OUTPUT
 	                        output file name (default:
-	                        yli11_2019-10-11_c2041fc5d83c)
+	                        yli11_2020-01-17_929f6724faa3)
 
 
 Summary
@@ -65,7 +67,7 @@ Usage
 
 	module load python/2.7.13 
 
-	plot_blood_lineage.py -f input.tsv
+	plot_blood_lineage.py -f input.tsv -o myPlot
 
 Example
 ^^^^
@@ -78,6 +80,23 @@ Example
 
 	plot_blood_lineage.py -f ~/HemTools/share/misc/values.tsv
 
+
+SVG to PDF
+^^^^^^^^^^
+
+Some SVG files will lose the color info when importing to AI. So you can convert them to PDF files first. See code below:
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/pandoc
+
+	rsvg-convert -f pdf -o output_plot.pdf input.svg
+
+Replace ``input.svg`` with the actual SVG file name.
 
 Output
 ^^^^^
