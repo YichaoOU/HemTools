@@ -28,8 +28,6 @@ Given a bed or a bw file, convert the genomic coordinates to a target genome ver
 
 Note that ``-g`` is the **target genome version**. For example, ``-g mm9`` means covert ``mm10`` to ``mm9``.
 
-``--bw`` still has some errors.
-
 
 Input
 ^^^^^
