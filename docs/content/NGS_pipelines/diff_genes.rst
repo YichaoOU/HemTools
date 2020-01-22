@@ -127,6 +127,61 @@ That means:
 
 2. for data visualization, e.g. heatmap, PCA, we can just use TPM and gene-level TPM (ref: Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences)
 
+
+
+
+Build costum Kallisto index for human or mouse
+^^^^^^^^^^^^^^^^^^^
+
+Input
+-----
+
+1. cDNA.fa
+
+2. your custom gene .fa
+
+3. t2g gene transcript to gene name file
+
+Human and Mouse cDNA.fa can be found below:
+
+::
+
+	/home/yli11/Data/Mouse/mm9/index/kallisto/Mus_musculus.NCBIM37.67.cdna.all.fa
+
+	/home/yli11/Data/Mouse/mm10/index/kallisto/mus_musculus/Mus_musculus.GRCm38.cdna.all.fa
+
+	/research/dept/hem/common/sequencing/chenggrp/pipelines/hg19/kallisto/release_75/Homo_sapiens.GRCh37.75.cdna.all.fa
+
+	/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/kallisto/release_94/Homo_sapiens.GRCh38.cdna.all.fa
+
+t2g file can be found at: https://hemtools.readthedocs.io/en/latest/content/Data/hemtools_data.html
+
+
+Steps
+-----
+
+.. code:: bash
+
+	cat your.fa cDNA.fa > custom_genome.fa
+
+	module load kallisto/0.43.1
+
+	kallisto index -i custom_genome.idx custom_genome.fa
+
+For the t2g file, add a new line specifying your custom gene like below:
+
+::
+
+	target_id	ens_gene	ext_gene
+	hgcOPT	hgcOPT	edited_IL2RG
+
+
+Run diffGenes.py
+----------------
+
+diffGenes.py -f fastq.tsv -d design.matrix -g custom -i /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19_hgcOPT.idx --gene_info /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19.ensembl_v75.t2g
+
+
 Comments
 ^^^^^^^^
 
