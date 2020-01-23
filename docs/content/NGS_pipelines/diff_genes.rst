@@ -179,7 +179,9 @@ For the t2g file, add a new line specifying your custom gene like below:
 Run diffGenes.py
 ----------------
 
-diffGenes.py -f fastq.tsv -d design.matrix -g custom -i /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19_hgcOPT.idx --gene_info /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19.ensembl_v75.t2g
+.. code:: bash
+
+	diffGenes.py -f fastq.tsv -d design.matrix -g custom -i /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19_hgcOPT.idx --gene_info /home/yli11/dirs/hgcOPT_insulator/Data/Kallisto_index_add_IL2RG/hg19.ensembl_v75.t2g
 
 
 Comments
