@@ -1,4 +1,4 @@
-Extract Ensembl Gene Name given IDs or names from any databases
+Extract Ensembl Gene Name and IDs given IDs or names from any databases
 ===========================================================
 
 ::
