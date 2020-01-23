@@ -39,6 +39,10 @@ Summary
 
 Currently only work for hg19. Interesting find: SMIM11 gene has definitions in both hg19 and hg38. But SMIM11B is only defined in hg38.
 
+``This program could take a long time!``
+
+Since our program searchs matches in multiple databases, it may take some time to get your results.
+
 
 Input
 ^^^^^
@@ -73,6 +77,7 @@ Output file name is ``to_ensembl_gene_name_USER_DATE.list``
 	TIGAR,ENST00000179259,C12orf5
 
 	==> to_ensembl_gene_name_yli11_2020-01-23.not_found.list <==
+	SMIM11B
 
 
 Usage
