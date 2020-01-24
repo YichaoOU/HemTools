@@ -2,6 +2,8 @@ Generate Motif logo
 ^^^^^^^^^^^^^^^^^^^
 
 
+The following commands provide examples to covert eps to pdf / png.
+
 .. code:: bash
 
 
@@ -13,7 +15,7 @@ Generate Motif logo
 
 	for i in *.eps;do epstopdf $i -o=$i.pdf;done
 
-
+	for i in *.pdf;do convert -density 300 -trim $i -quality 100 $i.png;done
 
 
 
