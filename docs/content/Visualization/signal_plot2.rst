@@ -31,8 +31,6 @@ Put all your peak files and bw files in one folder and use this program to gener
 Example
 ^^^^^^^
 
-1: ``--one_to_one`` result
-
 .. image:: ../../images/signal_plot2.png
 	:align: center
 	:scale: 60 %
