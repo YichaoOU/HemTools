@@ -140,6 +140,29 @@ They are in ``hicpro_results/hic_results/pic/``
 There is a known bug that the labels in `plotMapping.pdf` are wrong: https://github.com/nservant/HiC-Pro/issues/290.
 
 
+FAQ
+^^^
+
+Out of memory error
+-------------------
+
+We requested 160G memory, but it may not be enough. In case that your data is partly processed, you can continue from where it stopped using the following commands:
+
+
+.. code:: bash
+
+	cd /home/yli11/dirs/blood_regulome/chenggrp/Projects/tcells/HiC/HiC_2_3/hic_hichip_qqi_2020-02-24/Tcell_HiC_2_3/hicpro_results
+	time HiC-Pro -c hicpro.config.txt -i bowtie_results/bwt2 -o . -s proc_hic
+	time HiC-Pro -c hicpro.config.txt -i bowtie_results/bwt2 -o . -s quality_checks
+	time HiC-Pro -c hicpro.config.txt -i hic_results/data/ -o . -s merge_persample
+	time HiC-Pro -c hicpro.config.txt -i hic_results/data/ -o . -s build_contact_maps
+	time HiC-Pro -c hicpro.config.txt -i hic_results/matrix/ -o . -s ice_norm
+	source activate /home/yli11/.conda/envs/multiQC/
+	export LC_ALL=en_US.utf-8
+	export LANG=en_US.utf-8
+	multiqc .
+
+
 
 
 

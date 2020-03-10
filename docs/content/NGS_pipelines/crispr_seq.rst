@@ -60,12 +60,12 @@ The file specifies a list of control gRNA names. The names should match to the g
 
 **INPUT 4. Genomic coordinate bed file of gRNA (--bed option, optional).**
 
-Genomic coordinates for gRNAs (Format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization. An example file is shown below.
+Genomic coordinates for gRNAs (at least 4 columns: format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization. An example file is shown below. The last column name should be either gRNA id or gRNA sequence (i.e., the either 1st column or the 2nd column in the gRNA lib file.)
 
 .. code:: bash
 	chr11	4167629	4167649	sgRNA1_gene1
 
-.. tip:: gRNAs locations are optional. If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization.
+.. tip:: gRNAs locations are optional. If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization. gRNA strand info is not required.
 
 Usage
 ^^^^^

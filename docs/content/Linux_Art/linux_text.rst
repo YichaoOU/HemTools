@@ -28,6 +28,15 @@ Column operations
 	awk -F "\t" '{print $1"\t"$2"\t"$3}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3}' test.bed > test2.bed
 
+
+Select lines based on a column value
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	awk -F"\t" '$5 == 0 { print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6 }' matches.bed.sorted > matches.bed
+
+
 Calculating read average length in a Fastq file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -53,3 +62,7 @@ https://stackoverflow.com/questions/17945538/delete-directory-based-on-date
 
 ::
 	python -m ipykernel install --user --name dash_env --display-name "Python (dash_env)"
+
+
+https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image
+
