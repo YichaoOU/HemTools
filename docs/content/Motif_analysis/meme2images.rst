@@ -6,6 +6,9 @@ The following commands provide examples to covert eps to pdf / png.
 
 .. code:: bash
 
+	module load meme
+
+	module load texlive/20190410
 
 	meme2images -eps Supp_File_motif_PWM.meme logo
 
