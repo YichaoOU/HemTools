@@ -85,7 +85,7 @@ A folder that contains:
 - I2.fastq.gz
 - sample_info.csv
 
-``sample_info.csv`` this file name is fixed, has to be exactly the same.
+``sample_info.csv`` this file name is fixed, has to be exactly the same. Format can be found here: https://github.com/editasmedicine/uditas/blob/master/data/fig2c/sample_info.csv
 
 fastq file names have to be exactly the same except for R1, R2, I1, I2.
 
