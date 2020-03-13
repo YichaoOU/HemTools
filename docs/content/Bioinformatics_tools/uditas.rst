@@ -72,19 +72,7 @@ Uditas
 Summary
 ^^^^^^^
 
-This program can extract inward or outward reads from a given BAM file. This problem will only consider properly paired reads and not supplementary alignments. Results are matched to the numbers from ``samtools stats``.
-
-Inward read, or innie, is defined as the read that's mapped to the forward strand comes before the read mapped to the reverse strand when their 5'-end coordinates are compared.
-
-Outward read, or outie, is defined as the read that's mapped to the forward strand comes after the read mapped to the reverse strand when their 5'-end coordinates are compared.
-
-Definition can be found here: https://github.com/samtools/htsjdk/blob/master/src/main/java/htsjdk/samtools/SamPairUtil.java
-
-Examples of outward oriented pairs are highlighted in green. 
-
-.. image:: ../../images/igv_pairs_reads.png
-	:align: center
-
+UDiTaS (UniDirectional Targeted Sequencing) is a method to capture small indels and structural rearrangements. 
 
 Input
 ^^^^^
