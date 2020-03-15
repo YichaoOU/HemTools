@@ -93,6 +93,9 @@ fastq file names have to be exactly the same except for R1, R2, I1, I2.
 Usage
 ^^^^^
 
+Run interactive job
+-------------------
+
 .. code:: bash
 
 	hpcf_interactive -q standard -R "rusage[mem=20000]"
@@ -108,6 +111,26 @@ Usage
 	module load bowtie2/2.2.9
 
 	uditas /path/to/your/input_folder
+
+Submit to HPC
+-------------------
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/uditas_env
+
+	export BOWTIE2_INDEXES=/home/yli11/Data/Human/hg38/bowtie2/
+
+	export GENOMES_2BIT=/home/yli11/Data/Human/hg38/
+
+	module load bowtie2/2.2.9
+
+	bsub -q standard -P genomics -R rusage[mem=40000] uditas /path/to/your/input_folder
+
 
 Output
 ^^^^^^
