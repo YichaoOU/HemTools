@@ -60,6 +60,8 @@ Columns are: Name, chr, target_start, target_end, chr, exclusion_start, exclusio
 
 The last two columns are almost always 1 A, which means that I don't have a SNP defined.
 
+Make sure there's no empty row in this file.
+
 ::
 
 	HS3	11	5305797	5306271	11	5304797	5307271	1	A
@@ -76,6 +78,16 @@ Usage
 
 	captureC.py -f fastq.tsv -t /path/to/HS3_Coordinate_File.txt
 
+
+Others
+^^^^^^
+
+To make a list of dpnII cut sites:
+
+.. code:: bash
+	module load ucsc
+
+	oligoMatch dpnII.fa chr11.fa dpnII_chr11.bed
 
 Reference
 ^^^^^^^^^
