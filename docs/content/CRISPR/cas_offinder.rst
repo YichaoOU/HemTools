@@ -5,13 +5,14 @@ Find number of off-targets
 ::
 
 	usage: cas_offinder.py [-h] [-j JID] -f INPUT [-n NUM_MISMATCHES] [--add_PAM]
-	                       [--PAM_seq PAM_SEQ] [-g GENOME] [--chr_fa CHR_FA]
+	                       [--remove_first_G] [--PAM_seq PAM_SEQ] [-g GENOME]
+	                       [--chr_fa CHR_FA]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        cas_offinder_yli11_2019-07-17)
+	                        cas_offinder_yli11_2020-03-24)
 	  -f INPUT, --input INPUT
 	                        a list of gRNA sequences (default: None)
 	  -n NUM_MISMATCHES, --num_mismatches NUM_MISMATCHES
@@ -19,6 +20,8 @@ Find number of off-targets
 	                        PAM sequence (default: 2)
 	  --add_PAM             if PAM sequence is not included in your gRNA, please
 	                        add this option. (default: False)
+	  --remove_first_G      remove first letter G in the input gRNA list (default:
+	                        False)
 	  --PAM_seq PAM_SEQ     specify the PAM sequence, e.g., NGG. (default: NGG)
 
 	Genome Info:
@@ -103,6 +106,20 @@ Example command 2: if input gRNA sequences contain PAM, then just run the follow
 	2019-07-17 11:09:24,890 - INFO - submit_pipeline_jobs - cas has been submitted; JobID: 83786441
 
 .. note:: By default, maximal allowed mismatches is 2. You can control this by ``-n`` option.
+
+To find gRNA locations
+----------
+
+This program can also be helpful to find gRNA coordinates in the genome.
+
+Now, my gRNA list doesn't have PAM and actually contains G in the beginning of every gRNA. my command will be:
+
+.. code:: bash
+
+	cas_offinder.py -f VPR.gRNA.list -n 0 --add_PAM --remove_first_G
+	
+	2020-03-24 14:49:45,002 - INFO - main - The job id is: cas_offinder_yli11_2020-03-24
+	2020-03-24 14:49:45,154 - INFO - submit_pipeline_jobs - cas has been submitted; JobID: 99715775
 
 Output
 ^^^^^^
