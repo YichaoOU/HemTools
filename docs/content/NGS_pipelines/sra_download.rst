@@ -96,24 +96,16 @@ They are probably belong to different SRA project. In that case, I will download
 
 For this latest sra-tools version, it should have no problem downloading files. However, if you see something like ``fasterq.tmp.nodecn002.23272`` in your result folder, then it means a corrupted data. And you have to download this particular SRR data again.
 
-I have a small script to check all .out files in log_files to see if there are any error occured:
+A simple way to get a list of failed SRR ids:
 
-.. code:: python
+.. code:: bash
 
-	import glob
-	files = glob.glob("*/log_files/*out")
+	cd log_files
 
-	def check(f):
-		lines = open(f).readlines()
-		flag = False
-		for l in lines:
-			if "spots read" in l:
-				flag = True
-		return flag
+	grep gzip *err | cut -d " " -f 2 | cut -d "*" -f 1 > failed.list
 
-	for f in files:
-		if not check(f):
-			print (f)
+
+
 
 Comments
 ^^^^^^^^
