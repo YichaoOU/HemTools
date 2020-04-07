@@ -72,7 +72,18 @@ Go to your data directory and type the following.
 	plot_bw_corr.py -b 150 -r chr11:5267561-5277281
 
 
-Example 1 --- compare your ATAC-seq to public blood lineage ATAC-seq
+Re-order labels
+^^^^^^^^^^^^
+
+Once the program is finish and you are not satistified with the order of columns and rows, you can re-order the figure using the following commands.
+
+Input is the ``plotCorrelation.tab`` in your result folder.
+
+
+Details are also provided in: :doc:`plot_corr_reorder <plot_corr_reorder>`
+
+
+Example --- compare your ATAC-seq to public blood lineage ATAC-seq
 ^^^^^
 
 Save the bw file list in :doc:`blood_data <../Data/blood_data>` as input.list.
