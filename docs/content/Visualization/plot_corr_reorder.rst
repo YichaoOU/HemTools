@@ -31,6 +31,8 @@ One usage: When using :doc:`bw corr <bw_corr>`, the result figure can look bad b
 
 This program allows you to rename and re-order columns and rows.
 
+Note this program requires the matrix, which is ``plotCorrelation.tab`` and a name mapping file (old name and new name). Old names should match the column names in ``plotCorrelation.tab``, which is the file names if you start with ``bw_corr.py``.
+
 Input
 ^^^^^
 
