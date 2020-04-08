@@ -6,10 +6,11 @@ Heatmap Basic
 	usage: plot_heatmap.py [-h] [-j JID] [--remove_zero] [--index] -f INPUT
 	                       [--index_using INDEX_USING] [-s SEP] [--xlabel XLABEL]
 	                       [--ylabel YLABEL] [--title TITLE]
-	                       [--figure_type FIGURE_TYPE] [-o OUTPUT] [--header]
-	                       [--no_col_names] [--no_row_names] [-W WIDTH]
-	                       [-H HEIGHT] [--just_default] [--log2_transform]
-	                       [--just_plot] [--top_N_by_row_mean TOP_N_BY_ROW_MEAN]
+	                       [--figure_type FIGURE_TYPE] [--remove_cols REMOVE_COLS]
+	                       [-o OUTPUT] [--header] [--no_col_names]
+	                       [--no_row_names] [-W WIDTH] [-H HEIGHT]
+	                       [--just_default] [--log2_transform] [--just_plot]
+	                       [--top_N_by_row_mean TOP_N_BY_ROW_MEAN]
 	                       [--row_mean_cutoff ROW_MEAN_CUTOFF]
 	                       [--row_mean_percent_col_cutoff ROW_MEAN_PERCENT_COL_CUTOFF [ROW_MEAN_PERCENT_COL_CUTOFF ...]]
 
@@ -19,7 +20,7 @@ Heatmap Basic
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        plot_heatmap_yli11_2019-07-19)
+	                        plot_heatmap_yli11_2020-04-07)
 	  --remove_zero         remove all rows or cols that are zero (default: False)
 	  --index               index is false (default: False)
 	  -f INPUT, --input INPUT
@@ -37,8 +38,9 @@ Heatmap Basic
 	  --title TITLE
 	  --figure_type FIGURE_TYPE
 	                        pdf,png,jpeg (default: png)
+	  --remove_cols REMOVE_COLS
 	  -o OUTPUT, --output OUTPUT
-	                        output table name (default: yli11_2019-07-19)
+	                        output table name (default: yli11_2020-04-07)
 	  --header              input table has header (default: False)
 	  --no_col_names        Don't show column names in the heatmap (default:
 	                        False)
@@ -64,7 +66,7 @@ Heatmap Basic
 	  --row_mean_percent_col_cutoff ROW_MEAN_PERCENT_COL_CUTOFF [ROW_MEAN_PERCENT_COL_CUTOFF ...]
 	                        row mean cutoff, col fraction cutoff, space separated
 	                        (default: [5, 0.1])
-
+                        
 Summary
 ^^^^^^^
 
