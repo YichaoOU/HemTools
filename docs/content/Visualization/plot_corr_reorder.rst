@@ -76,7 +76,7 @@ Go to your data directory and type the following.
 
 	module load python/2.7.13
 
-	plot_corr_reorder.py -f plotCorrelation.tab --skiprows 1 -s "\t" -o test.pdf -n row_name_mapping.txt
+	plot_corr_reorder.py -f plotCorrelation.tab --skiprows 1 -s "\t" -o test.png -n row_name_mapping.txt
 
 ``plotCorrelation.tab`` is an output from :doc:`bw corr <bw_corr>`, the first line is notes, so we skip the first row when read the file using ``--skiprows 1``. 
 
