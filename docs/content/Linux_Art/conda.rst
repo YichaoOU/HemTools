@@ -67,6 +67,11 @@ If you want to update package description, you have to create a new release.
 	conda-build unique-color
 	anaconda upload /home/yli11/conda-bld/linux-64/unique_color-3.0-py36_0.tar.bz2
 
+Contribute to bioconda
+^^^^^^^^^^^
+
+https://bioconda.github.io/contributor/setup.html
+
 
 
 ref:

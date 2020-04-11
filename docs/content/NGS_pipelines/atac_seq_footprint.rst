@@ -69,6 +69,14 @@ Include conservation may enhance the footprint plot:
 
 https://slowkow.github.io/CENTIPEDE.tutorial/
 
+https://link.springer.com/article/10.1186/s13059-020-1929-3
+
+Other new tools
+^^^^^^^^^^
+
+https://github.com/loosolab/TOBIAS
+
+https://github.com/Boyle-Lab/TRACE
 
 
 
