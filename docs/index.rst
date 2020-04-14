@@ -91,3 +91,7 @@ Error loading python
   /hpcf/apps/python/install/2.7.13/bin/python: error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
 
 A: Missing python module. Just do ``module load python``
+
+
+{%- if gitstamp %} This page was last updated on {{ gitstamp }}. {%- endif %}
+
