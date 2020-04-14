@@ -41,6 +41,7 @@ release = u''
 extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
+    'sphinx_gitstamp',
     'nbsphinx'
 ]
 # extensions = [
@@ -65,7 +66,7 @@ templates_path = ['_templates']
 #
 source_suffix = ['.rst', '.md']
 # source_suffix = '.rst'
-
+gitstamp_fmt = "%b %d, %Y"
 # The master toctree document.
 master_doc = 'index'
 

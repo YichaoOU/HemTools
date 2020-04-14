@@ -6,3 +6,4 @@ nbconvert!=5.4
 ipykernel
 matplotlib
 git+https://github.com/spatialaudio/nbsphinx.git@master
+sphinx-gitstamp
