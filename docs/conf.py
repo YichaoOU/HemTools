@@ -66,7 +66,7 @@ templates_path = ['_templates']
 #
 source_suffix = ['.rst', '.md']
 # source_suffix = '.rst'
-gitstamp_fmt = "%b %d, %Y"
+gitstamp_fmt = "%b %d %Y"
 # The master toctree document.
 master_doc = 'index'
 
