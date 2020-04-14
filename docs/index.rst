@@ -93,5 +93,4 @@ Error loading python
 A: Missing python module. Just do ``module load python``
 
 
-{%- if gitstamp %} This page was last updated on {{ gitstamp }}. {%- endif %}
 
