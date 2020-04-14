@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = u'HemTools'
-copyright = u'2019, Yichao Li, Yong Cheng'
+copyright = u'2020, Yichao Li, Yong Cheng'
 author = u'Yichao Li, Yong Cheng'
 
 # The short X.Y version
-version = u'1.0'
-# The full version, including alpha/beta/rc tags
-release = u''
+version = 'latest'
+# The full version, including alpha/beta/rc tags.
+release = 'latest'
 
 
 # -- General configuration ---------------------------------------------------
@@ -99,6 +99,28 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 html_theme = 'default'
+
+
+html_theme_path = ["_theme", ]
+
+html_theme_options = {
+    'versions': [
+        ("latest", "/en/latest")
+    ],
+    'languages': [
+        ("en", "/en/latest"),
+        ("de", "/de/latest"),
+    ],
+    'current_version': version
+}
+
+html_context = {
+  'display_github': True,
+  'github_user': 'jdillard',
+  'github_repo': 'continuous-sphinx',
+  'github_version': 'master/source/'
+}
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
