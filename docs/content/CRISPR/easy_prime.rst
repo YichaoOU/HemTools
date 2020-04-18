@@ -42,6 +42,14 @@ This tool can help you design pegRNAs given a list of variants (vcf format)
 
 https://github.com/YichaoOU/easy_prime
 
+Method
+^^^^^
+
+.. only:: html
+
+   .. figure:: ../../images/easy_prime_method.gif
+
+
 
 Input
 ^^^^^
