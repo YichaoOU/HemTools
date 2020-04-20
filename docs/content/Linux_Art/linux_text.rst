@@ -25,6 +25,7 @@ Column operations
 
 	awk -F "\t" '{print $2"\t"$3"\t"$4"\t"$1}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$4}' tmp.out > tmp.out.bed
+	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$4"\t"$8}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3}' test.bed > test2.bed
 
