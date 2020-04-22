@@ -210,11 +210,11 @@ Inside the jobID folder, you can find:
 
 - assign_targets.log: statistics of target assignments
 
-- RNA_seq.query.DEG_targets_filter.bed: subset of query file with targets assigned
+- [label].query.DEG_targets_filter.bed: subset of query file with targets assigned
 
-- RNA_seq.query.targets_all.bed: query file with candidate targets as additional column
+- [label].query.targets_all.bed: query file with candidate targets as additional column
 
-- RNA_seq.deg_table.tsv: subset of deg table on candidate targets
+- [label].deg_table.tsv: subset of deg table on candidate targets
 
 - assign_targets_output.tsv: query file with additional columns, including nearest TSS, gene within TSS flank, EPI assigned targets and associated scores
 
