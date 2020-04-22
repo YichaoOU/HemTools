@@ -13,12 +13,13 @@ Identify direct targets and co-binding factors
 	                           [-d6 D6] [--motif_database MOTIF_DATABASE]
 	                           [--motif_list MOTIF_LIST] [--peak_list PEAK_LIST]
 	                           [--assign_targets_addon_parameters ASSIGN_TARGETS_ADDON_PARAMETERS]
+	                           [--label LABEL]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        tf_target_finder_yli11_2020-04-21)
+	                        tf_target_finder_yli11_2020-04-22)
 	  -q QUERY_BED, --query_bed QUERY_BED
 	                        3 column bed file, additional columns are OK, but will
 	                        be ignored (default: None)
@@ -51,13 +52,13 @@ Identify direct targets and co-binding factors
 	                        FDR cutoff (default: 0.05)
 	  -d1 D1                extend query bed for intersection (default: 0)
 	  -d2 D2                extending tss for intersection (default: 5000)
-	  -d3 D3                extending epi for intersection (default: 2000)
+	  -d3 D3                extending epi for intersection (default: 0)
 	  -d4 D4                for motif scanning: extend search on the flank
-	                        sequences (default: 200)
+	                        sequences (default: 100)
 	  -d5 D5                distance cutoff for peak overlap, used for co-binding
 	                        test (default: 500)
 	  -d6 D6                distance cutoff for motif overlap, used for co-binding
-	                        test (default: 200)
+	                        test (default: 100)
 	  --motif_database MOTIF_DATABASE
 	                        motif meme file (default:
 	                        /home/yli11/Data/Motif_database/Mouse/mouse_TF.meme)
@@ -69,7 +70,8 @@ Identify direct targets and co-binding factors
 	                        _target_finder/peak.list)
 	  --assign_targets_addon_parameters ASSIGN_TARGETS_ADDON_PARAMETERS
 	                        any addon parameters (default: )
-
+	  --label LABEL         give a name for your TF (i.e., query) (default:
+	                        target_finder)
 
 Summary
 ^^^^^
@@ -78,6 +80,18 @@ A common down-stream analysis of ChIP-seq peaks (or more generally, a set of cis
 
 Therefore, our ``TF_target_finder`` pipeline uses promoter-enhancer interactions from promoter capture-C or HiC datasets and outputs a list of high-confidence assignments using differentially expressed genes from WT.vs.KO datasets.
 
+
+Workflow
+^^^^^
+
+Target genes were assigned not only based on nearest TSS but also based on promoter capture-C, which were then filtered out using an associated RNA-seq experiments (e.g., the knockout of query TF, WT.vs.KO) in which we assume the query TF regulates the differentially expressed genes.
+
+The output of peaks with assigned targets will be used to find co-binding factors given co-factor peaks and motifs.
+
+An overall workflow is shown below.
+
+.. image:: ../../images/target_finder.png
+	:align: center
 
 
 
@@ -184,7 +198,7 @@ Usage
 
 	module load python/2.7.13
 
-	tf_target_finder.py -q NFIX_idr_peaks.bed -exp results.KO_vs_WT.txt --query_motif /home/yli11/Tools/TF_target_finder/data/NFIX_mouse_known_motifs.meme
+	tf_target_finder.py --label NFIX -q NFIX_idr_peaks.bed -exp results.KO_vs_WT.txt --query_motif /home/yli11/Tools/TF_target_finder/data/NFIX_mouse_known_motifs.meme 
 
 
 
@@ -206,5 +220,12 @@ Inside the jobID folder, you can find:
 
 - Results of motif co-binding test: ``motif_co_binding_test/motif_summary.txt``
 - Results of peak co-binding test: ``peak_co_binding_test/motif_summary.txt``
+
+Comments
+^^^^^^^^
+
+.. disqus::
+	:disqus_identifier: NGS_pipelines
+
 
 
