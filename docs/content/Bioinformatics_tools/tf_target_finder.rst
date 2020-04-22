@@ -21,48 +21,56 @@ Input
 
 1. query bed file
 
+A tsv file. The first 3 columns should be chr, start, end. Additional columns will be ignored
+
 2. tss annotation
+
+A tsv file. The first 4 columns should be chr, start, end, gene name. Additional columns will be ignored.
 
 3. EPI data
 
+A tsv file. The first 4 columns should be chr, start, end, gene name. If 5th column is found, it will be used as interaction score. Additional columns will be ignored.
+
 4. RNA-seq data
+
+A tsv file with header, the first column should be gene name. User should specify LFC column name and FDR column name.
 
 5. A list of chip-seq peaks used for co-binding test
 
 ::
 
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088371_Cebpb_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088372_cFos_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088373_cMyc_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088378_E2f4_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088379_Egr1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088380_Elf1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088381_Eto2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088382_Gata2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088383_H2A_AcK5_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088384_H3K27me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088385_H3K36me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088386_H3K4me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088409_Jun_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088410_Ldb1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088411_Max_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088412_Myb_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088413_Nfe2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088414_p53_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088415_Rad21_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088416_Stat1P_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088417_Stat3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054909_HPCminus7_Cell_Line_GSM552232_HPC7_H3AcK9_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054910_HPCminus7_Cell_Line_GSM552233_HPC7_Fli1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054911_HPCminus7_Cell_Line_GSM552234_HPC7_Gata2_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054912_HPCminus7_Cell_Line_GSM552235_HPC7_Gfi1b_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054914_HPCminus7_Cell_Line_GSM552237_HPC7_Lmo2_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054915_HPCminus7_Cell_Line_GSM552238_HPC7_Lyl1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054916_HPCminus7_Cell_Line_GSM552239_HPC7_Meis1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054917_HPCminus7_Cell_Line_GSM552240_HPC7_Pu1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054918_HPCminus7_Cell_Line_GSM552241_HPC7_Runx1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054919_HPCminus7_Cell_Line_GSM552242_HPC7_Scl_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
-
+	ERR1088371_Cebpb	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088371_Cebpb_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088372_cFos	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088372_cFos_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088373_cMyc	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088373_cMyc_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088378_E2f4	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088378_E2f4_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088379_Egr1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088379_Egr1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088380_Elf1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088380_Elf1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088381_Eto2	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088381_Eto2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088382_Gata2	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088382_Gata2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088383_H2A_AcK5	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088383_H2A_AcK5_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088384_H3K27me3	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088384_H3K27me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088385_H3K36me3	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088385_H3K36me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088386_H3K4me3	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088386_H3K4me3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088409_Jun	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088409_Jun_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088410_Ldb1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088410_Ldb1_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088411_Max	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088411_Max_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088412_Myb	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088412_Myb_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088413_Nfe2	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088413_Nfe2_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088414_p53	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088414_p53_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088415_Rad21	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088415_Rad21_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088416_Stat1P	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088416_Stat1P_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	ERR1088417_Stat3	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/ERR1088417_Stat3_HPC7.vs.ERR1088408_IgG_HPC7_peaks.rmblck.narrowPeak
+	SRR054909_GSM552232_H3AcK9	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054909_HPCminus7_Cell_Line_GSM552232_HPC7_H3AcK9_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054910_GSM552233_Fli1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054910_HPCminus7_Cell_Line_GSM552233_HPC7_Fli1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054911_GSM552234_Gata2	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054911_HPCminus7_Cell_Line_GSM552234_HPC7_Gata2_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054912_GSM552235_Gfi1b	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054912_HPCminus7_Cell_Line_GSM552235_HPC7_Gfi1b_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054914_GSM552237_Lmo2	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054914_HPCminus7_Cell_Line_GSM552237_HPC7_Lmo2_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054915_GSM552238_Lyl1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054915_HPCminus7_Cell_Line_GSM552238_HPC7_Lyl1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054916_GSM552239_Meis1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054916_HPCminus7_Cell_Line_GSM552239_HPC7_Meis1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054917_GSM552240_Pu1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054917_HPCminus7_Cell_Line_GSM552240_HPC7_Pu1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054918_GSM552241_Runx1	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054918_HPCminus7_Cell_Line_GSM552241_HPC7_Runx1_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	SRR054919_GSM552242_Scl	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054919_HPCminus7_Cell_Line_GSM552242_HPC7_Scl_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
+	
 
 6.a. main TF motif pwm files
 
@@ -76,13 +84,34 @@ This input is a tsv file containing TF name and motif names (separated by comma)
 
 ::
 
-	GATA5	GATA5_MOUSE.H11MO.0.D,M0784_1.02,UP00080_1,UP00080_2
-	GATA6	GATA6_MOUSE.H11MO.0.A,M0782_1.02,UP00100_1,UP00100_2
-	GCM1	GCM1_MOUSE.H11MO.0.D,M0812_1.02,UP00070_1,UP00070_2
-	GCR	GCR_MOUSE.H11MO.0.A,GCR_MOUSE.H11MO.1.A
-	GFI1	GFI1_MOUSE.H11MO.0.C,GFI1B_MOUSE.H11MO.0.A,M2285_1.02
-	GLI1	GLI1_MOUSE.H11MO.0.C,M6264_1.02
+	CEBPB	CEBPB_MOUSE.H11MO.0.A,M0314_1.02
+	CMYC	CMYC
+	E2F4	E2F4_MOUSE.H11MO.0.A,E2F4_MOUSE.H11MO.1.A,M4537_1.02
+	EGR1	EGR1_MOUSE.H11MO.0.A,M0417_1.02,UP00007_1,UP00007_2
+	ELF1	ELF1_MOUSE.H11MO.0.A,M4688_1.02
+	FLI1	FLI1_MOUSE.H11MO.0.A,FLI1_MOUSE.H11MO.1.A,M0699_1.02
+	GATA2	GATA2_MOUSE.H11MO.0.A,M4660_1.02
+	JUN	JUN_MOUSE.H11MO.0.A,JUNB_MOUSE.H11MO.0.A,JUND_MOUSE.H11MO.0.A,M0311_1.02,M0312_1.02,M0320_1.02,UP00103_1,UP00103_2
+	LYL1	LYL1_MOUSE.H11MO.0.A
+	MAX	M0221_1.02,MAX_MOUSE.H11MO.0.A,UP00060_1,UP00060_2
+	MEIS1	M2298_1.02,MEIS1_MOUSE.H11MO.0.A,MEIS1_MOUSE.H11MO.1.A,UP00186_1
+	MYB	M1923_1.02,MYB_MOUSE.H11MO.0.A,MYBA_MOUSE.H11MO.0.C,MYBB_MOUSE.H11MO.0.D
+	NFE2	M4629_1.02,M6359_1.02,NFE2_MOUSE.H11MO.0.A
+	P53	P53_MOUSE.H11MO.0.A,P53_MOUSE.H11MO.1.A
+	RUNX1	M1837_1.02,RUNX1_MOUSE.H11MO.0.A
+	PU.1	SPI1_MOUSE.H11MO.0.A,UP00085_1,UP00085_2,M6122_1.02
+	STAT3	STAT3,STAT3_MOUSE.H11MO.0.A
+	STAT1	STAT1_MOUSE.H11MO.0.A,STAT1_MOUSE.H11MO.1.A
+	TAL1	TAL1_MOUSE.H11MO.0.A
+	GFI1B	GFI1B_MOUSE.H11MO.0.A
 
 
+Output
+^^^^^
 
+
+Inside the jobID folder, you can find:
+
+- Results of motif co-binding test: ``motif_co_binding_test/motif_summary.txt``
+- Results of peak co-binding test: ``peak_co_binding_test/motif_summary.txt``
 
