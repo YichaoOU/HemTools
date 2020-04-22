@@ -79,29 +79,31 @@ A common down-stream analysis of ChIP-seq peaks (or more generally, a set of cis
 Therefore, our ``TF_target_finder`` pipeline uses promoter-enhancer interactions from promoter capture-C or HiC datasets and outputs a list of high-confidence assignments using differentially expressed genes from WT.vs.KO datasets.
 
 
+
+
 Ref: https://github.com/YichaoOU/TF_target_finder
 
 
 Input
 ^^^^^
 
-1. query bed file
+1. query bed file (``required``)
 
 A tsv file. The first 3 columns should be chr, start, end. Additional columns will be ignored
 
-2. tss annotation
+2. tss annotation (default is mm9)
 
 A tsv file. The first 4 columns should be chr, start, end, gene name. Additional columns will be ignored.
 
-3. EPI data
+3. EPI data (default is mm9 HPC7 promoter capture HiC)
 
 A tsv file. The first 4 columns should be chr, start, end, gene name. If 5th column is found, it will be used as interaction score. Additional columns will be ignored.
 
-4. RNA-seq data
+4. RNA-seq data (``required``)
 
 A tsv file with header, the first column should be gene name. User should specify LFC column name and FDR column name.
 
-5. A list of chip-seq peaks used for co-binding test
+5. A list of chip-seq peaks used for co-binding test (default is mm9 HPC7 31 chip-seq datasets)
 
 ::
 
@@ -138,13 +140,13 @@ A tsv file with header, the first column should be gene name. User should specif
 	SRR054919_GSM552242_Scl	/home/yli11/Tools/TF_target_finder/data/HPC7_chip_seq/SRR054919_HPCminus7_Cell_Line_GSM552242_HPC7_Scl_HPCminus7_Cell_Line.vs.SRR054913_HPCminus7_Cell_Line_GSM552236_HPC7_IgG_HPCminus7_Cell_Line_Input_peaks.rmblck.narrowPeak
 	
 
-6.a. main TF motif pwm files
+6.a. main TF motif pwm files (``required``)
 
 ::
 
 	/home/yli11/Tools/TF_target_finder/data/NFIX_mouse_known_motifs.meme
 
-6.b. A list of motif ids used for co-binding test
+6.b. A list of motif ids used for co-binding test (default is selected mouse motifs)
 
 This input is a tsv file containing TF name and motif names (separated by comma). Full mapping file can be found at: :doc:`motif mapping table <../Data/mouse_motif>`
 
@@ -172,6 +174,20 @@ This input is a tsv file containing TF name and motif names (separated by comma)
 	GFI1B	GFI1B_MOUSE.H11MO.0.A
 
 
+
+Usage
+^^^^^
+
+.. code:: bash
+
+	hpcf_interative
+
+	module load python/2.7.13
+
+	tf_target_finder.py -q NFIX_idr_peaks.bed -exp results.KO_vs_WT.txt --query_motif /home/yli11/Tools/TF_target_finder/data/NFIX_mouse_known_motifs.meme
+
+
+
 Output
 ^^^^^
 
@@ -190,4 +206,5 @@ Inside the jobID folder, you can find:
 
 - Results of motif co-binding test: ``motif_co_binding_test/motif_summary.txt``
 - Results of peak co-binding test: ``peak_co_binding_test/motif_summary.txt``
+
 
