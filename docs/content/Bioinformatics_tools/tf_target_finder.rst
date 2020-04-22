@@ -2,7 +2,73 @@ Identify direct targets and co-binding factors
 =============
 
 
+::
 
+	usage: tf_target_finder.py [-h] [-j JID] -q QUERY_BED -exp DEG_TSV
+	                           --query_motif QUERY_MOTIF [-tss TSS_BED]
+	                           [-epi EPI_BED] [--LFC_col_name LFC_COL_NAME]
+	                           [--FDR_col_name FDR_COL_NAME]
+	                           [--LFC_cutoff LFC_CUTOFF] [--FDR_cutoff FDR_CUTOFF]
+	                           [-d1 D1] [-d2 D2] [-d3 D3] [-d4 D4] [-d5 D5]
+	                           [-d6 D6] [--motif_database MOTIF_DATABASE]
+	                           [--motif_list MOTIF_LIST] [--peak_list PEAK_LIST]
+	                           [--assign_targets_addon_parameters ASSIGN_TARGETS_ADDON_PARAMETERS]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+	                        Every output will be moved into this folder. (default:
+	                        tf_target_finder_yli11_2020-04-21)
+	  -q QUERY_BED, --query_bed QUERY_BED
+	                        3 column bed file, additional columns are OK, but will
+	                        be ignored (default: None)
+	  -exp DEG_TSV, --deg_tsv DEG_TSV
+	                        any number of columns, first column should be gene
+	                        name, first row should be column names. should contain
+	                        FDR and LFC. (default: None)
+	  --query_motif QUERY_MOTIF
+	                        query_motif pwm file (default: None)
+	  -tss TSS_BED, --tss_bed TSS_BED
+	                        4 column bed file, the 4th column should be gene name,
+	                        should match to the gene name in DEG file (if
+	                        supplied). Additional columns are OK, but will be
+	                        ignored (default: /home/yli11/Data/Mouse/mm9/annotatio
+	                        ns/mm9.ensembl_v67.TSS.gene_name.bed)
+	  -epi EPI_BED, --epi_bed EPI_BED
+	                        5 column bed file, the 4th column should be gene name,
+	                        should match to the gene name in DEG file and TSS
+	                        annotation(if supplied). The 5th column should be
+	                        score (optional). Additional columns are OK, but will
+	                        be ignored (default: /home/yli11/Tools/TF_target_finde
+	                        r/data/HPC7.mm9.captureC.bed)
+	  --LFC_col_name LFC_COL_NAME
+	                        LFC_col_name (default: logFC)
+	  --FDR_col_name FDR_COL_NAME
+	                        FDR_col_name (default: adj.P.Val)
+	  --LFC_cutoff LFC_CUTOFF
+	                        LFC cutoff (default: 1)
+	  --FDR_cutoff FDR_CUTOFF
+	                        FDR cutoff (default: 0.05)
+	  -d1 D1                extend query bed for intersection (default: 0)
+	  -d2 D2                extending tss for intersection (default: 5000)
+	  -d3 D3                extending epi for intersection (default: 2000)
+	  -d4 D4                for motif scanning: extend search on the flank
+	                        sequences (default: 200)
+	  -d5 D5                distance cutoff for peak overlap, used for co-binding
+	                        test (default: 500)
+	  -d6 D6                distance cutoff for motif overlap, used for co-binding
+	                        test (default: 200)
+	  --motif_database MOTIF_DATABASE
+	                        motif meme file (default:
+	                        /home/yli11/Data/Motif_database/Mouse/mouse_TF.meme)
+	  --motif_list MOTIF_LIST
+	                        motif_list (default: /home/yli11/HemTools/share/misc/T
+	                        F_target_finder/motif.list)
+	  --peak_list PEAK_LIST
+	                        peak_list (default: /home/yli11/HemTools/share/misc/TF
+	                        _target_finder/peak.list)
+	  --assign_targets_addon_parameters ASSIGN_TARGETS_ADDON_PARAMETERS
+	                        any addon parameters (default: )
 
 
 Summary
@@ -111,6 +177,14 @@ Output
 
 
 Inside the jobID folder, you can find:
+
+- RNA_seq.query.DEG_targets_filter.bed: subset of query file with targets assigned
+
+- RNA_seq.query.targets_all.bed: query file with candidate targets as additional column
+
+- RNA_seq.deg_table.tsv: subset of deg table on candidate targets
+
+- assign_targets_output.tsv: query file with additional columns, including nearest TSS, gene within TSS flank, EPI assigned targets and associated scores
 
 - Results of motif co-binding test: ``motif_co_binding_test/motif_summary.txt``
 - Results of peak co-binding test: ``peak_co_binding_test/motif_summary.txt``
