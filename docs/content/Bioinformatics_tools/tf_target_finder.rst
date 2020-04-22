@@ -178,6 +178,8 @@ Output
 
 Inside the jobID folder, you can find:
 
+- assign_targets.log: statistics of target assignments
+
 - RNA_seq.query.DEG_targets_filter.bed: subset of query file with targets assigned
 
 - RNA_seq.query.targets_all.bed: query file with candidate targets as additional column
