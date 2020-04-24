@@ -43,6 +43,27 @@ Output
 
 match.bed.sorted
 
+This output can be uploaded to protein paint using the following command:
+
+::
+
+	module load htslib
+
+	bed_to_bedjs_withName_Color.py match.bed.sorted 1
+
+The associated json file will look like below:
+
+::
+
+	{
+	"type":"bedj",
+	"name":"GATA_Ebox(8-9) motif",
+	"file":"PATH/match.bed.sorted.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	},
+
+
 
 Usage
 ^^^^^
