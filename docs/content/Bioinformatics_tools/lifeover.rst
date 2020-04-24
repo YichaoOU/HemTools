@@ -3,18 +3,23 @@ Lift Over Bed or bigWiggle files
 
 ::
 
-	usage: liftover.py [-h] -f BED [-o OUTPUT] [-g GENOME] [-c CHAIN_FILE]
+	usage: liftover.py [-h] [-o OUTPUT] (--bed BED | --bw BW) [-g GENOME]
+	                   [-s CHROM_SIZE] [-c CHAIN_FILE]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
-	  -f BED, --bed BED     bed file for liftover (default: None)
 	  -o OUTPUT, --output OUTPUT
 	                        output file for liftover (default: liftover.bed)
+	  --bed BED             input bed file (default: None)
+	  --bw BW               Input bw file (default: None)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
 	                        Target genome version: hg19, mm10, mm9, hg38 (default:
 	                        mm9)
+	  -s CHROM_SIZE, --chrom_size CHROM_SIZE
+	                        chrome size (default: /home/yli11/Data/Mouse/mm9/annot
+	                        ations/mm9.chrom.sizes)
 	  -c CHAIN_FILE, --chain_file CHAIN_FILE
 	                        genome version: hg19, mm10, mm9, hg38 (default: /home/
 	                        yli11/Data/Mouse/chain_files/mm10ToMm9.over.chain.gz)
@@ -33,6 +38,8 @@ Input
 ^^^^^
 
 Bed or BW file.
+
+You can have any number of columns in the bed file. Only chr, start, end columns will be used. Other columns will just stay as before in the output.
 
 Usage
 ^^^^^
