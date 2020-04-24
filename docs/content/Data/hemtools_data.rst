@@ -4,8 +4,19 @@ HemTools public data
 
 
 
+TSS data
+----
 
 
+*hg19 non-redundant TSS from ensembl*
+
+/home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed
+
+*hg19 redundant TSS (ensembl + gencode)*
+
+In this dataset, each gene can have multiple TSSs, but gene-TSS combination is unique
+
+/home/yli11/Data/Human/hg19/gencode33/hg19.redundant.tss.bed
 
 hg19 data
 ---------
