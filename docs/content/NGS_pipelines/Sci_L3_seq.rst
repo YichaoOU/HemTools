@@ -96,7 +96,7 @@ Usage
 
 	run_lsf.py --guess_input
 
-	sci_l3_seq.py -f fastq.small.tsv -b1 barcode_1.list -b2 barcode_2.list -b3 barcode_3.list
+	sci_l3_seq.py -f fastq.tsv -b1 barcode_1.list -b2 barcode_2.list -b3 barcode_3.list
 
 
 Output
