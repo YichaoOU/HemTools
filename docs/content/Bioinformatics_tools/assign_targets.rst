@@ -1,8 +1,30 @@
-Identify direct targets and co-binding factors
+Identify target genes
 =============
 
 
 ::
+
+	usage: assign_targets_multi.py [-h] -q QUERY_BED [-tss TSS_BED]
+	                               --epi_file_list EPI_FILE_LIST [-d1 D1] [-d2 D2]
+	                               [-d3 D3] [-o OUTPUT] [--label LABEL]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -q QUERY_BED, --query_bed QUERY_BED
+	                        3 column bed file, additional columns are OK, but will
+	                        be ignored (default: None)
+	  -tss TSS_BED, --tss_bed TSS_BED
+	                        4 column bed file, the 4th column should be gene name,
+	                        should match to the gene name in DEG file (if
+	                        supplied). Additional columns are OK, but will be
+	                        ignored (default: None)
+	  --epi_file_list EPI_FILE_LIST
+	  -d1 D1                extend query bed for intersection (default: 0)
+	  -d2 D2                extending tss for intersection (default: 2000)
+	  -d3 D3                extending epi for intersection (default: 0)
+	  -o OUTPUT, --output OUTPUT
+	                        output intermediate file (default: output)
+	  --label LABEL         prefix for the file (default: TFBS)
 
 
 
@@ -31,7 +53,7 @@ hg19: /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_nam
 
 see :doc:`hg19 pc-HiC <../Data/captureC_pcHiC>`
 
-``--epi_file_list pcHIC.list ``
+``--epi_file_list pcHIC.list``
 
 
 Usage
