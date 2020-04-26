@@ -3,8 +3,6 @@ Promoter interaction data
 
 
 
-
-
 hg19
 ----
 
