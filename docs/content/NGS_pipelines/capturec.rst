@@ -95,7 +95,19 @@ Reference
 https://github.com/Hughes-Genome-Group/captureC/releases
 
 
+Notes
+^^^^^
 
+Plan to update the current pipeline to: https://github.com/Hughes-Genome-Group/CCseqBasicS
+
+ref: https://www.nature.com/articles/s41467-019-13404-x
+
+
+
+.. image:: https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnmeth.3664/MediaObjects/41592_2016_Article_BFnmeth3664_Fig1_HTML.jpg
+    :alt: my-picture1
+
+ref: https://www.nature.com/articles/nmeth.3664
 
 
 
