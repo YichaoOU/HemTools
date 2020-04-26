@@ -31,7 +31,7 @@ Identify target genes
 Summary
 ^^^^^
 
-Assigning target genes using promoter capture HiC data. For pc-HiC data, see :doc:`hg19 pc-HiC <../Data/captureC_pcHiC>`. For target gene assignment workflow, see :doc:`tf_target_finder pipeline <tf_target_finder>`.
+Assigning target genes using promoter capture HiC data. For pc-HiC data, see :doc:`hg19 pc-HiC <../Data/catureC_pcHiC>`. For target gene assignment workflow, see :doc:`tf_target_finder pipeline <tf_target_finder>`.
 
 Assigned targets will be appended as new columns to the input bed file.
 
