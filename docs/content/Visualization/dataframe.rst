@@ -2,6 +2,91 @@ Data table operations
 =====================
 
 
+
+Subset tables or remove rows with all zeros
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+	usage: dataframe.py [-h] [--remove_zero] [--row] [--col] [--index] [-f INPUT]
+	                    [--merge MERGE] [--subset SUBSET] [-s SEP] [-o OUTPUT]
+	                    [--header]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --remove_zero         remove all rows or cols that are zero (default: False)
+	  --row                 results on rows. This is to the opposite of pandas row
+	                        and col, which is operations on rows or cols. For
+	                        example, operations (e.g., find zeros) on cols will
+	                        result in removing rows. (default: False)
+	  --col                 results on cols (default: False)
+	  --index               index is false (default: False)
+	  -f INPUT, --input INPUT
+	                        data table input (default: None)
+	  --merge MERGE         merge with a data frame (default: )
+	  --subset SUBSET       subset a data frame with a list (default: None)
+	  -s SEP, --sep SEP     separator (default: )
+	  -o OUTPUT, --output OUTPUT
+	                        output table name (default:
+	                        yli11_2020-04-28_fa0d37b6dfaa.csv)
+	  --header              input table has header (default: False)
+
+
+
+**Example: subset csv given a list**
+
+::
+
+	==> df1.txt <==
+	x,sd1,sd2
+	a,454,23
+	b,5.3,sd2
+
+	==> list.txt <==
+	sd2
+
+
+.. code:: bash
+
+	dataframe.py -f df1.txt -s "," --subset list.txt -o output.csv
+
+If your input is bed file, use ``-s "\t"``
+
+::
+
+	==> output.csv <==
+	x,sd1,sd2
+	b,5.3,sd2
+
+
+**Example: remove all zeros**
+
+::
+
+	==> df1.txt <==
+	x,sd1,sd2
+	1,4,5
+	0,0,0
+
+
+.. code:: bash
+
+	dataframe.py -f df1.txt -s "," --remove_zero -o output.csv --header
+
+If your input is bed file, use ``-s "\t"``
+
+::
+
+	==> output.csv <==
+	x,sd1,sd2
+	1,4,5
+
+
+
+
+
+
+
 Merge tables by row names (Any number)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
