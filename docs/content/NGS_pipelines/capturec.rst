@@ -89,6 +89,8 @@ To make a list of dpnII cut sites:
 
 	oligoMatch dpnII.fa chr11.fa dpnII_chr11.bed
 
+	bedtools complement -i DpnII.bed -g ../bowtie_1.2.2_CapC_index/hg19_20copy_sizes.txt > DpnII_fragments.bed
+
 Reference
 ^^^^^^^^^
 
