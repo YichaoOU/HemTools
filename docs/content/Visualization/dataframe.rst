@@ -8,9 +8,11 @@ Subset tables or remove rows with all zeros
 
 ::
 
-	usage: dataframe.py [-h] [--remove_zero] [--row] [--col] [--index] [-f INPUT]
-	                    [--merge MERGE] [--subset SUBSET] [-s SEP] [-o OUTPUT]
-	                    [--header]
+	usage: dataframe.py [-h] [--remove_zero] [--row] [--col] [--bed] [--ascending]
+	                    [--sort_by SORT_BY]
+	                    [--remove_duplicates REMOVE_DUPLICATES] [--index]
+	                    [-f INPUT] [--merge MERGE] [--subset SUBSET] [-s SEP]
+	                    [-o OUTPUT] [--header]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -20,15 +22,20 @@ Subset tables or remove rows with all zeros
 	                        example, operations (e.g., find zeros) on cols will
 	                        result in removing rows. (default: False)
 	  --col                 results on cols (default: False)
+	  --bed                 input is bed file (default: False)
+	  --ascending           input is bed file (default: False)
+	  --sort_by SORT_BY     sort input by which columns (default: None)
+	  --remove_duplicates REMOVE_DUPLICATES
+	                        remove duplicates on a specific column (default: None)
 	  --index               index is false (default: False)
 	  -f INPUT, --input INPUT
 	                        data table input (default: None)
-	  --merge MERGE         merge with a data frame (default: )
+	  --merge MERGE         merge with a data frame (default: None)
 	  --subset SUBSET       subset a data frame with a list (default: None)
 	  -s SEP, --sep SEP     separator (default: )
 	  -o OUTPUT, --output OUTPUT
 	                        output table name (default:
-	                        yli11_2020-04-28_fa0d37b6dfaa.csv)
+	                        yli11_2020-05-01_4434d3c4a5b5.csv)
 	  --header              input table has header (default: False)
 
 
@@ -82,6 +89,29 @@ If your input is bed file, use ``-s "\t"``
 	1,4,5
 
 
+**Example: remove duplicated rows**
+
+::
+
+	==> df1.txt <==
+	chr1,4,7,ACG,.,-
+	chr1,9,14,ACG,.,-
+	chr1,2,5,ACG,.,+
+
+
+We only want to have unique sequences, sort the bed file and keep the first one.
+
+.. code:: bash
+
+	dataframe.py -f df1.txt  -s , --bed --sort_by 0,1 --remove_duplicates 3 -o output.bed
+
+
+If your input is bed file, use ``-s "\t"``
+
+::
+
+	==> output.bed <==
+	chr1	2	5	ACG	.	+
 
 
 
