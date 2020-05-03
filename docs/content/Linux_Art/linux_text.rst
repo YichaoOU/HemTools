@@ -28,7 +28,7 @@ Column operations
 	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$4"\t"$8}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3}' tmp.out > tmp.out.bed
 	awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3}' test.bed > test2.bed
-
+	awk -F "\t" '{print ($1"\t"($2-2000<0?0:$2-2000)"\t"$3+2000"\t"$5)}' hg19.wgEncodeGencodeBasicV27lift37.all.tss.bed > gencodeV27.all.tss2kb.bed
 
 Select lines based on a column value
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

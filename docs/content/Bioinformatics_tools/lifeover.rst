@@ -46,7 +46,7 @@ Usage
 
 .. code:: bash
 
-	hpcf_interactive
+	hpcf_interactive.sh
 
 	module load python/2.7.13 
 
@@ -55,10 +55,21 @@ Usage
 	liftover.py --bed GSM1708658_Scl_416B.bed -o GSM1708658_Scl_416B.mm9.bed -g mm9
 
 
+For custom genome
+^^^^^^^^
+
+.. code:: bash
+
+	hpcf_interactive.sh
+
+	module load python/2.7.13 
+
+	liftover.py --bw input.bw -o output.hg19.bw -g custom -c /research/dept/hem/common/sequencing/chenggrp/Phil_custom_genome/d13nt_custom_genome/paternal.chain -s hg19_main_chrom_size
+
+	liftover.py --bed GSM1708658_Scl_416B.bed -o GSM1708658_Scl_416B.mm9.bed -g custom -c /research/dept/hem/common/sequencing/chenggrp/Phil_custom_genome/d13nt_custom_genome/paternal.chain
 
 
-
-
+``-s`` is not required for ``--bed`` option.
 
 
 
