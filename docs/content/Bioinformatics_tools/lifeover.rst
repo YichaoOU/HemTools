@@ -64,9 +64,9 @@ For custom genome
 
 	module load python/2.7.13 
 
-	liftover.py --bw input.bw -o output.hg19.bw -g custom -c /research/dept/hem/common/sequencing/chenggrp/Phil_custom_genome/d13nt_custom_genome/paternal.chain -s hg19_main_chrom_size
+	liftover.py --bw input.bw -o output.hg19.bw -g custom -c /research/dept/hem/common/sequencing/chenggrp/Phil_custom_genome/d13nt_custom_genome/back_to_hg19.chain -s hg19_main_chrom_size
 
-	liftover.py --bed GSM1708658_Scl_416B.bed -o GSM1708658_Scl_416B.mm9.bed -g custom -c /research/dept/hem/common/sequencing/chenggrp/Phil_custom_genome/d13nt_custom_genome/paternal.chain
+	liftover.py --bed input.bed -o output.mm9.bed -g custom -c /PATH/TO/CUSTOM_CHAIN_file
 
 
 ``-s`` is not required for ``--bed`` option.
