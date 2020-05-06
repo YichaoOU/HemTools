@@ -56,7 +56,7 @@ extensions = [
 extensions += ['sphinxarg.ext']
 extensions += ['sphinxcontrib.disqus']
 extensions += ['sphinx.ext.intersphinx']
-extensions.append('sphinx.ext.pngmath')
+extensions.append('sphinx.ext.imgmath')
 extensions.append('sphinx.ext.todo')
 todo_include_todos=True
 disqus_shortname = "hemtools"
