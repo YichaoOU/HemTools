@@ -75,6 +75,32 @@ You can always see all available sub-commands by:
     -h, --help            show this help message and exit
     -v, --version         show program's version number and exit
 
+
+Duplicated reads and unique reads
+^^^^
+
+Duplicated reads refer to reads that have the same 5'end position.
+
+Unique reads refer to uniquely mapped reads as compared to multi-mapped reads.
+
+In all NGS pipelines, we provide results from:
+
+1. raw reads: .markdup.bam, .all.bw, _peak.NarrowPeak
+
+2. remove duplicates reads: rmdup.bam, rmdup.bw, rmdup_peak.NarrowPeak
+
+3. remove duplicates and unique reads: rmdup.uq.bam, rmdup.uq.bw, rmdup.uq_peak.NarrowPeak
+
+For general usage, rmdup.uq is commonly accepted.
+
+For people focusing on HBG1 and HBG2, raw reads or rmdup reads can be used.
+
+Mapping rate is usually > 95% for high quality data.
+
+Duplicated reads could be PCR duplicates or real signals, can be ranging from 5% to 20% for high quality data. I think I've seen cases where the duplicate rate is nearly 40% in some GEO datasets. 
+
+Multi-mapped reads are not a lot, maybe 1% to 2%. Never seen any data with >10% multi-mapped reads yet.
+
 FAQ
 ^^^
 
