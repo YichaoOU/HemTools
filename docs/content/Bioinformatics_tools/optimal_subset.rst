@@ -11,7 +11,10 @@ Finding a preferred subset from a given set of features is a common problem in b
 
 Here, we consider an optimal subset finding problem where the user has :math:`K` preferred features. The user would like to extend the :math:`K` features and find a superset that is also of interest in terms of some metric. On the other direction, the user is also flexible on the "preferred" features; namely, the user would like to remove some feature(s) and find a subset that is of interest. In this study, we formally define the optimal subset finding problem and solve the problem via a greedy algorithm that finds sub-optimal solutions and a branch-and-bound algorithm that finds the exact optimal solution. We demonstrate the effectiveness of the solutions in mutagenesis studies.
 
+.. todo::
 
+	branch-and-bound algorithm
+	
 
 Problem definition
 ^^^^^
