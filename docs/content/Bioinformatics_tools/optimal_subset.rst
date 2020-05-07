@@ -1,7 +1,33 @@
 Optimal subset finding problem in mutagenesis studies
 ===================
 
+::
 
+	usage: optimal_subset.py [-h] -f MUTATION_LIST [-dir OUTPUT_DIR] -a
+	                         AMPLICON_NUMBER [-t FLEXIBILITY] [-n TOP_N]
+	                         [--binary_matrix_dir BINARY_MATRIX_DIR]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -f MUTATION_LIST, --mutation_list MUTATION_LIST
+	                        mutation list, can be a file with one mutation per
+	                        line or a list of mutations separated by comma
+	                        (default: None)
+	  -dir OUTPUT_DIR, --output_dir OUTPUT_DIR
+	                        output_label (default:
+	                        optimal_subset_yli11_2020-05-06)
+	  -a AMPLICON_NUMBER, --amplicon_number AMPLICON_NUMBER
+	                        amplicon number (default: None)
+	  -t FLEXIBILITY, --flexibility FLEXIBILITY
+	                        +- t search space (default: 3)
+	  -n TOP_N, --top_n TOP_N
+	                        save results for top n combinations for each t
+	                        (default: 5)
+	  --binary_matrix_dir BINARY_MATRIX_DIR
+	                        data matrix in feather format (default: /research/rgs0
+	                        1/project_space/tsaigrp/Genomics/common/projects/Cas9m
+	                        utagenesis/step1_mutation_count_yli11_2020-04-09/read_
+	                        count_matrix)
 
 
 Summary
@@ -25,34 +51,68 @@ Given $k$ number of candidate mutations (e.g., selected for DESEQ2 results), the
 
 A formal statement of this optimization problem is as follows. Let :math:`A^i` be a read count table for mutagenesis experiment $i$, $m$ be the number of observed mutations, and $r$ be the number of reads in sample $i$, where
 
-.. math::
 
-	\begin{equation*}
-		A^i_{r,m} = 
-		\begin{pmatrix}
-			a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
-			a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
-			\vdots  & \vdots  & \ddots & \vdots  \\
-			a_{r,1} & a_{r,2} & \cdots & a_{r,m} 
-		\end{pmatrix}
-	\end{equation*}
+Input
+^^^^
 
-	and
-	
-	\begin{align*}
-		a_{r,m} = \left\{ \begin{array}{rcl}
-			1 & & \textrm{if mutation } m \textrm{ occurs in read } r \\
-			0 &  & \textrm{otherwise}
-		\end{array}\right.
-	\end{align*}
+1. mutation list
+-----------
 
-Next, let $M = \{M_1,M_2,...,M_m\}$ be the mutation set and $K = \subset M$ be the set for user-defined $k$ mutations, where $|K|=k$. Let $C(K,A^i)$ be the number of reads that contains all mutations in $K$ and $t$ be an integer less than $k$. Then the objective is to find a subset of $K$, denoted by $S$ ($|S|=k-t$) or a superset of $K$, denoted by $S$ ($|S|=k+t$),  such that $$  D(K,t,A) = \sum_{i=1}^{n} \frac{C(K,A^i) - C(S,A^i)}{C(K,A^i)}  $$ is minimized. 
+::
 
-When finding the subset of $K$, the total number of reads containing the subset mutations will be larger than the total number of reads containing the $k$ mutations, therefore we would like to find a subset that maximize the difference (i.e., the gain by reducing some constraints), which is equivalent to minimize the negative gain. The denominator is a normalization factor. Similarly, when finding the superset of $K$, the total number of reads will decrease, therefore we would like to find a superset that minimize the number of dropped reads. Thus, both searching directions can be formulated as a minimization problem.
+	mutation_name1
+	mutation_name2
+	mutation_name3
 
-It is obvious that $D(K,t=1,A)$ is always better (i.e., smaller) than $D(K,t=2,A)$ because (1) for subset of $K$
 
-Like other combinatorial problems, the $k$-mutation optimization problem is NP-hard. Here, we provide a branch-and-bound algorithm that solves the problem in a pseudo-polynomial time when $t$ is small (e.g., $t<=3$).
+Output
+^^^^^
+
+All output files are stored in the {{jid}} folder.
+
+1. Summary.tsv
+------
+
+This file contains the number of reads, percentage of reads, D_score, and OE_score  information for each mutation combination and each sample. I found OE_score is not informative.
+
+D_score represent the percent difference between the given K set and its superset or subset.
+
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| mutation                        | sample        | read_count | D_score    | percent                | OE_score           | cardinality |
++=================================+===============+============+============+========================+====================+=============+
+| ['x', 'mutation2', 'mutation3'] | 0-none.rep1.2 | 64         | 0.0        | 0.000382866714525006   | 3339.025469100123  | 3           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['x', 'mutation2']              | 0-none.rep1.2 | 126        | -0.96875   | 0.0007537688442211055  | 19.898871946034802 | 2           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['mutation2', 'mutation3']      | 0-none.rep1.2 | 89         | -0.390625  | 0.0005324240248863366  | 33.22221477858913  | 2           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['x', 'mutation3']              | 0-none.rep1.2 | 65         | -0.015625  | 0.0003888490069394592  | 17.954115827461766 | 2           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['x']                           | 0-none.rep1.2 | 1196       | -17.6875   | 0.007154821727686048   | 1.0                | 1           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['mutation2']                   | 0-none.rep1.2 | 885        | -12.828125 | 0.005294328786791098   | 1.0                | 1           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['mutation3']                   | 0-none.rep1.2 | 506        | -6.90625   | 0.0030270399617133284  | 1.0                | 1           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+| ['x', 'mutation2', 'mutation3'] | 0-none.rep2.2 | 41         | 0.0        | 0.00046273305945555507 | 2489.549954985795  | 3           |
++---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
+
+2. enrichment visualization
+-----
+
+
+
+Usage
+^^^^
+
+.. code:: bash
+
+	hpcf_interactive_large.sh
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/py2
+
 
 
 
