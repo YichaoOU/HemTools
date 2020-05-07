@@ -5,6 +5,7 @@ Optimal subset finding problem in mutagenesis studies
 
 	usage: optimal_subset.py [-h] -f MUTATION_LIST [-dir OUTPUT_DIR] -a
 	                         AMPLICON_NUMBER [-t FLEXIBILITY] [-n TOP_N]
+	                         [-m MIN_SAMPLE]
 	                         [--binary_matrix_dir BINARY_MATRIX_DIR]
 
 	optional arguments:
@@ -23,11 +24,15 @@ Optimal subset finding problem in mutagenesis studies
 	  -n TOP_N, --top_n TOP_N
 	                        save results for top n combinations for each t
 	                        (default: 5)
+	  -m MIN_SAMPLE, --min_sample MIN_SAMPLE
+	                        if less than min_sample samples contain the given
+	                        combination, skip plot (default: 5)
 	  --binary_matrix_dir BINARY_MATRIX_DIR
 	                        data matrix in feather format (default: /research/rgs0
 	                        1/project_space/tsaigrp/Genomics/common/projects/Cas9m
 	                        utagenesis/step1_mutation_count_yli11_2020-04-09/read_
 	                        count_matrix)
+
 
 
 Summary
