@@ -74,6 +74,7 @@ Usage
 ----
 
 .. code:: bash
+
 	annotatePeaks.pl peak_file hg19 -m homer.motif > output.tsv
 
 If you have N motifs in ``homer.motif``, then the last N columns provide which peak contain the motif.
