@@ -75,7 +75,9 @@ All output files are stored in the {{jid}} folder.
 
 This file contains the number of reads, percentage of reads, D_score, and OE_score  information for each mutation combination and each sample. I found OE_score is not informative.
 
-D_score represent the percent difference between the given K set and its superset or subset.
+When D_score>0, it represents the percentage of dropped reads when t mutations are added.
+
+When D_score<0, its absolute value represents the presentage of increased reads when t mutations are removed.
 
 +---------------------------------+---------------+------------+------------+------------------------+--------------------+-------------+
 | mutation                        | sample        | read_count | D_score    | percent                | OE_score           | cardinality |
@@ -100,7 +102,12 @@ D_score represent the percent difference between the given K set and its superse
 2. enrichment visualization
 -----
 
+Node color represents percent of reads. Node size represent number of reads.
 
+Figure title contains the mutation names (hidden for this example).
+
+.. image:: ../../images/enrichment_tree.png
+	:align: center
 
 Usage
 ^^^^
@@ -113,8 +120,9 @@ Usage
 
 	source activate /home/yli11/.conda/envs/py2
 
+	export PATH=$PATH:"/home/yli11/Tools/optimal_subset" 
 
-
+	optimal_subset.py -f test_mutations.list -a 2
 
 
 
