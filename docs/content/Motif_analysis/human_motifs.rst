@@ -4,7 +4,7 @@ HemTools Mouse Motif data
 Motif databases
 ^^^^^^
 
-We have totaly 4809 redudant motifs.
+We have totaly 4809 redudant motifs. Currently, we have motif mapping bed files for HOMOCOMO and JASPAR, correponds to 800+ TFs.
 
 
 Known motifs come from the following 8 sources:
@@ -43,10 +43,49 @@ Annotate bed file with known motifs
 
 Here, we provide one example of using `assign_targets_multi.py <../Bioinformatics_tools/assign_targets>` to annotate your bed file with known motifs. This tool is a generic tool for annotating bed file given another list of bed files.
 
-Motif mapping bed file is generated using FIMO. For motif length <= 7, p-value cutoff is 1e-3. For motif length >=8, default cutoff 1e-4 is used.
+Input
+-----
+
+**A list of motif bed files**
+
+For example:
+
+::
+	ls /home/yli11/Data/Human/hg38/motif_mapping/new_format/*.bed > input.list
+
+::
+
+	head input.list
+	===============
+
+	/home/yli11/Data/Human/hg38/motif_mapping/new_format/AHR.processed.bed
+	/home/yli11/Data/Human/hg38/motif_mapping/new_format/AIRE.processed.bed
+	/home/yli11/Data/Human/hg38/motif_mapping/new_format/ALX1.processed.bed
+	/home/yli11/Data/Human/hg38/motif_mapping/new_format/ALX3.processed.bed
+
+File name is ``[TF].processed.bed``.
+
+**Query bed file**
+
+at least 3 columns: chr, start, end. Additional columns will be kept in the output.
 
 
 
+Usage
+----
+
+
+.. code:: bash
+
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+	hpcf_interative.sh
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/py2
+
+	assign_targets_multi.py -q input.bed --epi_file_list input.list -o input.bed.assigned_targets.bed
 
 
 
