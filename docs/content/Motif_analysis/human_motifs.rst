@@ -1,4 +1,4 @@
-HemTools Mouse Motif data
+Calculate motif occurrence given bed
 =====================
 
 Motif databases
