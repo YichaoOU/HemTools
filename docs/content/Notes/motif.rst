@@ -27,16 +27,16 @@ FIMO
 p_value
 ------
 
+https://groups.google.com/forum/#!topic/meme-suite/xD2Z3EUw2BQ
+
+the default 1e-4 p-value is not likely to report any matches for motif length=5,6
+
 +--------------+----------------+
 | motif length | p_value cutoff |
 +--------------+----------------+
 | 5-7          | 1e-3           |
 +--------------+----------------+
-| 8-12         | 1e-4           |
-+--------------+----------------+
-| 13-17        | 1e-5           |
-+--------------+----------------+
-| 18+          | 1e-6           |
+| 8+           | 1e-4 (default) |
 +--------------+----------------+
 
 
