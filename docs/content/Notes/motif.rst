@@ -31,6 +31,9 @@ https://groups.google.com/forum/#!topic/meme-suite/xD2Z3EUw2BQ
 
 the default 1e-4 p-value is not likely to report any matches for motif length=5,6
 
+Motif mapping bed file is generated using FIMO. For motif length <= 7, p-value cutoff is 1e-3. For motif length >=8, default cutoff 1e-4 is used.
+
+
 +--------------+----------------+
 | motif length | p_value cutoff |
 +--------------+----------------+
