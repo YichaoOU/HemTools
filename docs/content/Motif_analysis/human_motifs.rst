@@ -69,7 +69,10 @@ File name is ``[TF].processed.bed``.
 
 at least 3 columns: chr, start, end. Additional columns will be kept in the output.
 
+Output
+-----
 
+Each TF will be added as a new column to the query bed. If a motif occurs in the region, then the motif name will show up. In multiple motifs hit the region, they will be separated by comma.
 
 Usage
 ----
