@@ -78,8 +78,15 @@ Usage
 	source activate /home/yli11/.conda/envs/py2
 	annot_gene_features.py -f input.bed -o output.bed
 
+	## generate a pie chart
 
+	pie_plot.py -f output.bed --order Exon,Promoter,5UTR,3UTR,Intron,Intergenic --use_col -1 --header
 
+Pie chart example
+^^^
+
+.. image:: ../../images/pie_chart.png
+	:align: center
 
 
 
