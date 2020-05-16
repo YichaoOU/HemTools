@@ -85,15 +85,15 @@ Blood traits variants/SNPs enrichment
 You can have any number of list here.
 
 ::
-	-----YOUR_list------
 
+	-----YOUR_list------
 	/path/to/banana.list
 
 **actual SNP locations (e.g., banana.list)**
 
 ::
-	-banana.list--
 
+	-banana.list--
 	chr2:423434234
 	chr4:463421444
 
