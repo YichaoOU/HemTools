@@ -6,13 +6,14 @@ Call IDR peaks given bam files from two replicates
 	usage: idr_peaks.py [-h] [-j JID] -r1 R1_INPUT -r2 R2_INPUT
 	                    [--merged_input MERGED_INPUT]
 	                    [--macs2_addon_parameters MACS2_ADDON_PARAMETERS]
-	                    [-g GENOME] [--macs_genome MACS_GENOME] [-b BLACK_LIST]
+	                    [--half_width HALF_WIDTH] [-g GENOME]
+	                    [--macs_genome MACS_GENOME] [-b BLACK_LIST]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        idr_peaks_yli11_2019-10-30)
+	                        idr_peaks_yli11_2020-05-16)
 	  -r1 R1_INPUT, --R1_input R1_INPUT
 	                        TSV file, 2 columns, treatment, control files for
 	                        replicate 1 (default: None)
@@ -22,6 +23,10 @@ Call IDR peaks given bam files from two replicates
 	  --merged_input MERGED_INPUT
 	                        Not for end-user anymore (default: None)
 	  --macs2_addon_parameters MACS2_ADDON_PARAMETERS
+	  --half_width HALF_WIDTH
+	                        half.width: -1 if using the reported peak width, a
+	                        numerical value to truncate the peaks to +- half_width
+	                        (default: -1)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -31,6 +36,7 @@ Call IDR peaks given bam files from two replicates
 	  -b BLACK_LIST, --black_list BLACK_LIST
 	                        Blacklist file (default: /home/yli11/Data/Human/hg19/a
 	                        nnotations/hg19.blacklist.bed)
+
 
 
 
@@ -47,6 +53,20 @@ Parameters have been updated. Basically MACS2 callpeak uses ``-p 0.2`` cutoff to
 
 Current peak calling method does not apply to ATAC-seq by default. One can generate ATAC-seq peaks using ``--macs2_addon_parameters " --nomodel --shift -100 --extsize 200"`` option.
 
+**5/16/2020**
+
+There is a large peak width issue. The problem is originated from a relaxed p-value (>0.01) in MACS2 that often makes the peak width larger. The problem is simply solved by truncating the peaks by redefining peak width using the summit and extend +- ``half.width`` and then use the new peaks as input to the IDR algorithm.
+
+.. note:: If you are using peaks based on the MACS peak caller, then use p.value as the ranking measure and also set max peak half-width to 200 bp (since MACS tends to call wider peaks with relaxed p-value thresholds of 1e-2)
+
+
+ref:
+
+	http://barcwiki.wi.mit.edu/wiki/SOPs/chip_seq_peaks
+
+	https://personal.broadinstitute.org/anshul/softwareRepo/peakCallingPipelineForIdr.txt
+
+	https://rdrr.io/github/imbforge/encodeChIPqc/src/R/idr.R
 
 Flowchart
 ^^^^^^^^^
@@ -107,6 +127,13 @@ For PE-data use:
 .. code:: bash
 
 	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs --macs2_addon_parameters " -f BAMPE"
+
+For shorter peak width, pealse add ``half_width`` option:
+
+.. code:: bash
+
+	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs --macs2_addon_parameters " -f BAMPE" --half_width 200
+
 
 
 Output
