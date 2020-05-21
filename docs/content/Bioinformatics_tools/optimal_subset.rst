@@ -130,5 +130,23 @@ Usage
 	optimal_subset.py -f test_mutations.list -a 2
 
 
+Notes on association rule mining
+^^^^^^^^^^^^^^^^^
+
+https://en.wikipedia.org/wiki/Association_rule_learning
+
+
+https://github.com/chuanconggao/PrefixSpan-py
+
+
+https://github.com/ChongYou/subspace-clustering
+
+http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/association_rules/
+
+https://www.google.com/search?q=association+rule+mining&sxsrf=ALeKk03HR2KVkvDnq45jediw3V5YOuPcQw:1590011454496&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi59buftsPpAhWFGs0KHW6GA_cQ_AUoAnoECBcQBA&biw=1920&bih=878#imgrc=Nww2F_-dQTy-uM&imgdii=qSwr_hn6JDG-GM
+
+
+
+
 
 
