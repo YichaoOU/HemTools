@@ -6,13 +6,15 @@ Genomic features annotatoin given bed file
 	usage: annot_gene_features.py [-h] -f INPUT_BED [-g GENOME] [--tss TSS]
 	                              [--exon EXON] [--promoter PROMOTER]
 	                              [--UTR5 UTR5] [--UTR3 UTR3] [--intron INTRON]
-	                              [-d1 D1] [-d2 D2] [-o OUTPUT] [--label LABEL]
+	                              [--coding] [-d1 D1] [-d2 D2] [-o OUTPUT]
+	                              [--label LABEL]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -f INPUT_BED, --input_bed INPUT_BED
 	                        3 column bed file, additional columns are OK, but will
 	                        be ignored (default: None)
+	  --coding              focus on coding genes only (default: False)
 	  -d1 D1                extend query bed for intersection (default: 0)
 	  -d2 D2                extending genomic features for intersection (default:
 	                        0)
@@ -37,7 +39,6 @@ Genomic features annotatoin given bed file
 	                        name (default: None)
 	  --intron INTRON       intron feature file, 4 columns, chr, start, end , gene
 	                        name (default: None)
-
 
 
 Summary
