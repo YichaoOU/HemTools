@@ -64,8 +64,35 @@ If you want to update package description, you have to create a new release.
 ::
 
 	conda skeleton pypi unique-color
-	conda-build unique-color
+	cd unique-color
+	conda-build .
 	anaconda upload /home/yli11/conda-bld/linux-64/unique_color-3.0-py36_0.tar.bz2
+
+conda-build is slow, for changeseq, it took 20min to finish.
+
+``conda skeleton pypi unique-color`` will create meta.yaml in ``unique-color`` folder. To enforce a specific python version, you can create a file called ``conda_build_config.yaml``, and put:
+
+::
+
+	python:
+	  - 2.7
+
+To add any dependencies, edit ``meta.yaml`` file, add specific libraries (which can be installed through conda or pip).
+
+::
+
+	requirements:
+	  host:
+	    - pip
+	    - python
+	  run:
+	    - python
+	    - bwa=0.7.17
+	    - htseq
+	    - matplotlib
+	    - numpy
+
+
 
 Contribute to bioconda
 ^^^^^^^^^^^
