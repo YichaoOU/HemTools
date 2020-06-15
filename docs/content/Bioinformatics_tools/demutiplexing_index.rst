@@ -52,6 +52,15 @@ Usage
 ^^^^^
 
 ::
+	
+	hpcf_interactive
 
+	module load python/2.7.13
+
+	# run interactively
 	demultiplexing_index.py -f Undetermined_S0_R1_001.fastq.gz -b barcode.fa
+
+	# submit job to HPC
+	bsub -P dx -q priority -R rusage[mem=8000] demultiplexing_index.py -f Undetermined_S0_R1_001.fastq.gz -b barcode.fa -n 2
+
 
