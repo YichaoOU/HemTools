@@ -58,3 +58,32 @@ https://www.nature.com/articles/srep30750
 
 
 https://nbviewer.jupyter.org/github/saibalmars/GraphRicciCurvature/blob/master/notebooks/tutorial.ipynb
+
+
+Networkx layout
+^^^^^^^^^^^^^^
+
+
+https://stackoverflow.com/questions/21978487/improving-python-networkx-graph-layout
+
+
+https://github.com/bhargavchippada/forceatlas2
+
+
+https://hvplot.holoviz.org/user_guide/NetworkX.html
+
+
+
+Ego-splitting method for community detection
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Only one parameter in the Ego-splitting method, ``resolution``, which is the ``time`` resolution parameter mentioned in the Louvian method, intuitively, it relates to the probablity (e.g., average times) that in a random walk process, the first step and the ``time t`` step are being in the same community.
+
+https://www.eecs.yorku.ca/course_archive/2017-18/F/6412/reading/kdd17p145.pdf
+
+https://arxiv.org/pdf/0812.1770.pdf
+
+
+
+
+
