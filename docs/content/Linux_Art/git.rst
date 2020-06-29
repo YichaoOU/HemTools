@@ -38,3 +38,12 @@ https://help.github.com/en/github/importing-your-projects-to-github/adding-an-ex
 	git remote -v
 	git push -u origin master
 
+
+Add large files to gitignore
+-------------
+
+.. code:: bash
+
+	find . -size +99M | sed "s|^./||g" | cat > .gitignore
+
+
