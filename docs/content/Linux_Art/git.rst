@@ -42,6 +42,8 @@ https://help.github.com/en/github/importing-your-projects-to-github/adding-an-ex
 Add large files to gitignore
 -------------
 
+git prohibit uploading files > 100M, the following code automatically ignore large files.
+
 .. code:: bash
 
 	find . -size +99M | sed "s|^./||g" | cat > .gitignore

@@ -31,3 +31,16 @@ download hidden files given url
 
 https://stackoverflow.com/questions/46197760/python-how-can-i-download-data-from-the-webpage-where-the-link-is-hidden-by-the/46198849
 
+Python font
+-----
+
+https://gree2.github.io/python/2015/04/27/python-change-matplotlib-font-on-mac
+
+"Deleting fontlist-v310.json fixed the issue"
+
+https://github.com/matplotlib/matplotlib/issues/13810
+
+matplotlib.rcParams['font.sans-serif'] = ['Helvetica']
+matplotlib.rcParams['axes.unicode_minus'] = False
+plt.rc('font', family='Helvetica')
+
