@@ -94,6 +94,8 @@ To add any dependencies, edit ``meta.yaml`` file, add specific libraries (which 
 
 
 
+
+
 Contribute to bioconda
 ^^^^^^^^^^^
 
@@ -108,5 +110,18 @@ https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-
 https://stackoverflow.com/questions/30438216/how-do-i-upload-a-universal-python-wheel-for-python-2-and-3
 
 https://anaconda.org/liyc1989/unique_color
+
+
+How to use other installed conda (other people's conda)
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+::
+
+	export PATH=$PATH:/rgs01/project_space/tsaigrp/Genomics/common/anaconda3/condabin/
+	eval "$(conda shell.bash hook)"
+
+
+
 
 
