@@ -58,6 +58,14 @@ Usage
 	motif_footprint_from_bw.py -f input.list
 
 
+For mouse genome
+
+.. code:: bash
+
+	module load python/2.7.13
+
+	motif_footprint_from_bw.py -f input.list -g mm9 -m /home/yli11/Data/Motif_database/Mouse/mouse_TF.meme
+
 
 Output
 ^^^^^^
