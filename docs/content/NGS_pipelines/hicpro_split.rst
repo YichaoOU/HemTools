@@ -174,11 +174,16 @@ Go to your fastq files folder and do the following:
 	bsub -P hicpro -q priority -R rusage[mem=8000] hicpro_split.py -r1 Tcell_HiC_2_3_4_R1.fastq.gz -r2 Tcell_HiC_2_3_4_R2.fastq.gz -s Tcell_HiC_2_3_4 -g hg38
 
 
+Rerun failed exp
+^^^^^^
+
+::
+
+	hicpro_split.py -r1 Jurkat_20copy.R1.fastq.gz -r2 Jurkat_20copy.R2.fastq.gz --sample_id Jurkat_20copy --jid hicpro_batch_yli11_2020-07-06_Jurkat_20copy -g hg19_20copy --rerun
 
 
 
-
-
+Use ``--rerun`` option, match sample id, jid and genome.
 
 
 

@@ -11,12 +11,12 @@ Call motif footprint from bigwiggle files
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        motif_footprint_from_bw_yli11_2019-09-02)
+	                        motif_footprint_from_bw_yli11_2020-07-12)
 	  -f INPUT_LIST, --input_list INPUT_LIST
 	                        tsv 3 columns, bed,bw,outputname (default: None)
 	  -m MOTIF_FILE, --motif_file MOTIF_FILE
-	                        motif file (default: /home/yli11/Data/Motif_database/H
-	                        uman/homer_motif.meme)
+	                        motif file, use absolute path (default: /home/yli11/Da
+	                        ta/Motif_database/Human/homer_jaspar.meme)
 	  -c FIMO_CUTOFF, --fimo_cutoff FIMO_CUTOFF
 
 	Genome Info:
@@ -30,7 +30,7 @@ Call motif footprint from bigwiggle files
 Summary
 ^^^^^^^
 
-This pipeline is designed as the next step after ATAC-seq footprint pipeline. 
+This pipeline is designed as the next step after ATAC-seq footprint pipeline. Given motif pwm file, we first perform motif scanning on the given peak file, we then extract Tn5 cutting frequency from the bw file. A valid motif footprint should be a U-shape (i.e., mean frequency inside the motif is smaller than the flanking regions).
 
 Input
 ^^^^^
@@ -44,8 +44,8 @@ For bw file, it needs absolute path.
 
 ::
 
-	H2.bed 	/path/to/H2.bw 	Hudep2_footprints
-	H1.bed 	/path/to/H1.bw 	Hudep1_footprints
+	H2.narrowPeak 	/path/to/H2.bw 	Hudep2_footprints
+	H1.narrowPeak 	/path/to/H1.bw 	Hudep1_footprints
 
 
 Usage
@@ -77,7 +77,9 @@ In each motif folder, you can find:
 
 If there's a motif that you are interested in, there's a script for you to generate a footprint heatmap plot: ``signal_plot.sh``, which you just need to run ``bash signal_plot.sh``.
 
-.. image:: ../../images/signal_plot.out_centerPlot.png
+"NFIX","PU.1","CTCF","GATA1","ZBTB7A" will be automatically generated since they are used very often in our projects.
+
+.. image:: ../../images/gata1_footprint.png
   :align: center
 
 
