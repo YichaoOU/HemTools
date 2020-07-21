@@ -120,6 +120,7 @@ How to use other installed conda (other people's conda)
 
 	export PATH=$PATH:/rgs01/project_space/tsaigrp/Genomics/common/anaconda3/condabin/
 	eval "$(conda shell.bash hook)"
+	conda activate /rgs01/project_space/tsaigrp/Genomics/common/anaconda3/envs/changeseq/
 
 
 

@@ -187,6 +187,16 @@ Use ``--rerun`` option, match sample id, jid and genome.
 
 
 
+captureC
+^^^^^^
+
+Use ``-t`` option, with absolute path.
+
+The target.bed should have at least 4 columns: chr, start, end, name
+
+::
+
+	hicpro_split.py -r1 ${COL1} -r2 ${COL2} --sample_id ${COL3} -t /research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Sequencing_runs/rwu_data/newCaptureC/target.bed -g HBG1 -j ${COL3}_hicpro_captureC
 
 
 
