@@ -1,4 +1,4 @@
-Identify target genes
+Assigning features to a bed file.
 =============
 
 
@@ -31,7 +31,8 @@ Identify target genes
 Summary
 ^^^^^
 
-Assigning target genes using promoter capture HiC data. For pc-HiC data, see :doc:`hg19 pc-HiC <../Data/catureC_pcHiC>`. For target gene assignment workflow, see :doc:`tf_target_finder pipeline <tf_target_finder>`.
+
+This is one of the tools in the target gene assignment workflow, see :doc:`tf_target_finder pipeline <tf_target_finder>` for more details.
 
 Assigned targets will be appended as new columns to the input bed file.
 
@@ -49,25 +50,59 @@ A bed file with any number of columns. But the first 3 columns should be chr, st
 
 hg19: /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed 
 
-3. a list of promoter capture HiC bed file.
+3. a list of features (bed format: chr, start, end, feature_name)
 
-see :doc:`hg19 pc-HiC <../Data/captureC_pcHiC>`
-
-``--epi_file_list pcHIC.list``
-
-
-Usage
+Use case 1: assigning target genes
 ^^^^^
+
+For promoter capture HiC data, see :doc:`hg19 pc-HiC <../Data/catureC_pcHiC>`.
+
 
 .. code:: bash
 
-	hpcf_interative
+	hpcf_interative.sh
 
 	module load conda3
 
 	source activate /home/yli11/.conda/envs/py2
 
 	assign_targets_multi.py -q input.bed -tss /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed --epi_file_list pcHIC.list -o input.bed.assigned_targets.bed
+
+Use case 2: assigning motifs
+^^^^^
+
+.. code:: bash
+
+	hpcf_interative.sh
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/py2
+
+	assign_targets_multi.py -q input.bed -tss /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed --epi_file_list /path/to/motif.list -o input.bed.assigned_targets.bed
+
+
+
+For hg19, please use: 
+
+.. code:: bash
+
+	assign_targets_multi.py -q input.bed -tss /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed --epi_file_list /home/yli11/Data/Human/hg19/motif_mapping/motif.list -o input.bed.assigned_targets.bed
+
+
+For hg38, please use: ``--epi_file_list /path/to/motif.list``
+
+.. code:: bash
+
+	assign_targets_multi.py -q input.bed -tss /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed --epi_file_list /home/yli11/Data/Human/hg19/motif_mapping/motif.list -o input.bed.assigned_targets.bed
+
+
+For mm9, please use: ``--epi_file_list /path/to/motif.list``
+
+.. code:: bash
+
+	assign_targets_multi.py -q input.bed -tss /home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed --epi_file_list /home/yli11/Data/Human/hg19/motif_mapping/motif.list -o input.bed.assigned_targets.bed
+
 
 
 
