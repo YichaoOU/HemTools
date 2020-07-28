@@ -67,3 +67,24 @@ https://stackoverflow.com/questions/17945538/delete-directory-based-on-date
 
 https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image
 
+set attr
+^^^^^^
+
+::
+
+	[yli11@splprhpc05 learned_model_6]$ attr -s test -V 123 webpage_6.html
+	Attribute "test" set to a 3 byte value for webpage_6.html:
+	123
+	[yli11@splprhpc05 learned_model_6]$ ls webpage_6.html
+	webpage_6.html
+	[yli11@splprhpc05 learned_model_6]$ ll -rht webpage_6.html
+	-rwxr-xr-x 1 yli11 chenggrp 2.0K Oct 11  2019 webpage_6.html
+	[yli11@splprhpc05 learned_model_6]$ getfa
+	getfacl   getfattr
+	[yli11@splprhpc05 learned_model_6]$ getfa
+	getfacl   getfattr
+	[yli11@splprhpc05 learned_model_6]$ getfattr -d webpage_6.html
+	# file: webpage_6.html
+	user.test="123"
+
+
