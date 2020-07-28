@@ -199,7 +199,14 @@ The target.bed should have at least 4 columns: chr, start, end, name
 	hicpro_split.py -r1 ${COL1} -r2 ${COL2} --sample_id ${COL3} -t /research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Sequencing_runs/rwu_data/newCaptureC/target.bed -g HBG1 -j ${COL3}_hicpro_captureC
 
 
+if you want to keep duplicated reads and multi-mapped reads, use ``--keep_dup``.
 
+We have pre-defined custom hg19 genomes: e.g., HBG1, hg19_copy
+
+
+::
+
+	hicpro_split.py -r1 Jurkat_20copy_cassette_captureC_combine_R1.fastq.gz -r2 Jurkat_20copy_cassette_captureC_combine_R2.fastq.gz -s jurkat_20copy -g hg19_20copy -t hg19_20copy_cassette_bait.bed --keep_dup
 
 
 
