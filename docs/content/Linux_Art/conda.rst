@@ -123,6 +123,11 @@ How to use other installed conda (other people's conda)
 	conda activate /rgs01/project_space/tsaigrp/Genomics/common/anaconda3/envs/changeseq/
 
 
+Use Helvetica
+^^^^^
+
+http://fowlerlab.org/2019/01/03/changing-the-sans-serif-font-to-helvetica/
+
 
 
 

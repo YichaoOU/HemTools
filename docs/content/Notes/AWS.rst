@@ -9,7 +9,11 @@ You can get a free one-year account on: https://aws.amazon.com/free/
 
 Currently, I'm not sure whether or not AWS will charge you if the web app has been over-used, like CPU time is above their "free zone".
 
+8/4/2020
 
+It turns out that you can easily pass the free 750 hours (= 1 month) if you don't know that you have servicea in more than one cluster. It finally charged me $4 in July and estimated to be $8 per month.
+
+I then terminated all services and asked for refund.
 
 Usage
 ^^^^^

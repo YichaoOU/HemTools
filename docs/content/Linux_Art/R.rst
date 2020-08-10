@@ -41,3 +41,19 @@ Create a dir specifically for R packages. Use R version to create another dir. O
 	with_libpaths(new = "/usr/lib/R/site-library/", install_github('rCharts', 'ramnathv'))
 
 
+BioManager version
+^^^^^^
+::
+
+	Error: Bioconductor version '3.9' requires R version '3.6
+	remove.packages("BiocVersion")
+	install.packages("BiocManager")
+
+How should I deal with “package 'xxx' is not available (for R version x.y.z)” warning?
+^^^^^^^^^
+
+::
+
+	setRepositories()
+
+select 1 2 3 4 5 6 
