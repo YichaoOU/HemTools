@@ -44,3 +44,7 @@ matplotlib.rcParams['font.sans-serif'] = ['Helvetica']
 matplotlib.rcParams['axes.unicode_minus'] = False
 plt.rc('font', family='Helvetica')
 
+
+http://fowlerlab.org/2019/01/03/changing-the-sans-serif-font-to-helvetica/
+
+
