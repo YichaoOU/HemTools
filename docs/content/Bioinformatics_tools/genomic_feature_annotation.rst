@@ -6,8 +6,8 @@ Genomic features annotatoin given bed file
 	usage: annot_gene_features.py [-h] -f INPUT_BED [-g GENOME] [--tss TSS]
 	                              [--exon EXON] [--promoter PROMOTER]
 	                              [--UTR5 UTR5] [--UTR3 UTR3] [--intron INTRON]
-	                              [--coding] [-d1 D1] [-d2 D2] [-o OUTPUT]
-	                              [--label LABEL]
+	                              [--gene_name_list GENE_NAME_LIST] [--coding]
+	                              [-d1 D1] [-d2 D2] [-o OUTPUT] [--gene_names]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -20,7 +20,8 @@ Genomic features annotatoin given bed file
 	                        0)
 	  -o OUTPUT, --output OUTPUT
 	                        output intermediate file (default: output)
-	  --label LABEL         prefix for the file (default: genomic_features)
+	  --gene_names          use gene names instead of gene id, only works for hg19
+	                        now (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -39,6 +40,10 @@ Genomic features annotatoin given bed file
 	                        name (default: None)
 	  --intron INTRON       intron feature file, 4 columns, chr, start, end , gene
 	                        name (default: None)
+	  --gene_name_list GENE_NAME_LIST
+	                        a file containing id to name conversion (default:
+	                        None)
+
 
 
 Summary
@@ -66,7 +71,7 @@ The next 5 columns are overlaps with exon_gene, promoter_gene, 5UTR_gene, 3UTR_g
 
 The last columns is Genomic_features, the priority is Exon, Promoter, 5UTR, 3UTR, Intron, Intergenic. 
 
-
+By default, output uses gene Ensemble ID. You can use ``--gene_names`` option to output just gene names.
 
 Usage
 ^^^^^
@@ -78,6 +83,9 @@ Usage
 	module load conda3
 	source activate /home/yli11/.conda/envs/py2
 	annot_gene_features.py -f input.bed -o output.bed
+
+	# OR
+	annot_gene_features.py -f input.bed -o output.bed --gene_names
 
 	## generate a pie chart
 
