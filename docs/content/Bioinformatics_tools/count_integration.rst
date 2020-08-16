@@ -15,6 +15,8 @@ This pipeline performs the following analysis in order:
 
 4. count_indels_integrations.py
 
+Once the pipeline is finished, you will be notified by email.
+
 
 Input
 ^^^^^
