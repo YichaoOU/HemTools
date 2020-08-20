@@ -15,6 +15,10 @@ It turns out that you can easily pass the free 750 hours (= 1 month) if you don'
 
 I then terminated all services and asked for refund.
 
+8/20/2020
+
+Seems that ``eb create`` will create running instances in multiple areas, e.g., N.virginia and Orengan.
+
 Usage
 ^^^^^
 
@@ -135,7 +139,23 @@ I want to put my Easy-Prime tool up there and have encountered several problems.
 
 The indent should be spaces, not tab.
 
+3. I found using SSH is the easiest way install things.
 
+``eb ssh`` will ssh to your instances in the current working dir, otherwise you can use ``eb ssh env_name``.
+
+Your app is stored at ``/var/app/current`` and your python is ``/var/app/venv/bin/python``
+
+By default, you can't write in these dirs, so you need to add ``sudo``. I don't know why they give you sudo option, but not directly writable.
+
+``sudo yum groupinstall "Development Tools"``
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compile-software.html
+
+Again, this is obviously necessary, but you have to install it yourself.
+
+Default EB size is 8G, now if I put hg19.fa, it also used all the space and I got no space error. I have to increase the space in EC2. I don't know if it will cause extra money.
+
+To update your code on EB, use ``eb deploy``
 
 Notes
 ^^^^^

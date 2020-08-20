@@ -79,7 +79,7 @@ Usage
 .. code:: bash
 
 	export PATH=$PATH:"/home/yli11/HemTools/bin"
-	hpcf_interative.sh
+	hpcf_interactive.sh
 	module load conda3
 	source activate /home/yli11/.conda/envs/py2
 	annot_gene_features.py -f input.bed -o output.bed
