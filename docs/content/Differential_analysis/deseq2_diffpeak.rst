@@ -88,9 +88,11 @@ Input file syntax:
 Output
 ^^^^^^
 
+Gain and Loss is relative speaking to control. So ``gain`` means the region has more reads in treatment and less reads in control group, so is logFC > 0.
+
 1. Read count table is generated in DEseq2_results folder
 
-2. DESEQ2 result (``control-[user_input_group].diffRegions.txt``) is generated in homer_motifs folder. ``A logFC < 0 means the peak has less read count in control group.``
+2. DESEQ2 result (``control-[user_input_group].diffRegions.txt``) is generated in homer_motifs folder. In this file, ``logFC < 0 means gain,  the peak has less read count in control group.``. In all other files (e.g., values in bdg_files folder) are corrected.
 
 
 FAQ
