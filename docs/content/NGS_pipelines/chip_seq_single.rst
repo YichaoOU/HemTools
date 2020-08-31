@@ -112,6 +112,12 @@ Use different genome index
     $ HemTools chip_seq_single -f fastq.tsv -d peakcall.tsv -i YOUR_GENOME_INDEX
 
 
+Duplicate reads
+^^^^^^^
+
+https://www.biostars.org/p/318974/
+
+
 
 Comments
 ^^^^^^^^

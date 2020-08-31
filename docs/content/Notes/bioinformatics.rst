@@ -39,5 +39,5 @@ vcf is 1-index
 When people give you a file other than these format, we have to always make sure whether it is 0-index or 1-index.
 
 
-
+Duplicates
 

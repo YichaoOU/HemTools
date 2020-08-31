@@ -22,7 +22,18 @@ Usage
 
 .. code:: bash
 
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	## for differential peaks
+
     HemTools volcano_plot -f diffPeaks_output.txt -s "\t" --LFC_column logFC --FDR_column adj.P.Val
+
+    ## for diffGene pipeline output
+
+    HemTools volcano_plot -f H2_vs_H1.gene.final.combined.tpm.csv -s , --LFC_column logFC --FDR_column qval
+
 
 .. note:: Once the figure is made, it will be emailed to you.
 
