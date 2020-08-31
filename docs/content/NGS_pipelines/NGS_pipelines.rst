@@ -83,6 +83,32 @@ Once the job is finished, you will be notified by email with some attachments.  
 
     $ HemTools report_bug
 
+
+Output
+^^^^^^
+
+A QC report will be sent to you by email when the job is done.
+
+For .bw .bam and peak files, we provide the following types:
+
+1. all (all reads are kept)
+
+2. rmdup (PCR duplicates are removed, note that these are just reads with the same 5' end position)
+
+3. rmdup.uq (i.e., disticnt reads, PCR duplicates and multi-mapped reads are removed)
+
+4. markdup.uq (only multi-mapped reads are removed)
+
+Multi-mapped reads are removed using ``samtools view -q 1``; this typically removes almost 99% multi-mapped reads, but some will be still there.
+
+For common usage, use rmdup.uq. When you focus on dulicated regions, e.g., HBG1/HBG2, you might want to use rmdup or all. 
+
+For RNA-seq, use markdup.uq.
+
+For short length single-end chip-seq, use markdup.uq.
+
+
+
 Reference
 ^^^^^^^^^
 

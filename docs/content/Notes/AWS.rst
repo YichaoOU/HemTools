@@ -157,6 +157,22 @@ Default EB size is 8G, now if I put hg19.fa, it also used all the space and I go
 
 To update your code on EB, use ``eb deploy``
 
+
+``eb deploy`` will remove every old code. If I have small changes, I will directly modify the code online. There should some git pull method.
+
+To increase space, simply increase the volumn on the webpage will not work. Follow the method here: https://til.codes/extending-the-disk-space-on-an-amazon-ec2-instance/ did not completely solve my problem, but did give me a good start. So eventually, the command I'm using is:
+
+::
+
+	lsblk # to look at the space
+
+	sudo growpart /dev/xvda 1
+
+	sudo xfs_growfs -d /mnt
+
+
+TODO: I heard that "AWS S3 + Lambda" is much cheaper.
+
 Notes
 ^^^^^
 

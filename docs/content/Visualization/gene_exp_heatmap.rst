@@ -4,9 +4,12 @@ Gene expression heatmap
 ::
 
 	usage: plot_gene_exp_heatmap.py [-h] -f INPUT --sort_by SORT_BY
+	                                [-c1 VALUE_CUTOFF_MAX] [-c2 VALUE_CUTOFF_MIN]
+	                                [--index_by INDEX_BY]
 	                                [--remove_cols REMOVE_COLS] [-o OUTPUT] [-pdf]
 	                                -W WIDTH -H HEIGHT [--fontsize FONTSIZE]
 	                                [--linewidths LINEWIDTHS] [--log2_transform]
+	                                [--show_name]
 
 	plot heatmap given dataframe.
 
@@ -15,10 +18,20 @@ Gene expression heatmap
 	  -f INPUT, --input INPUT
 	                        data table input (default: None)
 	  --sort_by SORT_BY     usually this column should be logFC (default: None)
+	  -c1 VALUE_CUTOFF_MAX, --value_cutoff_max VALUE_CUTOFF_MAX
+	                        subset genes by filtering out values above the cutoff,
+	                        usually it should be p-value, input should be:
+	                        column_name,value (default: None)
+	  -c2 VALUE_CUTOFF_MIN, --value_cutoff_min VALUE_CUTOFF_MIN
+	                        subset genes by filtering out values below the cutoff,
+	                        usually it should be log p-value, input should be:
+	                        column_name,value (default: None)
+	  --index_by INDEX_BY   if the first column is not the correct index, which
+	                        one? (default: None)
 	  --remove_cols REMOVE_COLS
 	  -o OUTPUT, --output OUTPUT
 	                        output table name (default:
-	                        gene_exp_heatmap.yli11_2020-04-01)
+	                        gene_exp_heatmap.yli11_2020-08-26)
 	  -pdf                  plot pdf instead of png, can be slower for large
 	                        dataset (default: False)
 	  -W WIDTH, --width WIDTH
@@ -31,6 +44,9 @@ Gene expression heatmap
 	  --linewidths LINEWIDTHS
 	                        you can choose from 0, 0.1 (default: 0.1)
 	  --log2_transform      input values will be log2 transformed (default: False)
+	  --show_name           by default, >100 genes, name will not be shown, this
+	                        option enforce to show name (default: False)
+
 
 
 Summary
@@ -78,4 +94,21 @@ Depending on your data matrix size,in my example, I have 2004 genes and 6 sample
 	plot_gene_exp_heatmap.py -f fdr01.csv --remove_cols AveExpr,t,P.Value,adj.P.Val,B --sort_by logFC -W 8 -H 25 -pdf -o test_heatmap
 
 You can control font size using ``--fontsize`` option.
+
+
+plot top diff genes after diff gene pipeline:
+
+
+::
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	plot_gene_exp_heatmap.py -f e6e7_vs_control.gene.final.combined.tpm.csv --index_by ext_gene -c1 qval,0.001 --sort_by logFC --remove_cols pval,num_aggregated_transcripts,X,treatment_mean,control_mean -W 5 -H 20 --show_name
+
+	OR:
+
+	for i in *.csv;do plot_gene_exp_heatmap.py -f $i --index_by ext_gene -c1 qval,0.001 --sort_by logFC --remove_cols pval,num_aggregated_transcripts,X,treatment_mean,control_mean -W 5 -H 20 --show_name -o $i;done
+
 
