@@ -35,7 +35,7 @@ Usage
 	  -j JID, --jid JID     a folder name, used to upload tracks (default:
 	                        create_tracks_yli11_2019-06-28)
 	  -g GENOME, --genome GENOME
-	                        genome version: hg19, hg38, mm9, mm10. (default: hg19)
+	                        genome version: hg19, hg38, mm9, mm10, hgvirus. (default: hg19)
 	  --current_dir         Upload .bed .narrowPeak .broadPeak and .bw files
 	                        (default: False)
 
@@ -53,6 +53,61 @@ When finished, it will print out an url, similar like below:
 	2019-06-28 14:41:56,213 - INFO - upload_bed_bw - transfering file
 	Please copy the following url to your genome browser. Note that protein paint genome browser is only accessible inside stjude network.
 	https://ppr.stjude.org/?study=HemPipelines/yli11/create_tracks_yli11_2019-06-283a1f4cad5f47/tracks.json
+
+
+
+Add gene track to custom genome
+^^^^^^^^^^^^^^^^^^^
+
+
+1. download gene annotation gtf file
+
+2. using lift over bed, to lift over gtf file
+
+3. using Xin's tool to convert gtf to bedj
+
+nodejs version >= 2.10
+
+default node mem is 1.5G, increase it to 8G
+
+.. code:: bash
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/npm
+
+	export NODE_OPTIONS=--max-old-space-size=8192
+
+	node gtf2bedj.js hg19_20copy.gtf > out.bedjs
+
+	sort -k1,1 -k2,2n out.bedjs > hg19_20copy.st.bedj
+
+	module load htslib
+	bgzip hg19_20copy.st.bedj 
+	tabix -p bed hg19_20copy.st.bedj.gz
+
+
+Put this json:
+
+::
+
+	{
+	"type":"bedj",
+	"name":"Ensembl v87 genes",
+	"file":"yli11/hgcOPT/20copy_data/hg19_20copy.st.bedj.gz",
+	"stackheight":14,
+	"stackspace":1
+	}
+
+
+
+
+
+
+
+
+
+
 
 
 

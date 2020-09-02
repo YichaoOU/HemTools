@@ -76,13 +76,52 @@ The output file will be emailed to you.
 
 
 
+Highlight some dots
+^^^^^^^^^^
+
+The script we are using is from : :doc:`scatter_correlation.py <scatter_correlation>`. Specifically, the usage for the output from replicate_correlation.py is as follows.
 
 
+1. Input: ``signal.out``
 
 
+Find the ``signal.out`` file in the output jid folder. This is a tsv file, open it in excel, edit the column names to what you need. The first column is the index, by default the column name is "0". You don't need to modify this name. The last two columns are used as X-axis and Y-axis name, change them to what you need, spaces are allowed.
+
+Next, find the row where you want to highlight, modify its index name to something simple, you will need to input this name later.
+
+Example input:
+
+::
+
+	0	WT	KO
+	test	150.76201	4.45338
+	Banana_2,Banana_2	7.28372	7.71828
+	Banana_3,Banana_3	6.638380000000001	5.2838400000000005
+	Banana_4,Banana_4	6.5786	7.52588
+	Banana_5,Banana_5	7.51205	6.96104
+	Banana_6,Banana_6	5.625030000000001	3.6350599999999997
+	Banana_7,Banana_7	5.18235	3.84519
+	Banana_8,Banana_8	5.73767	5.34589
+	Banana_9,Banana_9	7.53337	3.71176
+
+2. Run ``scatter_correlation.py`` 
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/py2
+
+	scatter_density.py -f signal.out -s "\t" -x WT -y KO --index 0 --highlight test -o myoutput.pdf
 
 
+3. example figure
 
+
+.. image:: ../../images/scatter_correlation_highlight.png
+	:align: center
 
 
 
