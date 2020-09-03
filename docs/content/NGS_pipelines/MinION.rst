@@ -76,6 +76,10 @@ Output
 
 Results are provided in the jid folder.
 
+``*.ctg.fa`` assembled contig.
+
+``*.fix.st.bam`` read mapping bam file.
+
 
 Comments
 ^^^^^^^^
