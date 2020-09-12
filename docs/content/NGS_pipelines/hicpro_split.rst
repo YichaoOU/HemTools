@@ -1,4 +1,4 @@
-Analysis of Hi-C data using HiC-Pro
+Analysis of Hi-C and capture-C data using HiC-Pro
 ==========================
 
 ::
@@ -31,13 +31,17 @@ Analysis of Hi-C data using HiC-Pro
 Summary
 ^^^^^^^
 
-This program provides Hi-C data analysis for one paired-end sample, split the fastq files and run HiC-Pro.
+This program provides Hi-C or Capture-C data analysis paired-end samples, split the fastq files and run HiC-Pro.
 
 Total input reads is splited to 100M reads per file. So a 1.5B reads will generate 15 splited files, each will be submited to HPC. Mapping takes about 20 hours for 100M PE reads. Combining the reads and remove duplicates are much faster, about 3 hours. ice takes about 3 hours. hicpro2juicer takes about 50 hours. So together, you should have the results within a week.
 
 Tested in hg38. hg19 should work. mm9 or mm10 will not work.
 
 This program is updated for processing multiple fastq files. See old hicpro_split.py usage in the very bottom of this page.
+
+Currently, ``hicpro_batch.py`` only support standard HiC analysis. ``hicpro_split.py`` provides options to keep duplicated and multi-mapped reads and capture-C data analysis.
+
+For HiC data visualization, see: 
 
 Usage
 ^^^^^
