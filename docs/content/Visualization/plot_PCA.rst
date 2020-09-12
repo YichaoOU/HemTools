@@ -3,16 +3,22 @@ Visualizing high-dimentional data using PCA or UMAP
 
 ::
 
-	usage: plot_PCA.py [-h] [-j JID] [--remove_zero] [--index] [--transpose] -f
-	                   INPUT [--index_using INDEX_USING] [-s SEP]
-	                   [--xlabel XLABEL] [--ylabel YLABEL]
+	usage: plot_PCA.py [-h] [-j JID] [--remove_zero] [--index] [--binarize]
+	                   [--max MAX] [--min MIN] [--transpose] [--sample_norm] -f
+	                   INPUT [--use_cols USE_COLS] [--index_using INDEX_USING]
+	                   [-s SEP] [--xlabel XLABEL] [--ylabel YLABEL]
 	                   [--remove_cols REMOVE_COLS]
-	                   [--color_using COLOR_USING | --color_by_a_col COLOR_BY_A_COL]
+	                   [--color_using COLOR_USING | --color_by_a_col COLOR_BY_A_COL | --shape_by_str SHAPE_BY_STR]
 	                   [-n MAXPC] [--UMAP_min_dist UMAP_MIN_DIST]
 	                   [--UMAP_metric UMAP_METRIC]
 	                   [--UMAP_n_neighbors UMAP_N_NEIGHBORS] [--title TITLE]
-	                   [--label_by_last3_element] [--label_by_first_element]
-	                   [--label_by_meaningful_name] [--UMAP]
+	                   [--label_by_last3_element] [--smart_label]
+	                   [--kmeans_label KMEANS_LABEL] [--dbscan_label]
+	                   [--guess_label] [--continous]
+	                   [--gene_filter_cutoff GENE_FILTER_CUTOFF]
+	                   [--label_by_first_element] [--label_by_first4_element]
+	                   [--zero_mean_unit_variance] [--label_by_meaningful_name]
+	                   [--UMAP] [--nPCA_UMAP NPCA_UMAP] [--text]
 	                   [--save_projection_df] [--figure_type FIGURE_TYPE]
 	                   [-o OUTPUT] [--header] [-W WIDTH] [-H HEIGHT]
 	                   [--log2_transform]
@@ -23,12 +29,17 @@ Visualizing high-dimentional data using PCA or UMAP
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        plot_PCA_yli11_2019-10-08)
+	                        plot_PCA_yli11_2020-09-03)
 	  --remove_zero         remove all rows or cols that are zero (default: False)
 	  --index               index is false (default: False)
+	  --binarize            force to binary data (default: False)
+	  --max MAX             above this value to determine 1 (default: 1)
+	  --min MIN             above this value to determine 0 (default: 0)
 	  --transpose           df transpose (default: False)
+	  --sample_norm         sample norm by sum (default: False)
 	  -f INPUT, --input INPUT
 	                        data table input (default: None)
+	  --use_cols USE_COLS   use a subset cols (default: None)
 	  --index_using INDEX_USING
 	                        Sometimes we want to show a different label for the
 	                        indices, then use this option. For example, gene id is
@@ -46,20 +57,34 @@ Visualizing high-dimentional data using PCA or UMAP
 	  --color_by_a_col COLOR_BY_A_COL
 	                        input a column name to be used for coloring (default:
 	                        None)
+	  --shape_by_str SHAPE_BY_STR
+	                        input a string to match sample name, matched and
+	                        unmatched names will have different name; used to show
+	                        our own data vs public data. (default: None)
 	  -n MAXPC, --maxPC MAXPC
 	  --UMAP_min_dist UMAP_MIN_DIST
 	  --UMAP_metric UMAP_METRIC
 	  --UMAP_n_neighbors UMAP_N_NEIGHBORS
 	  --title TITLE
 	  --label_by_last3_element
+	  --smart_label
+	  --kmeans_label KMEANS_LABEL
+	  --dbscan_label
+	  --guess_label
+	  --continous
+	  --gene_filter_cutoff GENE_FILTER_CUTOFF
 	  --label_by_first_element
+	  --label_by_first4_element
+	  --zero_mean_unit_variance
 	  --label_by_meaningful_name
 	  --UMAP
+	  --nPCA_UMAP NPCA_UMAP
+	  --text
 	  --save_projection_df
 	  --figure_type FIGURE_TYPE
 	                        pdf,png,jpeg (default: png)
 	  -o OUTPUT, --output OUTPUT
-	                        output table name (default: plot_PCA_yli11_2019-10-08)
+	                        output table name (default: plot_PCA_yli11_2020-09-03)
 	  --header              input table has header (default: False)
 	  -W WIDTH, --width WIDTH
 	                        Figure width, by default, w=N_row/4, if given, will
@@ -68,7 +93,6 @@ Visualizing high-dimentional data using PCA or UMAP
 	                        Figure height, by default, w=N_col/4, if given, will
 	                        replace the default value (default: 500)
 	  --log2_transform      input values will be log2 transformed (default: False)
-
 
 Summary
 ^^^^^^^

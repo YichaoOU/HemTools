@@ -48,4 +48,19 @@ bedtools
 
 http://quinlanlab.org/tutorials/bedtools/bedtools.html#intersecting-multiple-files-at-once.
 
+CTCF motif
+^^^^^^^^
+
+CTCF motif is a long conserved motif in mammalian lineage.
+
+This paper in 2012 divided CTCF motif into M1 + M2, a new 2020 genome biology paper divided it into M1-M4. Visually, they are the same.
+
+
+.. image:: ../../images/CTCF_motif.png
+  :align: center
+
+You can find the pwm here: http://insulatordb.uthsc.edu/download/CTCFBSDB_PWM.mat
+
+
+
 
