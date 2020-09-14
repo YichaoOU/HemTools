@@ -5,6 +5,9 @@ Convert BCL basecall files to FASTQ files
 
 .. note:: Please note that there should be no spaces (i.e., only spaces and _ is allowed) in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred. 
 
+
+.. note:: We found that for Miniseq and Nextseq, your R2 index in samplesheet.csv have to be reverse complemented. For Miseq, everything is normal.
+
 .. image:: ../../images/no_space_bcl2fastq.PNG
 	:align: center
 	
@@ -40,7 +43,7 @@ Once finished, you should be able to see the fastq files in folder `fastq_files`
 Manually reverse complement R2 index
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-In some cases, (possible sequencer differences?), users have to manually get revcomp seq of R2 index. So in this case, you can use http://arep.med.harvard.edu/labgc/adnan/projects/Utilities/revcomp.html to get a list of revcomp sequences and copy and replace old index. Upload new sample sheet csv to HPC and run:
+In some sequencer, e.g., miniseq or Nextseq, users have to manually get revcomp seq of R2 index. So in this case, you can use http://arep.med.harvard.edu/labgc/adnan/projects/Utilities/revcomp.html to get a list of revcomp sequences and copy and replace old index. Upload new sample sheet csv to HPC and run:
 
 .. code:: bash
 
