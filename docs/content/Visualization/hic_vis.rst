@@ -16,7 +16,7 @@ Contact us to upload ``.hic`` file, which is much more faster than ``.bedpe`` in
 HiC matrix visualization
 ^^^^^^^
 
-.. image:: ../../images/hic_vis.png
+.. image:: ../../images/HiC_vis.png
 	:align: center
 
 
