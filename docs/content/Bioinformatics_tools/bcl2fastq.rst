@@ -36,6 +36,39 @@ Once finished, you should be able to see the fastq files in folder `fastq_files`
 
 	bcl2fastq --no-lane-splitting -o fastq_files --barcode-mismatches 2
 
+
+Manually reverse complement R2 index
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In some cases, (possible sequencer differences?), users have to manually get revcomp seq of R2 index. So in this case, you can use http://arep.med.harvard.edu/labgc/adnan/projects/Utilities/revcomp.html to get a list of revcomp sequences and copy and replace old index. Upload new sample sheet csv to HPC and run:
+
+.. code:: bash
+
+	bcl2fastq --sample-sheet SampleSheet2.csv --no-lane-splitting -o fastq_files2
+
+
+Wierd special char in your samplesheet.csv
+^^^^^^^^^^^^^^^^^
+
+<U+FEFF> character showing up in files. How to remove them?
+
+https://gist.github.com/szydan/b225749445b3602083ed
+
+::
+
+
+	1) In your terminal, open the file using vim:
+
+	vim file_name
+	2) Remove all BOM characters:
+
+	:set nobomb
+	3) Save the file:
+
+	:wq
+
+
+
 Comments
 ^^^^^^^^
 
