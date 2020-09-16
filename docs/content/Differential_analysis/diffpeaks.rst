@@ -7,12 +7,20 @@ Differential Peaks
 Summary
 ^^^^^^^
 
-Still under development.
+As of 9/14/2020, tested the following tools
+
+1. our own diff pipeline based on DESEQ2
+2. homer diff pipeline based on DESEQ2 or edgeR
+3. MACS2 bdgdiff
+4. Thor/ODIN
+5. MAnorm
 
 
+The DESEQ2 pipelines are very stringent, one simple example is peak like 1 1 in treatment and 0 1 in control won't be diff peak.
 
+Thor or ODIN are very sensitive, so it can give you a lot of diff peaks
 
-
+MAnorm and MACS2 kind like in the middle, possibly because they actually rely on the merged samples (i.e., replicates are merged), so variance within replicates will not impact the p-value any more. MACS2 bdgdiff do not provide p-value or log2 fold change, so it will not be easily understood by most people.
 
 
 Input
