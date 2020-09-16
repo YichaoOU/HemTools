@@ -27,8 +27,11 @@ Total reads in peaks normalized bigwiggle track
 Summary
 ^^^^^^^
 
-Scale the bigwiggle files using the total number of reads in a given peak file.
+Scale the bigwiggle files using the total number of reads in a given peak file. 
 
+Tip: the fold enrichment (_FE.bw) is already a normalized chip-seq signal by MACS2. If you already see a difference, this frip-nomalized method may make the difference disappear. See details below.
+
+This normalization method re-scale the data by number of reads in peak (FRiP), ENCODE standard for FRiP is 1%, that means high quality data should have at least 1% of the total mapped reads in called peaks. FRiP depends on TF, cell line, as well as your chip-seq data quality. WT and KO may have true FRiP differences, if using this method, this difference could be removed and resuling no difference in the visualization.
 
 Input
 ^^^^^
