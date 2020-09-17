@@ -118,6 +118,15 @@ Output
 
 Inside the jid folder, results are provided under each tool's name.
 
+::
+
+	homer_deseq2_results
+	THOR_results
+	homer_diff_results
+	MAnorm_results
+	*.bw
+
+``*bw`` the bw files inside the jid folder is homer sequencing depth normalized bw files, consistent with homer results.
 
 
 Other Tools (old notes)
