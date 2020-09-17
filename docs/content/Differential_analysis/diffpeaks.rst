@@ -1,6 +1,47 @@
 Differential Peaks
 ==================
 
+::
+
+	usage: diffPeaks.py [-h] [-j JID] -f INPUT_TSV -d DESIGN_MATRIX
+	                    [--guess_input] [--MAnorm_PE_flag] [-o OUTPUT]
+	                    [--input_list INPUT_LIST]
+	                    [--motif_matching_score MOTIF_MATCHING_SCORE] [-g GENOME]
+	                    [-s GENOME_CHROM_SIZE] [--skip_chrom_size SKIP_CHROM_SIZE]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+	                        Every output will be moved into this folder. (default:
+	                        diffPeaks_yli11_2020-09-16)
+	  --guess_input         Let the program generate the input files for you,
+	                        won't be correct, but should be helpful (default:
+	                        False)
+	  --MAnorm_PE_flag      whether input is paired-end data (default: False)
+	  -o OUTPUT, --output OUTPUT
+	  --input_list INPUT_LIST
+	                        not for end user (default: None)
+	  --motif_matching_score MOTIF_MATCHING_SCORE
+	                        motif_matching_score (default: 7)
+
+	required named arguments:
+	  -f INPUT_TSV, --input_tsv INPUT_TSV
+	                        4 column tsv, bam file, peak file, sample name, sample
+	                        group (default: None)
+	  -d DESIGN_MATRIX, --design_matrix DESIGN_MATRIX
+	                        3 column tsv for design matrix (default: None)
+
+	Genome Info:
+	  -g GENOME, --genome GENOME
+	                        genome version: hg19, hg38, mm9, mm10. By default,
+	                        specifying a genome version will automatically update
+	                        chrom size. (default: hg19)
+	  -s GENOME_CHROM_SIZE, --genome_chrom_size GENOME_CHROM_SIZE
+	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
+	                        tations/hg19.chrom.sizes.sorted)
+	  --skip_chrom_size SKIP_CHROM_SIZE
+	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
+	                        tations/hg19.chrom.sizes)
 
 
 
@@ -59,9 +100,17 @@ A tsv file containing three columns specifying comparisons. You could do group l
 Usage
 ^^^^^
 
+.. code:: bash
 
+	hpcf_interactive
 
+	module load python/2.7.13
 
+	diffPeaks.py -f input.tsv -d design.tsv -g mm9 --MAnorm_PE_flag 
+
+Paired-end data needs to add ``--MAnorm_PE_flag`` option. 
+
+PE data can be analyzed together with SE data.
 
 
 Output
