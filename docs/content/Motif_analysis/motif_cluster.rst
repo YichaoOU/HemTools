@@ -72,13 +72,15 @@ Motif cluster name or motif name is in the 4th column. Motif clusters are named 
 
 6th column is the strand.
 
-The bed file can also be visualized in protein paint.
+The genereated bedjs file can also be visualized in protein paint.
 
 .. image:: ../../images/motif_cluster.png
 	:align: center
 
 
+::
 
+	{"type":"bedj","name":"NAME","file":"PATH","stackheight":20,"stackspace":1}
 
 Comments
 ^^^^^^^^
