@@ -10,49 +10,68 @@ Summary
 As of 9/14/2020, tested the following tools
 
 1. our own diff pipeline based on DESEQ2
-2. homer diff pipeline based on DESEQ2 or edgeR
-3. MACS2 bdgdiff
-4. Thor/ODIN
-5. MAnorm
+2. Homer getDifferentialPeaksReplicates.pl DESEQ2 or EdgeR
+3. MAnorm
+4. Homer getDifferentialPeaks
+5. MACS2 bdgdiff
+6. Thor/ODIN
 
+These tools or pipelines are ranked by their stringency (i.e. number of reported diff peaks). The DESEQ2 based pipelines are the most stringent. The least strigent or the most sensitive tools are MACS2 or Thor/ODIN. We provide all the results, depends on how many diff peaks you expect to see, you can select the results from that tool.
 
-The DESEQ2 pipelines are very stringent, one simple example is peak like 1 1 in treatment and 0 1 in control won't be diff peak.
+(1) and (2) tools requires replicates, these are the most strigent probably because the variance within replicate can significantly affect the results. All other tools will merge the replicates. 
 
-Thor or ODIN are very sensitive, so it can give you a lot of diff peaks
+Make sure the input data are in high quality. Low quality data is OK, then diffpeaks should only be applied to the called peaks, not whole genome wide.
 
-MAnorm and MACS2 kind like in the middle, possibly because they actually rely on the merged samples (i.e., replicates are merged), so variance within replicates will not impact the p-value any more. MACS2 bdgdiff do not provide p-value or log2 fold change, so it will not be easily understood by most people.
+Our ensemble diff peak calling pipeline integrates: homer deseq2, homer diffpeak, MAnorm, and Thor.
 
 
 Input
 ^^^^^
 
-**1. bam file list**
+Usually people use markdup.uq bam for differential analysis. You can also use rmdup.uq bam.
 
-A tsv file containing two columns. The first column is the file name. If the file is not in the current directory, please include absolute path. The second column is the group name, which will be used in the design matrix.
+Please copy (or ``ln -s``) all input bam and peak files to a working directory.
 
-.. code:: bash
+**1. input.tsv **
 
-	file1.bam	group1
-	file2.bam	group1
-	file3.bam	group2
+A tsv file containing 4 columns: bam file, peak file, sample name, group name. ``Group name should always be a substring of sample name.``
+
+::
+
+	A.rmdup.uq.bam	A.rmdup.uq.rmblck.narrowPeak	WT_rep1	WT
+	B.rmdup.uq.bam	B.rmdup.uq.rmblck.narrowPeak	WT_rep2	WT
+	C.rmdup.uq.bam	C.banana.narrowPeak	KO_abc	KO
+	D.rmdup.uq.bam	D.rmdup.uq.rmblck.narrowPeak	KO_xxx	KO
+
+
 
 **2. design matrix**
 
-A tsv file containing three columns. The first two columns are group comparisons. For example, if you want to compare group1 with group2, then put group1 to the first column, because gain/loss or up/down will be respect to the second column. The third column is output file name (prefix).
-
+A tsv file containing three columns specifying comparisons. You could do group level comparison or just one sample vs another sample.
 
 .. code:: bash
 
-	group1	group2	grandPa_favorites
-	group3	group2	grandMa_favorites
+	WT_rep1	WT_rep2	non_sense
+	WT_rep1	KO_xxx	example1
+	WT	KO	WT_vs_KO
 
 
-**(Optional) 3. genomic region .bed**
+Usage
+^^^^^
 
-A bed file (could be any number of columns, but the first three columns should always be chr, start, end) containing regions of interest. If provided, differential peaks will only be called on these regions.
 
 
-Tools
+
+
+
+Output
+^^^^^^
+
+Inside the jid folder, results are provided under each tool's name.
+
+
+
+Other Tools (old notes)
 ^^^^^
 
 Parameter: with/w.o. replicates
@@ -79,20 +98,6 @@ Not tested
 ::
 	GenoGAM
 	diffReps
-
-
-
-Output
-^^^^^^
-
-An ensemble of different tools. 
-
-A venn diagram showing similarities.
-
-User can peak the results that make the most sense.
-
-
-
 
 
 
