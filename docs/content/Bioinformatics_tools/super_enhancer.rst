@@ -66,7 +66,12 @@ In terms of enhancer prediction, there are also many tools available. The best I
 This tool requires ATAC-seq and H3K27ac.
 
 
+Reference
+^^^^^^^
 
+Chromatin features (open chromatin or occupancy by H3K27ac, p300, or TFs) have been used to identify enhancers 15,33,42.
+
+https://www.nature.com/articles/s41467-019-12812-3
 
 ref
 ^^^
