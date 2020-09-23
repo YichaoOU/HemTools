@@ -33,7 +33,7 @@ Plot correlation scatter plots
 Summary
 ^^^^^^
 
-
+This script can be used to calculate sample correlation. Values are log-transformed, e.g., ``log2(x+1)``. Addtionally, you can also highlight some points, for example, to show some differences.
 
 Input
 ^^^^^
@@ -44,7 +44,7 @@ Input can be tsv or csv. For tsv use ``-s "\t"``, for csv use ``-s ,``
 ::
 
 	Geneid	Chr	Start	End	Strand	Length	Banana	Orange
-	a	chr1	3513707	3514076	+	370	53	22
+	asd1	chr1	3513707	3514076	+	370	800	22
 	b	chr1	3538168	3538438	+	271	24	16
 	a	chr1	3970540	3970785	+	246	16	6
 	b	chr1	4059120	4059436	+	317	44	12
@@ -75,6 +75,24 @@ Sample correlation usage
 	scatter_density.py -f input.tsv -s "\t" -x Banana -y Orange 
 
 
+Point highlight usage
+-------------------
+
+
+.. code:: bash
+
+    hpcf_interactive -q standard -R "rusage[mem=10000]"
+
+    module load conda3
+
+    source activate /home/yli11/.conda/envs/py2/
+
+	scatter_density.py -f input.tsv -s "\t" -x Banana -y Orange --index Geneid --highlight asd1 --regression
+
+``--regression`` is to add regression line. For sample correlation plot, regression line is on, for differential plot, the default is off.
+
+If you have multiple points to highlight, use ``--highlight asd1,another_name,another_name2``. These names should match the index name, which is defined using ``--index Geneid``
+
 
 
 Output
@@ -92,6 +110,12 @@ The value shown on the upper left corner is pearson correlation coefficicient.
 
 differential analysis highlight
 --------------------------
+
+The value shown on the upper left corner is pearson correlation coefficicient.
+
+
+.. image:: ../../images/scatter_density_example2.png
+	:align: center
 
 
 
