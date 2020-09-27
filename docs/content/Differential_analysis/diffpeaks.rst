@@ -128,6 +128,13 @@ Inside the jid folder, results are provided under each tool's name.
 
 ``*bw`` the bw files inside the jid folder is homer sequencing depth normalized bw files, consistent with homer results.
 
+BW file is normalized to #reads per 10 million reads.
+
+::
+
+	-norm <#> : Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece.
+
+
 
 Other Tools (old notes)
 ^^^^^
