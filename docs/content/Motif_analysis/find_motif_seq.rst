@@ -28,7 +28,7 @@ Summary
 
 Identify known transcription factor binding sites on given sequences. Motif scanning is based on FIMO, default p-value is 1e-4. 
 
-Default known motifs are from Human.
+Default known motifs are from Human. For mouse, use: ``/home/yli11/Data/Motif_database/Mouse/mouse_TF.meme``
 
 
 Input
