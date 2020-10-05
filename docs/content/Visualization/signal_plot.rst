@@ -290,6 +290,20 @@ Or change the interpolation methods, I tried, not very impressive:
 	signal_plot.py --multi_bw_to_one_bed input.list --plotHeatmap_addon_parameters " --interpolationMethod nearest" -j interpolation_nearest
 
 
+New function
+^^^^^^^^^
+
+infer input
+-------
+
+Given a list of bed files and a list of bw files, ``prepare_signal_plot_input.py`` can be used to automatically generate signal plot input for all combinations between bed and bw files.
+
+::
+
+	prepare_signal_plot_input.py bed.list bw.list
+
+Output file is a fixed name: ``signal_plot_input.list``
+
 Comments
 ^^^^^^^^
 
