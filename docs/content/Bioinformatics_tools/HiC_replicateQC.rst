@@ -45,6 +45,8 @@ I found the last column has to be int
 
 looks like we need to remove chr? Answer is no, tested.
 
+you have to remove chrM from the matrix and bed file.
+
 
 3. metadata
 ------
@@ -81,4 +83,9 @@ Finished correctly.
 
 
 3d_genome_py2
+
+bsub -q priority -P Genomics -R 'rusage[mem=60000]' 3DChromatin_ReplicateQC run_all --metadata_samples metadata.samples --metadata_pairs metadata.pairs --bins /home/yli11/dirs/hg19_20copy_result/keep_dup_Jurkat_20copy/hicpro_results/hic_results/matrix/Jurkat_20copy/HiCPro_100000_bed.repQC.gz --outdir replicate_QC
+
+ 
+
 
