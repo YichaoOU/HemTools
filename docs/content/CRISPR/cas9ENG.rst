@@ -29,6 +29,7 @@ Usage
 
 .. code:: bash
 
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
 
 	hpcf_interactive.sh
 
@@ -48,6 +49,8 @@ Output
 This output is generated for each input and control file. Fist two columns are aligned sequences between the input amplicon sequence and read. Only alignment passed the default CrisprESSO cutoff (60) is used and outputed. 
 
 ``PAM_count.csv`` output is generated for cas9 and cas9sso7d files.  The following columns are different: 
+
+- ``2`` is either "Reference_MODIFIED" or "Reference_UNMODIFIED", crisprEsso output.
 
 - ``PAM_seq2`` is the detected PAM sequence in the reads. 
 
