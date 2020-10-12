@@ -61,6 +61,8 @@ If you want to update package description, you have to create a new release.
 
 2. conda
 
+I found "activate a conda env and then conda build" leads to a conda package missing dependencies.
+
 ::
 
 	conda skeleton pypi unique-color

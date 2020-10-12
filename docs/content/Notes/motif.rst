@@ -63,4 +63,10 @@ You can find the pwm here: http://insulatordb.uthsc.edu/download/CTCFBSDB_PWM.ma
 
 
 
+http://genesdev.cshlp.org/content/30/8/881.full.pdf
 
+https://www.nature.com/articles/s41467-018-06664-6
+
+https://www.biorxiv.org/content/10.1101/2020.07.02.185389v1.full.pdf
+
+http://www.biology.emory.edu/research/Corces/Pubs/Organizational%20principles%20of%203D%20genome%20architecture.pdf
