@@ -1,6 +1,12 @@
 Plot Venn diagram given two bed files
 ==================
 
+
+Please use "https://intervene.readthedocs.io/en/latest/examples.html"
+
+
+
+
 ::
 
 	usage: bed2venn.py [-h] -b1 B1 -b2 B2 -l1 L1 -l2 L2 [-o OUTPUT]
@@ -17,6 +23,9 @@ Plot Venn diagram given two bed files
 
 Summary
 ^^^^^^^
+
+
+
 
 This program will calculate the amount of overlaps given two bed files. 
 
