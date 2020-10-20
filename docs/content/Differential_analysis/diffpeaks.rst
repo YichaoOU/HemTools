@@ -4,25 +4,22 @@ Differential Peaks
 ::
 
 	usage: diffPeaks.py [-h] [-j JID] -f INPUT_TSV -d DESIGN_MATRIX
-	                    [--guess_input] [--MAnorm_PE_flag] [-o OUTPUT]
-	                    [--input_list INPUT_LIST]
-	                    [--motif_matching_score MOTIF_MATCHING_SCORE] [-g GENOME]
-	                    [-s GENOME_CHROM_SIZE] [--skip_chrom_size SKIP_CHROM_SIZE]
+	                    [--guess_input] [--MAnorm_PE_flag] [--continue_homer_diff]
+	                    [-g GENOME] [-s GENOME_CHROM_SIZE]
+	                    [--skip_chrom_size SKIP_CHROM_SIZE]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        diffPeaks_yli11_2020-09-16)
+	                        diffPeaks_yli11_2020-10-18)
 	  --guess_input         Let the program generate the input files for you,
 	                        won't be correct, but should be helpful (default:
 	                        False)
 	  --MAnorm_PE_flag      whether input is paired-end data (default: False)
-	  -o OUTPUT, --output OUTPUT
-	  --input_list INPUT_LIST
-	                        not for end user (default: None)
-	  --motif_matching_score MOTIF_MATCHING_SCORE
-	                        motif_matching_score (default: 7)
+	  --continue_homer_diff
+	                        Not for end-user. If homer tag is available, just run
+	                        homer diff (default: False)
 
 	required named arguments:
 	  -f INPUT_TSV, --input_tsv INPUT_TSV
@@ -40,9 +37,9 @@ Differential Peaks
 	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
 	                        tations/hg19.chrom.sizes.sorted)
 	  --skip_chrom_size SKIP_CHROM_SIZE
-	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
-	                        tations/hg19.chrom.sizes)
-
+	                        for homer chrom error, not for end-user. chrome size
+	                        (default: /home/yli11/Data/Human/hg19/annotations/hg19
+	                        .chrom.sizes)
 
 
 Summary
@@ -71,11 +68,15 @@ Input
 
 Usually people use markdup.uq bam for differential analysis. You can also use rmdup.uq bam.
 
-Please copy (or ``ln -s``) all input bam and peak files to a working directory.
+Please copy (or ``ln -s``) all input bam and .bai (index files) and peak files to a working directory.
 
-**1. input.tsv **
+.. note:: DO NOT use absolute path in the input.tsv. Just use file name.
 
-A tsv file containing 4 columns: bam file, peak file, sample name, group name. ``Group name should always be a substring of sample name.``
+** 1. input.tsv **
+
+A tsv file containing 4 columns: bam file, peak file, sample name, group name. ``Sample name should start with group name``. This requirement helps the program to perform sample-level and group-level comparison in case you only have one sample in a group. Sample name should be unique. Sample name can be the same as group name. 
+
+
 
 ::
 
@@ -86,7 +87,7 @@ A tsv file containing 4 columns: bam file, peak file, sample name, group name. `
 
 
 
-**2. design matrix**
+** 2. design matrix**
 
 A tsv file containing three columns specifying comparisons. You could do group level comparison or just one sample vs another sample.
 
@@ -99,6 +100,7 @@ A tsv file containing three columns specifying comparisons. You could do group l
 
 Usage
 ^^^^^
+
 
 .. code:: bash
 

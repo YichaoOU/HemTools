@@ -225,6 +225,13 @@ http://www.bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/A
 Pipeline script
 ^^^^^^^^^^^^^^^
 
+install CENTEPEDE
+
+
+::
+
+	wget http://download.r-forge.r-project.org/src/contrib/CENTIPEDE_1.2.tar.gz
+	R CMD INSTALL -l ~/R/3.5.1/ CENTIPEDE_1.2.tar.gz
 
 .. code:: bash
 
