@@ -7,6 +7,10 @@ Summary
 Designed for GO enrichment barplot. Putting the text on the bar to save space.
 
 
+.. image:: ../../images/text_barplot.png
+	:align: center
+
+
 Input
 ^^^^^
 
