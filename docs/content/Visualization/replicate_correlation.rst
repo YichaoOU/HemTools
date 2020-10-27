@@ -25,6 +25,8 @@ Summary
 
 This is a scatter plot showing scatters, density, and correlation R square. 
 
+bed file should have 4 columns: chr, start, end, name
+
 Input
 ^^^^^
 
