@@ -41,6 +41,8 @@ This program is updated for processing multiple fastq files. See old hicpro_spli
 
 Currently, ``hicpro_batch.py`` only support standard HiC analysis. ``hicpro_split.py`` provides options to keep duplicated and multi-mapped reads and capture-C data analysis.
 
+Note: Homer has a problem converting working with ``--keep_dup`` option. Usually, we don't keep duplicates, we only did it for 20copy project.
+
 For HiC data visualization, see: 
 
 Usage

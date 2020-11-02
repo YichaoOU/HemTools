@@ -76,7 +76,7 @@ Header starting with "#" is acceptable.
 Output
 ^^^^^^
 
-For each sample, it outputs a tsv file containing the gRNA name, gRNA sequence and base editing efficiency for each position (only consider the 20bp gRNA length). So totally 22 columns.
+For each sample, it outputs a tsv file containing the gRNA name, gRNA sequence, base editing efficiency for each position (only consider the 20bp gRNA length), and 'indel_frequency','total_indel','Reads_total'. So totally 25 columns.
 
 file name: ``$sample_id.edit_eff.tsv``
 
