@@ -116,6 +116,12 @@ P-value calculated is based on mean and variance. If there are no significant re
 6. It is a fact that there is truly no difference.
 
 
+Notes
+^^^^^
+
+When the logFC is similar (e.g., logFC=1), EdgeR quasi-likelihood test tend to have more significant p-value. 
+
+
 Ref
 ^^^
 

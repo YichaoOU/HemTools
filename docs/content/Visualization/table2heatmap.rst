@@ -28,7 +28,7 @@ Table to heatmap, no clustering
 Input
 ^^^^^
 
-csv or tsv. The first column is row name, the first row is column name.
+csv or tsv. The first column is row name, the first row is column name. Sep is infered by the program.
 
 ::
 
