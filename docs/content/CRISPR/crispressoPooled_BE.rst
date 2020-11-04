@@ -5,22 +5,23 @@ Quantify base editing efficiency for crispressoPooled experiments
 
 
 	usage: crispressoPooled_BE.py [-h] [-j JID] -a AMPLICON_BED -gRNA GRNA_BED -f
-	                              FASTQ_TSV [--ref REF] [--alt ALT] [-g GENOME]
-	                              [--genome_fasta GENOME_FASTA]
+	                              FASTQ_TSV [--ref REF] [--alt ALT] [--SNP SNP]
+	                              [-g GENOME] [--genome_fasta GENOME_FASTA]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        crispressoPooled_BE_yli11_2020-10-26)
+	                        crispressoPooled_BE_yli11_2020-11-03)
 	  -a AMPLICON_BED, --amplicon_bed AMPLICON_BED
 	                        amplicon_bed required (default: None)
 	  -gRNA GRNA_BED, --gRNA_bed GRNA_BED
 	                        gRNA_bed required (default: None)
 	  -f FASTQ_TSV, --fastq_tsv FASTQ_TSV
-	                        fastq tsv 3 columns required (default: None)
+	                        gRNA_bed required (default: None)
 	  --ref REF             reference base (default: A)
 	  --alt ALT             alternative base (default: G)
+	  --SNP SNP             3-col tsv file, gRNA seq, position, SNP (default: )
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -32,6 +33,7 @@ Quantify base editing efficiency for crispressoPooled experiments
 	  --genome_fasta GENOME_FASTA
 	                        genome fasta file (default:
 	                        /home/yli11/Data/Human/hg19/fasta/hg19.fa)
+
 
 
 Summary
@@ -72,6 +74,15 @@ Header starting with "#" is acceptable.
 	chr10	21466883	21466903	HBGg22_Target03	1	+
 
 
+3. (Optional) SNP input
+-------------------
+
+gRNA seq, position (1-index), actual SNP
+
+::
+
+	GTATATTTGTATTGAGATAG	1	A
+
 
 Output
 ^^^^^^
@@ -107,3 +118,10 @@ For CBE use:
 ::
 
 	crispressoPooled_BE.py -a amp.bed -gRNA gRNA.bed -f fastq.tsv -g hg38 --ref C --alt T
+
+
+For SNP use:
+
+::
+
+	crispressoPooled_BE.py -a amp.bed -gRNA gRNA.bed -f fastq.tsv -g hg38 --ref A --alt G --SNP snp.tsv
