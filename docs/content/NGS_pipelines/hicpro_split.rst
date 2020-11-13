@@ -217,6 +217,16 @@ We have pre-defined custom hg19 genomes: e.g., HBG1, hg19_copy
 
 
 
+Fastq read order
+^^^^^^^^^^^^^^
+
+This pipeline requires the read names in the same order. If not, use:
+
+
+::
+
+	$i=test.fastq
+	fastq-sort -i $i > $i.st.fastq
 
 
 

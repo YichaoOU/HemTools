@@ -74,10 +74,18 @@ For custom genome
 
 
 
+Liftover gff gtf
+^^^^^^^^
+
+
+	module load crossmap/0.2.4
+	CrossMap.py gff ~/dirs/genome_browser/yli11/hg19_20copy/hg19_to_20copy.chain hg19.ncbiRefSeq.gtf hg19_20copy.refseq.gtf
 
 
 
+	sed -i "s/;  /; /" hg19_20copy.refseq.gtf
 
+	/research/rgs01/resgen/legacy/gb_customTracks/tp/utils/
 
 
 

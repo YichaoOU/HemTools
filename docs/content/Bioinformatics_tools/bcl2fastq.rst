@@ -71,6 +71,15 @@ https://gist.github.com/szydan/b225749445b3602083ed
 	:wq
 
 
+Mising bcl
+^^^^^^^^^
+
+
+Question: "I have a pair-end 150bp sequencing run that stopped in the middle at about 150cycles. I think that it should contain the data that I need for the analysis. But when I do bcl files to fastq files, it showed error "Unable to find BCL file for 's_1_1102' in"
+
+Solution: Add ``--ignore-missing-bcls`` option. 
+
+For example: ``bcl2fastq --no-lane-splitting -o fastq_files --ignore-missing-bcls``
 
 Comments
 ^^^^^^^^
