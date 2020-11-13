@@ -95,8 +95,17 @@ To add any dependencies, edit ``meta.yaml`` file, add specific libraries (which 
 	    - numpy
 
 
+Example
+^^^^^^
 
+module load conda3/201903
+source activate changeseq_101220
+conda skeleton pypi changeseq
+conda-build .
+anaconda upload -u tsailabSJ /home/yli11/conda-bld/linux-64/changeseq-1.2.9-py27_0.tar.bz2
 
+## For my Macbook
+/Users/yli11/opt/anaconda3/bin/anaconda
 
 Contribute to bioconda
 ^^^^^^^^^^^
@@ -123,6 +132,12 @@ How to use other installed conda (other people's conda)
 	export PATH=$PATH:/rgs01/project_space/tsaigrp/Genomics/common/anaconda3/condabin/
 	eval "$(conda shell.bash hook)"
 	conda activate /rgs01/project_space/tsaigrp/Genomics/common/anaconda3/envs/changeseq/
+
+	module load bwa
+	module load samtools/1.7
+	module load homer/4.10
+	python ~/dirs/changeseq/changeseq/changeseq.py parallel -m 10062018_Tn5_hg38_chr_only.yaml
+
 
 
 Use Helvetica
