@@ -27,7 +27,8 @@ Average signal for multiple bw over one bed
 	  --bw_files BW_FILES [BW_FILES ...]
 	                        bw_file_list (default: None)
 	  -f BED, --bed BED     one bed file (default: None)
-
+	  --plotProfile_addon_parameters PLOTPROFILE_ADDON_PARAMETERS
+	                        plotProfile_addon_parameters (default: )
 
 
 Summary
@@ -74,6 +75,6 @@ To fix Y-axis, use:
 
 ::
 
-	signal_plot_bed.py -f loci.bed -u 1000 -d 1000 --bw_files CADD.bdg.bw HbFBase.bdg.bw DeepSEA.bdg.bw --colors red,green,blue --plotProfile_addon_parameters " -yMin 0 -yMax 10"
+	signal_plot_bed.py -f loci.bed -u 1000 -d 1000 --bw_files CADD.bdg.bw HbFBase.bdg.bw DeepSEA.bdg.bw --colors red,green,blue --plotProfile_addon_parameters " --yMin 0 --yMax 10"
 
 
