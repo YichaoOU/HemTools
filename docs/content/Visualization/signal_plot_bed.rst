@@ -70,6 +70,10 @@ You can use Hex color code for colors, e.g., ``--colors #03fc24,#7522d4``, separ
 	signal_plot_bed.py -f loci.bed -u 1000 -d 1000 --bw_files CADD.bdg.bw HbFBase.bdg.bw DeepSEA.bdg.bw --colors red,green,blue
 
 
+To fix Y-axis, use:
 
+::
+
+	signal_plot_bed.py -f loci.bed -u 1000 -d 1000 --bw_files CADD.bdg.bw HbFBase.bdg.bw DeepSEA.bdg.bw --colors red,green,blue --plotProfile_addon_parameters " -yMin 0 -yMax 10"
 
 
