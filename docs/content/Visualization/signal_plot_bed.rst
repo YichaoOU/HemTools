@@ -1,4 +1,4 @@
-Average signal over multiple peaks
+Average signal for multiple bw over one bed
 ==========================================
 
 ::
