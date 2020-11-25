@@ -112,6 +112,8 @@ We requested 160G memory, but it may not be enough. In case that your data is pa
 hicpro_split.py
 ^^^^^^
 
+Use hicpro_split.py if you have a custom genome
+
 ::
 
 	usage: hicpro_split.py [-h] [-j JID] [--split_fastq] [--queue QUEUE]
@@ -119,16 +121,16 @@ hicpro_split.py
 	                       [--hichipper_config HICHIPPER_CONFIG]
 	                       [--MAPS_config MAPS_CONFIG] [-a ANCHOR]
 	                       [--cutsite CUTSITE] -r1 R1 -r2 R2 -s SAMPLE_ID
-	                       [--interactive] [-g GENOME] [-i INDEX_FILE]
-	                       [--bwa_index BWA_INDEX] [--chrom_size CHROM_SIZE]
-	                       [--genomic_feat_filepath GENOMIC_FEAT_FILEPATH]
-	                       [-e DIGESTED_ENZYME] [--chr_count CHR_COUNT]
+	                       [-t TARGET_BED] [--interactive] [--rerun] [--debug]
+	                       [--keep_dup] [-g GENOME] [-i INDEX_FILE]
+	                       [--chrom_size CHROM_SIZE] [-e DIGESTED_ENZYME]
+	                       [--chr_count CHR_COUNT] [--ref_genome REF_GENOME]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        hicpro_split_yli11_2020-06-16)
+	                        hicpro_split_yli11_2020-11-25)
 	  --split_fastq         only run hicpro (default: False)
 	  --queue QUEUE
 	  --hicpro_config HICPRO_CONFIG
@@ -142,7 +144,13 @@ hicpro_split.py
 	  -r2 R2                fastq R2 (default: None)
 	  -s SAMPLE_ID, --sample_id SAMPLE_ID
 	                        sample ID (default: None)
+	  -t TARGET_BED, --target_bed TARGET_BED
+	                        for captureC, need absolute path (default: None)
 	  --interactive         run pipeline interatively (default: False)
+	  --rerun               rerun (default: False)
+	  --debug               debug (default: False)
+	  --keep_dup            use this option to keep dup and keep multi-mapped
+	                        reads (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -154,20 +162,17 @@ hicpro_split.py
 	  -i INDEX_FILE, --index_file INDEX_FILE
 	                        bowtie2 index file (default:
 	                        /home/yli11/Data/Human/hg19/index/bowtie2_index/hg19)
-	  --bwa_index BWA_INDEX
-	                        bwa index file (default: /home/yli11/Data/Human/hg19/i
-	                        ndex/bwa_16a_index/hg19.fa)
 	  --chrom_size CHROM_SIZE
 	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
 	                        tations/hg19_main.chrom.sizes)
-	  --genomic_feat_filepath GENOMIC_FEAT_FILEPATH
-	                        MAPS genomic_feat_filepath (default: /home/yli11/HemTo
-	                        ols/share/misc/MAPS/MAPS_data_files/hg19/genomic_featu
-	                        res/F_GC_M_MboI_10Kb_el.hg19.txt)
 	  -e DIGESTED_ENZYME, --digested_enzyme DIGESTED_ENZYME
 	                        digested_fragments hg19_MboI (default: MboI)
 	  --chr_count CHR_COUNT
 	                        chr_count (default: 22)
+	  --ref_genome REF_GENOME
+	                        incase input is hg19_20copy, but you still want to use
+	                        hg19 in other programs (default: None)
+
 
 Go to your fastq files folder and do the following:
 
@@ -178,6 +183,16 @@ Go to your fastq files folder and do the following:
 	module load python/2.7.13
 
 	bsub -P hicpro -q priority -R rusage[mem=8000] hicpro_split.py -r1 Tcell_HiC_2_3_4_R1.fastq.gz -r2 Tcell_HiC_2_3_4_R2.fastq.gz -s Tcell_HiC_2_3_4 -g hg38
+
+For custom genome, first please generate the correct format for hicpro: hicpro_genome.py
+
+Then use the following parameters:
+
+::
+
+	bsub -P hicpro -q priority -R rusage[mem=8000] hicpro_split.py -r1 Tcell_HiC_2_3_4_R1.fastq.gz -r2 Tcell_HiC_2_3_4_R2.fastq.gz -s Tcell_HiC_2_3_4 -g custom -i PATH/TO/FILE -e PATH/TO/[restriction enzyme bed] --chrom_size PATH/TO/FILE --chr_count N
+
+	chr_count is the number of chromosomes in your custom genome, please use an integer here.
 
 
 Rerun failed exp
