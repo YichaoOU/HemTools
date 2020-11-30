@@ -102,6 +102,14 @@ Here, I can use gRNA1, gRNA2, etc. as my unique IDs. However, note that ``gRNA1`
 	gRNA2	gRNA_seq	Banana	Orange
 	gRNA10	XXXXX	BBBBBB	AAAAAA
 
+To get eff, use:
+
+::
+
+	cd $jid
+	
+	crispresso2_BE_get_eff.py ../input.list A G
+
 
 Option 3: User input Primer sequence, gRNA sequence, and remove non-target matched reads (``--gRNA_and_primers_BWA``)
 -------------------
