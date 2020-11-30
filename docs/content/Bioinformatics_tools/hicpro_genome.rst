@@ -34,6 +34,8 @@ Given any genome fasta file and a genome name, this program will create all the 
 Usage
 ^^^^^
 
+Note that ``-f`` requires absolute PATH to the fasta file.
+
 .. code:: bash
 
 	hpcf_interactive
