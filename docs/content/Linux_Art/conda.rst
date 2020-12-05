@@ -40,6 +40,19 @@ Ignore python warning
 export PYTHONWARNINGS="ignore"
 
 
+Save fig
+^^^^^^
+
+::
+
+	plt.figure(figsize=(10,10))
+	df2['nfix'] = df2.Nfix_raw
+	sns.scatterplot(data = df2,x="tSNE_1",y="tSNE_2",
+	                hue="ident",palette=color_dict,
+	                size="nfix",linewidth=0,sizes=(5, 200))
+	plt.legend(ncol=4,loc='upper center',bbox_to_anchor=(0.5,1.2 ))
+	plt.savefig("Nfix_scRNA_seq.pdf",bbox_inches='tight')
+
 Create package
 ^^^^^^^^^^^
 

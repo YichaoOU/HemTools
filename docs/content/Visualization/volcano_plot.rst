@@ -59,6 +59,97 @@ If you are not satisfied with the figure (figsize, dpi, point size, etc), here's
 
 
 
+Latest R code
+^^^^^^^
+
+::
+
+  library(EnhancedVolcano)
+
+
+  input_table = "20copy_vs_Jurkat.gene.final.combined.tpm.csv"
+  seperator = ","
+  LFC_column = "logFC"
+  LFC_cutoff = 2
+  LFC_axis_name = "LFC"
+  FDR_column = "qval"
+  FDR_cutoff = 0.01
+  FDR_axis_name = "-logFDR"
+  Title = "20copy vs Jurkat"
+  output_figure = "Volcano_plot_yli11_2020-12-03.pdf"
+
+  if (seperator == "\\t"){
+    res <- read.csv(input_table, header=TRUE,sep="\t")
+  }else{
+    res <- read.csv(input_table, header=TRUE,sep=seperator)
+  }
+
+  print (head(res))
+  rownames(res) = make.unique(as.character(res[,4]))
+  keyvals <- rep('black', nrow(res))
+
+  names(keyvals) <- rep('Not Significant', nrow(res))
+
+
+  keyvals[which(res[LFC_column] > LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'red'
+  names(keyvals)[which(res[LFC_column] > LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'Increased'
+
+
+  keyvals[which(res[LFC_column] < -LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'blue'
+  names(keyvals)[which(res[LFC_column] < -LFC_cutoff & res[FDR_column] < FDR_cutoff)] <- 'Decreased'
+
+
+
+  sel_df = res[which((abs(res[LFC_column]) > LFC_cutoff)&(res[FDR_column] < FDR_cutoff)),]
+
+  sel_df[FDR_column] = -log10(sel_df[FDR_column])
+
+  f <- function(y) seq(floor(min(y)), ceiling(max(y)))
+  p=EnhancedVolcano(res,
+      lab = rownames(res),
+      # selectLab = c("Ets1","Nfix","Hmga2","Lpl","Il10ra","Cdkn2a","Irs2","Il1b","Socs3","Pdcd1","Mmp8","Il18","Ccnd1","Lgals3","Bcl2l11", "Ccl5","Gzmb","Bax","Mdm2","Chek2"),
+      selectLab = c(""),
+      # check_overlap = T,
+      x = LFC_column,
+      y = FDR_column,
+    xlab = LFC_axis_name,
+    ylab = FDR_axis_name,
+      title = Title,
+      colOverride = keyvals,
+      colConnectors = 'grey50',
+      pCutoff = FDR_cutoff,
+      FCcutoff = LFC_cutoff,
+      DrawConnectors = F,
+      widthConnectors = 0.2,
+      transcriptPointSize = 1,
+      gridlines.major = TRUE, gridlines.minor = FALSE,
+      transcriptLabSize = 3.0)+ scale_y_continuous(breaks = f)+ scale_x_continuous(breaks = f)+
+    xlim(-10, 15)+
+    ylim(0, 37)
+
+  pg <- ggplot_build(p)
+
+  sel_df['x'] = sel_df[LFC_column]
+  sel_df['y'] = sel_df[FDR_column]
+
+
+  p = p+geom_text_repel(data=sel_df[sel_df$x > 0,],aes(x=x,y=y,label=ext_gene),
+  point.padding = 0.2,
+          segment.color="#878686",
+          inherit.aes=F,
+          nudge_x = 2,
+      arrow = arrow(length = unit(0.015, "npc")),force=3)
+
+
+  p = p+geom_text_repel(data=sel_df[sel_df$x < 0,],aes(x=x,y=y,label=ext_gene),
+  point.padding = 0.2,
+          segment.color="#878686",
+          nudge_x = -2,
+      arrow = arrow(length = unit(0.015, "npc")),force=3)
+
+
+  ggsave(output_figure,dpi=600,device ="pdf")
+
 
 
 
