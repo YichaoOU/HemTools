@@ -230,7 +230,17 @@ We have pre-defined custom hg19 genomes: e.g., HBG1, hg19_copy
 	hicpro_split.py -r1 Jurkat_20copy_cassette_captureC_combine_R1.fastq.gz -r2 Jurkat_20copy_cassette_captureC_combine_R2.fastq.gz -s jurkat_20copy -g hg19_20copy -t hg19_20copy_cassette_bait.bed --keep_dup
 
 
+Custom genome
+^^^^^^^^^^^^
 
+Use ``-g custom`` to specify a custom genome, which needs abs PATH to ``-i``, the index, ``--chrom_size`` chromosome size bed file, ``-e``, the digested bed file, and ``--ref_genome`` for the prefix of the bowtie2 index. These files can be generated using hicpro_genome.py. 
+
+The bowtie index file, ``-i`` needs the dir name without the prefix, so it should be ``bowtie2_index``, instead of ``bowtie2_index/hg19`` , and you can specify the prefix using ``--ref_genome``
+
+
+::
+
+	hicpro_split.py -r1 ../reads/Insulator_7_S22_R1_001.fastq.gz -r2 ../reads/Insulator_7_S22_R2_001.fastq.gz -s ins7 -g custom -i $PWD/../insertion_ref/ins7/hicpro_ref/hicpro_genome_dshresth_2020-11-29/bowtie2_index --chrom_size $PWD/../insertion_ref/ins7/hicpro_ref/hicpro_genome_dshresth_2020-11-29/chrom_size/hg19.chrom.sizes --chr_count 1 -t target.bed -e $PWD/../insertion_ref/ins7/hicpro_ref/hicpro_genome_dshresth_2020-11-29/MboI_resfrag_hg19.bed --ref_genome hg19
 
 Fastq read order
 ^^^^^^^^^^^^^^
