@@ -53,6 +53,13 @@ Save fig
 	plt.legend(ncol=4,loc='upper center',bbox_to_anchor=(0.5,1.2 ))
 	plt.savefig("Nfix_scRNA_seq.pdf",bbox_inches='tight')
 
+	df2['nfix'] = df2.Nfix_raw
+	f, ax = plt.subplots(figsize=(10,10))
+	df2 = df2.sort_values("nfix",ascending=True)
+	points = ax.scatter(df2.tSNE_1, df2.tSNE_2,c=df2.nfix, s=20, cmap="magma_r",alpha=0.8,linewidth=0)
+	f.colorbar(points)
+	plt.savefig("Nfix_scRNA_seq_exp.pdf",bbox_inches='tight')
+
 Create package
 ^^^^^^^^^^^
 
