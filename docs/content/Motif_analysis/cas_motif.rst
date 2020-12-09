@@ -77,3 +77,23 @@ Usage
 
 	cas_motif.py -f CAGGTGNNNNNNNNGATA -j gap8
 
+
+Advanced usage: similar to BLAT, find location for any sequence
+^^^^^^^^^^^^^
+
+Save your sequence in a file (e.g., ``input.list``), one sequence per line.
+
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	for i in `cat input.list`;do cas_motif.py -f $i -g custom --chr_fa $PWD/chr11_INS7_paternal.fa;done
+
+The ``matches.bed.sorted`` is the output bed file. ``test.fa`` is a double check for the location using bedtools.
+
+
+
+
