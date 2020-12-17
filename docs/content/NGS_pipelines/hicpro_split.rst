@@ -195,6 +195,43 @@ Then use the following parameters:
 	chr_count is the number of chromosomes in your custom genome, please use an integer here.
 
 
+Target.bed for capture-C analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You need ``-t target.bed`` for starting capture-C analysis. The output is in $jid/hicpro_results/$SAMPLE_ID.bdg. QC can be found in ``multiQC.html`` and in the ``log_file/paris*.err``
+
+In ``multiQC.html``, you can check mapping rate, % of uniquely mapped reads and % of valid pairs. In ``log_file/paris*.err``, you will see:
+
+::
+
+	CAP-REP read pairs =  11022
+	CAP-CAP read pairs =  0
+	REP-REP read pairs =  4129
+	Excluded reads = 929
+	UA reads = 0
+
+Here, ``CAP`` is the read mapped to capture (target.bed), reads mapped to +-1000bp were removed, all other reads are ``REP`` , so 11022 is the valid capture pairs, also the sum of the bdg values.
+
+A note for writing target.bed.
+
+Target.bed has to be 4 columns: chr, start, end, name. The coordinate has to match the RE bed file. Example:
+
+::
+
+	more target.bed 
+	chr11_paternal	33917808	33917929	v1
+	chr11_paternal	33918703	33918824	v2
+
+	grep 33917808 MboI_resfrag_hg19_ins7.bed 
+	chr11_paternal	33917808	33918820	HIC_chr11_paternal_82356	0	+
+
+The following two baits in from the same RE fragment, so target.bed should be:
+
+::
+
+	chr11_paternal	33917808	33918820	HIC_chr11_paternal_82356
+
+
 Rerun failed exp
 ^^^^^^
 
