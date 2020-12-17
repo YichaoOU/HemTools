@@ -66,6 +66,8 @@ You will need 4 bed files and 1 tsv file:
 
 2. a tsv file for sgRNA genome-wide number of occurrences, first column is sgRNA_seq, second column is an integer.
 
+.. note:: TAD.bed, gene.bed, peak.bed requires 4 columns, the last column is id or name. motif.bed requires 6 columns: chr, start, end, name, value, strand.
+
 
 Usage
 ^^^^^
@@ -78,6 +80,30 @@ Usage
 
 	gRNA_design_TF.py -TAD tad.bed -peak GATA1_peaks.bed -motif WGATAR.bed -gene ranked_genes.bed -off_target number_matches.bed -g hg19 --PAM NG -l 25 --motif_position_anchor 3
 
+
+Output
+^^^^^^
+
+The final output file is: ``Motif_{flanking_length}_gRNA.annot.bed.rel_edit_pos.filter.bed``
+
+It was filtered based on:
+
+- 1. only 1 match in the genome
+- 2. GC% : 0.2 - 0.8
+- 3. at least one editable base in the editing window (predefined) 3-8
+
+The output columns are:
+
+::
+
+	0-5: sgRNA bed file
+	6-11: motif bed file
+	12-15: peak bed file
+	16: TAD name
+	17: gene name
+	18: relative position to the anchor ``--motif_position_anchor``
+	19: number of editable bases
+	20: number of off-targets, -1 means not found in the provided off-target table
 
 
 Comments
