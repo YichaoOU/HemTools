@@ -26,6 +26,13 @@ Outward read, or outie, is defined as the read that's mapped to the forward stra
 
 Definition can be found here: https://github.com/samtools/htsjdk/blob/master/src/main/java/htsjdk/samtools/SamPairUtil.java
 
+The definitions from samtools seem to be a little bit different:
+
+inward oriented pairs - number of paired reads with flag 0x40 (64) set and flag 0x10 (16) not set or with flag 0x80 (128) set and flag 0x10 (16) set.
+
+outward oriented pairs - number of paired reads with flag 0x40 (64) set and flag 0x10 (16) set or with flag 0x80 (128) set and flag 0x10 (16) not set.
+
+
 Examples of outward oriented pairs are highlighted in green. 
 
 .. image:: ../../images/igv_pairs_reads.png

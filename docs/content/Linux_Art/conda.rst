@@ -118,13 +118,20 @@ To add any dependencies, edit ``meta.yaml`` file, add specific libraries (which 
 Example
 ^^^^^^
 
-module load conda3/201903
-source activate changeseq_101220
-conda skeleton pypi changeseq
-conda-build .
-anaconda upload -u tsailabSJ /home/yli11/conda-bld/linux-64/changeseq-1.2.9-py27_0.tar.bz2
+::
+
+	module load conda3/201903
+	source activate changeseq_101220
+	conda skeleton pypi changeseq
+	conda-build .
+	anaconda upload -u tsailabSJ /home/yli11/conda-bld/linux-64/changeseq-1.2.9-py27_0.tar.bz2
+	conda-build --py 2.7 .
+	conda convert --platform all /home/yli11/conda-bld/linux-64/guide_seq-1.0.2-py37_0.tar.bz2 -o py3_all
+	for i in py3_all/*/*;do anaconda upload --force $i;done
+
 
 ## For my Macbook
+
 /Users/yli11/opt/anaconda3/bin/anaconda
 
 Contribute to bioconda
