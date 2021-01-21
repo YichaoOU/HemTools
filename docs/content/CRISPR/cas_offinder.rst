@@ -37,6 +37,20 @@ Summary
 Given a list of gRNA sequences and number of allowed mismatches (excluding PAM), with or without PAM sequences, output number of off-targets (i.e., number of matches up to maximal mismatches) for each gRNA.
 
 
+Latest updates:
+
+1. To allow mismatches in the PAM sequence, use ``--add_PAM --allow_PAM_mis --PAM_seq NGG``, for example:
+
+::
+
+	cas_offinder.py -f hg38 --add_PAM --allow_PAM_mis --PAM_seq NGG -f input2.list -j mis_4_GA -n 4
+
+2. To allow G-A mismatch in the protospacer sequence, change G to R in the protospacer sequence:
+
+for example ACTGGGAGACACCTCCCAGT becomes ACT``R````R````R``A``R``ACACCTCCCA``R``T
+
+
+
 Output example
 ^^^^^^^^^^^^^^
 
