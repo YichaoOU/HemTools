@@ -32,3 +32,11 @@ https://groups.google.com/g/macs-announcement/c/9spIkeLwZgE
 
 Some pipelines use multi-mapped reads: https://informatics.fas.harvard.edu/atac-seq-guidelines.html
 
+
+Mate pairs vs pair-end sequencing
+^^^^^^^^^^^
+
+Mate pair sequencing is a specific class of paired-end sequencing where several kb fragments were circularized and chopped to get much longer insertion size.
+
+https://www.illumina.com/documents/products/datasheets/datasheet_genomic_sequence.pdf
+
