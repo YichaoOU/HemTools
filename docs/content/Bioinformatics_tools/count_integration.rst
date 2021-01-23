@@ -95,4 +95,4 @@ default is cas9 setting, to choose other options, use:
 
 ::
 
-	run_lsf.py -p count_integration -f fastq.tsv --custom_parameters setting:cas12a
+	run_lsf.py -p count_integration -f fastq.tsv --setting cas12a
