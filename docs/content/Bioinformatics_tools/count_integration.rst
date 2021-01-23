@@ -21,7 +21,7 @@ Once the pipeline is finished, you will be notified by email.
 Input
 ^^^^^
 
-Input file is a 4-col tsv file: R1 read, R2 read, output_name, user_input_bed_file
+Input file is a 4-col tsv file: R1 read, R2 read, output_name, gRNA_bed_file
 
 ::
 
@@ -30,12 +30,39 @@ Input file is a 4-col tsv file: R1 read, R2 read, output_name, user_input_bed_fi
 
 The first 3 columns can be automatically generated using ``--guess_input`` option. Users have to fill in the last column.
 
+The coordinates for gRNA need to include the PAM sequence.
+
+
+
 
 Output
 ^^^^^^
 
 Inside the Job ID folder, you can find individual result folder for each line specified in the input.
 
+Method
+^^^^^
+
+How indel is determined
+----------------------
+
+
+
+.. image:: ../../images/count_indel_pipeline.png
+	:align: center
+
+
+
+.. image:: ../../images/count_indel_cas9.png
+	:align: center
+
+
+.. image:: ../../images/count_indel_cas12a.png
+	:align: center
+
+Optimal window size setting is from: https://www.biorxiv.org/content/10.1101/2020.11.13.382283v1.full
+
+"We determined the optimal window size to be the size at which the median difference of calculated indel editing between treatment and control samples was less than 0.1%. Using this rationale, we find that an optimal window can be defined as ``+/- 8bp`` for Cas9 (Figure 3A) and +/- 12bp for Cas12a (Figure S5). However, we found that if the center of the Cas12a window is shifted -3bp from the PAM distal cut site, the optimal variant window can be decreased to ``+/- 9bp`` (Figure 3B)."
 
 Usage
 ^^^^^
@@ -63,3 +90,9 @@ Step 3: submit job
 ::
 
 	run_lsf.py -p count_integration -f fastq.tsv
+
+default is cas9 setting, to choose other options, use:
+
+::
+
+	run_lsf.py -p count_integration -f fastq.tsv --custom_parameters setting:cas12a
