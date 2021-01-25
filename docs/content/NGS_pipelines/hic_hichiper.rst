@@ -1,6 +1,9 @@
 Analysis of Hi-C or HiChIP data
 ==========================
 
+This pipeline is out-dated, please use ``hicpro_batch.py`` instead.
+
+
 ::
 
 	usage: hic_hichip.py [-h] [-j JID] [--hicpro] [--hicpro_config HICPRO_CONFIG]
