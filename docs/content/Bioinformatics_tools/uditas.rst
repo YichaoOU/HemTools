@@ -72,9 +72,9 @@ Uditas
 Summary
 ^^^^^^^
 
-UDiTaS (UniDirectional Targeted Sequencing) is a method to capture small indels and structural rearrangements. 
+UDiTaS (UniDirectional Targeted Sequencing) is a method to capture indels and structural rearrangements. 
 
-Original code is modified, see: https://github.com/YichaoOU/uditas
+Original code is modified (customized for st. jude), see: https://github.com/YichaoOU/uditas
 
 Input
 ^^^^^
@@ -90,6 +90,39 @@ A folder that contains:
 ``sample_info.csv`` this file name is fixed, has to be exactly the same. Format can be found here: https://github.com/editasmedicine/uditas/blob/master/data/fig2c/sample_info.csv
 
 fastq file names have to be exactly the same except for R1, R2, I1, I2.
+
+In the same working folder, there should be only 4 fastq files: R1, R2, I1, I2. More than 4 fastq files will confuse the program. 
+
+Double cut senarios:
+
+.. highlight:: python
+
+	# amplicon_window_around_cut default 1kb
+	start_coordinate = int(cut1 - amplicon_window_around_cut)
+	end_coordinate = int(cut2 + amplicon_window_around_cut)
+	# We switch the coordinates of cut1 and cut2 if the guides are provided so that cut2 < cut1
+	seq_upstream = genome[amplicon_info['chr_guide_1']][start_coordinate:int(cut1)]
+	seq_cut1_cut2 = genome[amplicon_info['chr_guide_1']][int(cut1):int(cut2)]
+	seq_downstream = genome[amplicon_info['chr_guide_1']][int(cut2):end_coordinate]
+
+	amplicon_list.append(['wt', seq_upstream + seq_cut1_cut2 + seq_downstream])
+	amplicon_list.append(['large_deletion', seq_upstream + seq_downstream])
+	amplicon_list.append(['large_inversion', seq_upstream + reverse_complement(seq_cut1_cut2) + seq_downstream])
+	amplicon_list.append(['1a_1a', seq_upstream + reverse_complement(seq_upstream)])
+	amplicon_list.append(['2b_2b', reverse_complement(seq_downstream) + seq_downstream])
+
+A note on preparing sample_info.csv
+^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Many columns are not used, such as: NGS_req-ID, name, Sample, description, Control sample (Y/N), Cell name_type, etc.
+
+2. If control = Yes, please make sure guide columns are empty: guide_1, sequence_guide_1, genome_guide_1, chr_guide_1, start_guide_1, end_guide_1
+
+3. Sample info.csv supports upto 3 cuts, which are guide_1, guide_2, and guide_3 columns. Fill in as needed.
+
+4. plasmid_sequence for plasmid-based experiments
+
+
 
 
 Usage
