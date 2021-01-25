@@ -93,9 +93,10 @@ fastq file names have to be exactly the same except for R1, R2, I1, I2.
 
 In the same working folder, there should be only 4 fastq files: R1, R2, I1, I2. More than 4 fastq files will confuse the program. 
 
-Double cut senarios:
+Double cut senarios, cut is -3 (hardcoded, for NGG cas9):
 
-.. highlight:: python
+.. code-block:: python
+
 
 	# amplicon_window_around_cut default 1kb
 	start_coordinate = int(cut1 - amplicon_window_around_cut)
