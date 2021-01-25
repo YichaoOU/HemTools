@@ -95,6 +95,9 @@ In the same working folder, there should be only 4 fastq files: R1, R2, I1, I2. 
 
 Double cut senarios, cut is -3 (hardcoded, for NGG cas9):
 
+.. image:: ../../images/uditas_two_cuts.png
+	:align: center
+
 .. code-block:: python
 
 
