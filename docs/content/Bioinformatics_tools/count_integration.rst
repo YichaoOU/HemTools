@@ -13,7 +13,7 @@ This pipeline performs the following analysis in order:
 
 3. bwa mem
 
-4. count_indels_integrations.py
+4. count_indels_integrations2.py
 
 Once the pipeline is finished, you will be notified by email.
 
@@ -32,13 +32,38 @@ The first 3 columns can be automatically generated using ``--guess_input`` optio
 
 The coordinates for gRNA need to include the PAM sequence.
 
+gRNA_bed_file should be 6 columns: chr, start, end, name, value (can be anything), strand
 
+
+1/26/2021 updates
+-----------------
+
+Added a 5-th column (optional). When user has a large bed file, where each row is for a different fastq file, this option should save some time.
+
+Input file is a 5-col tsv file: R1 read, R2 read, output_name, gRNA_bed_file, site_name
+
+site name should match the 4th column in the bed file
+
+::
+
+	CRL1403_S1_R1_001.fastq.gz	CRL1403_S1_R2_001.fastq.gz	CRL1403_S1	target.bed	EMX1_site1
+	banana.R1.fastq.gz	banana.R2.fastq.gz	banana	target.bed	banana_site3
+	orange.R1.fastq.gz	orange.R2.fastq.gz	orange	target.bed	EMX1_site1
+
+
+The first 3 columns can be automatically generated using ``--guess_input`` option. Users have to fill in the rest columns.
+
+The coordinates for gRNA need to include the PAM sequence.
+
+gRNA_bed_file should be 6 columns: chr, start, end, name, value (can be anything), strand
 
 
 Output
 ^^^^^^
 
 Inside the Job ID folder, you can find individual result folder for each line specified in the input.
+
+When the job is finished, you will be notified by an email with QC report.
 
 Method
 ^^^^^
