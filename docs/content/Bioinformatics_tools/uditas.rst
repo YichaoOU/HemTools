@@ -181,19 +181,29 @@ How to read the output
 
 I would look at ``big_results_pivot.xlsx``, it contains everything, for example, for the 5 types I mentioned earlier:
 
-- WT
-- large deletion
-- large inversion
-- 1a_1a
-- 2b_2b
+* WT
+
+* large deletion
+
+* large inversion
+
+* 1a_1a
+
+* 2b_2b
+
 
 The total number of unique reads (collapsed using UMI barcode) are in columns:
 
-- WT reads_collapsed + Small Indels reads_collapsed
-- Large Deletion reads_collapsed
-- Inversion reads_collapsed
-- 1a_1a_cut1_total_reads_collapsed
-- 2b_2b_cut1_total_reads_collapsed
+* WT reads_collapsed + Small Indels reads_collapsed
+
+* Large Deletion reads_collapsed
+
+* Inversion reads_collapsed
+
+* 1a_1a_cut1_total_reads_collapsed
+
+* 2b_2b_cut1_total_reads_collapsed
+
 
 total_aligned_junctions_collapsed is the sum of the above numbers, used as denominators for percentage (last column), for example "large deletion percentage = Large Deletion reads_collapsed / total_aligned_junctions_collapsed"
 
