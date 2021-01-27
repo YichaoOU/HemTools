@@ -14,7 +14,7 @@ Heatmap for exon level expression
 	                        Every output will be moved into this folder. (default:
 	                        bw_exon_plot_yli11_2021-01-26)
 	  -q QUERY, --query QUERY
-	                        bw file list (default: None)
+	                        query gene name (default: None)
 	  -o OUTPUT, --output OUTPUT
 	                        output prefix (default: Heatmap_exon_yli11_2021-01-26)
 
