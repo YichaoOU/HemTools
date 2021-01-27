@@ -43,6 +43,8 @@ In a KO experiment, the whole transcript expression level may remain the same, h
 Input
 ^^^^^
 
+To get normalized bw files, we first sampled the fastq files to the same depth. 
+
 Copy all bw files (samples to be shown in the heatmap) in a working dir. Then you will only need to provide the gene name (used to extract the exons from gene annotation file), e.g., ``-q NFIX``
 
 
@@ -51,13 +53,18 @@ Output
 
 An heatmap showing exon level expression (row) changes across different samples (column). The heatmap color is row normalized, in order to show difference within one exon. Annotation using log2(count+1)
 
-
+.. image:: ../../images/exon_heatmap.png
+	:align: center
 
 Usage
 ^^^^^
 
 only working for hg19 and mm9 by now.
 
+::
+
+	module load python/2.7.13
+	bw_exon_plot.py -q NFIX -g mm9 -o NFIX.heatmap.pdf
 
 
 
