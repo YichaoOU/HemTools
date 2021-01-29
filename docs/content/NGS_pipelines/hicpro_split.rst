@@ -87,6 +87,27 @@ They are in ``hicpro_results/hic_results/pic/``
 There is a known bug that the labels in `plotMapping.pdf` are wrong: https://github.com/nservant/HiC-Pro/issues/290.
 
 
+QC considerations
+-----------------
+
+ref: https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1658-7
+
+1. Number of intra-chromosomal interactions (In multiQC html, ``Contact Statistics``, unique cis interactions )
+
+1M - 5M is considered to be the minimal usable data.
+
+< 20M seems to have lower reproducible rate.
+
+> 30M is normal
+
+> 400M is deeply sequenced data.
+
+
+2. Number of mapped pairs
+
+< 100M is considered to be shallow 
+
+
 FAQ
 ^^^
 
@@ -291,6 +312,11 @@ This pipeline requires the read names in the same order. If not, use:
 	fastq-sort -i $i > $i.st.fastq
 
 
+
+notes
+^^^^^
+
+HiCExplorer TAD score, this score seems to be affected by sequencing depth although in the forum they said it is not.
 
 
 

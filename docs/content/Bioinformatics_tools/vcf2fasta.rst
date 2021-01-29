@@ -69,6 +69,16 @@ The corresponding vcf file looks like:
 
 Note that bed file is 0-index but vcf file is 1-index. Since this is a deletion, the ref allele length is actually 14 bp, (including one bp on the 5' end)
 
+1/29/2021 Update
+----------------
+
+Specifically designed for provirus insertion. The script will generate the vcf given an insertion map bed file.
+
+::
+
+	bed_to_allele_seq_vcf.py -bed d3.bed -fa dCTCF.fa -o d3.vcf
+
+
 Usage
 ^^^^
 
