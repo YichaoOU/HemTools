@@ -67,6 +67,14 @@ For bw input (no difference SE or PE)
 
 	replicate_correlation.py -f input.list --bw
 
+correlation on intersect sets
+----------
+
+::
+
+	replicate_correlation.py -f correlation.list --bw --intersect -j intersection
+	replicate_correlation.py -f correlation.list --bw  -j union
+
 Output
 ^^^^^
 
