@@ -90,9 +90,37 @@ There is a known bug that the labels in `plotMapping.pdf` are wrong: https://git
 QC considerations
 -----------------
 
+Browser view is here: https://ppr.stjude.org/?study=yli11/phil/hic.json, we can see the data range (the HiC matrix and TAD score) for Hudep2 WT and Single Gamma is different. I think this is primarily due to difference in data quality. Looks like Hudep2_WT is still in low quality. According to ENCODE standards ( ), it did have >90% alignment rate, <40% duplication rate, >50% valid interactions, but long-range intra-chromosome interactions (>20kb) is only 17%, falls below the “marginal” flag range, which is 20% to 35%. (SingleGamma sample is 28%).
+ 
+Hudep2 WT and Single Gamma are also in different sequencing depth. I tried down-sample them to 100M valid pairs, but the HiC matrix and TAD scores are still in quite different range.
+
+
 ref: https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1658-7
 
-1. Number of intra-chromosomal interactions (In multiQC html, ``Contact Statistics``, unique cis interactions )
+https://www.encodeproject.org/documents/75926e4b-77aa-4959-8ca7-87efcba39d79/@@download/attachment/comp_doc_7july2018_final.pdf
+
+1. alignment
+
+Overall > 90% aligned PE reads
+
+< 100M mapped pairs is considered to be shallow 
+
+2. Duplicated pairs
+
+< 40%
+
+3. Valid interactions
+
+> 50%
+
+4. Number of intra-chromosomal interactions (In multiQC html, ``Contact Statistics``, unique cis interactions )
+
+This metric will affect A/B compartment and TAD calling
+
+short-range (<20kb) cis unique interactions > 60% failed, 30-60 marginal, <30% is good
+
+long-range (>20kb) cis unique interactions < 20% is failed, 20-40% is marginal, >40% is good
+
 
 1M - 5M is considered to be the minimal usable data.
 
@@ -102,10 +130,8 @@ ref: https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1658-7
 
 > 400M is deeply sequenced data.
 
-
-2. Number of mapped pairs
-
-< 100M is considered to be shallow 
+.. image:: ../../images/hic-qc.png
+	:align: center
 
 
 FAQ
@@ -316,11 +342,32 @@ This pipeline requires the read names in the same order. If not, use:
 notes
 ^^^^^
 
-HiCExplorer TAD score, this score seems to be affected by sequencing depth although in the forum they said it is not.
+It is hard to compare HiC data with different quality. The main factor is the % of long-range cis- interactions (>20kb). >40% is a high quality data.
 
 
 
 
+HiCExplorer TAD score is based on z-score (Obs/Exp Matrix), sequencing depth should not affect that much. But samples with different noise, technical biases, etc, they will have different TAD scores. You can try tuning the parameters (``not suggested``):
+
+step mainly affects the speed, also decided by (minD, maxD)
+
+maxDepth will affect how long you want the obs/exp to be calculated
+
+(minD, maxD) together affects the TAD scores (avg zscore)
+
+the larger (maxD-minD), the more window it will average, meaning more smooth, lower TAD score
+
+the lower the value, the more "local" changes
+
+TAD domain length and boundary should not be affected that much since it depends on local minima of TAD score
+
+::
+
+	hicFindTADs --matrix input.h5 --correctForMultipleTesting fdr --minDepth 30000 --maxDepth 200000 --step 30000 --outPrefix test -p 4 --chromosomes chr11 --delta 0.1;bedtools intersect -a *bedgraph -b test.bed -u
+
+
+
+TADs: TADs are typically enriched either for H3K36me3 marks (example of the left) or for H3K27me3 marks (example on the right) in a mutually exclusive manner. (Ref: Comparison of computational methods for the identification of topologically associating domains)
 
 
 
