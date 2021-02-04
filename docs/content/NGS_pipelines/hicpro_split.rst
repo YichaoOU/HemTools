@@ -134,6 +134,23 @@ long-range (>20kb) cis unique interactions < 20% is failed, 20-40% is marginal, 
 	:align: center
 
 
+Multi-mapping issue
+^^^^^^^^^^^^^^^^
+
+Our 20copy data has 20 virus insertion sites, bowtie2 just randomly report 1. This could be bad for us.
+
+We might need to correct the bam output.
+
+https://www.biostars.org/p/118301/
+
+https://github.com/nservant/HiC-Pro/issues/403
+
+
+These trans- pairs will not be included in captureC bw, HiC matrix, or TAD calculation. We can "rescue" these reads by modifying ``mergeSAM.py``. Contact me if you want to do it. 
+
+Since these trans- pairs are totally randomly assigned, it should not create any bias, so we only lose some sensitivity for detecting "weak" signals. When we are more care about specificity, we don't really need to "rescus" these reads, because modifying the code and then test it could cost some time.
+
+
 FAQ
 ^^^
 
@@ -279,6 +296,8 @@ The following two baits in from the same RE fragment, so target.bed should be:
 	chr11_paternal	33917808	33918820	HIC_chr11_paternal_82356
 
 
+Note that if multiple bait regions are in target.bed, then the output bdg file will likely to have duplicate interaction sites (i.e., OE (other end) sites). You have to groupby the same region and sum up the values to produce a clean bdg file for creating bw file.
+
 Rerun failed exp
 ^^^^^^
 
@@ -312,6 +331,7 @@ We have pre-defined custom hg19 genomes: e.g., HBG1, hg19_copy
 ::
 
 	hicpro_split.py -r1 Jurkat_20copy_cassette_captureC_combine_R1.fastq.gz -r2 Jurkat_20copy_cassette_captureC_combine_R2.fastq.gz -s jurkat_20copy -g hg19_20copy -t hg19_20copy_cassette_bait.bed --keep_dup
+
 
 
 Custom genome

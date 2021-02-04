@@ -3,8 +3,32 @@ Calling significant interactions from Capture-C or Capture-HiC
 
 
 
+Parameters
+^^^^^^^
+
+Parameter tuning guide is here: https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-019-1706-3/MediaObjects/13059_2019_1706_MOESM3_ESM.pdf
+
+4 parameters to consider: w=20, s=0.05, b=30 kb, c=1.5 Mb.
+
+Steps
+^^^^
+
+for captureC interaction calling, we first are being very sensitive, i.e., generating interactions as many as possible, then filter out interactions based on:
+(1). distance to nearest CTCF peak
+(2). distance to nearest DEG’s TSS
+(3). enrichment score (calculated by ChiCmaxima)
+
+
+Our main goal is to maximize CTCF peak enrichment.
+
+
+
+
 Notes
 ^^^^^
+
+Another tool for captureC analysis: CaptureCompendium: a comprehensive toolkit for 3C analysis. This is actually the same lab who developed captureC. 
+
 
 ChiCMaxima_Caller has to roll back to v0.9, because the latest one does not have the enrichment score.
 
