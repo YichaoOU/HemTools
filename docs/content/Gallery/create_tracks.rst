@@ -1,6 +1,15 @@
 Upload your bw and bed files to protein paint
 =============================================
 
+REF
+^^^
+
+https://docs.google.com/document/d/1e0JVdcf1yQDZst3j77Xeoj_hDN72B6XZ1bo_cAd2rss/edit#
+
+Follow this to use the new track collection version.
+
+Example: https://ppr.stjude.org/?genome=hg19&block=1&tkjsonfile=yli11/rick/test3.json
+
 Summary
 ^^^^^^^
 
