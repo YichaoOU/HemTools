@@ -68,7 +68,7 @@ Input
 
 Usually people use markdup.uq bam for differential analysis. You can also use rmdup.uq bam.
 
-Please copy (or ``ln -s``) all input bam and .bai (index files) and peak files to a working directory.
+Please copy (or ``ln -s``) all input bam and .bai (index files) and peak files to a working directory. Peak files have to be at least 4 columns
 
 .. note:: DO NOT use absolute path in the input.tsv. Just use file name.
 
@@ -113,6 +113,10 @@ Usage
 Paired-end data needs to add ``--MAnorm_PE_flag`` option. 
 
 PE data can be analyzed together with SE data.
+
+.. code:: bash
+
+	diffPeaks.py -f input.tsv -d design.txt -g hg19 --merge_distance "-1"
 
 
 Output
