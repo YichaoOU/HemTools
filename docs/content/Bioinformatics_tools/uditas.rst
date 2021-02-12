@@ -173,6 +173,8 @@ Run interactive job
 Submit to HPC
 -------------------
 
+go to the working dir and run the following
+
 .. code:: bash
 
 	hpcf_interactive
@@ -187,11 +189,13 @@ Submit to HPC
 
 	module load bowtie2/2.2.9
 
-	bsub -q standard -P genomics -R rusage[mem=40000] uditas /path/to/your/input_folder
+	bsub -q standard -P genomics -R rusage[mem=40000] uditas $PWD
 
 UDITAS HBG version
 ---------------
 
+go to the working dir and run the following
+
 .. code:: bash
 
 	hpcf_interactive
@@ -206,7 +210,7 @@ UDITAS HBG version
 
 	module load bowtie2/2.2.9
 
-	module load java
+	module load java/1.8.0_181
 
 	bsub -q standard -P genomics -R rusage[mem=50000] uditasHBG $PWD
 
