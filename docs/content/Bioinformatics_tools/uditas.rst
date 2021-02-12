@@ -122,6 +122,25 @@ A note on preparing sample_info.csv
 
 2. If control = Yes, please make sure guide columns are empty: guide_1, sequence_guide_1, genome_guide_1, chr_guide_1, start_guide_1, end_guide_1
 
+When the sample is control, amplicon sequence is generated using genome, chr, start, end and strand columns.
+
+.. code-block:: python
+
+	if reaction_type == 'control':
+		# Case no guides
+		if amplicon_info['strand'] == '+':  # This is the UDiTaS oligo strand
+			end_coordinate = int(amplicon_info['start']) + amplicon_window_around_cut
+			if end_coordinate > len(genome[amplicon_info['chr']]):
+				end_coordinate = len(genome[amplicon_info['chr']])
+			amplicon_list.append(['wt', genome[amplicon_info['chr']][int(amplicon_info['start']):end_coordinate]])
+		elif amplicon_info['strand'] == '-':
+			start_coordinate = int(amplicon_info['end']) - amplicon_window_around_cut
+			if start_coordinate < 0:
+				start_coordinate = 0
+			amplicon_list.append(['wt', genome[amplicon_info['chr']][start_coordinate:int(amplicon_info['end'])]])
+		else:
+			raise StrandError('strand can only have as values + or -')
+
 3. Sample info.csv supports upto 3 cuts, which are guide_1, guide_2, and guide_3 columns. Fill in as needed.
 
 4. plasmid_sequence for plasmid-based experiments
@@ -169,6 +188,28 @@ Submit to HPC
 	module load bowtie2/2.2.9
 
 	bsub -q standard -P genomics -R rusage[mem=40000] uditas /path/to/your/input_folder
+
+UDITAS HBG version
+---------------
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/uditas_env
+
+	export BOWTIE2_INDEXES=/home/yli11/Data/Human/hg38/bowtie2/
+
+	export GENOMES_2BIT=/home/yli11/Data/Human/hg38/
+
+	module load bowtie2/2.2.9
+
+	module load java
+
+	bsub -q standard -P genomics -R rusage[mem=50000] uditasHBG $PWD
+
 
 
 Output
