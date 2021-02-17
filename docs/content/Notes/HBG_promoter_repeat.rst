@@ -14,3 +14,9 @@ There is a very long duplicated sequence, following by a 4bp insertion in HBG1 p
 	:align: center
 
 
+Mis-alignment can occur in HBG1 and HBG2 promoter regions
+
+.. image:: ../../images/HBG_mis_alignment.png
+	:align: center
+
+
