@@ -214,6 +214,31 @@ go to the working dir and run the following
 
 	bsub -q standard -P genomics -R rusage[mem=50000] uditasHBG $PWD
 
+UDITAS Parallel version
+-------------------
+
+1. prepare input.list, 0-based row index. For example, if we have 6 samples in ``sample_info.csv``, then the input.list will look like below.
+
+::
+
+	head input.list 
+	--------------
+	0
+	1
+	2
+	3
+	4
+	5
+
+2. go to the working dir and run the following [submit job].
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	run_lsf.py -f input.list -p uditas_parallel
 
 
 Output
