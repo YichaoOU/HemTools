@@ -6,6 +6,15 @@ Summary
 
 Currently, the data is only available in Cheng Lab.
 
+Usage
+^^^^^
+
+1. peak overlap
+
+
+
+2. average signal based on bw files
+
 
 hg19 peak files
 ^^^^^^^^^^^^^^^
