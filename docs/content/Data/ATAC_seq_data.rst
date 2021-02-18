@@ -11,18 +11,18 @@ Usage
 
 1. peak overlap
 
-This is used to calculate percentage of overlap (in terms of the query bed) to the reference database. The result can be used to make a blood lineage plot: :doc:`plot_blood_lineage.py <../Gallery/plot_blood_lineage.rst>`
+This is used to calculate percentage of overlap (in terms of the query bed) to the reference database. The result can be used to make a blood lineage plot: :doc:`plot_blood_lineage.py <../Gallery/plot_blood_lineage>`
 
-For usage, see: :doc:`bedlist_overlap <../Bioinformatics_tools/bedlist_overlap.rst>`
+For usage, see: :doc:`bedlist_overlap <../Bioinformatics_tools/bedlist_overlap>`
 
 
 2. average signal based on bw files
 
 only for hg19.
 
-This is used to get average signal (raw) on the query bed file. The result can be used to make a PCA/UMAP plot: :doc:`plot_PCA <../Visualization/plot_PCA.rst>`
+This is used to get average signal (raw) on the query bed file. The result can be used to make a PCA/UMAP plot: :doc:`plot_PCA <../Visualization/plot_PCA>`
 
-For usage, see: :doc:`blood_data_inquiry <blood_data.rst>`
+For usage, see: :doc:`blood_data_inquiry <blood_data>`
 
 
 hg19 peak files
