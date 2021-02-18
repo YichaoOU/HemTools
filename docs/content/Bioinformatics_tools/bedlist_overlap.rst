@@ -13,23 +13,18 @@ Input
 
 There are two input files. The first in your query list, the second is your reference list.
 
-Query list
+Query Bed
 ----------
 
-
-::
-
-	query.list
-	----------
-	NFIX_peaks.bed
+Input is a bed file, e.g., ``NFIX_peaks.bed``
 
 Reference list
 ---------------
 
+Input is a file contaning a list of bed files, e.g., ``peak.list``
+
 ::
 
-	mouse_blood.list
-	----------------
 	/home/yli11/Data/Mouse/mouse_blood/mm9_blood_ATAC/B.ImmGen.mm10.ATAC.mm9.bed
 	/home/yli11/Data/Mouse/mouse_blood/mm9_blood_ATAC/CMP.ENCODE.mm9.bed
 	/home/yli11/Data/Mouse/mouse_blood/mm9_blood_ATAC/DC.ImmGen.mm10.ATAC.mm9.bed
@@ -52,12 +47,12 @@ Usage
 
 	module load python/2.7.13
 
-	bedlist_overlap.py query.list mouse_blood.list 
+	bedlist_overlap.py NFIX_peaks.bed /home/yli11/Data/Mouse/mouse_blood/peak.list
 
 Output
 ^^^^^^
 
-The percentage of overlap (percentage in terms of query size) is printed out in the terminal
+The percentage of overlap (percentage in terms of query size) is provided in file ``peak_overlap_percent.tsv``, this file can be directly used to :doc:`plot_blood_lineage.py <../Gallery/plot_blood_lineage.rst>`.
 
-The output file is a binary matrix with each row being your query peak and each column being the reference bed file
+The ``my_overlap_matrix.tsv`` file is a binary matrix with each row being your query peak and each column being the reference bed file (class)
 
