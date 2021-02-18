@@ -78,7 +78,7 @@ Example
 
 	module load python/2.7.13 
 
-	plot_blood_lineage.py -f ~/HemTools/share/misc/values.tsv
+	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/blood_lineage_Hchang_13cells.svg -f /home/yli11/HemTools/share/misc/values.tsv 
 
 
 SVG to PDF
