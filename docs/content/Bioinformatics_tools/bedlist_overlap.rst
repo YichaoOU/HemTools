@@ -18,6 +18,7 @@ Query list
 
 
 ::
+
 	query.list
 	----------
 	NFIX_peaks.bed
@@ -26,6 +27,7 @@ Reference list
 ---------------
 
 ::
+
 	mouse_blood.list
 	----------------
 	/home/yli11/Data/Mouse/mouse_blood/mm9_blood_ATAC/B.ImmGen.mm10.ATAC.mm9.bed
@@ -47,6 +49,7 @@ Usage
 ^^^^^
 
 ::
+
 	module load python/2.7.13
 
 	bedlist_overlap.py query.list mouse_blood.list 
