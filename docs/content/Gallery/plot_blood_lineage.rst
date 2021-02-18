@@ -78,8 +78,11 @@ Example
 
 	module load python/2.7.13 
 
+	## for hg19 data visualization
 	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/blood_lineage_Hchang_13cells.svg -f /home/yli11/HemTools/share/misc/values.tsv 
 
+	## for mm9 data visualization
+	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/mouse_blood.svg -f peak_overlap_percent.tsv
 
 SVG to PDF
 ^^^^^^^^^^
