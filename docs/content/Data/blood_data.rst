@@ -30,7 +30,7 @@ Summary
 
 This is a suite of tools for users to query specific regions or genes among public blood datasets.
 
-Output read counts over given bed.
+Output read counts over given bed. ``featureCount.tsv``. Each row is one region from the input bed file. Each column is the bw/bam file name.
 
 Input
 ^^^^^
@@ -44,10 +44,10 @@ Additional columns are OK. The first 3 columns have to be chr, start, end.
 
 ::
 
-	chr11	4167364	4167385	chr11:4167374-4167375
-	chr11	4167366	4167387	chr11:4167376-4167377
-	chr11	4167367	4167388	chr11:4167377-4167378
-	chr11	4167370	4167391	chr11:4167380-4167381
+	chr11	4167364	4167385
+	chr11	4167366	4167387
+	chr11	4167367	4167388
+	chr11	4167370	4167391
 
 Usage
 ^^^^^
@@ -70,6 +70,6 @@ Read counts (bam) over input bed
 
 You can also input your own list of bam files by ``--bam_file_list`` option.
 
-
+This output format is from ``featureCounts``, the first 5 columns are: id, chr, start, end, strand
 
 
