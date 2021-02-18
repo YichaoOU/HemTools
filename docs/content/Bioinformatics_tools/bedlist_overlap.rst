@@ -53,6 +53,9 @@ Usage
 	# for hg19
 	bedlist_overlap.py query.bed /home/yli11/Data/Human/hg19/annotations/blood.peaks.list
 
+	## for mm9 data visualization
+	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/mouse_blood.svg -f peak_overlap_percent.tsv
+
 	## for hg19 data visualization
 	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/blood_lineage_Hchang_13cells.svg -f peak_overlap_percent.tsv
 

@@ -18,9 +18,11 @@ For usage, see: :doc:`bedlist_overlap <../Bioinformatics_tools/bedlist_overlap.r
 
 2. average signal based on bw files
 
-This is used to get average signal (un-normalized) on the query bed file. The result can be used to make a PCA/UMAP plot: :doc:`plot_PCA <../Visualization/plot_PCA.rst>`
+only for hg19.
 
-For usage, see: :doc:`bw_over_bed <../Machine_learning/bw_over_bed.rst>`
+This is used to get average signal (raw) on the query bed file. The result can be used to make a PCA/UMAP plot: :doc:`plot_PCA <../Visualization/plot_PCA.rst>`
+
+For usage, see: :doc:`blood_data_inquiry <blood_data.rst>`
 
 
 hg19 peak files
