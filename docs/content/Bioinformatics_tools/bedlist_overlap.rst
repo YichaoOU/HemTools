@@ -62,7 +62,7 @@ Usage
 Output
 ^^^^^^
 
-The percentage of overlap (percentage in terms of query size) is provided in file ``peak_overlap_percent.tsv``, this file can be directly used to :doc:`plot_blood_lineage.py <../Gallery/plot_blood_lineage.rst>`.
+The percentage of overlap (percentage in terms of query size) is provided in file ``peak_overlap_percent.tsv``, this file can be directly used to :doc:`plot_blood_lineage.py <../Gallery/plot_blood_lineage>`.
 
 The ``my_overlap_matrix.tsv`` file is a binary matrix with each row being your query peak and each column being the reference bed file (class)
 
