@@ -16,7 +16,7 @@ There are two input files. The first in your query list, the second is your refe
 Query Bed
 ----------
 
-Input is a bed file, e.g., ``NFIX_peaks.bed``
+Input is a bed file (chr, start, end, additional columns are not used), e.g., ``query.bed``
 
 Reference list
 ---------------
@@ -47,7 +47,14 @@ Usage
 
 	module load python/2.7.13
 
-	bedlist_overlap.py NFIX_peaks.bed /home/yli11/Data/Mouse/mouse_blood/peak.list
+	# for mm9
+	bedlist_overlap.py query.bed /home/yli11/Data/Mouse/mouse_blood/peak.list
+
+	# for hg19
+	bedlist_overlap.py query.bed /home/yli11/Data/Human/hg19/annotations/blood.peaks.list
+
+	## for hg19 data visualization
+	plot_blood_lineage.py --svg_template /home/yli11/HemTools/share/misc/blood_lineage_Hchang_13cells.svg -f peak_overlap_percent.tsv
 
 Output
 ^^^^^^
