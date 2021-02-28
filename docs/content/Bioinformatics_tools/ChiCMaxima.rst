@@ -3,25 +3,22 @@ Calling significant interactions from Capture-C or Capture-HiC
 
 
 
+Usage
+^^^^
+
+::
+
+	interaction_calling_ChiCMaxima.py -bed break.20copy_hg19.bed -bdg 20copy_hg19.captureC.bdg.bed -o 20copy_hg19.called_interactions
+
 Parameters
 ^^^^^^^
 
 Parameter tuning guide is here: https://static-content.springer.com/esm/art%3A10.1186%2Fs13059-019-1706-3/MediaObjects/13059_2019_1706_MOESM3_ESM.pdf
 
-4 parameters to consider: w=20, s=0.05, b=30 kb, c=1.5 Mb.
-
-Steps
-^^^^
-
-for captureC interaction calling, we first are being very sensitive, i.e., generating interactions as many as possible, then filter out interactions based on:
-(1). distance to nearest CTCF peak
-(2). distance to nearest DEG’s TSS
-(3). enrichment score (calculated by ChiCmaxima)
+4 parameters to consider: w=20, s=0.05, b=20 kb (fixed in the new ChiCmaxima version), c=1.5 Mb.
 
 
-Our main goal is to maximize CTCF peak enrichment.
-
-
+Usually parameter tunning is recommended, but there is no rules for which directions should be. 
 
 
 Notes

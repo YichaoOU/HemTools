@@ -48,4 +48,24 @@ git prohibit uploading files > 100M, the following code automatically ignore lar
 
 	find . -size +99M | sed "s|^./||g" | cat > .gitignore
 
+Fix large files in the commit causing error when push
+-------------
+
+make a copy before start
+
+::
+
+	git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch ./GSE9891/GSE9891_classification/data_matrix.tsv' HEAD
+
+	git stash # if uncommitted 
+
+	git add .
+
+	git commit -m "update"
+
+	git push --force
+
+
+
+
 
