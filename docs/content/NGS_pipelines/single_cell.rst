@@ -137,6 +137,25 @@ Report bug
 
     $ HemTools report_bug
 
+
+
+
+QC
+^^^^^
+
+https://academic.oup.com/bioinformatics/article/35/24/5306/5542946
+
+
+
+Gene density plot
+^^^^^^^^^
+
+
+
+
+
+
+
 Comments
 ^^^^^^^^
 
