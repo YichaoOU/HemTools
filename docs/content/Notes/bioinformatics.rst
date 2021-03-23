@@ -41,3 +41,18 @@ When people give you a file other than these format, we have to always make sure
 
 Duplicates
 
+
+Data/Code/misc organization
+^^^^^^^^^^^^^^
+
+Conclusion: Just like a database design, make your stuff into ``smallest logical parts`` and make sure each part is self-organized. 
+
+Reasons:
+
+- 1. It is very easy to forget what you did weeks ago, therefore, if you have a complicated folder/directory/data/concepts/scripts structure, then even with well-documented projects, if you were asked to pick up a small point, you might have to read through 50% of the documentation in order to get what you need.
+
+- 2. The output of top-down design may seem fancy/professional to other people, however, it could be time-consuming to you, also not efficient. Bottom-up design, on the other hand, is in nature, following the idea of ``smallest logical parts``.
+
+- 3. In most cases, you don't need to write a book (i.e., a well-documented project), what you need is that your code is working to generate all outputs.
+
+
