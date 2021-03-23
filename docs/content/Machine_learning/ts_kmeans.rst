@@ -1,6 +1,32 @@
 Time-series K-means clustering
 ==========================
 
+::
+
+	usage: ts_kmeans.py [-h] -f INPUT -t TIME_POINTS [-s SEP] [-n NCLUSTERS]
+	                    [-m METRIC] [--log2] [--index] [--header]
+	                    [-o OUTPUT_LABEL] [--transpose] [--scale_t0]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -f INPUT, --input INPUT
+	                        input table (default: None)
+	  -t TIME_POINTS, --time_points TIME_POINTS
+	                        input time points (default: None)
+	  -s SEP, --sep SEP     separator (default: )
+	  -n NCLUSTERS, --nclusters NCLUSTERS
+	                        input number of clusters (default: 6)
+	  -m METRIC, --metric METRIC
+	                        metric for k-means,euclidean, dtw,softdtw (default:
+	                        euclidean)
+	  --log2                log2 transform raw values (default: False)
+	  --index               index is false (default: False)
+	  --header              header is false (default: False)
+	  -o OUTPUT_LABEL, --output_label OUTPUT_LABEL
+	                        output prefix (default: ts_kmeans_yli11_2021-03-23)
+	  --transpose           df transpose (default: False)
+	  --scale_t0            scale data to t0 (default: False)
+
 
 
 Summary
@@ -17,7 +43,9 @@ Input
 
 Input data can be both csv or tsv. Please use ``-s ,`` for csv and ``-s "\t"`` for tsv. Please also use ``--index --header`` to tell the program that the input table has index and header.
 
-2. time point list
+Example input: /home/yli11/test/ts_test/input.csv
+
+2. time point list (the order matters)
 -------------------
 
 This is used for specifying replicates in each time plot, for example:
@@ -36,6 +64,9 @@ This is used for specifying replicates in each time plot, for example:
 
 The first column is the time point, the second column is the column name used in the table above.
 
+Example input: /home/yli11/test/ts_test/time.list 
+
+
 Usage
 ^^^^^
 
@@ -45,7 +76,7 @@ Usage
 
 	source activate /home/yli11/.conda/envs/py2/
 
-	ts_kmeans.py -f input.csv -t time.list --index --header -s , --log2 -n 6 -o my_output_label
+	ts_kmeans.py -f input.csv -t time.list --index --header -s , --log2 -n 6 --scale_t0 -o my_output_label
 
 
 
@@ -73,7 +104,7 @@ The last column is the cluster assignment, starting from 0.
 3. Visualization of data trend in each cluster
 ---------------------------
 
-The output table is ``output_label.clusters.4.pdf``
+The output table is ``output_label.clusters.N.pdf``
 
 .. image:: ../../images/ts_kmeans.png
 	:align: center
