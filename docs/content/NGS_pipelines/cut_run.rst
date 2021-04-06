@@ -63,6 +63,17 @@ This is also a tab-seperated-value format file. The 3 columns are: treatment sam
 
 .. image:: ../../images/peakcall.tsv.png
 
+Output
+^^^^^^
+
+Number of MACS2 called peaks tend to be large. The cut run author developed a new peak caller for cut-run, see: https://epigeneticsandchromatin.biomedcentral.com/articles/10.1186/s13072-019-0287-4
+
+The called peaks are:
+
+
+
+
+
 
 Report bug
 ^^^^^^^^^^
