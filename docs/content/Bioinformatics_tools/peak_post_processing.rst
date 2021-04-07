@@ -38,7 +38,7 @@ First, let's take a look on the distribution of FC and FDR.
 
 	cut -f 7 Donor12_FG4592_ABE801_100uM_S4.vs.CD34_day10_NT_IgG_S11.rmdup.uq.rmchrM_peaks.narrowPeak > tmp.list; histogram_seaborn.py --fold_change tmp.list --axv 4 --xscale_log -o FC.dist
 
-	cut -f 9 Donor12_FG4592_ABE801_100uM_S4.vs.CD34_day10_NT_IgG_S11.rmdup.uq.rmchrM_peaks.narrowPeak > tmp.list; histogram_seaborn.py --fold_change tmp.list --axv 5 --xscale_log -o FDR.dist
+	cut -f 9 Donor12_FG4592_ABE801_100uM_S4.vs.CD34_day10_NT_IgG_S11.rmdup.uq.rmchrM_peaks.narrowPeak > tmp.list; histogram_seaborn.py --logFDR tmp.list --axv 5 --xscale_log -o FDR.dist
 
 
 The grey line (``--axv 4``) in ``FC.dist.pdf`` is fold change = 4.
