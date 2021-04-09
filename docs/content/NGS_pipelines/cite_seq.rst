@@ -42,7 +42,7 @@ Input
 
 You need two input files: ``library.csv`` and ``antibody.csv``, corresponding to the Library CSV and Feature Reference CSV here: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/feature-bc-analysis
 
-For CITE-seq data, we should have one normal scRNA-seq data and one seq data only for antibody. In the original ``library.csv`` format, the ``sample`` column should be unique. But here, ``note that for the library.csv used here``, we keep ``sample name`` the same for the same sample, but with 2 different library_type, namely Gene Expression and Antibody Capture. The python script will transform this batch run library.csv to correct library.csv used for cell ranger.
+For CITE-seq data, we should have one normal scRNA-seq data and one seq data only for antibody. In the original ``library.csv`` format, the ``sample`` column should be unique, and fastq files should start with the string specified in this column. But here, ``note that for the library.csv used here``, we keep ``sample name`` the same for the same sample, but with 2 different library_type, namely ``Gene Expression`` and ``Antibody Capture``. The python script will transform this batch run library.csv to correct library.csv used for cellranger.
 
 The following antibody.csv is for TotalSeq-B type. There are also A or C types.
 
