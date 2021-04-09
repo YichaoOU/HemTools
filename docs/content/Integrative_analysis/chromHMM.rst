@@ -383,6 +383,28 @@ The row order in annotation.txt should be the same as the ones in chromHMM_segme
 
 The output ``*.sorted.gz*`` are ready to be uploaded to ppr. 
 
+
+Custom enrichment
+^^^^^^^^^^^^^
+
+``Input_25_segments.bed`` is the learned states from chromHMM, you can get it from this pipeline.
+
+``other_bed`` is a folder containing all the bed files that you want to check for segment enrichments.
+
+``myOut`` is the output name.
+
+
+::
+
+	module load java
+
+	chrHMM=/home/yli11/Programs/jar_tools/ChromHMM-1.18/ChromHMM.jar
+
+	java -jar $chrHMM OverlapEnrichment Input_25_segments.bed other_bed myOut
+
+
+
+
 Comments
 ^^^^^^^^
 
