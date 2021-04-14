@@ -43,7 +43,7 @@ This file specifies a list of pairwise comparisons. Each comparison has a compar
 
 **INPUT 2. gRNA library csv file (--gRNA_library option, required).**
 
-This file specifies your gRNA library. It is a csv file where the columns are sgRNA, sgRNA sequence, and the targeted gene. An example file is shown below.
+This file specifies your gRNA library. It is a csv file where the columns are sgRNA, sgRNA sequence, and the targeted gene. This file must end with .csv. An example file is shown below.
 
 .. code:: bash
 
@@ -103,6 +103,21 @@ OR you can perform MaGeCK RRA paired test by add ``--paired`` option:
 .. code:: bash
 
     $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed --paired
+
+
+Output files
+^^^^^^^^^^^^
+
+QC
+---
+
+In the email attachment, you can find Mageck count report, example shown below.
+
+.. image:: ../../images/count_report.png
+	:align: center
+
+Here you can check mapping rate, number of sgRNAs with zero count, and gini index for eveness (<0.2 is good).
+
 
 
 Report bug
