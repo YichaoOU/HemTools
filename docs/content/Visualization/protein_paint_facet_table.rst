@@ -80,4 +80,16 @@ Usage
 
 ``-p`` is the prefix added to the file path (protein paint use a relative path)
 
+Note
+^^^^^
+
+
+<br> in bed names can generate new names
+
+new bedjs table to show all columns info
+
+::
+
+	[yli11@nodecn202 consensus_index]$ for i in *bed;do bed_to_bedjs_all_columns.py $i;done
+
 
