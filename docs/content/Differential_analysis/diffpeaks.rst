@@ -42,6 +42,19 @@ Differential Peaks
 	                        .chrom.sizes)
 
 
+
+Get started
+^^^^^^^^
+
+1. Before start, check data quality and replicate correlation. Data quality is available is HemTools html or pdf report. Important metrics include number of mapped reads, mapping rate, number of peaks, FRiP, Qtag (chip-seq). Replicate correlation can be checked using :doc:`plot_bw_corr.py <../Visualization/bw_corr>`
+
+2. Follow the instructions below to perform differential peak analysis. This pipeline uses multiple tools to call differential peaks. ``DESEQ2`` tends to give the most stringent results (i.e., less differential peaks). This result is in ``homer_deseq2_results`` (output folder). 
+
+3. Normalized signals for each sample and each group (bw files) are provided in the job id folder. 
+
+4. (Visualization) Inside ``homer_deseq2_results``, you can use ``*_homer_deseq2.all.bed`` for volcano plot. Together with the signal files above, you can use :doc:`create_tracks.py <../Gallery/create_tracks>` to automatically upload these bed files and bw files to protein paint.
+
+
 Summary
 ^^^^^^^
 
@@ -68,7 +81,7 @@ Input
 
 Usually people use markdup.uq bam for differential analysis. You can also use rmdup.uq bam.
 
-Please copy (or ``ln -s``) all input bam and .bai (index files) and peak files to a working directory. Peak files have to be at least 4 columns
+Please copy (or ``ln -s``) all input bam and .bai (index files) and peak files to a working directory. Peak files have to be at least 4 columns (narrowPeak format is one of the examples.)
 
 .. note:: DO NOT use absolute path in the input.tsv. Just use file name.
 
@@ -89,7 +102,7 @@ A tsv file containing 4 columns: bam file, peak file, sample name, group name. `
 
 ** 2. design matrix**
 
-A tsv file containing three columns specifying comparisons. You could do group level comparison or just one sample vs another sample.
+A tsv file containing three columns specifying comparisons. You could do group level comparison or just one sample vs another sample, the comparison name (3rd column) should be unique.
 
 .. code:: bash
 
