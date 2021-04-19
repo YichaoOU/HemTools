@@ -154,6 +154,18 @@ BW file is normalized to #reads per 10 million reads.
 	-norm <#> : Normalize the total number of reads to this number, default 1e7.  This means that tags from an experiment with only 5 million mapped tags will count for 2 tags apiece.
 
 
+homer_deseq2_results
+^^^^^^^^^^^^^^
+
+4th column is LFC
+5th column is FDR
+
+``*.all.bed`` contains the all the peaks.
+
+``*LFC_1.FDR_05.bed`` contains the peaks with LFC>=1 and FDR<=0.05
+
+Sign of LFC is based on the input design file (first column vs second column). 
+
 
 Other Tools (old notes)
 ^^^^^
