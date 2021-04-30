@@ -154,6 +154,16 @@ long-range (>20kb) cis unique interactions < 20% is failed, 20-40% is marginal, 
 .. image:: ../../images/hic-qc.png
 	:align: center
 
+Valid pairs
+^^^^^^
+
+ref: https://www.sciencedirect.com/science/article/pii/S1046202314003582?via%3Dihub
+
+The figure (Fig.2 from ref) below provides an illustration of all different pairing types.
+
+.. image:: ../../images/hicpro_pairs.png
+	:align: center
+
 
 Multi-mapping issue
 ^^^^^^^^^^^^^^^^
