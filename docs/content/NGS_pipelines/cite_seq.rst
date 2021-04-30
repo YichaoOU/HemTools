@@ -98,6 +98,74 @@ Report bug
     $ HemTools report_bug
 
 
+Note
+^^^^^
+
+
+
+cite-seq DASH visualization
+"""""""""""""""
+
+This has been included in the pipeline, you don't need to run it manually any more.
+
+::
+
+	usage: cite_seq_vis.py [-h] (--current_dir | --input_csv INPUT_CSV)
+	                       [--MT_percent MT_PERCENT] [--max_genes MAX_GENES]
+	                       [-o OUTPUT] [-g GENOME]
+
+	cite-seq visualization pipeline
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --current_dir         run in current dir, suppose cellRanger is finished
+	                        correctly (default: False)
+	  --input_csv INPUT_CSV
+	                        manually input csv (default: None)
+	  --MT_percent MT_PERCENT
+	                        MT_percent, default is 20, sometimes I use 10 or 5
+	                        (default: 20)
+	  --max_genes MAX_GENES
+	                        max_genes (default: 6000)
+	  -o OUTPUT, --output OUTPUT
+	                        output prefix (default:
+	                        sc_integration_yli11_2021-04-26)
+
+	Genome Info:
+	  -g GENOME, --genome GENOME
+	                        genome version: hg19, hg38, mm9, mm10. By default,
+	                        specifying a genome version will automatically update
+	                        index file, black list, chrom size and
+	                        effectiveGenomeSize, unless a user explicitly sets
+	                        those options. (default: hg19)
+
+
+Run this after ``sc_data_integration.py``
+
+::
+
+	usage: sc_data_integration.py [-h] -f INPUT_CSV [--MT_prefix MT_PREFIX] [--MT_percent MT_PERCENT] [--max_genes MAX_GENES] [-o OUTPUT] [--citeseq]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -f INPUT_CSV, --input_csv INPUT_CSV
+	                        Need at least 2 columns with column names, Sample,Location, see: https://pegasus.readthedocs.io/en/stable/usage.html (default: None)
+	  --MT_prefix MT_PREFIX
+	                        MT_prefix, seems that mm is mt- and human is MT- (default: MT-)
+	  --MT_percent MT_PERCENT
+	                        MT_percent, default is 20, sometimes I use 10 or 5 (default: 20)
+	  --max_genes MAX_GENES
+	                        max_genes (default: 6000)
+	  -o OUTPUT, --output OUTPUT
+	                        output prefix pdf (default: sc_integration_yli11_2021-04-26)
+	  --citeseq             is data is cite-seq (default: False)
+
+::
+
+	module load conda3
+	source activate /home/yli11/.conda/envs/dash
+	cite_seq_dash.py sc_integration_yli11_2021-04-25
+
 
 
 Comments
