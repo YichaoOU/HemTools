@@ -3,14 +3,18 @@ Analysis of Hi-C and capture-C data using HiC-Pro
 
 ::
 
-	usage: hicpro_batch.py [-h] [-j JID] [--queue QUEUE]
-	                       (-f FASTQ_TSV | --guess_input) [-g GENOME]
+	usage: hicpro_batch.py [-h] [-j JID] [--addon_parameters ADDON_PARAMETERS]
+	                       [--queue QUEUE] (-f FASTQ_TSV | --guess_input)
+	                       [-g GENOME] [-e DIGESTED_ENZYME]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        hicpro_batch_yli11_2020-06-26)
+	                        hicpro_batch_yli11_2021-04-30)
+	  --addon_parameters ADDON_PARAMETERS
+	                        addon parameters passed to hicpro split (default:
+	                        None)
 	  --queue QUEUE
 	  -f FASTQ_TSV, --fastq_tsv FASTQ_TSV
 	                        tab delimited 3 columns (tsv file): Read 1 fastq, Read
@@ -25,6 +29,9 @@ Analysis of Hi-C and capture-C data using HiC-Pro
 	                        index file, black list, chrom size and
 	                        effectiveGenomeSize, unless a user explicitly sets
 	                        those options. (default: hg19)
+	  -e DIGESTED_ENZYME, --digested_enzyme DIGESTED_ENZYME
+	                        digested_fragments hg19_MboI (default: MboI)
+
 
 
 
@@ -58,7 +65,21 @@ Go to your fastq files folder and do the following:
 
 	hicpro_batch.py --guess_input
 
-	hicpro_batch.py -f fastq.tsv -g hg19
+	hicpro_batch.py -f fastq.tsv -g hg19 -e MboI
+
+``-e Mbol`` is the digested enzyme. Supported enzymes are MboI or DpnII (these two all cut ^GATC, so please just use MboI), NlaII, and HindIII.
+
+To run captureC data in batch mode, put the fastq files that use the same bait in the same dir, and type:
+
+.. code:: bash
+	
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	hicpro_batch.py --guess_input
+
+	hicpro_batch.py -f fastq.tsv -g hg19 --addon_parameters " -t target.bed -e NlaIII"
 
 
 Output
@@ -209,7 +230,7 @@ Use hicpro_split.py if you have a custom genome
 	  -s SAMPLE_ID, --sample_id SAMPLE_ID
 	                        sample ID (default: None)
 	  -t TARGET_BED, --target_bed TARGET_BED
-	                        for captureC, need absolute path (default: None)
+	                        for captureC (default: None)
 	  --interactive         run pipeline interatively (default: False)
 	  --rerun               rerun (default: False)
 	  --debug               debug (default: False)
@@ -261,6 +282,8 @@ Then use the following parameters:
 
 Target.bed for capture-C analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creating ``target.bed`` is little bit complicated, we have automated this part on 4/30/2021. So you don't need to read this section any more. 
 
 You need ``-t target.bed`` for starting capture-C analysis. The output is in $jid/hicpro_results/$SAMPLE_ID.bdg. QC can be found in ``multiQC.html`` and in the ``log_file/paris*.err``
 
@@ -314,7 +337,7 @@ Use ``--rerun`` option, match sample id, jid and genome.
 captureC
 ^^^^^^
 
-Use ``-t`` option, with absolute path.
+Use ``-t`` option
 
 The target.bed should have at least 4 columns: chr, start, end, name
 
