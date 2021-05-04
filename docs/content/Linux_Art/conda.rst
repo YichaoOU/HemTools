@@ -17,6 +17,8 @@ Start a jupyter notebook on HPC
 
 .. code:: bash
 
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+	
 	module load python/2.7.13
 
 	run_lsf.py -p jupyter --memory 20000
