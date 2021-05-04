@@ -366,6 +366,7 @@ We have pre-defined custom hg19 genomes: e.g., HBG1, hg19_copy
 	hicpro_split.py -r1 Jurkat_20copy_cassette_captureC_combine_R1.fastq.gz -r2 Jurkat_20copy_cassette_captureC_combine_R2.fastq.gz -s jurkat_20copy -g hg19_20copy -t hg19_20copy_cassette_bait.bed --keep_dup
 
 
+By 4/30/2021, abs path is not required any more.
 
 Custom genome
 ^^^^^^^^^^^^
