@@ -12,6 +12,18 @@ source activate /panfs/pfs.local/scratch/<your_group>/conda/envs/<environment_na
 
 	jupyter notebook --ip='*' --NotebookApp.token='' --NotebookApp.password=''
 
+Start a jupyter notebook on HPC
+^^^
+
+.. code:: bash
+
+	module load python/2.7.13
+
+	run_lsf.py -p jupyter --memory 20000
+
+You will receive an email with the link to the jupyter notebook. Use ``--memory`` to control the requested memory.
+
+
 Commonly used python libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
