@@ -23,6 +23,8 @@ Start a jupyter notebook on HPC
 
 You will receive an email with the link to the jupyter notebook. Use ``--memory`` to control the requested memory.
 
+5/4/2021, notebook only support python3.
+
 
 Commonly used python libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
