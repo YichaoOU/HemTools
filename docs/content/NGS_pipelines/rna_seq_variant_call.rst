@@ -122,7 +122,7 @@ With ``--WT`` option, you can filter out low-confident variant using a WT RNA-se
 
     rna_seq_variant_call.py -f fastq.tsv -WT Hudep2_WT
 
-
+Output is in ``compare_result/*all_passed_variants.csv``.
 
 Reference
 ^^^^^^^^^
