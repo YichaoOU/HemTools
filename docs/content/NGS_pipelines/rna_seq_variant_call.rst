@@ -109,6 +109,21 @@ Final filtered VCF files are located in the ``final_results`` folder.
 
 
 
+Variant calling comparing to WT
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With ``--WT`` option, you can filter out low-confident variant using a WT RNA-seq data. Same pipeline was used to generate the figure below in our ABE paper.
+
+.. image:: ../../images/RNA_seq_ABE_editing.png
+	:align: center
+
+
+.. code:: bash
+
+    rna_seq_variant_call.py -f fastq.tsv -WT Hudep2_WT
+
+
+
 Reference
 ^^^^^^^^^
 
