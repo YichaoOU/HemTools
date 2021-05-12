@@ -13,6 +13,22 @@ I was suprised by this and checked TF-chip-seq data in Hudep2, for BCL11A, GATA1
 
 
 
+raw TN5 cut freq from pyDNase
+^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	module load conda3
+
+	source activate /home/yli11/.conda/envs/pydnase
+
+	cd /home/yli11/Pipelines/example_NGS_data/atac_seq/atac_seq_yli11_2021-02-13/bam_files
+
+	dnase_wig_tracks.py -A test.bed 1631312_RFA007.rmdup.uq.bam fw.bdg rev.bdg
+
+fw.bdg and rev.bdg contains the Tn5 cut count.
+
+ref: https://pythonhosted.org/pyDNase/scripts.html?highlight=atac#dnase-wig-tracks-py
 
 reference
 ^^^^^^^^
