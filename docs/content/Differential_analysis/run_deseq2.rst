@@ -82,3 +82,12 @@ Output name by default is treatment.vs.control, folder is created, and DESEQ2 ra
 	HBBP1_VHL.vs.HBBP1_NT.plotDispEsts.pdf  HBBP1_VHL.vs.HBBP1_NT.R
 	HBBP1_VHL.vs.HBBP1_NT.cooks_distance.pdf  HBBP1_VHL.vs.HBBP1_NT.plotMA.pdf
 	HBBP1_VHL.vs.HBBP1_NT.deseq2_result.tsv   HBBP1_VHL.vs.HBBP1_NT.pvalue_hist.pdf
+
+
+Convert deseq2 result to bw files for visualization
+^^^^^^^^^^
+
+::
+
+	bdg_to_bw.py -f HBBP1.deseq2_result.tsv --data_frame -j HBBP1_bw_files
+	bdg_to_bw.py -f BGLT3.deseq2_result.tsv --data_frame -j BGLT3_bw_files

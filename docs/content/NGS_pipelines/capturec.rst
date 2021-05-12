@@ -99,6 +99,13 @@ To make a list of dpnII cut sites:
 
 	bedtools complement -i DpnII.bed -g ../bowtie_1.2.2_CapC_index/hg19_20copy_sizes.txt > DpnII_fragments.bed
 
+Differential analysis or data normalization
+^^^^^^^^^^^^^
+
+The pipeline output ``DESEQ2.input.tsv`` in jid folder.
+
+You can use it as the input for DESEQ2 pipeline. :doc:`run_DESEQ2.py <../Differential_analysis/run_deseq2>`
+
 Reference
 ^^^^^^^^^
 
