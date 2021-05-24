@@ -1,0 +1,22 @@
+#!shell
+#!shell
+
+=cut h5 1
+
+inputFile=h5_list
+
+ncore=1
+mem=100000
+q={{queue}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/hicexplorer
+
+hicPCA -m ${COL1} -o ${COL2}_PC1.bw ${COL2}_PC2.bw
+
+hicTransform -m ${COL1} --outFileName ${COL2}.h5 --method all
+
+hicPlotMatrix -m pearson_${COL2}.h5 --outFileName ${COL2}_PC1.png --perChr --bigwig ${COL2}_PC1.bw
+
+

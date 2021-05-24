@@ -1,0 +1,18 @@
+#!shell
+
+=cut indel 1
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+module load bedtools
+
+# CRISPResso -r1 ${COL1} -r2 ${COL2} --auto --guide_seq ${COL4} -o {{jid}}/${COL3} --keep_intermediate --dump 
+CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL5} --guide_seq ${COL4} -o {{jid}}/${COL3} --keep_intermediate --dump 
+

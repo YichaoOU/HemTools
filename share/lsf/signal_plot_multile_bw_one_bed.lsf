@@ -1,0 +1,115 @@
+#!shell
+
+
+=cut sigPlot_center 1 
+
+inputFile=input_list
+
+ncore=1
+mem={{memory}}
+#q=priority
+
+module load python/2.7.15-rhel7
+jid={{jid}}
+cut -f 1,2,3 ${COL1} > ${COL1}.${jid}.C.bed
+
+computeMatrix reference-point --referencePoint center -R ${COL1}.${jid}.C.bed -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixC.gz --skipZeros --sortUsingSamples 1 -p 4 {{computeMatrix_addon_parameters}}
+
+plotHeatmap --heatmapHeight 15 -m {{jid}}/${COL2}_matrixC.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/${COL3}_centerPlot.{{figure_type}} {{plotHeatmap_addon_parameters}}
+
+# rm ${COL5}_matrixC.gz
+
+rm ${COL1}.${jid}.C.bed
+
+=cut sigPlot_region 1 
+
+inputFile=input_list
+
+ncore=1
+mem={{memory}}
+
+module load python/2.7.15-rhel7
+jid={{jid}}
+cut -f 1,2,3 ${COL1} > ${COL1}.${jid}.R.bed
+
+computeMatrix scale-regions -R ${COL1}.${jid}.R.bed -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixR.gz --skipZeros --sortUsingSamples 1 -p 4 {{computeMatrix_addon_parameters}}
+
+plotHeatmap --heatmapHeight 15 -m {{jid}}/${COL2}_matrixR.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/${COL3}_regionPlot.{{figure_type}} {{plotHeatmap_addon_parameters}}
+
+# rm ${COL5}_matrixR.gz
+
+rm ${COL1}.${jid}.R.bed
+
+
+=cut email 3 all
+
+module load python/2.7.13
+
+# mv *_centerPlot.{{figure_type}} {{jid}}
+
+# mv *_regionPlot.{{figure_type}} {{jid}}
+
+mv {{input_list}} {{jid}}/log_files
+
+cd {{jid}}
+
+mkdir {{figure_type}}_files
+
+mv *.{{figure_type}} {{figure_type}}_files
+
+zip -r figures.zip {{figure_type}}_files
+
+send_email_v1.py -a figures.zip -m "signal plot one to one is finished" -j {{jid}} --common
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

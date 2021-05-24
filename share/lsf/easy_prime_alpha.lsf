@@ -1,0 +1,41 @@
+#!shell
+
+
+=cut prime 1
+
+inputFile=input_list
+
+ncore=1
+mem=10000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2/
+
+chr=${COL1}
+pos=${COL2}
+name=${COL3}
+ref=${COL4}
+alt=${COL5}
+
+src=/home/yli11/Tools/easy_prime/test
+
+echo "${COL1}\t${COL2}\t${COL3}\t${COL4}\t${COL5}" > {{jid}}/$name.vcf
+
+cd {{jid}}
+
+python $src/init.py -f $name.vcf -o $name.candidate_gRNA.bed -g {{genome_fasta}} --PAM {{PAM_seq}} --extend {{extend}} --sgRNA_length {{sgRNA_length}}
+
+python $src/search2.py -f $name.candidate_gRNA.bed -t $chr,$pos,$ref,$alt -o $name.rawX.csv -g {{genome_fasta}}
+
+module load python/2.7.13
+
+module load gcc/5.4.0
+
+python3 featurize.py -f $name.rawX.csv -o $name.X.csv
+
+python3 $src/predict.py $name.X.csv $name.candidate.csv
+
+
+
+

@@ -1,0 +1,28 @@
+#!shell
+
+=cut BWA 1
+
+inputFile=input_list
+
+ncore=1
+mem=32000
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+
+bwa mem -t 4 {{index_file}} ${COL1} ${COL2} |samtools view -bS - > {{jid}}/${COL3}.bam
+
+cd {{jid}}
+
+samtools sort -@ 4 -o ${COL3}.st.bam ${COL3}.bam
+
+samtools index ${COL3}.st.bam
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+
+CRISPRessoWGS -b ${COL3}.st.bam -f ${COL4} -r {{genome_fasta}} --name ${COL3} --plot_window_size 20 --base_editor_output
+

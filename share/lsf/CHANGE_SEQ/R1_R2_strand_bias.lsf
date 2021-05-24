@@ -1,0 +1,27 @@
+=cut strand_bias 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+label=`basename ${COL1}`
+
+bedtools bamtobed -i ${COL1} > {{jid}}/${label}.bed
+
+get_strand_R1R2_count.py {{jid}}/${label}.bed ${COL2}
+
+=cut email 5 all
+
+module load python/2.7.13
+
+cd {{jid}}
+mkdir png_files
+cd png_files
+mv ../*.png .
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+

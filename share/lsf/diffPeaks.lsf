@@ -1,0 +1,46 @@
+#!shell
+
+##------------------------- keywords ------------------------##
+#
+#
+#bam_file_list
+#
+#paired -p option for featureCounts
+#
+#
+##------------------------- keywords ------------------------##
+
+
+
+=cut DESEQ2 1
+
+module load bedtools subread python/2.7.12
+
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+## merge peaks
+merged_file={{jid}}/for_deseq2_merged
+cat {{region_list}} | while read i;do cat $i;done | sort -k1,1 -k2,2n | bedtools merge -c 4 -o collapse -i - > ${merged_file}.bed
+
+## feature Count
+
+run_featureCounts.py 
+
+echo "GeneID Chr Start End Strand" | sed 's/ /\t/g' > ${merged_file}.saf
+
+awk '{print "region_"NR"\t"$1"\t"$2"\t"$3"\t+"}' ${merged_file}.bed >> ${merged_file}.saf
+
+featureCounts {{paired}} -F SAF -T ${ncore} -Q 1 -a ${merged_file}.saf -o ${merged_file}.count_table {{bam_file_list}}
+
+## perform DESEQ2
+
+python -c 'import pandas as pd;df = pd.read_csv("{{input_file}}",sep="\\t",skiprows=1);df.columns = map(lambda x:x.split("/")[-1],df.columns.tolist());df.to_csv("{{input_file}}",index=False,sep="\\t")'
+
+
+
+
+

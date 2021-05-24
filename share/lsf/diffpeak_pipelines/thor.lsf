@@ -1,0 +1,30 @@
+
+=cut THOR 1
+
+inputFile=design_matrix
+
+ncore=1
+mem=20000
+
+
+chrom_size={{chrom_size}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint
+
+module load ucsc/041619
+
+
+a=`ls ${COL1}*.bam`
+b=`ls ${COL2}*.bam`
+
+echo -e "#rep1\n$a#rep2\n$b\n#chrom_sizes\n$chrom_size" > ${COL3}.thor
+
+mkdir -p THOR_results
+
+rgt-THOR -report -name ${COL3} –output-dir THOR_results ${COL3}.thor
+
+mv ${COL3}.thor THOR_results
+
+

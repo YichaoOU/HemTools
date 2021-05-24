@@ -1,0 +1,6 @@
+peaks:
+  - EACH,SELF
+resfrags:
+  - {{digested_fragments}}
+hicpro_output:
+  - hicpro_results

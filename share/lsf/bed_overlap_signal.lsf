@@ -1,0 +1,35 @@
+#!shell
+
+=cut overlap_diff 1
+
+inputFile=input
+
+ncore=1
+
+mem=10000
+
+module load bedtools
+
+module load python/2.7.13
+
+module load ucsc/041619
+
+top_narrow_peak.sh ${COL1} 5000 > {{jid}}/${COL4}.top5000.bed
+
+bedtools intersect -a {{jid}}/${COL4}.top5000.bed -b ${COL2} -u > {{jid}}/${COL4}.overlap.bed
+
+bedtools intersect -a {{jid}}/${COL4}.top5000.bed -b ${COL2} -v > {{jid}}/${COL4}.non_overlap.bed
+
+
+signal_test.py --bw_file ${COL3} --bed_file {{jid}}/${COL4}.overlap.bed {{jid}}/${COL4}.non_overlap.bed --log2 -o {{jid}}/${COL4}.signal_compare --label1 overlap --label2 non_overlap
+
+cd {{jid}}
+
+module load homer/4.10
+
+echo "Homer motif discovery"
+
+findMotifsGenome.pl ${COL4}.overlap.bed {{genome}} ${COL4}.overlap.200 -size 200 -preparsedDir ${COL4}_genome_dir -p 12 
+
+findMotifsGenome.pl ${COL4}.non_overlap.bed {{genome}} ${COL4}.non_overlap.200 -size 200 -preparsedDir ${COL4}_genome_dir -p 12 
+

@@ -1,0 +1,37 @@
+#!shell
+
+
+=cut assign 1
+
+ncore=1
+mem=32000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2/
+
+module load bedtools/2.29.2
+
+assign_targets_multi.py -q {{bed_file}} -tss {{gene_annotation}} --epi_file_list {{motif_list}} -o {{jid}}/assigned_targets.big.bed -d1 {{d1}} -d2 {{d2}} -d3 {{d3}}
+
+module load python/2.7.13
+
+cd {{jid}}
+
+dataframe.py -f assigned_targets.big.bed --header -s "\t" --collapse 9 -o assigned_targets.simple.tsv --remove_cols_str bed_score
+
+=cut email 2 assign
+
+ncore=1
+mem=2000
+q=priority
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}} 
+
+
+

@@ -1,0 +1,26 @@
+#!shell
+
+
+=cut sigPlot_center 1 
+
+ncore=1
+mem=16000
+q=priority
+
+module load python/2.7.15-rhel7
+
+jid={{jid}}
+
+computeMatrix reference-point --referencePoint center -R {{bed}} -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/matrixC.gz -p 8 --binSize {{s}} {{computeMatrix_addon_parameters}}
+
+cd $jid
+
+gunzip matrixC.gz
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+plotProfile_on_bed.py -f matrixC -c {{colors}} {{plotProfile_addon_parameters}}
+
+

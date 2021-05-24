@@ -1,0 +1,46 @@
+#!shell
+
+
+=cut cbust 1
+
+inputFile=input_list
+
+ncore=1
+mem=4000
+
+module load bedtools
+
+cd {{jid}}
+
+bedtools getfasta -fi {{genome_fasta}} -fo ${COL1}.fa -bed ${COL1}
+
+module load gcc/5.4.0
+
+cbust -v -c {{motif_cluster_score}} -m {{motif_matching_score}} -G 0 -f 5 {{motif}} ${COL1}.fa > ${COL1}.cb
+
+rm ${COL1}
+rm ${COL1}.fa
+
+sed -i '1d' ${COL1}.cb
+
+=cut merge 2 cbust
+
+cd {{jid}}
+
+cat *.cb > {{output}}
+
+rm *.cb
+
+module load python/2.7.13
+
+filter_overlaps.py {{output}} {{output}}.filter_overlaps.bed
+
+module load htslib
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/py2
+
+bed_to_bedjs_withName_category_color.py {{output}}.filter_overlaps.bed
+

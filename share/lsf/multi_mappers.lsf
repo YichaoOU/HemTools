@@ -1,0 +1,81 @@
+#!shell
+=cut multi 1
+
+inputFile=bam_tsv
+
+ncore=2
+mem=4000
+
+module load samtools/1.7
+
+samtools view -@ 4 -b -f 256 -F 4 -h ${COL1} > {{jid}}/${COL2}.flag256.bam
+
+
+
+samtools view -@ 4 -b -F 4 -h ${COL1} > {{jid}}/${COL2}.mapped.bam
+
+cd {{jid}}
+
+module load bedtools
+
+samtools sort -@ 4 -n -o ${COL2}.flag256.qsort.bam ${COL2}.flag256.bam
+
+bedtools bamtofastq -i ${COL2}.flag256.qsort.bam -fq ${COL2}.flag256.R1.fastq -fq2 ${COL2}.flag256.R2.fastq
+
+gzip *.fastq
+
+samtools view -@ $ncore -b -L {{hem_bed}} ${COL2}.mapped.bam > ${COL2}.hem.bam
+
+samtools view -@ $ncore ${COL2}.mapped.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.mapped.uniq.txt
+
+samtools view -@ $ncore ${COL2}.hem.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.hem.uniq.txt
+
+samtools view -@ $ncore ${COL2}.flag256.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.flag256.uniq.txt
+
+samtools view -@ $ncore -b -L {{HBG_bed}} ${COL2}.flag256.bam > ${COL2}.flag256.HBG.bam
+
+samtools view -@ $ncore ${COL2}.flag256.HBG.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.flag256.HBG.uniq.txt
+
+samtools view -@ $ncore -b -L {{rRNA_bed}} ${COL2}.flag256.bam > ${COL2}.flag256.rRNA.bam
+
+samtools view -@ $ncore ${COL2}.flag256.rRNA.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.flag256.rRNA.uniq.txt
+
+samtools index -@ $ncore ${COL2}.flag256.bam
+
+samtools view -b ${COL2}.flag256.bam chrM > ${COL2}.chrM1.bam
+
+samtools view -b ${COL2}.flag256.bam chrMT > ${COL2}.chrM2.bam
+
+samtools merge ${COL2}.flag256.chrM.bam ${COL2}.chrM1.bam ${COL2}.chrM2.bam
+
+samtools view -@ $ncore ${COL2}.flag256.chrM.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.flag256.chrM.uniq.txt
+
+=cut kallisto 2 multi
+
+module load kallisto/0.43.1
+
+inputFile=bam_tsv
+
+ncore=4
+mem=2000
+
+cd {{jid}}
+
+kallisto quant -i {{index_file}} --threads=8 --bootstrap-samples=100 --output-dir=${COL2}_gene_exp ${COL2}.flag256.R1.fastq.gz ${COL2}.flag256.R2.fastq.gz
+
+module load python/2.7.13
+
+/research/dept/hem/common/sequencing/chenggrp/pipelines/dev_subcmd/combine_kallisto.py ${COL2}_gene_exp/abundance.tsv ${COL2} {{gene_info}} ${COL2}.transcript.tpm.csv
+
+=cut stats 2 multi
+
+module load python/2.7.13
+
+summerize_multi_mapped_statistics.py {{bam_tsv}} {{jid}}
+
+=cut email 3 stats
+
+module load python/2.7.13
+
+send_email_v1.py -a {{jid}}/check_multi_mapped_stats.csv -m "multi-mapper check is finished" -j "multi-mapper check is finished" --common
+

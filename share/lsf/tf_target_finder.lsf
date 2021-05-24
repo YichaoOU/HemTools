@@ -1,0 +1,88 @@
+#!shell
+
+=cut TF 1
+
+ncore=1
+mem=4000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+module load meme/4.11.2
+
+motif_scanning_flank={{d4}}
+
+prefix={{label}}
+
+assign_targets.py --label $prefix -q {{query_bed}} -tss {{tss_bed}} -epi {{epi_bed}} -exp {{deg_tsv}} --LFC_col_name {{LFC_col_name}} --FDR_col_name {{FDR_col_name}} --LFC_cutoff {{LFC_cutoff}} --FDR_cutoff {{FDR_cutoff}} -d1 {{d1}} -d2 {{d2}} -d3 {{d3}} -o assign_targets_output.tsv > {{jid}}/assign_targets.log
+
+mkdir {{jid}}/motif_co_binding_test
+
+mkdir {{jid}}/peak_co_binding_test
+
+motif_scanning.py -f {{query_bed}} -m {{query_motif}} -o {{jid}}/motif_co_binding_test/query_motif.BG.match.bed -e $motif_scanning_flank 
+
+motif_scanning.py -f $prefix.query.DEG_targets_filter.bed -m {{query_motif}} -o {{jid}}/motif_co_binding_test/query_motif.FG.match.bed -e $motif_scanning_flank
+
+
+
+mv $prefix.query.DEG_targets_filter.bed  {{jid}}
+
+mv $prefix.query.targets_all.bed  {{jid}}
+
+mv $prefix.deg_table.tsv {{jid}}
+
+mv assign_targets_output.tsv  {{jid}}
+
+
+=cut peak 2 TF
+
+inputFile=peak_list
+
+prefix={{label}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+co_binding_test.py -f1 {{jid}}/$prefix.query.DEG_targets_filter.bed -f2 ${COL2} -d {{d5}} -bg {{query_bed}} > {{jid}}/peak_co_binding_test/${COL1}.log
+
+awk -F "\t" '{print $1"\t"($2-{{d5}}<0?0:$2-{{d5}})"\t"$3+{{d5}}}' ${COL2} | bedtools intersect -a {{jid}}/$prefix.query.DEG_targets_filter.bed -b - -u > {{jid}}/peak_co_binding_test/$prefix.query.DEG_targets.overlap.${COL1}.bed
+
+
+=cut motif 2 TF
+
+inputFile=motif_list
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+module load meme/4.11.2
+
+prefix={{label}}
+
+motif_scanning_flank={{d4}}
+
+
+motif_scanning.py -f {{query_bed}} -m {{motif_database}} -o {{jid}}/motif_co_binding_test/${COL1}.match.bed -e $motif_scanning_flank --motif_ids ${COL2}
+
+co_binding_test.py --motif_overlap -f1 {{jid}}/motif_co_binding_test/query_motif.FG.match.bed --foreground_peaks  {{jid}}/$prefix.query.DEG_targets_filter.bed -f2 {{jid}}/motif_co_binding_test/${COL1}.match.bed -d {{d6}} -bg {{jid}}/motif_co_binding_test/query_motif.BG.match.bed -o {{jid}}/motif_co_binding_test/${COL1}.bedtools.result.bed > {{jid}}/motif_co_binding_test/${COL1}.log
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}/motif_co_binding_test/
+
+head -n 10 *.log > motif_summary.txt
+
+cd ../peak_co_binding_test
+
+head -n 10 *.log > peak_summary.txt
+
+cd ..
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

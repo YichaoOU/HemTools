@@ -1,0 +1,62 @@
+#!shell
+
+
+# =cut ice 3 
+
+# ncore=1
+# mem=40000
+# q={{queue}}
+
+# module load hic-pro/2.11.1
+
+# cd {{jid}}/hicpro_results
+
+# /usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt build_contact_maps 2>&1
+
+# /usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt ice_norm 2>&1
+
+# /usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt quality_checks 2>&1
+
+# =cut h5 4 ice
+=cut h5 4 
+
+ncore=1
+mem=100000
+q={{queue}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/hicexplorer
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+hicConvertFormat --matrices ./iced/1000/{{sample_id}}_1000_iced.matrix --outFileName {{sample_id}}.hicexplorer_1kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/1000/{{sample_id}}_1000_abs.bed 
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_1kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_1kb.tad -p 8 
+
+hicConvertFormat --matrices ./iced/2000/{{sample_id}}_2000_iced.matrix --outFileName {{sample_id}}.hicexplorer_2kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/2000/{{sample_id}}_2000_abs.bed 
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_2kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_2kb.tad -p 8 
+
+hicConvertFormat --matrices ./iced/3000/{{sample_id}}_3000_iced.matrix --outFileName {{sample_id}}.hicexplorer_3kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/3000/{{sample_id}}_3000_abs.bed 
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_3kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_3kb.tad -p 8 
+
+hicConvertFormat --matrices ./iced/4000/{{sample_id}}_4000_iced.matrix --outFileName {{sample_id}}.hicexplorer_4kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/4000/{{sample_id}}_4000_abs.bed 
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_4kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_4kb.tad -p 8 
+
+hicConvertFormat --matrices ./iced/5000/{{sample_id}}_5000_iced.matrix --outFileName {{sample_id}}.hicexplorer_5kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/5000/{{sample_id}}_5000_abs.bed 
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_5kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_5kb.tad -p 8 
+
+=cut email 5 all
+
+q={{queue}}
+
+module load python/2.7.13
+
+cd {{jid}}/hicpro_results
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+

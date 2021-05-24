@@ -1,0 +1,126 @@
+#!shell
+
+=cut hicpro 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=10000
+
+module load hic-pro/2.11.1
+
+
+
+R1_read=${COL1}
+R2_read=${COL2}
+sample_id=${COL3}
+bowtie2_index={{bowtie2_index}}
+genome_build={{genome}}
+cutsite={{cutsite}}
+ncore=4
+outdir={{jid}}
+
+export PATH=$PATH:/home/yli11/Programs/HiC-Pro-2.11.1/scripts/
+
+mkdir -p $outdir/bowtie_results
+mkdir -p $outdir/logs
+mkdir -p $outdir/logs/$sample_id
+mkdir -p $outdir/hic_results
+mkdir -p $outdir/hic_results/data
+mkdir -p $outdir/hic_results/data/$sample_id
+mkdir -p $outdir/bowtie_results/bwt2_global
+mkdir -p $outdir/bowtie_results/bwt2_global/$sample_id
+mkdir -p $outdir/bowtie_results/bwt2_local
+mkdir -p $outdir/bowtie_results/bwt2_local/$sample_id
+mkdir -p $outdir/bowtie_results/bwt2
+mkdir -p $outdir/bowtie_results/bwt2/$sample_id
+dt=$(date '+%d/%m/%Y %H:%M:%S');
+# echo "$dt"
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+## mapping, global, remember each fastq is a subset of the whole fastq
+### R1
+/usr/bin/time -v bowtie2 --very-sensitive -L 30 --score-min L,-0.6,-0.2 --end-to-end --reorder --un $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap.fastq --rg-id BMG --rg SM:${sample_id}_R1 -p $ncore -x $bowtie2_index -U ${COL1} 2>> $outdir/logs/${sample_id}_R1_bowtie2.log| samtools view -F 4 -bS - > $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.bam
+if [ $? -eq 0 ]; then
+    echo -e "$dt: bowtie2 global R1: $GREEN RUN OK $NC"
+else
+    echo -e "$dt:  bowtie2 global R1: $RED FAIL $NC"
+fi
+### R2
+/usr/bin/time -v  bowtie2 --very-sensitive -L 30 --score-min L,-0.6,-0.2 --end-to-end --reorder --un $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap.fastq --rg-id BMG --rg SM:${sample_id}_R2 -p $ncore -x $bowtie2_index -U ${COL2} 2>> $outdir/logs/$sample_id/${sample_id}_R2_bowtie2.log| samtools view -F 4 -bS - > $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.bam
+if [ $? -eq 0 ]; then
+    echo -e "$dt: bowtie2 global R2: $GREEN RUN OK"
+else
+    echo -e "$dt:  bowtie2 global R2: $RED FAIL $NC"
+fi
+## cutsite_trimming for local mapping
+### R1
+/usr/bin/time -v cutsite_trimming --fastq $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap.fastq --cutsite $cutsite --out $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_trimmed.fastq > $outdir/logs/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_readsTrimming.log 2>&1
+if [ $? -eq 0 ]; then
+    echo -e "$dt: cutsite_trimming R1: $GREEN RUN OK $NC"
+else
+    echo -e "$dt:  cutsite_trimming R1: $RED FAIL $NC"
+fi
+### R2
+/usr/bin/time -v cutsite_trimming --fastq $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap.fastq --cutsite $cutsite --out $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_trimmed.fastq > $outdir/logs/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_readsTrimming.log 2>&1
+if [ $? -eq 0 ]; then
+    echo -e "$dt: cutsite_trimming R2: $GREEN RUN OK $NC"
+else
+    echo -e "$dt:  cutsite_trimming R2: $RED FAIL $NC"
+fi
+## local mapping
+### R1
+/usr/bin/time -v bowtie2 --very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to-end --reorder --rg-id BML --rg SM:${sample_id}_R1_${genome_build}.bwt2glob.unmap -p $ncore -x $bowtie2_index -U $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_trimmed.fastq 2>> $outdir/logs/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_bowtie2.log | samtools view -bS - > $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+### R2
+/usr/bin/time -v bowtie2 --very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to-end --reorder --rg-id BML --rg SM:${sample_id}_R2_${genome_build}.bwt2glob.unmap -p $ncore -x $bowtie2_index -U $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_trimmed.fastq 2>> $outdir/logs/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_bowtie2.log | samtools view -bS - > $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+
+## merge local and global
+/usr/bin/time -v samtools merge -@ $ncore -n -f $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.bam $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+/usr/bin/time -v samtools merge -@ $ncore -n -f $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.bam $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+
+## sort
+/usr/bin/time -v samtools sort -@ $ncore -n -T tmp/${sample_id}_R1_${genome_build} -o $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.sorted.bam $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam
+/usr/bin/time -v samtools sort -@ $ncore -n -T tmp/${sample_id}_R2_${genome_build} -o $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.sorted.bam $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam
+
+## just rename and delete one intermediate file
+mv $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.sorted.bam $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam
+mv $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.sorted.bam $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam
+
+## log
+samtools view -c $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam
+samtools view -c $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2_global/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R2_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+samtools view -c -F 4 $outdir/bowtie_results/bwt2_local/$sample_id/${sample_id}_R1_${genome_build}.bwt2glob.unmap_bwt2loc.bam
+
+
+## merge
+/usr/bin/time -v mergeSAM.py -q 0 -t -v -f $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R1_${genome_build}.bwt2merged.bam -r $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_R2_${genome_build}.bwt2merged.bam -o $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_${genome_build}.bwt2pairs.bam
+
+## mapped
+/usr/bin/time -v mapped_2hic_fragments.py -v -S -t 100 -m 100000 -s 100 -l 600 -a -f /home/yli11/Data/Human/${genome_build}/annotations/${genome_build}_MboI_resfrag.bed -r $outdir/bowtie_results/bwt2/$sample_id/${sample_id}_${genome_build}.bwt2pairs.bam -o $outdir/hic_results/data/$sample_id
+
+## general all_valid_pairs
+LANG=en; sort -T tmp -k2,2V -k3,3n -k5,5V -k6,6n -o $outdir/hic_results/data/$sample_id/${sample_id}_${genome_build}.bwt2pairs.validPairs $outdir/hic_results/data/$sample_id/${sample_id}_${genome_build}.bwt2pairs.validPairs
+
+LANG=en; sort -T tmp -S 50% -k2,2V -k3,3n -k5,5V -k6,6n -m $outdir/hic_results/data/$sample_id/${sample_id}_${genome_build}.bwt2pairs.validPairs | awk -F"\t" 'BEGIN{c1=0;c2=0;s1=0;s2=0}(c1!=$2 || c2!=$5 || s1!=$3 || s2!=$6){print;c1=$2;c2=$5;s1=$3;s2=$6}' > $outdir/hic_results/data/$sample_id/$sample_id.allValidPairs
+
+## I should merge the splited fastq files here
+
+## all valid pairs merge and remove duplicates
+
+# Logs: logs/dixon_2M/merge_valid_interactions.log
+# Logs: logs/dixon_2M_2/merge_valid_interactions.log
+
+# replicate the test result exactly
+# [yli11@nodecn204 HiC]$ md5sum ./test_data/dixon_2M/hicpro_split_yli11_2020-06-15/hic_results/data/SRR400264_00/SRR400264_00.allValidPairs
+# 881071363a39faec9d8d91883e3177fc  ./test_data/dixon_2M/hicpro_split_yli11_2020-06-15/hic_results/data/SRR400264_00/SRR400264_00.allValidPairs
+# [yli11@nodecn204 HiC]$ md5sum ./test_result/hic_results/data/dixon_2M/dixon_2M.allValidPairs
+# 881071363a39faec9d8d91883e3177fc  ./test_result/hic_results/data/dixon_2M/dixon_2M.allValidPairs
+
+

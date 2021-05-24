@@ -1,0 +1,47 @@
+#!shell
+
+## 9-1-2019
+
+## Identify motif footprints given cutsites bw and a list of candidate footprint regions (e.g. narrowPeaks or HINT-ATAC predicted bed files)
+
+
+=cut footP 1
+
+inputFile=input_list
+
+ncore=1
+mem=20000
+
+module load bedtools meme bedops/2.4.35 python/2.7.12
+
+## each footprint results will be stored in one dir
+echo "mkdir for ${COL3}"
+mkdir {{jid}}/${COL3}
+
+## given candidate regions, getfasta
+echo "process bed"
+awk 'BEGIN {IFS="	"; OFS="	";} {print $1,$2,$3}' ${COL1} > {{jid}}/${COL3}/footprint.bed
+cd {{jid}}/${COL3}
+
+echo "get fasta"
+bedtools merge -i footprint.bed -d 20 > footprint_merged20.bed
+bedtools getfasta -fi {{genome_fasta}} -bed footprint_merged20.bed -fo footprint.fa
+
+## given motifs, get motif mapping
+echo "FIMO motif scanning"
+fimo_mapping_parallel.py {{motif_file}} {{fimo_cutoff}} footprint.fa
+
+## given fimo.bed, find footprints (core depth<flanking depth) and plot footprints, more detailed figures can be obtained using signal_plot.py
+echo "plot footprint figures"
+module purge
+module load conda3
+source activate /home/yli11/.conda/envs/py2/
+which python
+cd FIMO_motif_mapping
+# parallel_centipede.py ${COL2}
+## CENTIPEDE doesn't give better results.
+parallel_footprint.py ${COL2}
+
+
+
+

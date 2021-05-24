@@ -1,0 +1,67 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+ncore=1
+mem=12000
+q={{queue}}
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+module load samtools/1.7
+
+CRISPRessoPooled -r1 ${COL1} -r2 ${COL2} --name ${COL3} -o {{jid}}/${COL3}_results -f ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --conversion_nuc_from {{ref}} --conversion_nuc_to {{alt}}
+
+module load python/2.7.13
+
+cd {{jid}}
+
+# still need to check SNPs
+
+crispressoPooled_get_eff.py ${COL3} ../{{jid}}_info.tsv {{ref}} {{alt}} {{SNP}}
+
+## need to check for sgRNA length
+## 3/2/2021, no need
+crispressoPooled_get_background.py ${COL3} ../{{jid}}_info.tsv {{SNP}}
+
+
+
+## need to check for sgRNA length
+## 3/2/2021, fixed
+crispressoPooled_allele_edit_eff.py ${COL3} ../{{jid}}_info.tsv {{ref}} {{alt}} {{SNP}}
+
+
+table2heatmap.py -f ${COL3}.max_edit.tsv -o ${COL3}.max_edit.pdf -d gRNA
+
+## need to check for sgRNA length
+## 3/2/2021, no need
+crispressoPooled_plot_all_conversion.py ${COL3} ../{{jid}}_info.tsv {{SNP}}
+
+=cut email 2 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+
+cd {{jid}}
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+
+

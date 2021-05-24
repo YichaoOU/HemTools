@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 580 400" xml:space="preserve">
+<g>
+	<title>background</title>
+	<rect id="canvas_background" x="-1" y="-1" fill="#FFFFFF" width="582" height="402"/>
+	<g id="canvasGrid" display="none">
+		<rect y="0" display="inline" fill="none" width="580" height="400"/>
+	</g>
+</g>
+<g>
+	<title>Layer 1</title>
+	<ellipse id="HSC" stroke="#000000" stroke-width="1.5" cx="286" cy="21.95" rx="18.5" ry="18.5"/>
+	
+		<ellipse id="CD4" transform="matrix(0.8783 -0.4781 0.4781 0.8783 -158.1045 67.7393)" stroke="#000000" stroke-width="1.5" cx="54.01" cy="344.44" rx="29.5" ry="22"/>
+	<ellipse id="MPP" stroke="#000000" stroke-width="1.5" cx="286" cy="101.2" rx="18.5" ry="18.5"/>
+	<ellipse id="LMPP" stroke="#000000" stroke-width="1.5" cx="161" cy="163.41" rx="18.5" ry="18.5"/>
+	<path id="CLP" stroke="#000000" stroke-width="1.5" d="M137.7,241.43l6.3-10.91l10.91-6.3h12.59l10.91,6.3l6.3,10.91v12.59
+		l-6.3,10.91l-10.91,6.3h-12.59l-10.91-6.3l-6.3-10.91V241.43L137.7,241.43z"/>
+	
+		<ellipse id="CD8" transform="matrix(0.8783 -0.4781 0.4781 0.8783 -149.5777 101.2179)" stroke="#000000" stroke-width="1.5" cx="124.04" cy="344.43" rx="29.5" ry="22"/>
+	
+		<ellipse id="B" transform="matrix(0.8783 -0.4781 0.4781 0.8783 -139.8587 135.3981)" stroke="#000000" stroke-width="1.5" cx="196.04" cy="342.43" rx="29.5" ry="22"/>
+	
+		<ellipse id="NK" transform="matrix(0.8783 -0.4781 0.4781 0.8783 -131.2175 169.3437)" stroke="#000000" stroke-width="1.5" cx="267.04" cy="342.43" rx="29.5" ry="22"/>
+	<path id="Mono" stroke="#000000" stroke-width="1.5" d="M368.19,361.61L368.19,361.61c-0.58,0-1.15-0.03-1.7-0.07l0,0l-4.79,5.57
+		l-1.18-0.3c-1.38-0.35-2.73-0.79-4.02-1.32l0,0l-1.12-0.46l0.29-7c-1.02-0.64-1.97-1.36-2.85-2.15l0,0l-7.58,1.47l-0.69-0.92
+		c-0.81-1.08-1.5-2.21-2.12-3.35l0,0l-0.53-1l5.14-5.15c-0.32-1.09-0.53-2.22-0.64-3.36l0,0l-6.82-3.26l0.12-1.1
+		c0.15-1.32,0.43-2.59,0.77-3.8l0,0l0.3-1.08l7.6-0.95c0.54-1.04,1.18-2.02,1.9-2.94l0,0l-2.9-6.46l0.88-0.78
+		c1.03-0.91,2.13-1.73,3.28-2.48l0,0l1-0.65l6.56,3.73c1.11-0.46,2.26-0.84,3.46-1.13l0,0l2.38-6.68l1.23-0.08
+		c0.66-0.04,1.37-0.1,2.14-0.1l0,0c0.77,0,1.48,0.05,2.14,0.1l0,0l1.23,0.08l2.4,6.75c1.15,0.29,2.27,0.66,3.34,1.11l0,0l6.65-3.78
+		l1,0.65c1.15,0.75,2.25,1.58,3.28,2.48l0,0l0.88,0.78l-2.99,6.65c0.65,0.86,1.24,1.76,1.74,2.72l0,0l7.84,0.98l0.3,1.08
+		c0.34,1.21,0.62,2.48,0.77,3.8l0,0l0.12,1.1l-7.05,3.37c-0.11,1.05-0.29,2.08-0.57,3.08l0,0l5.31,5.31l-0.53,1
+		c-0.61,1.15-1.3,2.28-2.11,3.36l0,0l-0.69,0.92l-7.76-1.5l-2.37,9.18l-1.12,0.46c-1.29,0.53-2.63,0.97-4.02,1.32l0,0l-1.18,0.3
+		l-4.8-5.58l0,0L368.19,361.61L368.19,361.61z"/>
+	<ellipse id="CMP" stroke="#000000" stroke-width="1.5" cx="432.34" cy="164.44" rx="18.5" ry="18.5"/>
+	<path id="GMP" stroke="#000000" stroke-width="1.5" d="M344.74,242.04l6.3-10.91l10.91-6.3h12.59l10.91,6.3l6.3,10.91v12.59
+		l-6.3,10.91l-10.91,6.3h-12.59l-10.91-6.3l-6.3-10.91V242.04z"/>
+	<path id="MEP" stroke="#000000" stroke-width="1.5" d="M471.41,242.04l6.3-10.91l10.91-6.3h12.59l10.91,6.3l6.3,10.91v12.59
+		l-6.3,10.91l-10.91,6.3h-12.59l-10.91-6.3l-6.3-10.91V242.04z"/>
+	<ellipse id="Ery" stroke="#000000" stroke-width="1.5" cx="483.82" cy="331.51" rx="9.11" ry="9.11"/>
+	<ellipse id="Ery" stroke="#000000" stroke-width="1.5" cx="512.92" cy="333.93" rx="9.11" ry="9.11"/>
+	<ellipse id="Ery" stroke="#000000" stroke-width="1.5" cx="498.37" cy="352.72" rx="9.11" ry="9.11"/>
+</g>
+<g>
+	<line fill="none" x1="285.7" y1="82.7" x2="285.7" y2="40.13"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="285.7" y1="68.43" x2="285.7" y2="40.13"/>
+		<g>
+			<polygon points="285.7,82.7 293.92,62.6 285.7,67.37 277.49,62.6 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="188.08" y1="147.99" x2="257.72" y2="108.55"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="200.49" y1="140.96" x2="257.72" y2="108.55"/>
+		<g>
+			<polygon points="188.08,147.99 209.62,145.23 201.42,140.43 201.52,130.94 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="402.33" y1="156.01" x2="317.71" y2="108.98"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="389.87" y1="149.08" x2="317.71" y2="108.98"/>
+		<g>
+			<polygon points="402.33,156.01 388.75,139.07 388.93,148.56 380.78,153.42 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="377.12" y1="221.85" x2="418.19" y2="183"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="387.48" y1="212.05" x2="418.19" y2="183"/>
+		<g>
+			<polygon points="377.12,221.85 397.36,214 388.26,211.32 386.08,202.08 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="489.21" y1="219.25" x2="455.16" y2="184.38"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="479.24" y1="209.05" x2="455.16" y2="184.38"/>
+		<g>
+			<polygon points="489.21,219.25 481.04,199.13 478.5,208.28 469.29,210.61 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="161.46" y1="222.64" x2="160.36" y2="184.94"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="161.05" y1="208.38" x2="160.36" y2="184.94"/>
+		<g>
+			<polygon points="161.46,222.64 169.09,202.31 161.02,207.32 152.67,202.79 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="72.84" y1="315.81" x2="130.58" y2="258.57"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="82.97" y1="305.77" x2="130.58" y2="258.57"/>
+		<g>
+			<polygon points="72.84,315.81 92.89,307.49 83.73,305.02 81.33,295.83 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="126.03" y1="316.41" x2="144.69" y2="269.83"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="131.33" y1="303.17" x2="144.69" y2="269.83"/>
+		<g>
+			<polygon points="126.03,316.41 141.13,300.81 131.73,302.18 125.88,294.7 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="201.87" y1="314.08" x2="174.3" y2="272.16"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="194.03" y1="302.17" x2="174.3" y2="272.16"/>
+		<g>
+			<polygon points="201.87,314.08 197.69,292.78 193.45,301.27 183.97,301.8 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="264.98" y1="313.6" x2="191.42" y2="258.7"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="253.55" y1="305.07" x2="191.42" y2="258.7"/>
+		<g>
+			<polygon points="264.98,313.6 253.79,295 252.7,304.43 243.97,308.16 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="368.3" y1="314.4" x2="368.3" y2="271.84"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="368.3" y1="300.14" x2="368.3" y2="271.84"/>
+		<g>
+			<polygon points="368.3,314.4 376.51,294.3 368.3,299.07 360.09,294.3 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<line fill="none" x1="494.91" y1="317.4" x2="494.91" y2="274.84"/>
+	<g>
+		<line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="494.91" y1="303.14" x2="494.91" y2="274.84"/>
+		<g>
+			<polygon points="494.91,317.4 503.12,297.3 494.91,302.07 486.7,297.3 			"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 309.9625 24.95)" font-family="'MyriadPro-Regular'" font-size="21px">HSC</text>
+<text transform="matrix(1 0 0 1 224.0084 88.2387)" font-family="'MyriadPro-Regular'" font-size="21px">MPP</text>
+<text transform="matrix(1 0 0 1 254.4752 390.4604)" font-family="'MyriadPro-Regular'" font-size="21px">NK</text>
+<text transform="matrix(1 0 0 1 187.92 390.2386)" font-family="'MyriadPro-Regular'" font-size="21px">B</text>
+<text transform="matrix(1 0 0 1 103.6785 390.4607)" font-family="'MyriadPro-Regular'" font-size="21px">CD8</text>
+<text transform="matrix(1 0 0 1 29.6044 390.4608)" font-family="'MyriadPro-Regular'" font-size="21px">CD4</text>
+<text transform="matrix(1 0 0 1 101.71 228.8299)" font-family="'MyriadPro-Regular'" font-size="21px">CLP</text>
+<text transform="matrix(1 0 0 1 131.5048 137.8311)" font-family="'MyriadPro-Regular'" font-size="21px">LMPP</text>
+<text transform="matrix(1 0 0 1 413.84 139.465)" font-family="'MyriadPro-Regular'" font-size="21px">CMP</text>
+<text transform="matrix(1 0 0 1 489.2096 387.4609)" font-family="'MyriadPro-Regular'" font-size="21px">E</text>
+<text transform="matrix(1 0 0 1 499.5412 387.4609)" font-family="'MyriadPro-Regular'" font-size="21px">r</text>
+<text transform="matrix(1 0 0 1 506.9333 387.4609)" font-family="'MyriadPro-Regular'" font-size="21px">y</text>
+<text transform="matrix(1 0 0 1 339.5796 389.4612)" font-family="'MyriadPro-Regular'" font-size="21px">M</text>
+<text transform="matrix(1 0 0 1 356.5894 389.4612)" font-family="'MyriadPro-Regular'" font-size="21px">o</text>
+<text transform="matrix(1 0 0 1 368.1182 389.4612)" font-family="'MyriadPro-Regular'" font-size="21px">n</text>
+<text transform="matrix(1 0 0 1 379.7729 389.4612)" font-family="'MyriadPro-Regular'" font-size="21px">o</text>
+<text transform="matrix(1 0 0 1 432.3404 228.6405)" font-family="'MyriadPro-Regular'" font-size="21px">MEP</text>
+<text transform="matrix(1 0 0 1 309.9621 228.8297)" font-family="'MyriadPro-Regular'" font-size="21px">GMP</text>
+</svg>

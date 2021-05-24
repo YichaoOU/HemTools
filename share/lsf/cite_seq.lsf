@@ -1,0 +1,75 @@
+#!shell
+
+=cut CR 1
+
+
+module load cellranger/6.0.0
+
+ncore=4
+mem=30000
+
+inputFile=input
+
+cellranger count --id=${COL1} --project=${COL1} --fastqs=. --transcriptome={{cellranger_refdata}} --localcores 12
+
+
+# rm *.gz
+
+cd ..
+
+mv ${COL1}_results {{jid}}
+
+cd {{jid}}
+
+cd ${COL1}_results
+
+cd ${COL1}
+
+cd outs
+
+cellranger mat2csv filtered_feature_bc_matrix.h5 out.csv
+
+gunzip filtered_feature_bc_matrix/features.tsv.gz 
+
+module load python/2.7.13
+
+dataframe.py -f out.csv --remove_zero -s , --header --index -o cellrange_final_gene_expression_removed_all_zeros.csv --merge filtered_feature_bc_matrix/features.tsv
+
+table_sum_top.py -f cellrange_final_gene_expression_removed_all_zeros.csv -p -i 0,1 -n 50 -o top50_gene_read_percent.tsv
+
+gzip filtered_feature_bc_matrix/features.tsv 
+
+
+=cut qc 2 CR
+
+ncore=1
+mem=30000
+
+inputFile=input_list
+
+cd {{jid}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/single_cell
+
+scRNA_qc.py
+
+=cut email 3 all
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+

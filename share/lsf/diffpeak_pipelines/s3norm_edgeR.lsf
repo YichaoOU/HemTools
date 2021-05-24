@@ -1,0 +1,70 @@
+
+=cut bamtobdg 1 
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/cut_run
+
+inputFile=converter_input
+
+ncore=1
+mem=4000
+
+bamCoverage -b ${COL1} -o ${COL2} -of bedgraph --ignoreForNormalization chrX chrM   --numberOfProcessors 4 -bs 100
+
+
+
+
+=cut S3norm 2 bamtobdg
+
+module load conda3
+
+source activate S3norm
+
+module load R/3.5.1
+
+ncore=1
+mem=100000
+
+S3norm_src=/home/yli11/HemTools/share/script/S3norm
+
+time python $S3norm_src/s3norm_pipeline.py -s $S3norm_src/ -t {{S3norm_input}}
+
+=cut bdg_to_bw 3 S3norm
+
+inputFile=bdg_to_bw_files
+
+ncore=1
+mem=8000
+
+module load ucsc/041619
+
+cd S3norm_NBP_bedgraph
+
+bedGraphToBigWig ${COL1} {{chrom_size}} ${COL2}
+
+cd ..
+
+cd S3norm_rc_bedgraph
+
+bedGraphToBigWig ${COL1} {{chrom_size}} ${COL2}
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+mv -f S3norm_NBP_bedgraph {{jid}}
+mv -f S3norm_rc_bedgraph {{jid}}
+mv -f NBP_bedgraph {{jid}}
+mv -f average_ref_bedgraph {{jid}}
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+# bedops --chop 50 --stagger 50 /home/yli11/Data/Human/hg19/annotations/hg19_main.chrom_sizes.bed | bedmap --faster --echo --max --delim "\t" - 1631313_RFA008.all.bw.bdg > answer.bed
+
+

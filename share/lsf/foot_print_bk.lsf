@@ -1,0 +1,271 @@
+#!shell
+
+
+
+=cut bam 1
+
+inputFile=input_tsv
+
+ncore=1
+mem=16000
+
+### create a sorted, indexed, filtered bam file in bam_file folder
+
+module load conda3/5.1.0
+source activate /home/yli11/.conda/envs/cutruntools/
+module load R/3.5.1
+module load trimmomatic/0.36
+module load java/1.8.0_60
+module load meme/4.11.2
+module load bedtools/2.25.0
+module load bowtie2/2.2.9
+module load picard/2.9.4
+module load bedops/2.4.35
+module load hdf5/1.10.4
+module load perl/5.20.1
+module load samtools/1.3.1
+module load gcc/4.8.5
+module load java/1.8.0_66
+
+
+
+# Please give absolute path to file
+peak_file=${COL1} #a narrowPeak file
+bam_file=${COL2}
+base=${COL3}
+jid={{jid}}
+
+pythonbin=/home/yli11/.conda/envs/cutruntools/bin
+memebin=/hpcf/apps/meme/install/4.11.2/bin
+bedopsbin=/hpcf/authorized_apps/rhel7_apps/bedops/install/2.4.35/bin
+bedtoolsbin=/hpcf/apps/bedtools/install/2.25.0/bin
+genome_sequence={{genome_fasta}}
+samtoolsbin=/hpcf/apps/samtools/install/1.3.1/bin
+makecutmatrixbin={{Liu_Nan_pipeline_path_atactk}}
+Rscriptbin=/hpcf/authorized_apps/rhel7_apps/R/install/3.5.1/bin
+extrasettings={{Liu_Nan_pipeline_path_root}}
+
+## not sure what this is for, but will keep it
+pythonldlibrary=/home/yli11/.conda/envs/cutruntools/lib
+ldlibrary=`echo $LD_LIBRARY_PATH | tr : "\n" | grep -v $pythonldlibrary | paste -s -d:`
+unset LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$pythonldlibrary:$ldlibrary
+
+cd $jid
+mkdir -p $base
+cd $base
+
+dest=filtered.bam
+mkdir bam_file
+outbam=bam_file/$dest
+#note that 1024 means read is PCR or optical duplicate
+$samtoolsbin/samtools view -b -h -f 3 -F 4 -F 8 -F 1024 -o $outbam $bam_file #previous version
+$samtoolsbin/samtools sort $outbam -o ${outbam}.sorted
+mv ${outbam}.sorted $outbam
+$samtoolsbin/samtools index $outbam
+echo "finish samtools"
+
+
+=cut homer 2 bam[*]
+
+inputFile=input_tsv
+
+ncore=1
+mem=16000
+
+
+module load conda3/5.1.0
+source activate /home/yli11/.conda/envs/cutruntools/
+module load R/3.5.1
+module load trimmomatic/0.36
+module load java/1.8.0_60
+module load meme/4.11.2
+module load bedtools/2.25.0
+module load bowtie2/2.2.9
+module load picard/2.9.4
+module load bedops/2.4.35
+module load hdf5/1.10.4
+module load perl/5.20.1
+module load samtools/1.3.1
+module load gcc/4.8.5
+module load java/1.8.0_66
+module load homer
+
+
+# Please give absolute path to file
+peak_file=${COL1} #a narrowPeak file
+bam_file=${COL2}
+base=${COL3}
+jid={{jid}}
+
+pythonbin=/home/yli11/.conda/envs/cutruntools/bin
+memebin=/hpcf/apps/meme/install/4.11.2/bin
+bedopsbin=/hpcf/authorized_apps/rhel7_apps/bedops/install/2.4.35/bin
+bedtoolsbin=/hpcf/apps/bedtools/install/2.25.0/bin
+genome_sequence={{genome_fasta}}
+samtoolsbin=/hpcf/apps/samtools/install/1.3.1/bin
+makecutmatrixbin={{Liu_Nan_pipeline_path_atactk}}
+Rscriptbin=/hpcf/authorized_apps/rhel7_apps/R/install/3.5.1/bin
+extrasettings={{Liu_Nan_pipeline_path_root}}
+
+## not sure what this is for, but will keep it
+pythonldlibrary=/home/yli11/.conda/envs/cutruntools/lib
+ldlibrary=`echo $LD_LIBRARY_PATH | tr : "\n" | grep -v $pythonldlibrary | paste -s -d:`
+unset LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$pythonldlibrary:$ldlibrary
+
+cd $jid
+mkdir -p $base
+cd $base
+
+
+
+p=0.00050
+echo "remove blacklist"
+blacklist={{black_list}}
+# cat $peak_file | grep -v -e "chrM" | $bedopsbin/sort-bed - | $bedopsbin/bedops -n 1 - $blacklist >"$base".filtered.narrowPeak
+
+awk -F "\t" '$1 != chrM {print $0}' $peak_file | $bedopsbin/sort-bed - | $bedopsbin/bedops -n 1 - $blacklist >"$base".filtered.narrowPeak
+
+$bedtoolsbin/bedtools getfasta -fi $genome_sequence -bed "$base".filtered.narrowPeak -fo "$base".fa
+
+$pythonbin/python $extrasettings/macs2.narrow.aug18/fix_sequence.py "$base".fa
+
+echo "Homer motif discovery"
+# findMotifsGenome.pl "$base".filtered.narrowPeak {{genome}} homer_motifs_result -size 200 -mask -preparsedDir homer_genome_dir -len 6 -S 4 -p 4
+findMotifsGenome.pl "$base".filtered.narrowPeak {{genome}} homer_motifs_result -size 200 -mask -preparsedDir homer_genome_dir -p 4
+rm -rf homer_genome_dir
+cd homer_motifs_result
+module load python/2.7.13
+plot_homer_motif_peak.py -f ../"$base".filtered.narrowPeak -g {{genome}}
+cd homer_all_motifs
+# module load R
+motif2meme.R all.motifs
+pwm_to_list2.py all.motifs.meme all.motifs.list
+
+echo "FIMO motif scanning"
+cd ../../
+fimo_dir=motif_mapping
+mkdir $fimo_dir
+cd $fimo_dir
+motif_file=../homer_motifs_result/homer_all_motifs/all.motifs.meme
+for m in `cat ../homer_motifs_result/homer_all_motifs/all.motifs.list |awk '{print $1}'`; do
+mkdir $m
+echo $m
+$memebin/fimo --verbosity 1 --motif $m --thresh $p --parse-genomic-coord -oc $m $motif_file ../"$base".fa
+$bedopsbin/gff2bed < $m/fimo.gff | awk 'BEGIN {IFS="	"; OFS="	";} {print $1,$2,$3,$4,$5,$6}' > $m/fimo.bed
+done
+
+echo "plot footprint figures"
+cd ..
+echo `pwd`
+for i in `ls -1 $fimo_dir`; do #shows a list of motifs
+echo "Doing $i..."
+fimo_d=$fimo_dir/$i
+mlen=8
+bam_file=bam_file/filtered.bam
+$pythonbin/python $makecutmatrixbin/make_cut_matrix -v -b '(25-{{maxFragmentLength}} 1)' -d -o 0 -r 100 -p 1 -f 3 -F 4 -F 8 -q {{minMappingQuality}} $bam_file $fimo_d/fimo.bed > $fimo_d/fimo.cuts.freq.txt
+$Rscriptbin/Rscript $extrasettings/macs2.narrow.aug18/run_centipede_parker.R $fimo_d/fimo.cuts.freq.txt $fimo_d/fimo.bed $fimo_d/fimo.png $mlen
+cd $fimo_d
+draw_footprint_figure.py
+cd ../..
+done
+
+echo `pwd`
+echo "should be in the $base folder"
+find motif_mapping/ -name "footprint.lambda.strand_combined.png" > footprint_figures.list
+$extrasettings/combine_footprint_figures_and_motif_position_figures.py homer_motifs_result/homer_all_motifs/all.motifs.list homer_motifs_result/homer_all_motifs/file.list footprint_figures.list
+dataframe_to_html.py -f figure_html.tsv -o ${base}.html
+zip -r ${base}.html.zip ${base}.html
+send_email_v1.py -a ${base}.html.zip -m "Sample $base motif footprint is finished" -j $base --common
+
+=cut bw 2 bam[*]
+
+
+inputFile=input_tsv
+
+ncore=1
+mem=16000
+
+
+module load conda3/5.1.0
+source activate /home/yli11/.conda/envs/cutruntools/
+module load R/3.5.1
+module load trimmomatic/0.36
+module load java/1.8.0_60
+module load meme/4.11.2
+module load bedtools/2.25.0
+module load bowtie2/2.2.9
+module load picard/2.9.4
+module load bedops/2.4.35
+module load hdf5/1.10.4
+module load perl/5.20.1
+module load samtools/1.3.1
+module load gcc/4.8.5
+module load java/1.8.0_66
+module load homer
+
+
+# Please give absolute path to file
+peak_file=${COL1} #a narrowPeak file
+bam_file=${COL2}
+base=${COL3}
+jid={{jid}}
+
+pythonbin=/home/yli11/.conda/envs/cutruntools/bin
+memebin=/hpcf/apps/meme/install/4.11.2/bin
+bedopsbin=/hpcf/authorized_apps/rhel7_apps/bedops/install/2.4.35/bin
+bedtoolsbin=/hpcf/apps/bedtools/install/2.25.0/bin
+genome_sequence={{genome_fasta}}
+samtoolsbin=/hpcf/apps/samtools/install/1.3.1/bin
+makecutmatrixbin={{Liu_Nan_pipeline_path_atactk}}
+Rscriptbin=/hpcf/authorized_apps/rhel7_apps/R/install/3.5.1/bin
+extrasettings={{Liu_Nan_pipeline_path_root}}
+
+## not sure what this is for, but will keep it
+pythonldlibrary=/home/yli11/.conda/envs/cutruntools/lib
+ldlibrary=`echo $LD_LIBRARY_PATH | tr : "\n" | grep -v $pythonldlibrary | paste -s -d:`
+unset LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$pythonldlibrary:$ldlibrary
+
+cd $jid
+mkdir -p $base
+cd $base
+echo "generating bw file"
+mkdir cut_sites
+cd cut_sites
+outbam=tcut_sites.bam
+outbdg=tcut_sites.bdg
+outbw=${COL3}.bw
+chrom_size={{chrom_size}}
+bam_file=../bam_file/filtered.bam
+alignmentSieve --minMappingQuality {{minMappingQuality}} -b $bam_file -o  $outbam --filterMetrics metrics.txt --maxFragmentLength {{maxFragmentLength}} --shift 0 0
+bedtools genomecov -ibam $outbam -g $chrom_size -bga -5 > $outbdg
+module load ucsc/041619
+sort -k1,1 -k2,2n $outbdg > $outbdg.sorted
+bedGraphToBigWig $outbdg.sorted $chrom_size $outbw
+rm $outbam
+# rm $outbdg
+
+=cut email 3 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+mv *.lsf log_files
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+
+

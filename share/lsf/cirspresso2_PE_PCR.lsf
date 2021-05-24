@@ -1,0 +1,25 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+## columns are gRNA, P1, P2, R1, R2, name
+
+ncore=1
+mem=12000
+q=priority
+in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_results.txt 2> {{jid}}/${COL6}_amplicons.fasta
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+amplicon=`tail -n 1 {{jid}}/${COL6}_amplicons.fasta`
+
+# CRISPResso -r1 ${COL4} -r2 ${COL5} --amplicon_seq $amplicon --guide_seq ${COL1} --quantification_window_size 15 --quantification_window_center 10 --plot_window_size 15 --discard_indel_reads --base_editor_output -o {{jid}}/${COL6} -amas 80 -q 30 -s 10
+CRISPResso -r1 ${COL4} -r2 ${COL5} --amplicon_seq $amplicon --guide_seq ${COL1} --quantification_window_size 15 --quantification_window_center 10 --plot_window_size 15 --discard_indel_reads --base_editor_output -o {{jid}}/${COL6} 
+
+
+

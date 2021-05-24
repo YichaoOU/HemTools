@@ -1,0 +1,48 @@
+#!shell
+
+
+=cut PE 1
+
+inputFile=PE_input
+
+
+ncore=1
+mem=12000
+
+# Read1	Read2	Output_Name	Forward primer	Reverse primer	pegRNA spacer sequence	pegRNA extesion sequence	ngRNA sequence
+
+
+in_silico_PCR.pl -s {{genome_fasta}} -a ${COL4} -b ${COL5} > {{jid}}/${COL3}_results.txt 2> {{jid}}/${COL3}_amplicons.fasta
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+amplicon=`tail -n 1 {{jid}}/${COL3}_amplicons.fasta`
+
+
+# CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq $amplicon --prime_editing_pegRNA_spacer_seq ${COL6} --prime_editing_pegRNA_extension_seq ${COL7} --prime_editing_nicking_guide_seq ${COL8} --prime_editing_pegRNA_scaffold_seq {{scaffold_sequence}} --write_cleaned_report -o {{jid}}/${COL3} 
+# echo ACCTTGAAA | tr ACGTacgt TGCAtgca | rev
+
+# CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq $amplicon --prime_editing_pegRNA_spacer_seq ${COL6} --prime_editing_pegRNA_extension_seq ${COL7} --write_cleaned_report -o {{jid}}/${COL3} --debug --keep_intermediate --dump --exclude_bp_from_left 0 --exclude_bp_from_right 0 --write_detailed_allele_table
+CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq $amplicon --prime_editing_pegRNA_spacer_seq ${COL6} --prime_editing_pegRNA_extension_seq ${COL7} --write_cleaned_report -o {{jid}}/${COL3} --debug --keep_intermediate --dump --exclude_bp_from_left 0 --exclude_bp_from_right 0
+
+
+gRNA_rev=`echo ${COL6} | tr ACGTacgt TGCAtgca | rev`
+
+CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq $amplicon --prime_editing_pegRNA_spacer_seq $gRNA_rev --prime_editing_pegRNA_extension_seq ${COL7} --write_cleaned_report -o {{jid}}/${COL3}_gRNA_rev --debug --keep_intermediate --dump --exclude_bp_from_left 0 --exclude_bp_from_right 0
+
+
+=cut email 2 all
+
+
+ncore=1
+mem=2000
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+

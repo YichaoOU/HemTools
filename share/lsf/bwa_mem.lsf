@@ -1,0 +1,39 @@
+#!shell
+
+=cut BWA 1
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+inputFile=input
+
+ncore=1
+mem=40000
+
+bwa mem -t 12 {{index_file}} ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
+cd {{jid}}
+samtools sort -@ 6 -o ${COL3}.st.bam ${COL3}.bam
+samtools index ${COL3}.st.bam
+
+samtools flagstat ${COL3}.bam > ${COL3}.flagstat
+samtools stats ${COL3}.bam > ${COL3}.stats
+
+=cut qc 2 BWA
+
+ncore=1
+mem=40000
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+touch multiqc_config.yaml
+
+echo 'read_count_multiplier: 0.001' >> multiqc_config.yaml
+echo 'read_count_prefix: "K"' >> multiqc_config.yaml
+echo 'read_count_desc: "thousands"' >> multiqc_config.yaml
+
+multiqc .
+

@@ -1,0 +1,15 @@
+#!shell
+
+
+=cut bwCompare 1 
+
+module load python/2.7.15-rhel7
+
+inputFile=input
+
+ncore=1
+mem=16000
+
+bigwigCompare -b1 ${COL1} -b2 ${COL2} -p 4 -o {{jid}}/${COL3}
+
+

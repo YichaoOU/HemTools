@@ -1,0 +1,63 @@
+
+
+=cut homer_norm 1
+
+inputFile=replicate_list
+
+ncore=1
+mem=16000
+
+module load homer/4.10
+
+module load samtools
+
+module load ucsc/041619
+
+## -format sam, interesting homer use sam for bam
+
+cd {{jid}}
+
+makeTagDirectory ${COL1}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL1}.bam
+
+makeUCSCfile  ${COL1}_tag -o ${COL1}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 > log_files/${COL1}-bigWig.trackInfo.txt
+
+
+
+=cut homer_deseq2 2 homer_norm
+
+inputFile=design_matrix
+
+ncore=1
+mem=16000
+
+## merge peak for each comparison
+
+module load bedtools
+
+uid=`openssl rand -hex 12`
+
+cd {{jid}}
+
+a=`ls ${COL1}*.bed | cat`
+b=`ls ${COL2}*.bed | cat`
+
+cat $a $b > ${COL3}.$uid.homer_deseq2.merged.bed
+
+sort -k1,1 -k2,2n ${COL3}.$uid.homer_deseq2.merged.bed > ${COL3}.$uid.homer_deseq2.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i ${COL3}.$uid.homer_deseq2.merged.st.bed > ${COL3}.$uid.homer_deseq2.merged.bed
+
+module load homer/4.10
+
+module load R/3.4.0
+
+mkdir -p homer_deseq2_results
+
+a=`ls -d ${COL1}*_tag/ | cat`
+b=`ls -d ${COL2}*_tag/ | cat`
+
+
+getDifferentialPeaksReplicates.pl -f 1 -q 0.5 -p ${COL3}.$uid.homer_deseq2.merged.bed -t $a -b $b > homer_deseq2_results/${COL3}_homer_deseq2.txt
+
+rm *${uid}*
+

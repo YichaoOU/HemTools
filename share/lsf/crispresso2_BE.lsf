@@ -1,0 +1,50 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+ncore=1
+mem=8000
+q={{queue}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+module load bedtools
+
+CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL3} --guide_seq ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output -o {{jid}}/${COL5} --keep_intermediate --dump --discard_indel_reads
+
+# =cut email 2 BaseE[*]
+
+# inputFile=input_list
+
+# ncore=1
+# mem=2000
+
+# module load python/2.7.13
+
+# cd {{jid}}
+
+# zip -r ${COL5}.zip ${COL5}
+
+# send_email_v1.py -a ${COL5}.zip -m "${COL5} crispresso2 base editor is finished" -j {{jid}} --common
+
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+

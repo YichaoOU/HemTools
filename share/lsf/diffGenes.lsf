@@ -1,0 +1,55 @@
+#!shell
+
+
+=cut kallisto 1 
+
+module load kallisto/0.43.1
+
+## fastq_tsv is 4 columns, last col is group ID
+
+inputFile=fastq_tsv
+
+ncore=4
+mem=2000
+
+kallisto quant {{strandness}} -i {{index_file}} --threads=$ncore --bootstrap-samples=100 --output-dir={{jid}}/${COL3}_group_${COL4} ${COL1} ${COL2}
+
+=cut sleuth 2 kallisto
+
+module load conda3
+source activate /home/yli11/.conda/envs/sleuth/
+module load python/2.7.13
+
+inputFile=design_matrix
+
+ncore=1
+mem=16000
+
+cd {{jid}}
+
+mkdir ${COL3}_sleuth
+
+touch /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
+
+touch /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
+
+chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
+
+chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
+
+run_sleuth.py -t ${COL1} -c ${COL2} -o ${COL3} -g {{genome}} --gene_info {{gene_info}}
+
+chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
+
+chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
+
+mv ${COL3}*.csv ${COL3}_sleuth
+
+=cut email 3 sleuth
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "Kallisto Sleuth pipeline is finished!" -j {{jid}}
+

@@ -1,0 +1,122 @@
+#!shell
+
+=cut split 1
+
+inputFile=input_list
+
+ncore=2
+mem=20000
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+FASTQFILE=inputfiles_hicpro.txt; export FASTQFILE
+
+make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt all_sub 2>&1
+
+=cut pairs 2 split
+
+ncore=1
+mem=50000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt merge_persample 2>&1
+
+/home/yli11/Programs/HiC-Pro-2.11.1/bin/utils/make_viewpoints.py -i hic_results/data/{{sample_id}}/{{sample_id}}.allValidPairs -f {{digested_fragments}} -t {{target_bed}} -e 1000 -o {{sample_id}}.e1kb.bdg -v
+
+
+/home/yli11/Programs/HiC-Pro-2.11.1/bin/utils/make_viewpoints.py -i hic_results/data/{{sample_id}}/{{sample_id}}.allValidPairs -f {{digested_fragments}} -t {{target_bed}} -e 2000 -o {{sample_id}}.e2kb.bdg -v
+
+
+
+sort -k1,1 -k2,2n {{sample_id}}.e1kb.bdg > {{sample_id}}.e1kb.st.bdg
+sort -k1,1 -k2,2n {{sample_id}}.e2kb.bdg > {{sample_id}}.e2kb.st.bdg
+
+module purge
+module load python/2.7.13
+
+module load ucsc/041619
+
+bdg_correction.py {{sample_id}}.e1kb.st.bdg
+bdg_correction.py {{sample_id}}.e2kb.st.bdg
+
+bedGraphToBigWig {{sample_id}}.e1kb.st.bdg {{chrom_size}} {{sample_id}}.captureC.e1kb.bw
+bedGraphToBigWig {{sample_id}}.e2kb.st.bdg {{chrom_size}} {{sample_id}}.captureC.e2kb.bw
+
+rm {{sample_id}}.e1kb.bdg
+rm {{sample_id}}.e2kb.bdg
+
+
+=cut ice 3 pairs
+
+ncore=1
+mem=20000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt build_contact_maps 2>&1
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt ice_norm 2>&1
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt quality_checks 2>&1
+
+=cut qc 3 pairs
+
+ncore=1
+mem=10000
+q={{queue}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+cd {{jid}}/hicpro_results
+
+multiqc .
+
+mv multiqc_report.html {{sample_id}}.QC.html
+
+=cut plot 4 ice
+
+ncore=1
+mem=16000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/40000/{{sample_id}}_40000.matrix -chr $i -o {{sample_id}} -r 40000 -tri 1 -bed ./raw/40000/{{sample_id}}_40000_abs.bed -n {{sample_id}} -hR 1;done
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/20000/{{sample_id}}_20000.matrix -chr $i -o {{sample_id}} -r 20000 -tri 1 -bed ./raw/20000/{{sample_id}}_20000_abs.bed -n {{sample_id}} -hR 1;done
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/10000/{{sample_id}}_10000.matrix -chr $i -o {{sample_id}} -r 10000 -tri 1 -bed ./raw/10000/{{sample_id}}_10000_abs.bed -n {{sample_id}} -hR 1;done
+
+mkdir HiCplotter
+
+mv *.jpeg HiCplotter
+
+=cut email 5 all
+
+q={{queue}}
+
+module load python/2.7.13
+
+cd {{jid}}/hicpro_results
+
+send_email_v1.py -a {{sample_id}}.QC.html -m "{{jid}} is finished. CaptureC bigwiggle file is generated under {{jid}}/hicpro_results/ folder" -j {{jid}} --common
+
+cd ..
+
+mv ../{{sample_id}}.target.bed .
+
+

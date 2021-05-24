@@ -1,0 +1,67 @@
+#!shell
+
+
+=cut hicpro 1
+
+inputFile=hicpro_input
+
+ncore=1
+mem=200000
+
+
+
+cd {{jid}}
+
+cd ${COL1}
+
+module load conda3
+source activate /home/yli11/.conda/envs/trimgalore/
+cd fastq
+
+cd ${COL1}
+
+bash run_trim_galore.sh
+
+cd ../..
+
+module load hic-pro/2.11.1
+
+time HiC-Pro -c ../hicpro.config.txt -i fastq -o hicpro_results 
+
+cd hicpro_results
+
+module load java/10.0.2
+
+/home/yli11/Programs/HiC-Pro-2.11.4/bin/utils/hicpro2juicebox.sh -i ./hic_results/data/${COL1}/${COL1}.allValidPairs -g {{chrom_size}} -j /home/yli11/HemTools/share/script/jar/juicer_tools_1.21.01.jar -o ${COL1}_juicer -r {{digested_fragments}}
+
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+cd hic_results/matrix/${COL1}
+
+module load python/2.7.13
+
+hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20000_abs.bed -s iced/20000/GSM3489137_20000_iced.matrix.biases
+
+source activate /home/yli11/.conda/envs/fithic/
+
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 2
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+

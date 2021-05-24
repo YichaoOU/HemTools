@@ -1,0 +1,70 @@
+#!shell
+
+=cut variant_call 1
+
+inputFile=bam_list
+
+ncore=1
+mem=12000
+
+module load samtools/1.9
+
+module load bcftools
+
+#samtools mpileup -f /home/yli11/Data/Human/hg19/fasta/samtools/hg19.fa --VCF --skip-indels --uncompressed --output-tags AD ${COL1} > ${COL2}.vcf
+
+#https://www.biostars.org/p/190269/
+
+#https://bioinformatics.stackexchange.com/questions/253/variant-calling-on-chip-seq-style-data-samtools-mpileup-with-minimal-filters
+
+# -l ../regions_for_genotyping/candidate.bed
+
+samtools mpileup --uncompressed --output-tags DP,AD -f {{samtools_fa_index}} {{mpileup_addon_parameters}} ${COL1} | bcftools call --consensus-caller > {{jid}}/${COL2}.vcf
+
+cd {{jid}}
+
+vcfutils.pl varFilter -d {{depth_filter}} -p ${COL2}.vcf > ${COL2}.Filt.vcf
+
+module load python/2.7.13
+
+{{help_dir}}/get_empirical_AF.py ${COL2}.Filt.vcf ${COL2}
+
+rm ${COL2}.Filt.vcf
+
+rm ${COL2}.vcf
+
+mkdir ppr_vis_files
+
+cd ppr_vis_files
+
+cp ../*final.vcf .
+
+module load htslib
+
+for i in *.vcf;do bgzip $i;tabix -p vcf $i.gz;done
+
+# {"type":"vcf","name":"1659315_UMUC3_DMSO_2","file":"yli11/TERT_project/final_vcf/1659315_UMUC3_DMSO_2.final.vcf.final.vcf.gz",
+# "itemlabelname":"variant",
+# "axisheight":50,
+# "vcfinfofilter":{
+# "lst":[
+						# {
+						# "name":"Allele frequency",
+						# "altalleleinfo":{ "key":"EAF"},
+						# "numericfilter":[0.3, 0.5, 0.8, 1.0]
+						# }
+					
+# ],
+# "setidx4numeric":0
+# }
+# },
+
+=cut email 2 variant_call
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "General variant calling is finished!" -j {{jid}}
+
+

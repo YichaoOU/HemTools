@@ -1,0 +1,39 @@
+#!shell
+
+=cut variant_call 1
+
+inputFile=bam_list
+
+ncore=1
+mem=12000
+
+module load samtools/1.9
+
+module load bcftools
+
+#samtools mpileup -f /home/yli11/Data/Human/hg19/fasta/samtools/hg19.fa --VCF --skip-indels --uncompressed --output-tags AD ${COL1} > ${COL2}.vcf
+
+#https://www.biostars.org/p/190269/
+
+#https://bioinformatics.stackexchange.com/questions/253/variant-calling-on-chip-seq-style-data-samtools-mpileup-with-minimal-filters
+
+# -l ../regions_for_genotyping/candidate.bed
+
+samtools mpileup --uncompressed --output-tags DP,AD -f {{samtools_fa_index}} {{mpileup_addon_parameters}} ${COL1} | bcftools call --consensus-caller > {{jid}}/${COL2}.vcf
+
+cd {{jid}}
+
+vcfutils.pl varFilter -d {{depth_filter}} -p ${COL2}.vcf > ${COL2}.Filt.vcf
+
+{{help_dir}}/get_empirical_AF.py ${COL2}.tmp.vcf ${COL2}
+
+rm ${COL2}.Filt.vcf
+
+rm ${COL2}.vcf
+
+rm ${COL2}.tmp.vcf
+
+
+
+
+

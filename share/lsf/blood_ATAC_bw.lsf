@@ -1,0 +1,32 @@
+#!shell
+
+
+=cut count 1
+
+inputFile=bw_list
+
+ncore=1
+mem=16000
+
+module load ucsc/041619
+
+inputBW=${COL1}
+outputBED=$(basename $inputBW .bw)
+
+
+cd {{jid}}
+
+bigWigAverageOverBed $inputBW my.input $outputBED.tmp -bedOut=$outputBED.bed
+
+# rm {{output}}.input
+rm $outputBED.tmp 
+
+=cut comb 2 count
+
+module load python/2.7.13
+
+cd {{jid}}
+
+dataframe_merge.py --glob "*.bed" --index_col 3 --header_list chr,start,end,mean --drop chr,start,end --name_col_with_filename mean -o {{output}}.tsv dummy_name
+
+rm *bed

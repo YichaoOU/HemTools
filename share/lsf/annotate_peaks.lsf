@@ -1,0 +1,20 @@
+#!shell
+
+=cut annotP 1
+
+inputFile=input.list
+
+ncore=1
+mem=16000
+
+module load homer/4.9.1
+
+
+
+
+
+
+
+
+
+

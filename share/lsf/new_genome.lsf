@@ -1,0 +1,79 @@
+#!shell
+
+
+
+=cut vcf2fa 1
+
+inputFile=mutation_list
+
+ncore=1
+mem=20000
+
+
+src=/home/yli11/Programs/vcf2diploid_v0.2.6a
+chr=${COL1}
+pos=${COL2}
+label=${COL3}
+ref=${COL4}
+alt=${COL5}
+genome_fa={{genome_fa}}
+jid={{jid}}
+vcf_file=$label.vcf
+
+# 20	1	.	G	TTT	.	.	.	GT	1|1
+# 20	2	.	G	CCC	.	.	.	GT	1|1
+
+echo "##fileformat=VCFv4.0\n#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	$label\n$chr\t$pos\t$label\t$ref\t$alt\t.\t.\t.\tGT\t1|1" > $jid/$vcf_file
+
+module load java
+
+outdir=$jid/${label}_new_genome
+
+mkdir $outdir
+
+java -jar $src/vcf2diploid.jar -id $label -chr $genome_fa -vcf $jid/$vcf_file -outDir $outdir
+
+cd $outdir
+
+cat *_paternal.fa > $label.tmp.fasta
+
+python /home/yli11/HemTools/share/misc/rename_chr.py $label.tmp.fasta $label.fasta
+
+rm $label.tmp.fasta
+
+mkdir intermediate_files
+
+mv *.fa intermediate_files
+
+mv *.map intermediate_files
+
+mv maternal.chain intermediate_files
+
+module load bwa/0.7.16a
+
+bwa index $label.fasta
+
+### black_list
+
+liftover.py -g custom --chain_file paternal.chain --bed {{black_list}} -o $label.black_list.bed
+
+### swap chain
+
+module load ucsc
+
+chainSwap paternal.chain paternal.swap.chain
+
+### gene annotation
+
+
+### chrom size
+
+module load samtools
+
+
+
+
+samtools faidx $label.fasta
+
+cut -f1,2 $label.fasta.fai > $label.chrom.sizes
+

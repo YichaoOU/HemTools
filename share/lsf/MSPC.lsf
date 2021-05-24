@@ -1,0 +1,36 @@
+#!shell
+
+
+=cut MSPC 2 
+
+
+ncore=1
+mem=4000
+
+{{MSPC_command}}
+
+cd {{jid}}
+
+cd 0
+
+sed -i '1d' ConsensusPeaks.bed
+
+awk -F "\t" '$5 >= {{score_cutoff}}' ConsensusPeaks.bed > ../ConsensusPeaks.sig.bed
+
+=cut email 4 all
+
+module load python/2.7.13
+
+
+cd {{jid}}
+
+rm *.input
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+

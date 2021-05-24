@@ -1,0 +1,85 @@
+#!shell
+
+
+=cut get_sgRNA 1
+
+ncore=1
+mem=16000
+
+
+jid={{jid}}
+TAD={{TAD_file}}
+Peaks={{peak_file}}
+Motifs={{motif_file}}
+Genes={{gene_file}}
+off_targets={{Num_match_file}}
+# Motif bed file is 6 columns
+
+# chr1    14027   14033   WGATAR  0       -
+# chr1    18633   18639   WGATAR  0       -
+# chr1    21257   21263   WGATAR  0       -
+# chr1    23019   23025   WGATAR  0       +
+
+
+cut -f 1,2,3,4 $TAD > $jid/TAD.bed
+cut -f 1,2,3,4 $Genes > $jid/Genes.bed
+cut -f 1,2,3,4 $Peaks > $jid/Peaks.bed
+cp $Motifs  $jid/Motifs.bed
+cp $off_targets  $jid/Matches.bed
+
+# get TADs containing ranked genes
+
+module load bedtools
+
+cd $jid
+bedtools intersect -a TAD.bed -b Genes.bed -wa -wb | sort -k1,1 -k2,2n - | bedtools merge -i - -c 8 -o collapse > TAD_gene_wab.bed
+
+# Output Format
+# chr1    640000  1010000 NOC2L
+# chr1    11040000        11360000        EXOSC10
+# chr1    11970000        12110000        PLOD1
+# chr1    19400000        20010000        UBR4,MINOS1
+# chr1    20830000        20990000        DDOST
+
+# get peaks in the TADs
+
+awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3"\t"$4}' TAD_gene_wab.bed | bedtools intersect -a Peaks.bed -b - -wa -wb | sort -k1,1 -k2,2n - | bedtools merge -i - -c 4,8,9 -o collapse > GATA1_peak_TAD_gene.bed
+
+# chr1	747822	748296	idr_peaks_qqi_2020-06-04/merged_peak_30	chr1:640000-1010000	NOC2L
+# chr1	765415	766023	idr_peaks_qqi_2020-06-04/merged_peak_34	chr1:640000-1010000	NOC2L
+# chr1	766802	767642	idr_peaks_qqi_2020-06-04/merged_peak_35	chr1:640000-1010000	NOC2L
+# chr1	778028	778675	idr_peaks_qqi_2020-06-04/merged_peak_37	chr1:640000-1010000	NOC2L
+
+
+# get motifs in the peaks
+
+bedtools intersect -a Motifs.bed -b GATA1_peak_TAD_gene.bed -wa -wb > GATA1_peak_motif_intersect.bed
+
+# chr1	747940	747946	WGATAR	0	+	chr1	747822	748296	idr_peaks_qqi_2020-06-04/merged_peak_30	chr1:640000-1010000	NOC2L
+# chr1	747983	747989	WGATAR	0	+	chr1	747822	748296	idr_peaks_qqi_2020-06-04/merged_peak_30	chr1:640000-1010000	NOC2L
+
+
+
+# find sgRNAs
+
+out=Motif_{{flanking_length}}_gRNA.bed
+out2=Motif_{{flanking_length}}_gRNA.annot.bed
+
+module load conda3
+source activate /home/yli11/.conda/envs/Cas_Offinder
+module load python/2.7.13
+find_all_gRNA.py -f GATA1_peak_motif_intersect.bed -e {{flanking_length}} --PAM {{PAM_seq}} -o $out --fast -g {{genome_fasta}}
+
+sort -k1,1 -k2,2n GATA1_peak_motif_intersect.bed > GATA1_peak_motif_intersect.st.bed
+
+bedtools closest -a $out -b GATA1_peak_motif_intersect.st.bed > $out2 
+
+
+# annotate sgRNAs
+
+
+python /home/yli11/HemTools/share/misc/sgRNA_design_annot.py $out2 {{motif_position_anchor}} Matches.bed {{editable_base}}
+
+# this output provides annote all sgRNAs, in real, we only used a small fraction of sgRNAs based on gene rank (this is so custom, not provided in this pipeline)
+
+

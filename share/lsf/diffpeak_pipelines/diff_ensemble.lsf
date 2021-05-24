@@ -1,0 +1,317 @@
+
+
+=cut manorm 1
+
+# MAnorm only applies to one treatment to one control, so replicates will be merged
+
+inputFile=design_matrix
+
+ncore=1
+mem=12000
+
+module load bedtools
+
+uid=`openssl rand -hex 12`
+
+## merge peak 1
+
+cd {{jid}}
+
+a=`ls ${COL1}*.bed |  grep -v merge | cat`
+b=`ls ${COL2}*.bed |  grep -v merge | cat`
+
+
+cat $a > $uid.${COL1}.manorm.merged.bed
+
+sort -k1,1 -k2,2n $uid.${COL1}.manorm.merged.bed > $uid.${COL1}.manorm.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i $uid.${COL1}.manorm.merged.st.bed > $uid.${COL1}.manorm.merged.bed
+
+rm $uid.${COL1}.manorm.merged.st.bed
+
+## merge peak 2
+
+# cat $b > ${COL2}.$uid.manorm.merged.bed
+
+# sort -k1,1 -k2,2n ${COL2}.$uid.manorm.merged.bed > ${COL2}.$uid.manorm.merged.st.bed
+
+# bedtools merge -c 4 -o collapse -i ${COL2}.$uid.manorm.merged.st.bed > ${COL2}.$uid.manorm.merged.bed
+
+# rm ${COL2}.$uid.manorm.merged.st.bed
+
+cat $b > $uid.${COL2}.manorm.merged.bed
+
+sort -k1,1 -k2,2n $uid.${COL2}.manorm.merged.bed > $uid.${COL2}.manorm.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i $uid.${COL2}.manorm.merged.st.bed > $uid.${COL2}.manorm.merged.bed
+
+rm $uid.${COL2}.manorm.merged.st.bed
+
+module load samtools/1.7
+
+samtools merge $uid.${COL1}.merge.bam ${COL1}*.bam
+samtools merge $uid.${COL2}.merge.bam ${COL2}*.bam
+
+mkdir -p MAnorm_results
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/diffPeaks
+
+manorm --p1 $uid.${COL1}.manorm.merged.bed --p2 $uid.${COL2}.manorm.merged.bed --r1 $uid.${COL1}.merge.bam --r2 $uid.${COL2}.merge.bam --n1 ${COL1}.$uid --n2 ${COL2}.$uid -o MAnorm_results/${COL3} --rf bam {{MAnorm_PE_flag}}
+
+rm *${uid}*
+
+
+=cut THOR 1
+
+
+
+inputFile=design_matrix
+
+ncore=1
+mem=20000
+
+
+chrom_size={{genome_chrom_size}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint
+
+module load ucsc/041619
+
+cd {{jid}}
+
+
+a=`ls ${COL1}*.bam`
+b=`ls ${COL2}*.bam`
+
+echo -e "#rep1\n$a\n#rep2\n$b\n#chrom_sizes\n$chrom_size" > ${COL3}.thor
+
+mkdir -p THOR_results
+
+# rgt-THOR --report --name ${COL3} -–output-dir THOR_results ${COL3}.thor
+rgt-THOR -n ${COL3} --output-dir THOR_results/${COL3}/ --report ${COL3}.thor
+
+mv ${COL3}.thor THOR_results
+
+
+
+
+=cut homer_norm 1
+
+inputFile=input_tsv
+
+ncore=1
+mem=16000
+
+# module load homer/4.9.1
+module load homer/4.10
+# module load samtools
+
+module load ucsc
+# module load ucsc/041619
+
+## -format sam, interesting homer use sam for bam
+
+cd {{jid}}
+
+makeTagDirectory ${COL3}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL3}.bam
+
+# makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100> log_files/${COL3}-bigWig.trackInfo.txt
+makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+
+
+
+=cut homer_deseq2 2 homer_norm
+
+
+inputFile=design_matrix
+
+ncore=1
+mem=50000
+
+## merge peak for each comparison
+
+module load bedtools
+
+
+cd {{jid}}
+
+a=`ls ${COL1}*.bed | grep -v merge | cat`
+b=`ls ${COL2}*.bed | grep -v merge | cat`
+
+cat $a $b > ${COL3}.homer_deseq2.merged.bed
+
+sort -k1,1 -k2,2n ${COL3}.homer_deseq2.merged.bed > ${COL3}.homer_deseq2.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i ${COL3}.homer_deseq2.merged.st.bed > ${COL3}.homer_deseq2.merged.bed
+
+module load homer/4.10
+
+module load R/3.4.0
+
+mkdir -p homer_deseq2_results
+
+a=`ls -d ${COL1}*_tag/ | cat`
+b=`ls -d ${COL2}*_tag/ | cat`
+
+
+getDifferentialPeaksReplicates.pl -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $a -b $b > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.gain.tsv
+
+getDifferentialPeaksReplicates.pl -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $b -b $a > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.loss.tsv
+
+module load python/2.7.13
+
+cd homer_deseq2_results
+
+homer_deseq2_result_merge.py ${COL3}_homer_deseq2.user_peak.gain.tsv ${COL3}_homer_deseq2.user_peak.loss.tsv ${COL3}_homer_deseq2
+
+
+mv ${COL3}.homer_deseq2.user_peak* ../log_files/
+
+
+
+=cut homer_deseq2_2 2 homer_norm
+
+
+inputFile=design_matrix
+
+ncore=1
+mem=50000
+
+## merge peak for each comparison
+
+
+cd {{jid}}
+
+module load homer/4.10
+
+module load R/3.4.0
+
+mkdir -p homer_deseq2_results
+
+mkdir -p homer_deseq2_results/denovo
+
+a=`ls -d ${COL1}*_tag/ | cat`
+b=`ls -d ${COL2}*_tag/ | cat`
+
+getDifferentialPeaksReplicates.pl -f 1 -q 0.5 -t $a -b $b > homer_deseq2_results/denovo/${COL3}_homer_deseq2.homer_denovo_peak.txt
+
+
+=cut homer_diff 1
+
+# homer_diff only applies to one treatment to one control, so replicates will be merged
+
+inputFile=design_matrix
+
+ncore=1
+mem=16000
+
+## merge peak for each comparison
+
+
+
+module load bedtools
+
+uid=`openssl rand -hex 12`
+
+## merge replicates
+
+cd {{jid}}
+
+a=`ls ${COL1}*.bed |  grep -v merge | cat`
+b=`ls ${COL2}*.bed |  grep -v merge | cat`
+
+
+cat $a > $uid.${COL1}.homer.merged.bed
+
+sort -k1,1 -k2,2n $uid.${COL1}.homer.merged.bed > $uid.${COL1}.homer.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i $uid.${COL1}.homer.merged.st.bed > $uid.${COL1}.homer.merged.bed
+
+rm $uid.${COL1}.homer.merged.st.bed
+
+
+cat $b > $uid.${COL2}.homer.merged.bed
+
+sort -k1,1 -k2,2n $uid.${COL2}.homer.merged.bed > $uid.${COL2}.homer.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i $uid.${COL2}.homer.merged.st.bed > $uid.${COL2}.homer.merged.bed
+
+rm $uid.${COL2}.homer.merged.st.bed
+
+cat $uid.${COL1}.homer.merged.bed $uid.${COL2}.homer.merged.bed > ${COL3}.homer_diff.merged.bed
+
+sort -k1,1 -k2,2n ${COL3}.homer_diff.merged.bed > ${COL3}.homer_diff.merged.st.bed
+
+bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i ${COL3}.homer_diff.merged.st.bed > ${COL3}.homer_diff.merged.bed
+
+module load samtools/1.7
+
+samtools merge $uid.${COL1}.merge.bam ${COL1}*.bam
+samtools merge $uid.${COL2}.merge.bam ${COL2}*.bam
+
+## homer tag
+
+module load homer/4.10
+
+module load ucsc
+
+## -format sam, interesting homer use sam for bam
+
+# cd {{jid}}
+
+makeTagDirectory $uid.${COL1}.merge.tag -keepAll -format sam -genome {{genome}} -checkGC $uid.${COL1}.merge.bam
+makeTagDirectory $uid.${COL2}.merge.tag -keepAll -format sam -genome {{genome}} -checkGC $uid.${COL2}.merge.bam
+
+makeUCSCfile  $uid.${COL1}.merge.tag -o ${COL1}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+makeUCSCfile  $uid.${COL2}.merge.tag -o ${COL2}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+
+
+
+## homer diff peak
+
+
+module load R/3.4.0
+
+mkdir -p homer_diff_results
+
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL1}.merge.tag/ $uid.${COL2}.merge.tag/ -F 0 -P 1 > homer_diff_results/${COL3}.gain.peak
+
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL2}.merge.tag/ $uid.${COL1}.merge.tag/ -F 0 -P 1 > homer_diff_results/${COL3}.loss.peak
+
+
+rm ${COL3}.homer_diff*
+
+cd homer_diff_results
+
+module load python/2.7.13
+
+summarize_homer_diffpeak.py ${COL3}.gain.peak ${COL3}.loss.peak 0 ${COL3}.diffpeaks.FC2.P5.bed 2 1e-5
+
+
+summarize_homer_diffpeak.py ${COL3}.gain.peak ${COL3}.loss.peak 0 ${COL3}.diffpeaks.FC4.P10.bed 4 1e-10
+
+rm *${uid}*
+
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+rm *.bam*
+
+mv *.bed log_files/
+
+mv -f *_tag log_files/
+
+mv *.lsf log_files/
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

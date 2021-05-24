@@ -1,0 +1,29 @@
+#!shell
+
+=cut sra 1
+
+inputFile=data_list
+
+module load conda3
+source activate /home/yli11/.conda/envs/sra_download
+
+cd {{jid}}
+
+fasterq-dump -e 1 ${COL1}
+
+sra_check_download.py ${COL1}
+
+gzip ${COL1}*fastq
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+

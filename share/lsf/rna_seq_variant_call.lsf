@@ -1,0 +1,158 @@
+#!shell
+
+=cut QC1 1 
+
+module load fastqc/0.11.5
+
+inputFile=fastq_tsv
+
+## n cpu and memory
+ncore=1
+mem=4000
+
+## specify the command
+fastqc ${COL1} -o {{jid}}
+fastqc ${COL2} -o {{jid}}
+
+=cut trim 1
+
+module load python/3.7.0 fastqc/0.11.5
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=4000
+
+trim_galore --dont_gzip --paired -j $ncore -o {{jid}} --basename ${COL3} --clip_R1 6 --clip_R2 6 ${COL1} ${COL2}
+
+=cut STAR 2 trim[*]
+
+module load star/2.5.3a
+
+inputFile=fastq_tsv
+
+ncore=4
+mem=20000
+
+cd {{jid}}
+
+#STAR --twopassMode Basic --genomeDir {{STAR_index}} --readFilesIn ${COL3}_R1_val_1.fq ${COL3}_R2_val_2.fq --runThreadN $ncore --outFileNamePrefix ${COL3} --outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outSAMattributes Standard --sjdbScore 1
+STAR --twopassMode Basic --genomeDir {{STAR_index}} --readFilesIn ${COL3}_val_1.fq ${COL3}_val_2.fq --runThreadN $ncore --outFileNamePrefix ${COL3} --outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --outSAMattributes Standard --sjdbScore 1
+
+=cut vcf 3 STAR[*]
+
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=30000
+
+module load picard/2.9.4 gatk/3.5 samtools/1.7
+
+bam=${COL3}
+jid={{jid}}
+
+#Path to reference genome and Index files.
+ref="/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.reordered.fa"
+#Path to gatk bundle set files
+millsIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf"
+KGIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/1000G_phase1.indels.hg19.vcf"
+dbSNP138="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/dbsnp_138.hg19.vcf"
+
+cd $jid
+
+echo -e "["$(date)"]\tRunning picard.."
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar AddOrReplaceReadGroups I=${bam}Aligned.sortedByCoord.out.bam O=${bam}Aligned.sortedByCoord.rg_added.bam SO=coordinate RGID=${bam} RGLB=${bam} RGPL=illumina RGPU=Hart_Center RGSM=${bam}
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar MarkDuplicates I=${bam}Aligned.sortedByCoord.rg_added.bam O=${bam}Aligned.sortedByCoord.rg_added.dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=${bam}Aligned.picard.metrics 
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar ReorderSam I=${bam}Aligned.sortedByCoord.rg_added.dedupped.bam O=${bam}Aligned.sortedByCoord.rg_added.dedupped.reordered.bam R=${ref} CREATE_INDEX=TRUE
+
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T SplitNCigarReads -R $ref -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.reordered.bam -o ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.bam -rf ReassignOneMappingQuality -RMQF 255 -RMQT 60 -U ALLOW_N_CIGAR_READS
+
+#Create targets for indel realignment
+echo -e "["$(date)"]\tCreating targets for indel realignment.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T RealignerTargetCreator -R $ref -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.bam -o ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.intervals -known $millsIndels -known $KGIndels
+
+#Perform indel realignment
+echo -e "["$(date)"]\tPerforming Indel Realignment.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T IndelRealigner -R $ref -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.bam -targetIntervals ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.intervals -known $millsIndels -known $KGIndels -o ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.bam 
+
+#Perform BQSR
+echo -e "["$(date)"]\tPerforming BQSR.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T BaseRecalibrator -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.bam  -R $ref -knownSites $KGIndels -knownSites $millsIndels -knownSites $dbSNP138 -o ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner_recal.table
+
+#Print recalibrated reads
+echo -e "["$(date)"]\tPrinting recalibrated reads.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T PrintReads -R $ref -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.bam -BQSR ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner_recal.table -o ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.BQSR.bam 
+
+
+#Run HaplotypeCaller
+echo -e "["$(date)"]\tRunning HaplotypeCaller.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T HaplotypeCaller -R $ref -I ${bam}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.BQSR.bam  -dontUseSoftClippedBases -stand_call_conf 20.0 -o ${bam}.vcf
+
+#Filter variants
+echo -e "["$(date)"]\tFiltering Variants.."
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T VariantFiltration -R $ref -V ${bam}.vcf -window 35 -cluster 3 -filterName FS -filter "FS > 30.0" -filterName QD -filter "QD < 2.0" -o ${bam}_filtered.vcf
+
+echo -e "["$(date)"]\tDONE!"
+
+module load samtools/1.9
+
+module load bcftools
+
+vcfutils.pl varFilter -d {{depth_filter}} -p ${bam}_filtered.vcf > ${bam}_bcftools_filtered.vcf
+
+bcftools +fill-tags ${bam}_bcftools_filtered.vcf  -- -t AF > ${bam}.GTAK.bcftools.final.vcf
+
+=cut sam 3 STAR[*]
+
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=20000
+
+module load samtools/1.9
+
+module load bcftools
+
+#samtools mpileup -f /home/yli11/Data/Human/hg19/fasta/samtools/hg19.fa --VCF --skip-indels --uncompressed --output-tags AD ${COL1} > ${COL2}.vcf
+
+#https://www.biostars.org/p/190269/
+
+#https://bioinformatics.stackexchange.com/questions/253/variant-calling-on-chip-seq-style-data-samtools-mpileup-with-minimal-filters
+
+cd {{jid}}
+
+samtools mpileup --uncompressed --output-tags DP,AD -f /home/yli11/Data/Human/hg19/index/samtools_GATK_index/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.reordered.fa ${COL3}Aligned.sortedByCoord.out.bam | bcftools call --consensus-caller > ${COL3}.samtools.vcf
+
+vcfutils.pl varFilter -d {{depth_filter}} -p ${COL3}.samtools.vcf > ${COL3}.samtools.filter.vcf
+
+bcftools +fill-tags ${COL3}.samtools.filter.vcf  -- -t AF > ${COL3}.samtools.final.vcf
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+mv *.lsf log_files
+
+mkdir final_results
+
+mv *final*.vcf final_results
+
+send_email_v1.py -m "RNA-seq variant call is finished!" -j {{jid}}
+
+
+
+
+
+
+
+
+
+

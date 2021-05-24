@@ -1,0 +1,27 @@
+
+no pvalue, not use, also inputs are required
+
+==> diff_macs.lsf <==
+inputFile=input
+
+ncore=1
+mem=12000
+
+module load macs2
+
+macs2 bdgdiff --t1 ${COL1}_treat_pileup.bdg --c1 ${COL1}_control_lambda.bdg --t2 ${COL2}_treat_pileup.bdg --c2 ${COL2}_control_lambda.bdg --d1 ${COL3} --d2 ${COL4} -g 60 -l 120 --o-prefix diff_${COL1}_vs_${COL2}
+
+
+
+==> macs2_dff.lsf <==
+
+ncore=1
+mem=12000
+
+module load macs2
+
+macs2 callpeak -f BAMPE -B -t ${COL1} ${COL2} -c ${COL3} ${COL4} -n ${COL5} --nomodel --extsize 120
+
+egrep "tags after filtering in treatment|tags after filtering in control" ${COL5}_peaks.xls
+
+(diffPeaks) [yli11@nodecn125 pu1_diffpeak_markdup.uq]$ 
