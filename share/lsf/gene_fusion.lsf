@@ -1,0 +1,23 @@
+#!shell
+
+
+=cut Eric 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=30000
+
+module load bedtools R/3.5.1 bwa blat bedtools seqtk
+
+/home/yli11/Programs/EricScript/DataBase/ericscript-0.5.5/ericscript.pl --nthreads 6 --MAPQ {{MAPQ}} --db {{database}} -name fusion -o ${COL3} ${COL1} ${COL2}
+
+mv ${COL3} {{jid}}
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

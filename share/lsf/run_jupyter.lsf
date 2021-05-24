@@ -1,0 +1,15 @@
+#!shell
+
+=cut jupyter 1 
+
+ncore=1
+mem={{memory}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+export XDG_RUNTIME_DIR=""
+
+jupyter.py
+

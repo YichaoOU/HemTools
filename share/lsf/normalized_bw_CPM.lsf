@@ -1,0 +1,21 @@
+#!shell
+
+
+=cut normBW 1
+
+inputFile=bam_list
+
+ncore=1
+mem=16000
+
+module load python/2.7.15-rhel7
+
+bamCoverage -b ${COL2} -o {{jid}}/${COL1} --smoothLength=200 --numberOfProcessors 4 {{bamCoverage_addon}} --normalizeUsing CPM
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

@@ -1,0 +1,183 @@
+#!shell
+
+=cut first 1
+
+module load python/2.7.12
+
+python {{helper_dir}}/get_uniform_bed.py {{bed_file}} {{jid}}/{{bed_file}}.input {{jid}}/peak_size
+
+sort -k1,1 -k2,2n {{jid}}/peak_size > {{jid}}/peak_size.sorted
+
+rm {{jid}}/peak_size
+
+=cut homer 2 first
+
+ncore=1
+mem=4000
+
+module load homer/4.9.1
+
+findMotifsGenome.pl {{jid}}/{{bed_file}}.input {{genome}} {{jid}}/homer_result -size 200 -mask -preparsedDir {{jid}}/homer_genome_dir
+
+cd {{jid}}
+
+zip -r homer_result.zip homer_result
+
+=cut getFasta 2 first
+
+module load bedtools
+
+bedtools getfasta -fi {{genome_fa}} -bed {{jid}}/{{bed_file}}.input -name -fo {{jid}}/{{output_prefix}}.fa
+
+=cut known 3 getFasta
+
+module load meme
+
+fimo --text --no-qvalue --verbosity 1 {{known_motif}} {{jid}}/{{output_prefix}}.fa > {{jid}}/{{output_prefix}}.known_motifs.fimo
+
+sed -i '1d' {{jid}}/{{output_prefix}}.known_motifs.fimo
+
+awk -F "\t" '{print $2"\t"$3"\t"$4"\t"$1"\t.\t+"}' {{jid}}/{{output_prefix}}.known_motifs.fimo > {{jid}}/{{output_prefix}}.known_motifs.bed
+
+sort -k1,1 -k2,2n {{jid}}/{{output_prefix}}.known_motifs.bed > {{jid}}/{{output_prefix}}.known_motifs.bed.sorted
+
+rm {{jid}}/{{output_prefix}}.known_motifs.bed
+
+=cut mEpi-E 1
+
+module load conda3
+source activate /home/yli11/.conda/envs/julia/
+module load python/2.7.12
+
+ncore=1
+mem=4000
+
+export PATH=$PATH:{{mepigram_dir}}
+
+bedToFasta.py -f {{bed_file}} -r {{methy_genome_typeE}} -d -o {{jid}}/{{output_prefix}}.typeE.fa
+
+get_methyl_C_positions.py {{jid}}/{{output_prefix}}.typeE.fa {{jid}}/{{output_prefix}}.methylC.bed
+
+sort -k1,1 -k2,2n {{jid}}/{{output_prefix}}.methylC.bed > {{jid}}/{{output_prefix}}.methylC.bed.sorted
+
+rm {{jid}}/{{output_prefix}}.methylC.bed
+
+cd {{jid}}
+
+mepigram_wrapper.py -ml y {{output_prefix}}.typeE.fa {{background_typeE_tsv}} {{typeE_graph}} typeE -o {{output_prefix}}_mEpigram_typeE
+
+motifscannerA_mc.py -f {{output_prefix}}.typeE.fa -m {{output_prefix}}_mEpigram_typeE.results/motifs.mepigram.meme -s 1 -o {{output_prefix}}_mEpigram_typeE.results/typeE.motif.occurrence
+
+
+
+zip -r {{output_prefix}}_mEpigram_typeE.results.zip {{output_prefix}}_mEpigram_typeE.results
+
+=cut EF-seq 1
+
+module load conda3
+source activate /home/yli11/.conda/envs/julia/
+module load python/2.7.12
+
+export PATH=$PATH:{{mepigram_dir}}
+
+bedToFasta.py -f {{bed_file}} -r {{methy_genome_typeEF}} -d -o {{jid}}/{{output_prefix}}.typeEF.fa
+
+
+=cut mEpi-EF 2 EF-seq
+
+module load conda3
+source activate /home/yli11/.conda/envs/julia/
+module load python/2.7.12
+
+ncore=1
+mem=4000
+
+export PATH=$PATH:{{mepigram_dir}}
+
+
+cd {{jid}}
+
+mepigram_wrapper.py -ml y {{output_prefix}}.typeEF.fa {{background_typeEF_tsv}} {{typeEF_graph}} typeEF -o {{output_prefix}}_mEpigram_typeEF
+
+motifscannerA_mc.py -f {{output_prefix}}.typeEF.fa -m {{output_prefix}}_mEpigram_typeEF.results/motifs.mepigram.meme -s 1 -o {{output_prefix}}_mEpigram_typeEF.results/typeEF.motif.occurrence --typeEF
+
+zip -r {{output_prefix}}_mEpigram_typeEF.results.zip {{output_prefix}}_mEpigram_typeEF.results
+
+=cut meme 2 EF-seq
+
+module load meme 
+
+ncore=1
+mem=4000
+
+cd {{jid}}
+
+# meme -p 4 -allw -revcomp -nmotifs 10 -minw 8 -maxw 14 {{jid}}/{{output_prefix}}.typeEF.fa -alph {{methyl_alphabet}} -oc {{jid}}/meme_results -time 86400
+
+# head -n 2000 {{jid}}/{{output_prefix}}.typeEF.fa > {{jid}}/meme.top1k.fa
+
+# meme -allw -revcomp -nmotifs 10 -minw 8 -maxw 14 {{jid}}/meme.top1k.fa -alph {{methyl_alphabet}} -oc {{jid}}/meme_results -time 7200 -maxsize 9999999999
+
+# meme-get-motif -all {{jid}}/meme_results/meme.txt > {{jid}}/meme_results/methyMotifs.motifs
+
+meme-chip -oc meme_results -alph {{methyl_alphabet}} -seed 1 -meme-minw 6 -meme-maxw 20 -meme-nmotifs 10 {{output_prefix}}.typeEF.fa -fimo-skip -order 2
+
+fimo --text --no-qvalue --verbosity 1 meme_results/combined.meme {{output_prefix}}.typeEF.fa >  meme_results/methyl_meme.motif.fimo
+
+sed -i '1d' meme_results/methyl_meme.motif.fimo
+
+awk -F "\t" '{print $2"\t"$3"\t"$4"\t"$1"\t.\t+"}' meme_results/methyl_meme.motif.fimo > meme_results/methyl_meme.motif.bed
+
+sort -k1,1 -k2,2n meme_results/methyl_meme.motif.bed > meme_results/methyl_meme.motif.bed.sorted
+
+rm meme_results/methyl_meme.motif.bed
+
+=cut E_percent 4 all
+
+module load bedtools python/2.7.12
+
+cd {{jid}}
+mkdir known_motif_results
+
+bedtools closest -d -a {{output_prefix}}.known_motifs.bed.sorted -b {{output_prefix}}.methylC.bed.sorted -g peak_size.sorted > known_motif_results/known_methyl_C_percent.bed
+
+get_motif_methylC_percent.py known_motif_results/known_methyl_C_percent.bed known_motif_results/known_methyl_C_percent.tsv
+
+mv {{output_prefix}}.known_motifs.bed.sorted known_motif_results
+
+mv {{output_prefix}}.known_motifs.fimo known_motif_results
+
+bedtools closest -d -a meme_results/methyl_meme.motif.bed.sorted -b {{output_prefix}}.methylC.bed.sorted -g peak_size.sorted > meme_results/methyl_meme.methyl_C_percent.bed
+
+get_motif_methylC_percent.py meme_results/methyl_meme.methyl_C_percent.bed meme_results/methyl_meme.methyl_C_percent.tsv
+
+
+zip -r meme_results.zip meme_results
+
+zip known_motif_results/known_methyl_C_percent.tsv.zip known_motif_results/known_methyl_C_percent.tsv
+
+module purge
+module load python/2.7.13
+
+send_email_v1.py -a {{output_prefix}}_mEpigram_typeEF.results.zip,{{output_prefix}}_mEpigram_typeE.results.zip,homer_result.zip,known_motif_results/known_methyl_C_percent.tsv.zip -m "Methyl-motif discovery is finished" -j "Methyl-motif discovery is finished" --common
+
+mv *.lsf log_files
+
+mkdir fasta_files
+
+mv *.fa fasta_files
+mv *.faa fasta_files
+
+# =cut tracks 4 all
+
+
+
+
+
+
+
+
+
+
+
+

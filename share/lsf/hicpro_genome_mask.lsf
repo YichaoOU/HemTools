@@ -1,0 +1,46 @@
+#!shell
+
+
+=cut bowtie 1
+
+ncore=1
+mem=30000
+q=priority
+
+cd {{jid}}
+
+mkdir -p bowtie2_index
+
+cd bowtie2_index
+
+ln -s {{genome_fasta}} .
+
+infile=`basename "{{genome_fasta}}"`
+
+
+module load bedtools
+
+/hpcf/apps/bedtools/install/2.25.0/bin/maskFastaFromBed -fi $infile -bed {{mask_bed}} -fo {{genome}}.mask.fa
+
+module load hic-pro/2.11.1
+
+bowtie2-build {{genome}}.mask.fa {{genome}}
+
+
+/home/yli11/Programs/HiC-Pro-2.11.1/bin/utils/digest_genome.py -r {{digested_enzyme}} -o {{digested_enzyme}}_resfrag_{{genome}}.bed $infile
+
+
+samtools faidx {{genome}}.mask.fa
+
+cut -f1,2 {{genome}}.mask.fa.fai > {{genome}}.chrom.sizes
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

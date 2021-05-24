@@ -1,0 +1,36 @@
+#!shell
+
+=cut cas 1
+
+ncore=2
+mem=10000
+# q=gpu_rhel7
+
+module load conda3
+source activate /home/yli11/.conda/envs/Cas_Offinder/
+
+# module load cas-offinder
+
+cd {{jid}}
+
+cas-offinder input.list C matches.bed
+
+module load python/2.7.13
+
+python -c 'import pandas as pd;df = pd.read_csv("matches.bed",sep="\t",header=None);num = pd.DataFrame(df.groupby(0).size());num = num.sort_values(0,ascending=False);num.to_csv("number_matches.tsv",sep="\t",header=False)'
+
+cas_offinder_output_to_bed.py matches.bed {{gRNA_length}} {{PAM_seq}}
+
+sort -k1,1 -k2,2n matches.bed.bed > matches.bed.sorted
+
+rm matches.bed.bed
+
+mv matches.bed cas_offinder_output.tsv
+
+module load bedtools
+
+bedtools getfasta -fi {{genome_fasta}} -bed matches.bed.sorted -fo test.bed -s -name -tab
+
+send_email_v1.py -a number_matches.tsv -m "cas-offinder Finished" -j {{jid}} --common
+
+

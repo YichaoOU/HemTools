@@ -1,0 +1,219 @@
+#!shell
+
+=cut QC1 1 
+
+## define dependency, optional
+module load fastqc/0.11.5
+
+## define input
+## you don't need to specify the following, just the input file
+# id=$LSB_JOBINDEX
+# COL1=`head -n $id fastq.tsv|tail -n1|awk '{print $1}'`
+# COL2=`head -n $id fastq.tsv|tail -n1|awk '{print $2}'`
+# COL3=`head -n $id fastq.tsv|tail -n1|awk '{print $3}'`
+# LINE=`head -n $id fastq.tsv|tail -n1`
+
+inputFile=fastq_tsv
+
+## n cpu and memory
+ncore=1
+mem=4000
+
+## specify the command
+fastqc ${COL1} -o {{jid}}
+fastqc ${COL2} -o {{jid}}
+
+=cut trim 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+skewer-0.2.2-linux-x86_64 -t $ncore -x CTGTCTCTTATACACATCT -y CTGTCTCTTATACACATCT ${COL1} ${COL2} -z yes -o ${COL3}
+mv ${COL3}-trimmed.log {{jid}}
+
+=cut BWA 2 trim[*]
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=4000
+
+bwa mem -t $ncore {{index_file}} ${COL3}-trimmed-pair1.fastq.gz ${COL3}-trimmed-pair2.fastq.gz |samtools view -@ $ncore -bS - > {{jid}}/${COL3}.bam
+rm ${COL3}-trimmed-pair1.fastq.gz
+rm ${COL3}-trimmed-pair2.fastq.gz
+
+
+=cut libx 3 BWA[*]
+
+module load bedtools/2.25.0
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+bedtools bamtobed -i {{jid}}/${COL3}.bam | awk 'BEGIN{OFS="\t"}{print $1,$2,$3,$6}' | grep -v 'chrM' | sort | uniq -c | awk 'BEGIN{mt=0;m0=0;m1=0;m2=0} ($1==1){m1=m1+1} ($1==2){m2=m2+1} {m0=m0+1} {mt=mt+$1} END{printf "%d\t%d\t%d\t%d\t%f\t%f\t%f\n",mt,m0,m1,m2,m0/mt,m1/m0,m1/m2}' > {{jid}}/${COL3}.lib.complexity
+
+=cut filter 3 BWA[*]
+
+module load samtools/1.7
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=4000
+
+samtools sort -@ $ncore -n -o {{jid}}/${COL3}.name.st.bam {{jid}}/${COL3}.bam
+samtools fixmate -@ $ncore -m {{jid}}/${COL3}.name.st.bam {{jid}}/${COL3}.fixmate.bam
+samtools sort -@ $ncore -o {{jid}}/${COL3}.fixmate.st.bam {{jid}}/${COL3}.fixmate.bam
+samtools markdup -@ $ncore {{jid}}/${COL3}.fixmate.st.bam {{jid}}/${COL3}.markdup.bam
+samtools markdup -@ $ncore -r {{jid}}/${COL3}.markdup.bam {{jid}}/${COL3}.rmdup.bam
+rm {{jid}}/${COL3}.name.st.bam {{jid}}/${COL3}.fixmate.bam {{jid}}/${COL3}.fixmate.st.bam
+samtools flagstat -@ $ncore {{jid}}/${COL3}.markdup.bam > {{jid}}/${COL3}.markdup.report
+samtools index -@ $ncore {{jid}}/${COL3}.markdup.bam
+samtools index -@ $ncore {{jid}}/${COL3}.rmdup.bam
+samtools view -@ $ncore -q 1 -b {{jid}}/${COL3}.rmdup.bam > {{jid}}/${COL3}.rmdup.uq.bam
+samtools index -@ $ncore {{jid}}/${COL3}.rmdup.uq.bam
+samtools view -@ $ncore {{jid}}/${COL3}.markdup.bam chrM -b > {{jid}}/${COL3}.markdup.chrM.bam
+samtools flagstat -@ $ncore {{jid}}/${COL3}.markdup.chrM.bam > {{jid}}/${COL3}.markdup.chrM.report
+samtools idxstats {{jid}}/${COL3}.rmdup.uq.bam | cut -f 1 | grep -v  chrM| xargs samtools view -@ $ncore -b {{jid}}/${COL3}.rmdup.uq.bam > {{jid}}/${COL3}.rmdup.uq.rmchrM.bam
+samtools idxstats {{jid}}/${COL3}.markdup.bam | cut -f 1 | grep -v  chrM| xargs samtools view -@ $ncore -b {{jid}}/${COL3}.markdup.bam > {{jid}}/${COL3}.markdup.rmchrM.bam
+samtools flagstat -@ $ncore {{jid}}/${COL3}.markdup.rmchrM.bam > {{jid}}/${COL3}.markdup.rmchrM.report
+samtools index -@ $ncore {{jid}}/${COL3}.markdup.rmchrM.bam 
+		
+
+=cut rmdup.uq.bw 4 filter[*]
+
+module load python/2.7.15-rhel7
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=2000
+
+bamCoverage --region chr11 -b {{jid}}/${COL3}.rmdup.uq.bam -o {{jid}}/${COL3}.rmdup.uq.bw --smoothLength=200 --ignoreForNormalization chrX chrM   --effectiveGenomeSize {{effectiveGenomeSize}} --numberOfProcessors $ncore --centerReads
+
+
+=cut all.bw 4 filter[*]
+
+module load python/2.7.15-rhel7
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=2000
+
+bamCoverage --region chr11 -b {{jid}}/${COL3}.markdup.bam -o {{jid}}/${COL3}.markdup.bw --smoothLength=200 --ignoreForNormalization chrX chrM   --effectiveGenomeSize {{effectiveGenomeSize}} --numberOfProcessors $ncore --centerReads
+
+=cut rmdup.bw 4 filter[*]
+
+module load python/2.7.15-rhel7
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=2000
+
+bamCoverage --region chr11 -b {{jid}}/${COL3}.rmdup.bam -o {{jid}}/${COL3}.rmdup.bw --smoothLength=200 --ignoreForNormalization chrX chrM   --effectiveGenomeSize {{effectiveGenomeSize}} --numberOfProcessors $ncore --centerReads
+
+
+=cut macs2.all 4 filter[*]
+
+module load macs2/2.1.1
+module load bedtools/2.25.0
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -t {{jid}}/${COL3}.markdup.rmchrM.bam -B -n {{jid}}/${COL3}.markdup.rmchrM
+macs2 bdgcmp -p 0.00001 -t {{jid}}/${COL3}.markdup.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.markdup.rmchrM_control_lambda.bdg -m qpois -o {{jid}}/${COL3}.markdup.rmchrM_treat_pvalue.bdg
+macs2 bdgcmp -p 0.00001 -t {{jid}}/${COL3}.markdup.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.markdup.rmchrM_control_lambda.bdg -m FE -o {{jid}}/${COL3}.markdup.rmchrM_FE.bdg
+macs2 bdgcmp -t {{jid}}/${COL3}.markdup.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.markdup.rmchrM_control_lambda.bdg -m logLR -o {{jid}}/${COL3}.markdup.rmchrM_logLR.bdg -p 0.00001
+macs2 bdgpeakcall -i {{jid}}/${COL3}.markdup.rmchrM_treat_pvalue.bdg -c 1.301 -l 100 -g 75 -o {{jid}}/${COL3}.markdup.rmchrM_bdgpeaks.bed
+intersectBed -a {{jid}}/${COL3}.markdup.rmchrM_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/${COL3}.markdup.rmchrM_peaks.rmblck.narrowPeak
+intersectBed -a {{jid}}/${COL3}.markdup.rmchrM_bdgpeaks.bed -b {{black_list}} -v -wa > {{jid}}/${COL3}.markdup.rmchrM_bdgpeaks.rmblck.bed
+
+=cut macs2.rmdup.uq 4 filter[*]
+
+module load macs2/2.1.1
+module load bedtools/2.25.0
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -t {{jid}}/${COL3}.rmdup.uq.rmchrM.bam -B -n {{jid}}/${COL3}.rmdup.uq.rmchrM
+macs2 bdgcmp -p 0.00001 -t {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.rmdup.uq.rmchrM_control_lambda.bdg -m qpois -o {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pvalue.bdg
+macs2 bdgcmp -p 0.00001 -t {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.rmdup.uq.rmchrM_control_lambda.bdg -m FE -o {{jid}}/${COL3}.rmdup.uq.rmchrM_FE.bdg
+macs2 bdgcmp -t {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pileup.bdg -c {{jid}}/${COL3}.rmdup.uq.rmchrM_control_lambda.bdg -m logLR -o {{jid}}/${COL3}.rmdup.uq.rmchrM_logLR.bdg -p 0.00001
+macs2 bdgpeakcall -i {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pvalue.bdg -c 1.301 -l 100 -g 75 -o {{jid}}/${COL3}.rmdup.uq.rmchrM_bdgpeaks.bed
+intersectBed -a {{jid}}/${COL3}.rmdup.uq.rmchrM_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/${COL3}.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+intersectBed -a {{jid}}/${COL3}.rmdup.uq.rmchrM_bdgpeaks.bed -b {{black_list}} -v -wa > {{jid}}/${COL3}.rmdup.uq.rmchrM_bdgpeaks.rmblck.bed
+
+
+=cut wigToBW.all 5 macs2.all[*]
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+wigToBigWig.rhel7 {{jid}}/${COL3}.markdup.rmchrM_treat_pvalue.bdg {{chrom_size}} {{jid}}/${COL3}.markdup.rmchrM_treat_pvalue.bw
+wigToBigWig.rhel7 {{jid}}/${COL3}.markdup.rmchrM_FE.bdg {{chrom_size}} {{jid}}/${COL3}.markdup.rmchrM_FE.bw
+wigToBigWig.rhel7 {{jid}}/${COL3}.markdup.rmchrM_logLR.bdg {{chrom_size}} {{jid}}/${COL3}.markdup.rmchrM_logLR.bw
+
+
+=cut wigToBW.rmdup.uq 5 macs2.rmdup.uq[*]
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+wigToBigWig.rhel7 {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pvalue.bdg {{chrom_size}} {{jid}}/${COL3}.rmdup.uq.rmchrM_treat_pvalue.bw
+wigToBigWig.rhel7 {{jid}}/${COL3}.rmdup.uq.rmchrM_FE.bdg {{chrom_size}} {{jid}}/${COL3}.rmdup.uq.rmchrM_FE.bw
+wigToBigWig.rhel7 {{jid}}/${COL3}.rmdup.uq.rmchrM_logLR.bdg {{chrom_size}} {{jid}}/${COL3}.rmdup.uq.rmchrM_logLR.bw
+
+=cut tracks_report 6 all
+
+module load python/2.7.13
+
+cd {{jid}}
+create_tracks.py -j {{jid}} -g {{genome}}
+NGS_report_v1.py {{jid}} {{pipeline_type}}
+
+
+=cut pyGREAT 8 macs2.rmdup.uq
+
+module load conda3
+source activate /home/yli11/.conda/envs/share_url/
+
+inputFile=fastq_tsv
+
+cd {{jid}}
+
+pyGREAT.py -f ${COL3}.rmdup.uq.rmchrM_peaks.narrowPeak
+
+
+=cut last 9 all
+
+## output and email
+module load python/2.7.13
+
+cd {{jid}}
+
+mkdir log_files
+
+lsf_job_status_check.py > lsf_job_status.log
+send_email_v1.py -j {{jid}} -a {{jid}}.NGS_report_v1.html --NGS
+output_files_organization.py NGS
+
+

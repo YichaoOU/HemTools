@@ -1,0 +1,78 @@
+#!shell
+
+=cut BWA_PCR 1
+
+inputFile=input_list
+
+## columns are gRNA, P1, P2, R1, R2, name
+
+ncore=1
+mem=12000
+
+module load bwa/0.7.16a
+module load samtools/1.7
+module load bedtools
+
+bwa mem -t 4 {{index_file}} ${COL4} ${COL5} |samtools view -@ 4 -bS - > {{jid}}/${COL6}.bam
+
+in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_results.txt 2> {{jid}}/${COL6}_amplicons.fasta
+
+cd {{jid}}
+
+## bam2fq
+module load python/2.7.13
+
+bam2fq.py -f ${COL6}.bam --use_in_silico_PCR_result ${COL6}_results.txt -o ${COL6}
+
+
+filter_fasta.py ${COL6}_amplicons.fasta ${COL6}.fa 100 300
+
+amplicon=`tail -n 1 ${COL6}.fa`
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+CRISPResso -r1 ${COL6}.R1.fastq.gz -r2 ${COL6}.R2.fastq.gz --amplicon_seq $amplicon --guide_seq ${COL1} --keep_intermediate --dump -o ${COL6} -q {{q}} -s {{s}}
+
+mv ${COL6}.* ${COL6}
+
+mv ${COL6}_* ${COL6}
+
+# =cut email 4 BWA_PCR[*]
+
+# inputFile=input_list
+
+# ncore=1
+# mem=2000
+
+# module load python/2.7.13
+
+# cd {{jid}}
+
+# module load texlive/20190410
+
+# module load conda3
+
+# source activate /home/yli11/.conda/envs/pandoc
+
+# cd ${COL6}
+
+# pandoc *.html -t latex -o ${COL6}.pdf
+
+# send_email_v1.py -a ${COL6}.pdf -m "${COL5} crispresso2 base editor is finished" -j {{jid}} --common
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+
+

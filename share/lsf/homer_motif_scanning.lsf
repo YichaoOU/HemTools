@@ -1,0 +1,34 @@
+#!shell
+=cut homer 1
+
+inputFile=peak_list
+
+ncore=1
+mem=16000
+
+module load homer/4.10
+
+# size=50
+# findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size}
+
+# size=100
+# findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size}
+
+size=200
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask
+
+size="given"
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask
+
+=cut email 5 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+rm -r tmp_*
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+

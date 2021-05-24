@@ -1,0 +1,24 @@
+#!shell
+
+=cut sigPlot 1 
+
+inputFile=bw_list
+
+ncore=1
+mem=8000
+
+module load python/2.7.15-rhel7
+jid={{jid}}
+
+computeMatrix reference-point --referencePoint center -R {{bed_list}} -S ${COL1} -p 4 -a {{u}} -b {{d}} -o $jid/$(basename ${COL1}).matrix
+
+cd $jid
+
+plotProfile -m $(basename ${COL1}).matrix -o $(basename ${COL1}).pdf --plotHeight 10 --plotWidth 20 --dpi 600 
+
+module load python/2.7.13
+
+send_email_v1.py -a $(basename ${COL1}).pdf -m "${COL1} signal plot is finished" -j $jid --common
+
+
+

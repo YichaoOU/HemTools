@@ -1,0 +1,21 @@
+#!shell
+
+=cut DASH 1
+
+
+ncore=1
+mem=40000
+
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/pegasus
+
+sc_data_integration.py --input_csv {{input_csv}} --MT_prefix {{MT_prefix}} --MT_percent {{MT_percent}} --max_genes {{max_genes}} --output {{output}} --citeseq
+
+
+source activate /home/yli11/.conda/envs/dash
+
+cite_seq_dash.py {{output}}
+
+

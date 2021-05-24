@@ -1,0 +1,32 @@
+#!shell
+
+
+=cut cor 1 
+
+module load python/2.7.15-rhel7
+
+ncore=1
+mem=16000
+q=priority
+
+multiBigwigSummary bins -b {{bw_files}} -o {{jid}}/results.npz -bs {{bin_size}}  -p 10 --smartLabels {{addon_parameter}} 
+
+# multiBigwigSummary BED-file -b file1.bw file2.bw -o results.npz --BED selection.bed
+
+multiBigwigSummary BED-file -b {{bw_files}} -o {{jid}}/results_bed.npz --BED {{bed_file}}  -p 10 --smartLabels {{addon_parameter}} --outRawCounts {{jid}}/scores_per_bed.tsv
+
+cd {{jid}}
+
+
+plotCorrelation  -in results.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o {{output}}_spearman.pdf --outFileCorMatrix {{output}}_spearman.tab
+
+
+plotCorrelation  -in results_bed.npz --corMethod spearman --skipZeros --plotTitle "Spearman Correlation of Signal in Peaks" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o {{output}}_spearman_bed.pdf --outFileCorMatrix {{output}}_spearman_bed.tab
+
+plotCorrelation  -in results.npz --corMethod pearson --skipZeros --plotTitle "Pearson Correlation of Read Counts" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o {{output}}_pearson.pdf --outFileCorMatrix {{output}}_pearson.tab
+
+
+plotCorrelation  -in results_bed.npz --corMethod pearson --skipZeros --plotTitle "Pearson Correlation of Signal in Peaks" --whatToPlot heatmap --colorMap RdYlBu --plotNumbers -o {{output}}_pearson_bed.pdf --outFileCorMatrix {{output}}_pearson_bed.tab
+
+
+

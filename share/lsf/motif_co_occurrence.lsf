@@ -1,0 +1,85 @@
+#!shell
+
+
+=cut random 1
+
+inputFile=random_bed
+
+module load bedtools
+
+cd {{jid}}
+
+bedtools shuffle -g {{chrom_size}} -i bed_file > ${COL1}
+
+bedtools getfasta -fi {{genome_fasta}} -bed ${COL1} -fo ${COL1}.fa
+
+module load meme
+
+cd ..
+
+cp {{motif_file}} {{jid}}/motif_file
+
+cd {{jid}}
+
+fimo --text motif_file ${COL1}.fa > ${COL1}.fimo
+
+module load python/2.7.13
+
+fimo_to_motif_co_occurrence.py ${COL1}.fimo ${COL1}.random
+
+##############################################
+
+rm ${COL1}.fimo
+rm ${COL1}.fa
+rm ${COL1}
+
+=cut target 2 random
+
+module load bedtools
+
+cd {{jid}}
+
+bedtools getfasta -fi {{genome_fasta}} -bed bed_file -fo bed_file.fa
+
+module load meme
+
+fimo --text motif_file bed_file.fa > bed_file.fimo
+
+module load python/2.7.13
+
+fimo_to_motif_co_occurrence.py bed_file.fimo target
+
+rm bed_file*
+rm motif_file
+
+=cut summary 3 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+echo '
+import pandas as pd
+import glob
+import scipy
+import numpy as np
+random_files = glob.glob("*.random")
+target_file = "target"
+Num_seq = 2707
+def parse_df(x):
+    df = pd.read_csv(x,index_col=0,header=None)
+    df.columns = [x]
+    return df
+df_list = [parse_df(x) for x in [target_file]+random_files]
+df = pd.concat(df_list,join="inner",axis=1)
+df.to_csv("combine_summary.csv",index=False)
+
+' > summary.py
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}

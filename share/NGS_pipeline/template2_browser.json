@@ -1,0 +1,778 @@
+{
+  "genome": "{{genome_version}}",
+  "name": "HUDEP portal",
+  "assays": [
+    "ATAC-seq Cov",
+    "ATAC-seq Peak",
+    "GATA1 Cov",
+    "GATA1 Peak",
+    "TAL1 Cov",
+    "TAL1 Peak",
+    "H3K27ac Cov",
+    "H3K27ac Peak",
+	"HUDEP-1",
+    "HUDEP-2",
+    "HUDEP-2_D3"	
+  ],
+  "HUDEP-1": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "auto": 1
+      },
+	"height": 60
+    },
+"H3K27ac_R1_FE": { 
+"H3K27ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H1_D0_R1_FE.bw"
+	}
+},
+"H3K27ac_R2_FE": { 
+"H3K27ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H1_D0_R2_FE.bw"
+	}
+},
+"H3K27me3_R1_FE": { 
+"H3K27me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H1_D0_R1_FE.bw"
+	}
+},
+"H3K27me3_R2_FE": { 
+"H3K27me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H1_D0_R2_FE.bw"
+	}
+},
+"H3K36me3_R1_FE": { 
+"H3K36me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H1_D0_R1_FE.bw"
+	}
+},
+"H3K36me3_R2_FE": { 
+"H3K36me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H1_D0_R2_FE.bw"
+	}
+},
+"H3K4me1_R1_FE": { 
+"H3K4me1_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H1_D0_R1_FE.bw"
+	}
+},
+"H3K4me1_R2_FE": { 
+"H3K4me1_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H1_D0_R2_FE.bw"
+	}
+},
+"H3K4me3_R1_FE": { 
+"H3K4me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H1_D0_R1_FE.bw"
+	}
+},
+"H3K4me3_R2_FE": { 
+"H3K4me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H1_D0_R2_FE.bw"
+	}
+},
+"H3K9ac_R1_FE": { 
+"H3K9ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H1_D0_R1_FE.bw"
+	}
+},
+"H3K9ac_R2_FE": { 
+"H3K9ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H1_D0_R2_FE.bw"
+	}
+},
+"H3K9me3_R1_FE": { 
+"H3K9me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H1_D0_R1_FE.bw"
+	}
+},
+"H3K9me3_R2_FE": { 
+"H3K9me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H1_D0_R2_FE.bw"
+	}
+},
+
+
+  "TAL1_r1": {
+        "TAL1_r1": {
+        "file":"ycheng/HUDEP/1102841_Hudep1_TAL1_R1.bw"
+    }
+     },
+  "TAL1_r2": {
+        "TAL1_r2": {
+        "file":"ycheng/HUDEP/1102842_Hudep1_TAL1_R2.bw"
+    }
+     },
+    "RNA-seq d0": {
+      "RNA-seq d0": {
+        "color":"#cc0000",
+	"file": "ycheng/HUDEP/HUDEP1_RNA_rep1.bw"
+      }
+    },
+    "KLF1_r1": {
+      "KLF1_r1": {
+        "file": "ycheng/HUDEP/KLF1/1309434_Hudep1_KLF1_ChIP.bw"
+      }
+     },
+    "KLF1_r2": {
+      "KLF1_r2": {
+        "file": "ycheng/HUDEP/KLF1/1324301_Hudep1_KLF1_2_ChIP.bw"
+      }
+     },    
+    "Pol2_r1": {
+      "Pol2_r1": {
+        "file": "ycheng/HUDEP/1119378_HUDEP1-MPOL2-rep1.bw"
+      }
+     },
+    "Pol2_r2": {
+      "Pol2_r2": {
+        "file": "ycheng/HUDEP/1119380_HUDEP1-MPOL2-rep2.bw"
+      }
+     },
+
+
+
+
+"GATA1": {
+      "GATA1": {
+        "file": "ycheng/HUDEP/1324303_Hudep1_GATA1_1_ChIP.bw"
+      }
+    },
+    "mCRF_rep1": {
+      "mCRF_rep1": {
+        "file": "ycheng/HUDEP/Hudep1_rep1_mCRF.bw"
+      }
+    },
+    "mCRF_rep2": {
+      "mCRF_rep2": {
+        "file": "ycheng/HUDEP/Hudep1_rep2_mCRF.bw"
+      }
+    },
+
+
+
+
+    "ATAC-seq_rep1": {
+      "ATAC-seq_rep1": {
+        "file": "ycheng/HUDEP/ATAC/1345648_Hudep1_ATAC_1.all.bw"
+      }
+    },
+    "ATAC-seq_rep2": {
+      "ATAC-seq_rep2": {
+        "file": "ycheng/HUDEP/ATAC/1345650_Hudep1_ATAC_3.all.bw"
+      }
+    },
+     "CTCF r1":{
+	 "CTCF r1": {
+        "file": "ycheng/HUDEP/1047946_Hudep1_CTCFIP_R1.uq.combine.bw"
+      }
+    },
+     "CTCF r2":{
+         "CTCF r2": {
+        "file": "ycheng/HUDEP/bw/1098560_Hudep1_CTCF_R1_bw"
+      }
+    },
+    "MeDIP Rep1": {
+      "MeDIP Rep1": {
+        "file": "ycheng/HUDEP/methylation/1156087_Hudep1_rep1_MeDIP_R1.bigWig"
+      }
+    },
+    "MeDIP Rep2": {
+      "MeDIP Rep2": {
+        "file": "ycheng/HUDEP/methylation/1156088_Hudep1_rep2_MeDIP_R1.bigWig"
+      }
+    },
+    "MRE Rep1": {
+      "MRE Rep1": {
+        "file": "ycheng/HUDEP/methylation/1156089_Hudep1_rep1_MRE_R1.CpG.bigWig"
+      }
+    },
+    "MRE Rep2": {
+      "MRE Rep2": {
+        "file": "ycheng/HUDEP/methylation/1156090_Hudep1_rep2_MRE_R1.CpG.bigWig"
+      }
+    },
+    "ATAC_seq_footprint": {
+      "ATAC_seq_footprint": {
+        "file": "yli11/CRM_gRNA/cut_site.bw"
+      }
+    }
+  },
+  
+"HUDEP-2_D3": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "auto": 1
+      },
+        "height": 60
+    },
+"H3K27ac_R1_FE": { 
+"H3K27ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H2_D3_R1_FE.bw"
+	}
+},
+"H3K27ac_R2_FE": { 
+"H3K27ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H2_D3_R2_FE.bw"
+	}
+},
+"H3K27me3_R1_FE": { 
+"H3K27me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H2_D3_R1_FE.bw"
+	}
+},
+"H3K27me3_R2_FE": { 
+"H3K27me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H2_D3_R2_FE.bw"
+	}
+},
+"H3K36me3_R1_FE": { 
+"H3K36me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H2_D3_R1_FE.bw"
+	}
+},
+"H3K36me3_R2_FE": { 
+"H3K36me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H2_D3_R2_FE.bw"
+	}
+},
+"H3K4me1_R1_FE": { 
+"H3K4me1_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H2_D3_R1_FE.bw"
+	}
+},
+"H3K4me1_R2_FE": { 
+"H3K4me1_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H2_D3_R2_FE.bw"
+	}
+},
+"H3K4me3_R1_FE": { 
+"H3K4me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H2_D3_R1_FE.bw"
+	}
+},
+"H3K4me3_R2_FE": { 
+"H3K4me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H2_D3_R2_FE.bw"
+	}
+},
+"H3K9ac_R1_FE": { 
+"H3K9ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H2_D3_R1_FE.bw"
+	}
+},
+"H3K9ac_R2_FE": { 
+"H3K9ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H2_D3_R2_FE.bw"
+	}
+},
+"H3K9me3_R1_FE": { 
+"H3K9me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H2_D3_R1_FE.bw"
+	}
+},
+"H3K9me3_R2_FE": { 
+"H3K9me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H2_D3_R2_FE.bw"
+	}
+},
+
+
+    "CTCF r1": {
+      "CTCF r1": {
+        "file": "ycheng/HUDEP/1227501_Hudep2_D3_CTCF_R2.bw"
+      }
+    },
+    "CTCF r2": {
+      "CTCF r2": {
+        "file": "ycheng/HUDEP/1227502_Hudep2_D3_CTCF_R3.bw"
+      }
+    },
+    "LDB1 r1": {
+      "LDB1 r1": {
+        "file": "ycheng/HUDEP/1309430_Hudep2_D3_R2_LDB1_ChIP.bw"
+      }
+    },
+    "LDB1 r2": {
+      "LDB1 r2": {
+        "file": "ycheng/HUDEP/1309431_Hudep2_D3_R3_LDB1_ChIP.bw"
+      }
+    },
+
+
+    "GATA1": {
+      "GATA1": {
+        "file": "ycheng/HUDEP/1102833_Hudep2_D3_GATA1_R1.bw"
+      }
+    }
+},
+
+  "HUDEP-2": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "auto": 1
+      },
+	"height": 60
+    },
+    "KLF1_r1": {
+      "KLF1_r1": {
+        "file": "ycheng/HUDEP/KLF1/1324305_Hudep2_KLF1_2_ChIP.bw"
+      }
+    },
+    "KLF1_r2": {
+      "KLF1_r2": {
+        "file": "ycheng/HUDEP/KLF1/1324306_Hudep2_KLF1_3_ChIP.bw"
+      }
+    },
+"H3K27ac_R1_FE": { 
+"H3K27ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H2_D0_R1_FE.bw"
+	}
+},
+"H3K27ac_R2_FE": { 
+"H3K27ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27ac_H2_D0_R2_FE.bw"
+	}
+},
+"H3K27me3_R1_FE": { 
+"H3K27me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H2_D0_R1_FE.bw"
+	}
+},
+"H3K27me3_R2_FE": { 
+"H3K27me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K27me3_H2_D0_R2_FE.bw"
+	}
+},
+"H3K36me3_R1_FE": { 
+"H3K36me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H2_D0_R1_FE.bw"
+	}
+},
+"H3K36me3_R2_FE": { 
+"H3K36me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K36me3_H2_D0_R2_FE.bw"
+	}
+},
+"H3K4me1_R1_FE": { 
+"H3K4me1_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H2_D0_R1_FE.bw"
+	}
+},
+"H3K4me1_R2_FE": { 
+"H3K4me1_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me1_H2_D0_R2_FE.bw"
+	}
+},
+"H3K4me3_R1_FE": { 
+"H3K4me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H2_D0_R1_FE.bw"
+	}
+},
+"H3K4me3_R2_FE": { 
+"H3K4me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K4me3_H2_D0_R2_FE.bw"
+	}
+},
+"H3K9ac_R1_FE": { 
+"H3K9ac_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H2_D0_R1_FE.bw"
+	}
+},
+"H3K9ac_R2_FE": { 
+"H3K9ac_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9ac_H2_D0_R2_FE.bw"
+	}
+},
+"H3K9me3_R1_FE": { 
+"H3K9me3_R1_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H2_D0_R1_FE.bw"
+	}
+},
+"H3K9me3_R2_FE": { 
+"H3K9me3_R2_FE": { 
+	"file": "ycheng/HUDEP/histone/H3K9me3_H2_D0_R2_FE.bw"
+	}
+}, 
+
+
+
+
+
+ "TAL1_r1": {
+        "TAL1_r1": {
+      "file":"ycheng/HUDEP/chip_1482929/1482927_Hudep2_D0_TAL1_R1_ChIP.bw"
+    }
+     },
+  "TAL1_r2": {
+        "TAL1_r2": {
+        "file":"ycheng/HUDEP/chip_1482929/1482928_Hudep2_D0_TAL1_R2_ChIP.bw"
+    }
+     },
+
+   "MeDIP Rep1": {
+      "MeDIP Rep1": {
+        "file": "ycheng/HUDEP/methylation/1156091_Hudep2_rep1_MeDIP_R1.bigWig"
+      }
+    },
+    "MeDIP Rep2": {
+      "MeDIP Rep2": {
+        "file": "ycheng/HUDEP/methylation/1156092_Hudep2_rep2_MeDIP_R1.bigWig"
+      }
+    },
+    "MRE Rep1": {
+      "MRE Rep1": {
+        "file": "ycheng/HUDEP/methylation/1156093_Hudep2_rep1_MRE_R1.CpG.bigWig"
+      }
+    },
+    "MRE Rep2": {
+      "MRE Rep2": {
+        "file": "ycheng/HUDEP/methylation/1156094_Hudep2_rep2_MRE_R1.CpG.bigWig"
+      }
+    },
+
+    "ATAC-seq_rep1": {
+      "ATAC-seq_rep1": {
+        "file": "ycheng/HUDEP/ATAC/1345651_Hudep2_ATAC_1.all.bw"
+      }
+    },
+    "ATAC-seq_rep2": {
+      "ATAC-seq_rep2": {
+        "file": "ycheng/HUDEP/ATAC/1345652_Hudep2_ATAC_2.all.bw"
+      }
+    },
+    "mCRF_rep1": {
+      "mCRF_rep1": {
+        "file": "ycheng/HUDEP/Hudep2_rep1_mCRF.bw"
+      }
+    },
+    "mCRF_rep2": {
+      "mCRF_rep2": {
+        "file": "ycheng/HUDEP/Hudep2_rep2_mCRF.bw"
+      }
+    },
+    "RNA-seq d0": {
+      "RNA-seq d0": {
+        "file": "ycheng/HUDEP/HUDEP2_RNA_rep1.bw"
+      }
+    },
+    "Pol2_r1": {
+      "Pol2_r1": {
+        "file": "ycheng/HUDEP/1119379_HUDEP2-MPOL2-rep1.bw"
+      }
+    },
+    "Pol2_r2": {
+      "Pol2_r2": {
+        "file": "ycheng/HUDEP/1119381_HUDEP2-MPOL2-rep2.bw"
+      }
+    },
+
+    "GATA1": {
+      "GATA1": {
+        "file": "ycheng/HUDEP/1374930_Hudep2_GATA1_1_ChIP.bw"
+      }
+    },
+    "CTCF r1": {
+      "CTCF r1": {
+        "file": "ycheng/HUDEP/1047954_Hudep2_CTCF_IP_S4-trimmed-pair1.uq.combine.bw"
+      }
+    },
+    "CTCF r2": {
+      "CTCF r2": {
+        "file": "ycheng/HUDEP/bw/1098561_Hudep2_CTCF_R1_bw"
+      }
+    }
+  },
+ 
+  
+  "ATAC-seq Cov": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "max": 50,
+        "min": 0
+      }
+    },
+    "HUDEP1": {
+      "HUDEP1": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_HUDEP1_rep1.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_HUDEP1_rep2.bw"
+        }
+      ]
+    },
+    "HUDEP2": {
+      "HUDEP2": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_HUDEP2_rep1.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_HUDEP2_rep1.bw"
+        }
+      ]
+    },
+    "Erythroblast": {
+      "GSM1937412": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937412.bw"
+        }
+      ],
+      "GSM1937413": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937413.bw"
+        }
+      ],
+      "GSM1937414": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937414.bw"
+        }
+      ],
+      "GSM1937433": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937433.bw"
+        }
+      ],
+      "GSM1937434": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937434.bw"
+        }
+      ],
+      "GSM1937435": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937435.bw"
+        }
+      ],
+      "GSM1937439": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937439.bw"
+        }
+      ],
+      "GSM1937440": [
+        {
+          "file": "Xing/SCD_bw/ATAC-seq_Erythroblast_GSM1937440.bw"
+        }
+      ]
+    }
+  },
+  "ATAC-seq Peak": {
+    "config": {
+      "type": "bedj"
+    },
+    "HUDEP1": {
+      "HUDEP1": [
+        {
+          "file": "Xing/SCD_bed/ATAC-seq_HUDEP1.merged.bedj.gz"
+        }
+      ]
+    },
+    "HUDEP2": {
+      "HUDEP2": [
+        {
+          "file": "Xing/SCD_bed/ATAC-seq_HUDEP2.merged.bedj.gz"
+        }
+      ]
+    },
+    "Erythroblast": {
+      "Erythroblast": [
+        {
+          "file": "Xing/SCD_bed/ATAC-seq_Erythroblast.merged.bedj.gz"
+        }
+      ]
+    }
+  },
+  "GATA1 Cov": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "max": 50,
+        "min": 0
+      }
+    },
+    "HUDEP1": {
+      "HUDEP1": [
+        {
+          "file": "Xing/SCD_bw/HUDEP-1_GATA1_rep1.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/HUDEP-1_GATA1_rep2.bw"
+        }
+      ]
+    },
+    "HUDEP2": {
+      "HUDEP2": [
+        {
+          "file": "Xing/SCD_bw/HUDEP-2_GATA1_rep1.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/HUDEP-2_GATA1_rep2.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/HUDEP-2_GATA1_rep3.bw"
+        },
+        {
+          "file": "Xing/SCD_bw/HUDEP-2_GATA1_rep4.bw"
+        }
+      ]
+    },
+    "K562": {
+      "K562BMP": [
+        {
+          "file": "Xing/SCD_bw/GATA1_K562BMP_GSM722413.bw"
+        }
+      ],
+      "K562bio": [
+        {
+          "file": "Xing/SCD_bw/GATA1_K562bio_GSM722412.bw"
+        }
+      ],
+      "k562USC": [
+        {
+          "file": "Xing/SCD_bw/GATA1_k562USC_GSM935540.bw"
+        }
+      ],
+      "k562stanford": [
+        {
+          "file": "Xing/SCD_bw/GATA1_k562stanford_GSM1003608.bw"
+        }
+      ]
+    },
+    "Fetal": {
+      "Fetal day0": [
+        {
+          "file": "Xing/SCD_bw/GATA1-F0_GSM1816080.bw"
+        }
+      ]
+    },
+    "Adult": {
+      "PBDE": [
+        {
+          "file": "Xing/SCD_bw/GATA1_PBDE_GSM935465.bw"
+        }
+      ]
+    }
+  },
+  "GATA1 Peak": {
+    "config": {
+      "type": "bedj"
+    },
+    "Merged": {
+      "Merged": [
+        {
+          "file": "Xing/SCD_bed/GATA1.merged.bedj.gz"
+        }
+      ]
+    },
+    "HUDEP2": {
+      "HUDEP2": [
+        {
+          "file": "Xing/SCD_bed/HUDEP-2_GATA1.merged.bedj.gz"
+        }
+      ]
+    },
+    "HUDEP1": {
+      "HUDEP1": [
+        {
+          "file": "Xing/SCD_bed/HUDEP-1_GATA1.merged.bedj.gz"
+        }
+      ]
+    }
+  },
+  "TAL1 Cov": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "max": 50,
+        "min": 0
+      }
+    },
+    "Fetal": {
+      "Fetal day5": [
+        {
+          "file": "Xing/SCD_bw/TAL1-F5_GSM1816083.bw"
+        }
+      ]
+    }
+  },
+  "TAL1 Peak": {
+    "config": {
+      "type": "bedj"
+    },
+    "Fetal": {
+      "Fetal day5": [
+        {
+          "file": "Xing/SCD_bed/TAL1-F5_GSM1816083.bedj.gz"
+        }
+      ]
+    }
+  },
+  "H3K27ac Cov": {
+    "config": {
+      "type": "bigwig",
+      "scale": {
+        "max": 50,
+        "min": 0
+      }
+    },
+    "Fetal": {
+      "Fetal day0": [
+        {
+          "file": "Xing/SCD_bw/H3K27ac-F0_GSM1816073.bw"
+        }
+      ],
+      "Fetal day5": [
+        {
+          "file": "Xing/SCD_bw/H3K27ac-F5_GSM1816074.bw"
+        }
+      ]
+    },
+    "Adult": {
+      "Adult day0": [
+        {
+          "file": "Xing/SCD_bw/H3K27ac-A0_GSM1816075.bw"
+        }
+      ],
+      "Adult day5": [
+        {
+          "file": "Xing/SCD_bw/H3K27ac-A5_GSM1816076.bw"
+        }
+      ]
+    }
+  },
+  "H3K27ac Peak": {
+    "config": {
+      "type": "bedj"
+    },
+    "Merged": {
+      "Merged": [
+        {
+          "file": "Xing/SCD_bed/H3K27ac.merged.bedj.gz"
+        }
+      ]
+    }
+  },
+  "disable_sampletable": 1,
+  "browserview": {
+    "nativetracks": [
+      "RefGene"
+    ],
+    "position": {
+      "chr": "chr11",
+      "start": 5247530,
+      "stop": 5302902,
+      "gene": "HBG2"
+    },
+	"tracks":[
+
+
+{{tracks_json_list}}			
+					
+	]
+
+  },
+  "show_browser": 1
+}

@@ -1,0 +1,61 @@
+#!shell
+
+
+=cut count 1
+
+ncore=1
+mem=8000
+
+module purge
+module load conda3
+source activate /home/yli11/.conda/envs/mageck/
+module load texlive/20190410
+module load gcc/6.3.0
+mkdir {{jid}}/raw_counts
+
+mageck count --output-prefix {{jid}}/raw_counts/mageck -l {{gRNA_library}} --fastq {{fastq_files}} --sample-label {{sample_ids}} --pdf-report
+
+cd {{jid}}/raw_counts/
+
+/home/yli11/HemTools/bin/rmd_to_html.R mageck.count_report.Rmd
+
+chmod 777 -R /home/yli11/.conda/envs/mageck/lib/R/
+
+chmod 777 -R /research/rgs01/home/clusterHome/yli11/.conda/envs/py2/lib/python3.7/site-packages/
+
+
+=cut EDA 2 count
+
+module load conda3
+source activate /home/yli11/.conda/envs/py2
+module load gcc/6.3.0
+
+cd {{jid}}/raw_counts
+
+plot_PCA.py -f mageck.count.txt --index --transpose --remove_cols Gene --transpose --log2_transform --header --guess_label -o raw_count_PCA_plot
+
+plot_PCA.py -f mageck.count.txt --index --transpose --remove_cols Gene --transpose --log2_transform --header --guess_label --UMAP -o raw_count_UMAP_plot
+
+=cut gCrispr 2 count
+
+inputFile=design_matrix
+
+module load conda3
+source activate /home/yli11/.conda/envs/gCrisprTools
+
+jid={{jid}}
+
+mkdir $jid/gCrisprTools
+cp {{fastq_tsv}} $jid/gCrisprTools/
+cp {{gRNA_library}} $jid/gCrisprTools/
+fastq_tsv=`basename {{fastq_tsv}}`
+gRNA_library=`basename {{gRNA_library}}`
+cd $jid/gCrisprTools
+ln -s ../raw_counts/mageck.count.txt .
+ln -s ../raw_counts/mageck.countsummary.txt .
+
+run_gCrisprTools.R mageck.count.txt $fastq_tsv $gRNA_library mageck.countsummary.txt ${COL2} ${COL1} {{control_gRNA_group}} ${COL3} {{min_read_count}}
+
+chmod 777 -R /home/yli11/.conda/envs/gCrisprTools
+
+

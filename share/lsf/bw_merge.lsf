@@ -1,0 +1,27 @@
+#!shell
+
+
+=cut merge 1
+
+ncore=1
+mem=32000
+
+module load ucsc/041619
+
+bigWigMerge {{input}} {{jid}}/{{output}}.bdg
+
+cd {{jid}}
+
+sort -k1,1 -k2,2n  {{output}}.bdg > {{output}}.bdg.sorted
+
+bedGraphToBigWig {{output}}.bdg.sorted {{chrom_size}} {{output}}.bw
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

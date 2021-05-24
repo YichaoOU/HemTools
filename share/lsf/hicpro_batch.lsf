@@ -1,0 +1,15 @@
+#!shell
+
+
+=cut submit 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=8000
+q=priority
+
+module load python/2.7.13
+
+hicpro_split.py --queue {{queue}} -r1 ${COL1} -r2 ${COL2} -s ${COL3} -g {{genome}} -j {{jid}}_${COL3} -e {{digested_enzyme}} {{addon_parameters}}
+

@@ -1,0 +1,93 @@
+#!shell
+
+=cut BWA_SE 1
+
+inputFile=SE_fastq_list
+
+ncore=4
+mem=5000
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+mkdir -p {{jid}}/bam_files
+
+
+if [ -f {{SE_fastq_list}} ]
+then
+	bwa mem -t $ncore {{index_file}} ${COL1} |samtools view -@ $ncore -bS -h - > {{jid}}/bam_files/${COL2}.bam
+fi
+
+
+
+=cut BWA_PE 1
+
+inputFile=PE_fastq_list
+
+ncore=4
+mem=5000
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+mkdir -p {{jid}}/bam_files
+
+if [ -f {{PE_fastq_list}} ]
+then
+	bwa mem -t $ncore {{index_file}} ${COL1} ${COL2} |samtools view -@ $ncore -bS -h - > {{jid}}/bam_files/${COL3}.bam
+fi
+
+=cut bin_bam 2 all
+
+ncore=1
+mem={{memory}}
+
+cd {{jid}}
+
+module load java
+
+if [ -f design_matrix_1 ]
+then
+	java -mx200G -jar {{chromHMM_jar}} BinarizeBam {{d1_bin_bam_addon}} {{chrom_size}} bam_files/ design_matrix_1 design_matrix_1_binarized_bed
+fi
+if [ -f design_matrix_2 ]
+then
+	java -mx200G -jar {{chromHMM_jar}} BinarizeBam {{d2_bin_bam_addon}} {{chrom_size}} bam_files/ design_matrix_2 design_matrix_2_binarized_bed
+fi
+
+mkdir MergeBinary
+cd MergeBinary/
+ln -s ../*_binarized_bed .
+cd ..
+java -mx200G -jar {{chromHMM_jar}} MergeBinary MergeBinary/ merged_bed/
+
+=cut learn_model 3 bin_bam
+
+ncore=6
+mem=10000
+
+cd {{jid}}
+
+module load java
+
+java -Djava.awt.headless=true -mx200G -jar {{chromHMM_jar}} LearnModel -p $ncore -r 800 merged_bed/ learned_model_{{number_states}} {{number_states}} {{genome}}
+
+=cut infer_CS 4 learn_model
+
+cd {{jid}}
+
+cd learned_model_{{number_states}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/py2/
+
+find_known_states.py {{known_association}} emissions_{{number_states}}.txt {{chromatin_state_info}} reordered_row_annotation.txt
+
+plot_chromHMM_emission_enrichment_heatmap.py -e emissions_{{number_states}}.txt -a {{cell_line}}_{{number_states}}_overlap.txt -c reordered_row_annotation.txt
+
+=cut email 5 infer_CS
+
+module load python/2.7.13
+
+send_email_v1.py -a {{jid}}/learned_model_{{number_states}}/chromHMM_heatmap.pdf -m "chromatin state discovery is finished" -j "chromatin state discovery is finished" --common
+

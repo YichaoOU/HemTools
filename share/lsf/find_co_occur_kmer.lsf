@@ -1,0 +1,54 @@
+#!shell
+=cut kmer 1
+
+ncore=1
+mem=16000
+
+
+module load bedtools
+module load meme
+module load python/2.7.13
+# define inputs
+peak={{peak_file}}
+single_motif_meme={{motif}}
+kmer_meme={{kmer}}
+genome_fasta={{genome_fasta}}
+work_dir={{jid}}
+kmer_fimo_cutoff={{kmer_fimo_cutoff}}
+
+#step 1 get fasta given peak file
+bedtools getfasta -fi $genome_fasta -bed $peak -fo $work_dir/peak.fa
+
+#step2 motif scanning
+
+fimo --parse-genomic-coord --text --verbosity 1 $single_motif_meme $work_dir/peak.fa > $work_dir/single_motif.fimo
+cd $work_dir
+fimo_to_bed.py single_motif.fimo
+
+#step3 extend motif
+
+extend_bed_by_center.py -f single_motif.fimo.bed -e 50 -o extend.bed
+
+#step4 getfasta
+
+bedtools getfasta -fi $genome_fasta -bed extend.bed -fo extend.fa -s
+
+# check on strandness
+cd ..
+fimo --text --verbosity 1 $single_motif_meme $work_dir/extend.fa > $work_dir/check_strandness.fimo
+cd $work_dir
+
+
+# step 4.5 mask fasta
+fimo_to_bed.py check_strandness.fimo mode
+bedtools maskfasta -fi extend.fa -bed check_strandness.fimo.mode.bed -fo extend.mask.fa
+
+# step5 kmer fimo
+
+cd ..
+fimo --text --verbosity 1 --thresh $kmer_fimo_cutoff $kmer_meme $work_dir/extend.mask.fa > $work_dir/kmer.fimo
+
+# groupby get size
+cd $work_dir
+groupby_get_size.py -f kmer.fimo -g "#pattern name,strand,start" -o kmer.size.csv
+

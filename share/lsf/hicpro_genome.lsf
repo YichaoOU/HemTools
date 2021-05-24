@@ -1,0 +1,67 @@
+#!shell
+
+
+=cut bowtie 1
+
+ncore=1
+mem=30000
+q=priority
+
+cd {{jid}}
+
+mkdir -p bowtie2_index
+
+cd bowtie2_index
+
+ln -s {{genome_fasta}} .
+
+infile=`basename "{{genome_fasta}}"`
+
+module load hic-pro/2.11.1
+
+bowtie2-build $infile {{genome}}
+
+=cut csize 1
+
+ncore=1
+mem=10000
+q=priority
+
+cd {{jid}}
+
+mkdir -p chrom_size
+
+cd chrom_size
+
+ln -s {{genome_fasta}} .
+
+infile=`basename "{{genome_fasta}}"`
+
+module load hic-pro/2.11.1
+
+samtools faidx $infile
+
+cut -f1,2 ${infile}.fai > {{genome}}.chrom.sizes
+
+=cut digest 1
+
+ncore=1
+mem=10000
+q=priority
+
+cd {{jid}}
+
+module load hic-pro/2.11.1
+
+/home/yli11/Programs/HiC-Pro-2.11.1/bin/utils/digest_genome.py -r {{digested_enzyme}} -o {{digested_enzyme}}_resfrag_{{genome}}.bed {{genome_fasta}}
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

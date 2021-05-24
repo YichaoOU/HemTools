@@ -1,0 +1,12 @@
+label	r	g	b
+Active Enhancer	255	195	77
+Active Promoter	255	0	0
+Heterochromatin	128	128	128
+Insulator	189	183	107
+Low Signal	255	255	255
+Open Chromatin	244	166	235
+Poised Promoter	112	48	160
+Polycomb Repressed	128	128	128
+Transcribed Region	0	128	0
+Weak Enhancer	255	255	0
+Weak Promoter	255	153	115

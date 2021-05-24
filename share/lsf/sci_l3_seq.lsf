@@ -1,0 +1,226 @@
+#!shell
+
+=cut dmx 1
+
+inputFile=input_list
+
+ncore=1
+mem=30000
+
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/Sci_L3
+
+echo $PATH
+
+echo `which python`
+
+## global parameters ##
+
+src=/home/yli11/Programs/Sci-L3-seq/src
+
+RT_PRIMER={{RT_PRIMER}}
+SSS_barcode_list={{barcode_3_list}}
+barcode_1_list={{barcode_1_list}}
+barcode_2_list={{barcode_2_list}}
+TN5_fwd={{TN5_fwd}}
+TN5_rev={{TN5_rev}}
+
+# RT_PRIMER=GGGATGCAGCTCGCTCCTG
+# SSS_barcode_list=SSS_barcode.list 
+# barcode_1_list=barcode_1.list 
+# barcode_2_list=barcode_2.list 
+# TN5_fwd=AGATGTGTATAAGAGACAG
+# TN5_rev=CTGTCTCTTATACACATCT
+
+$src/step1_barcode_SSS.py -r1 ${COL1} -r2 ${COL2} --sample_ID ${COL3} --RT_primer $RT_PRIMER --barcode_list $SSS_barcode_list
+
+cd ${COL3}
+
+# python $src/step2_demultiplexing.py -r1 ${COL3}.R1.ordered.fastq.gz -r2 ${COL3}.R2.ordered.fastq.gz --sample_ID ${COL3} --barcode_1_list ../$barcode_1_list --barcode_2_list ../$barcode_2_list --barcode_3_list ../$SSS_barcode_list --UMI_length 4 --bc3_length 6 --sp2_length 19 --bc2_length 7 --sp1_length 6 --bc1_length 8
+$src/step2_demultiplexing.py -r1 ${COL3}.R1.ordered.fastq.gz -r2 ${COL3}.R2.ordered.fastq.gz --sample_ID ${COL3} --barcode_1_list ../$barcode_1_list --barcode_2_list ../$barcode_2_list --barcode_3_list ../$SSS_barcode_list --UMI_length {{UMI_length}} --bc3_length {{bc3_length}} --sp2_length {{sp2_length}} --bc2_length {{bc2_length}} --sp1_length {{sp1_length}} --bc1_length {{bc1_length}}
+
+cd ${COL3}_barcode_demultiplexing
+
+cutadapt -g $TN5_fwd -O 19 -e 0.2 -o ${COL3}.trimmed.R1.fastq.gz ${COL3}.matched.R1.fastq.gz
+
+cutadapt -g $TN5_fwd -a $TN5_rev -O 13 -e 0.2 -o ${COL3}.trimmed.R2.fastq.gz ${COL3}.matched.R2.fastq.gz
+
+
+=cut bwa_hg 2 dmx[*]
+
+inputFile=input_list
+
+ncore=1
+mem=8000
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+bwa_human_index=/home/yli11/Data/Human/hg38/bwa_16a_index/hg38.fa
+bwa_mouse_index=/home/yli11/Data/Mouse/mm10/bwa_16a_index/mm10.fa
+
+
+cd ${COL3}/${COL3}_barcode_demultiplexing
+
+mkdir human
+
+cd human
+
+bwa mem -t 4 $bwa_human_index ../${COL3}.trimmed.R1.fastq.gz ../${COL3}.trimmed.R2.fastq.gz | samtools view -bS - > ${COL3}.bam
+
+samtools sort -o ${COL3}.st.bam ${COL3}.bam
+
+samtools index ${COL3}.st.bam
+
+samtools view -b -F 2048 -f 2 ${COL3}.st.bam > ${COL3}.filter.bam
+
+samtools index ${COL3}.filter.bam
+
+module load python/2.7.15-rhel7
+
+bamCoverage -b ${COL3}.st.bam -o ${COL3}.all.bw --numberOfProcessors 4 --centerReads
+
+bamCoverage -b ${COL3}.filter.bam -o ${COL3}.filter.bw --numberOfProcessors 4 --centerReads
+
+module load bedtools/2.29.2
+
+bedtools bamtobed -i ${COL3}.filter.bam > ${COL3}.bed
+
+grep "/1" ${COL3}.bed > ${COL3}.R1.bed
+
+
+=cut bwa_mm 2 dmx[*]
+
+inputFile=input_list
+
+ncore=1
+mem=8000
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+bwa_human_index=/home/yli11/Data/Human/hg38/bwa_16a_index/hg38.fa
+bwa_mouse_index=/home/yli11/Data/Mouse/mm10/bwa_16a_index/mm10.fa
+
+
+cd ${COL3}/${COL3}_barcode_demultiplexing
+
+mkdir mouse
+
+cd mouse
+
+bwa mem -t 4 $bwa_mouse_index ../${COL3}.trimmed.R1.fastq.gz ../${COL3}.trimmed.R2.fastq.gz | samtools view -bS - > ${COL3}.bam
+
+samtools sort -o ${COL3}.st.bam ${COL3}.bam
+
+samtools index ${COL3}.st.bam
+
+samtools view -b -F 2048 -f 2 ${COL3}.st.bam > ${COL3}.filter.bam
+
+samtools index ${COL3}.filter.bam
+
+module load python/2.7.15-rhel7
+
+bamCoverage -b ${COL3}.st.bam -o ${COL3}.all.bw --numberOfProcessors 4 --centerReads
+
+bamCoverage -b ${COL3}.filter.bam -o ${COL3}.filter.bw --numberOfProcessors 4 --centerReads
+
+module load bedtools/2.29.2
+
+bedtools bamtobed -i ${COL3}.filter.bam > ${COL3}.bed
+
+grep "/1" ${COL3}.bed > ${COL3}.R1.bed
+
+
+=cut cs 3 all
+
+inputFile=input_list
+
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+
+src=/home/yli11/Programs/Sci-L3-seq/src
+
+module load conda3
+source activate Sci_L3
+
+
+cd ${COL3}/${COL3}_barcode_demultiplexing
+
+$src/step4_calculate_collision_rate.py --table ${COL3}.total_number_reads.tsv --human human/${COL3}.R1.bed --mouse mouse/${COL3}.R1.bed
+
+module load R/3.5.1
+
+Rscript $src/draw_collision_figure.R for_collision_plot.tsv ${COL3}_collision.pdf
+
+module load python/2.7.13
+
+send_email_v1.py -a ${COL3}_collision.pdf -m "${COL3} analysis is finished" -j {{jid}} --common
+
+=cut output 4 all
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+
+inputFile=input_list
+
+mv -f ${COL3} {{jid}}
+
+=cut email 5 all
+
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+
+
+module load python/2.7.13
+
+src=/home/yli11/Programs/Sci-L3-seq/src
+
+python $src/step3_QC_summary.py -f {{input_list}} -j {{jid}}
+
+cd {{jid}}
+
+send_email_v1.py -a sample_QC.tsv -m "{{jid}} all jobs have been finished" -j {{jid}} --common
+
+

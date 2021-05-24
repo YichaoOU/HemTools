@@ -1,0 +1,244 @@
+#!shell
+
+=cut split 1
+
+inputFile=input_list
+
+ncore=4
+mem=15000
+# mem=8000
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+FASTQFILE=inputfiles_hicpro.txt; export FASTQFILE
+
+make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt all_sub 2>&1
+
+
+=cut pairs 2 split
+
+ncore=1
+mem=100000
+# mem=8000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt merge_persample 2>&1
+
+=cut ice 3 pairs
+
+ncore=1
+mem=30000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt build_contact_maps 2>&1
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt ice_norm 2>&1
+
+/usr/bin/time -v make --file /research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/scripts/Makefile CONFIG_FILE=hicpro.config.txt CONFIG_SYS=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/hic-pro/install/HiC-Pro_2.11.1/config-system.txt quality_checks 2>&1
+
+
+=cut juicer 3 pairs
+
+ncore=6
+mem=35000
+# ncore=1
+# mem=20000
+q={{queue}}
+
+genome={{juicer_genome_size}}
+
+# module load java/10.0.2
+
+# cd {{jid}}/hicpro_results
+
+# /home/yli11/Programs/HiC-Pro-2.11.1/bin/utils/hicpro2juicebox.sh -i ./hic_results/data/{{sample_id}}/{{sample_id}}.allValidPairs -g $genome -j /home/yli11/HemTools/share/script/jar/juicer_tools_1.21.01.jar -o . -r {{digested_fragments}}
+
+
+module load homer/4.10
+
+
+# we are not using this juicer tool version, but just use the java version (it is compiled with jcuda)
+
+module load juicer_tools
+
+
+cd {{jid}}/hicpro_results/hic_results/data/*/
+
+cut -f 1-7 {{sample_id}}.allValidPairs > {{sample_id}}.allValidPairs.homer
+
+makeTagDirectory {{sample_id}}_homer_tag -format HiCsummary {{sample_id}}.allValidPairs.homer
+
+module load R/3.5.1
+
+## add homer AB compartment
+runHiCpca.pl {{sample_id}}_homer_PCA {{sample_id}}_homer_tag -cpu 8 -genome {{genome}}
+
+tagDir2hicFile.pl {{sample_id}}_homer_tag/ -juicer auto -genome $genome -p 10 -juicerExe "java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar"
+
+
+java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar arrowhead --ignore-sparsity -k KR {{sample_id}}.allValidPairs.hic {{sample_id}}.TAD
+# java -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.21.01.jar arrowhead --ignore-sparsity -k KR {{sample_id}}.allValidPairs.hic {{sample_id}}.TAD
+
+
+
+
+=cut qc 3 pairs
+
+ncore=1
+mem=4000
+q={{queue}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+cd {{jid}}/hicpro_results
+
+multiqc .
+
+
+=cut bedpe 4 ice
+
+ncore=1
+mem=50000
+
+module load python/2.7.13
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+hicpro_to_bedpe.py 20000
+
+hicpro_to_bedpe.py 10000
+
+
+
+=cut plot 4 ice
+
+ncore=1
+mem=20000
+q={{queue}}
+
+module load hic-pro/2.11.1
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/40000/{{sample_id}}_40000.matrix -chr $i -o {{sample_id}} -r 40000 -tri 1 -bed ./raw/40000/{{sample_id}}_40000_abs.bed -n {{sample_id}} -hR 1;done
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/20000/{{sample_id}}_20000.matrix -chr $i -o {{sample_id}} -r 20000 -tri 1 -bed ./raw/20000/{{sample_id}}_20000_abs.bed -n {{sample_id}} -hR 1;done
+
+
+for i in `cut -f1 {{chrom_size}}`;do /usr/bin/time -v HiCPlotter.py -f ./raw/10000/{{sample_id}}_10000.matrix -chr $i -o {{sample_id}} -r 10000 -tri 1 -bed ./raw/10000/{{sample_id}}_10000_abs.bed -n {{sample_id}} -hR 1;done
+
+mkdir HiCplotter
+
+mv *.jpeg HiCplotter
+
+=cut h5 4 ice
+
+ncore=1
+mem=40000
+q={{queue}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/hicexplorer
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+hicConvertFormat --matrices ./iced/20000/{{sample_id}}_20000_iced.matrix --outFileName {{sample_id}}.hicexplorer_20kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/20000/{{sample_id}}_20000_abs.bed 
+
+hicConvertFormat --matrices ./iced/10000/{{sample_id}}_10000_iced.matrix --outFileName {{sample_id}}.hicexplorer_10kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/10000/{{sample_id}}_10000_abs.bed 
+
+hicConvertFormat --matrices ./iced/100000/{{sample_id}}_100000_iced.matrix --outFileName {{sample_id}}.hicexplorer_100kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/100000/{{sample_id}}_100000_abs.bed 
+
+# hicConvertFormat --matrices ./iced/5000/{{sample_id}}_5000_iced.matrix --outFileName {{sample_id}}.hicexplorer_5kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/5000/{{sample_id}}_5000_abs.bed 
+
+
+
+=cut fithic 4 ice
+
+ncore=1
+mem=10000
+q={{queue}}
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+module load hic-pro/2.11.1
+
+hicpro2fithic.py -i raw/20000/{{sample_id}}_20000.matrix -b raw/20000/{{sample_id}}_20000_abs.bed -s iced/20000/{{sample_id}}_20000_iced.matrix.biases
+
+source activate /home/yli11/.conda/envs/fithic/
+
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 4
+
+# =cut onTAD 4 ice
+
+=cut TAD_AB 5 h5
+
+inputFile=h5_list
+
+ncore=1
+mem=60000
+q={{queue}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/hicexplorer
+
+cd {{jid}}/hicpro_results/hic_results/matrix/*/
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_20kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_20kb.tad -p 8
+
+hicPCA -m {{sample_id}}.hicexplorer_20kb.h5 -o {{sample_id}}_20kb_PC1.bw {{sample_id}}_20kb_PC2.bw
+
+hicTransform -m {{sample_id}}.hicexplorer_20kb.h5 --outFileName {{sample_id}}.hicTransform_20kb.h5 --method all
+
+hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_20kb.h5 --outFileName {{sample_id}}_20kb_PC1.png --perChr --bigwig {{sample_id}}_20kb_PC1.bw
+
+
+
+hicFindTADs --matrix {{sample_id}}.hicexplorer_10kb.h5 --correctForMultipleTesting fdr --outPrefix {{sample_id}}.hicexplorer_10kb.tad -p 4 
+
+
+
+hicPCA -m {{sample_id}}.hicexplorer_10kb.h5 -o {{sample_id}}_10kb_PC1.bw {{sample_id}}_10kb_PC2.bw
+
+hicTransform -m {{sample_id}}.hicexplorer_10kb.h5 --outFileName {{sample_id}}.hicTransform_10kb.h5 --method all
+
+hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_10kb.h5 --outFileName {{sample_id}}_10kb_PC1.png --perChr --bigwig {{sample_id}}_10kb_PC1.bw
+
+
+
+
+hicPCA -m {{sample_id}}.hicexplorer_100kb.h5 -o {{sample_id}}_10kb_PC1.bw {{sample_id}}_10kb_PC2.bw
+
+hicTransform -m {{sample_id}}.hicexplorer_100kb.h5 --outFileName {{sample_id}}.hicTransform_100kb.h5 --method all
+
+hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_100kb.h5 --outFileName {{sample_id}}_100kb_PC1.png --perChr --bigwig {{sample_id}}_100kb_PC1.bw
+
+
+
+=cut email 6 all
+
+q={{queue}}
+
+module load python/2.7.13
+
+cd {{jid}}/hicpro_results
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+
+

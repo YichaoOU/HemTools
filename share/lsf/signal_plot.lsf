@@ -1,0 +1,38 @@
+#!shell
+
+=cut 1 sigPlot
+
+inputFile=commands_list
+
+ncore=1
+mem=20000
+
+module load python/2.7.15-rhel7
+
+${LINE}
+
+
+
+plotHeatmap -m matrix_two_groups.gz \
+     -out ExampleHeatmap2.png \
+     --colorMap RdBu \
+     --whatToShow 'heatmap and colorbar' \
+     --zMin -3 --zMax 3 \
+     --kmeans 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,82 @@
+title: "{{jid}}"
+table_cond_formatting_rules:
+  FRIP_ATAC:
+    pass:
+      - gt: 0.2999
+    warn:
+      - lt: 0.2999
+    fail:
+      - lt: 0.2
+  FRIP_ChIP:
+    pass:
+      - gt: 0.2999
+    warn:
+      - lt: 0.2999
+    fail:
+      - lt: 0.0999
+  NRF_ATAC:
+    pass:
+      - gt: 0.9
+    warn:
+      - lt: 0.9
+    fail:
+      - lt: 0.7
+  PBC1_ATAC:
+    pass:
+      - gt: 0.9
+    warn:
+      - lt: 0.9
+    fail:
+      - lt: 0.7
+  PBC2_ATAC:
+    pass:
+      - gt: 3
+    warn:
+      - lt: 3
+    fail:
+      - lt: 1
+  NRF:
+    pass:
+      - gt: 0.9
+    warn:
+      - lt: 0.9
+    fail:
+      - lt: 0.5
+  PBC1:
+    pass:
+      - gt: 0.9
+    warn:
+      - lt: 0.9
+    fail:
+      - lt: 0.5
+  PBC2:
+    pass:
+      - gt: 10
+    warn:
+      - lt: 10
+    fail:
+      - lt: 1
+  FRIP_other:
+    pass:
+      - gt: 0.0999
+    fail:
+      - lt: 0.0999
+  QTag:
+    pass:
+      - gt: 0
+    fail:
+      - lt: 1
+  TSS_enrichment:
+    pass:
+      - gt: 10
+    warn:
+      - lt: 10
+    fail:
+      - lt: 5
+table_cond_formatting_colours:
+  - blue: "#337ab7"
+  - lbue: "#5bc0de"
+  - pass: "#5cb85c"
+  - warn: "#f0ad4e"
+  - fail: "#d9534f"
+

@@ -1,0 +1,101 @@
+
+
+=cut homer_norm 1
+
+inputFile=replicate_list
+
+ncore=1
+mem=16000
+
+module load homer/4.10
+
+module load samtools
+
+module load ucsc/041619
+
+## -format sam, interesting homer use sam for bam
+
+cd {{jid}}
+
+makeTagDirectory ${COL1}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL1}.bam
+
+makeUCSCfile  ${COL1}_tag -o ${COL1}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 > log_files/${COL1}-bigWig.trackInfo.txt
+
+
+
+=cut homer_diff 2 homer_norm
+
+## will fail when applying to group
+
+inputFile=design_matrix
+
+ncore=1
+mem=16000
+
+## merge peak for each comparison
+
+module load bedtools
+
+uid=`openssl rand -hex 12`
+
+cd {{jid}}
+
+cat ${COL1}.bed ${COL2}.bed > ${COL3}.$uid.homer_diff.merged.bed
+
+sort -k1,1 -k2,2n ${COL3}.$uid.homer_diff.merged.bed > ${COL3}.$uid.homer_diff.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i ${COL3}.$uid.homer_diff.merged.st.bed > ${COL3}.$uid.homer_diff.merged.bed
+
+module load homer/4.10
+
+module load R/3.4.0
+
+mkdir -p homer_diff_results
+
+getDifferentialPeaks ${COL3}.$uid.homer_diff.merged.bed ${COL1}_tag/ ${COL2}_tag/ -F 1 -P 0.5 > homer_diff_results/${COL3}.peak
+
+rm *${uid}*
+
+
+
+=cut homer_diff 2 homer_norm
+
+# homer_diff only applies to one treatment to one control, so replicates will be merged
+
+inputFile=design_matrix
+
+ncore=1
+mem=16000
+
+## merge peak for each comparison
+
+module load bedtools
+
+
+cd {{jid}}
+
+cat ${COL1}.bed ${COL2}.bed > ${COL3}.homer_diff.merged.bed
+
+sort -k1,1 -k2,2n ${COL3}.homer_diff.merged.bed > ${COL3}.homer_diff.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i ${COL3}.homer_diff.merged.st.bed > ${COL3}.homer_diff.merged.bed
+
+module load homer/4.10
+
+module load R/3.4.0
+
+mkdir -p homer_diff_results
+
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed ${COL1}_tag/ ${COL2}_tag/ -F 0 -P 1 > homer_diff_results/${COL3}.gain.peak
+
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed ${COL2}_tag/ ${COL1}_tag/ -F 0 -P 1 > homer_diff_results/${COL3}.loss.peak
+
+
+
+rm ${COL3}.homer_diff*
+
+cd homer_diff_results
+
+module load python/2.7.13
+
+summarize_homer_diffpeak.py ${COL3}.gain.peak ${COL3}.loss.peak 0 ${COL3}.diffpeaks.FC2.P5.bed

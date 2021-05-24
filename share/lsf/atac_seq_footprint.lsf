@@ -1,0 +1,140 @@
+#!shell
+
+=cut FT_bed 1
+
+inputFile=input
+
+ncore=1
+mem=50000
+q=priority
+
+module purge
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint/
+
+rgt-hint footprinting --atac-seq --paired-end --output-location {{jid}} --output-prefix ${COL3} --organism {{genome}} ${COL1} ${COL2}
+
+cd {{jid}}
+
+# rgt-motifanalysis matching --organism {{genome}} --input-files ${COL3}.bed --output-location ${COL3}_motif_match
+
+=cut FT_bw_bc 1
+
+inputFile=input
+
+ncore=1
+mem=50000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint/
+
+rgt-hint tracks --organism {{genome}} --bc --bigWig --output-location {{jid}} --output-prefix ${COL3}_bc ${COL1} ${COL2} 
+
+rgt-hint tracks --organism {{genome}} --bc --bigWig --output-location {{jid}} --strand-specific --output-prefix ${COL3}_bc_strand ${COL1} ${COL2} 
+
+=cut FT_bw_raw 1
+
+inputFile=input
+
+ncore=1
+mem=50000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint/
+
+rgt-hint tracks --organism {{genome}} --raw --norm --bigWig --output-location {{jid}} --output-prefix ${COL3}_raw_norm ${COL1} ${COL2} 
+
+rgt-hint tracks --organism {{genome}} --raw --norm --bigWig --output-location {{jid}} --strand-specific --output-prefix ${COL3}_raw_norm_strand ${COL1} ${COL2} 
+
+rgt-hint tracks --organism {{genome}} --raw --bigWig --output-location {{jid}} --output-prefix ${COL3}_raw ${COL1} ${COL2} 
+
+=cut FT_bw_bc_norm 1
+
+inputFile=input
+
+ncore=1
+mem=50000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint/
+
+rgt-hint tracks --organism {{genome}} --bc --norm --bigWig --output-location {{jid}} --output-prefix ${COL3}_bc_norm ${COL1} ${COL2} 
+
+rgt-hint tracks --organism {{genome}} --bc --norm --bigWig --output-location {{jid}} --strand-specific --output-prefix ${COL3}_bc_norm_strand ${COL1} ${COL2} 
+
+
+=cut motif 2 FT_bed[*]
+
+inputFile=input
+
+ncore=1
+mem=8000
+q=priority
+
+module purge
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/costa_RGT_footprint/
+
+cd {{jid}}
+
+rgt-motifanalysis matching --organism {{genome}} --input-files ${COL3}.bed --output-location ${COL3}_motif_match
+
+
+=cut diffFT 3 motif
+
+ncore=1
+mem=16000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/rgt_hint/
+
+
+rgt-hint differential --organism={{genome}} --bc --nc 10 --mpbs-files=./{{jid}}/{{treatment}}_motif_match/{{treatment}}_mpbs.bed,./{{jid}}/{{control}}_motif_match/{{control}}_mpbs.bed --reads-files={{treatment_bam}},{{control_bam}} --conditions={{treatment}},{{control}} --output-location={{jid}}/Diff_footprints_{{treatment}}_{{control}} --output-profiles
+
+cd Diff_footprints_{{treatment}}_{{control}}
+
+mkdir temp_files
+
+mv {{treatment}}*.txt temp_files
+mv {{control}}*.txt temp_files
+
+=cut email 4 all
+
+module load python/2.7.13
+
+{{softlinks}}
+
+cd {{jid}}
+
+mv *.lsf log_files
+
+mkdir other_bw_files
+
+mv *norm.bw other_bw_files
+mv *raw*.bw other_bw_files
+mv *strand*.bw other_bw_files
+mv *.wig other_bw_files
+
+mv *.info log_files
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+

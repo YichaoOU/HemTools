@@ -1,0 +1,49 @@
+#!shell
+
+=cut minion 1
+
+
+ncore=2
+mem={{mem}}
+
+
+prefix={{output_label}}
+
+
+module load wtdbg/2.5
+
+wtdbg2 -x ont -g {{genome_size}} -i {{fastq_file}} -t 4 -fo {{jid}}/$prefix {{wtdbg2_addon_parameters}}
+
+cd {{jid}}
+
+wtpoa-cns -t 4 -i $prefix.ctg.lay.gz -fo $prefix.ctg.fa {{wtpoa_cns_addon_parameters}}
+
+cd ..
+
+# ngmlr maps long reads to sequence
+# need --bam-fix to make bam files correct.  but the gawk statement fixes some other bam line that have negative quality score
+# -r is the reference genome, -q the reads -k is kmer length, defailt is 13 but i set as 10 since i had a small genome i could be more sensitive. the --presets sets some parameters for the nanopore system
+# obviously the naming was specific for what i was doing
+
+
+module load ngmlr
+
+ngmlr --bam-fix -r {{ref_fa}} -q {{fastq_file}}  -k {{kmer}} -o {{jid}}/$prefix.sam --presets ont {{ngmlr_addon_parameters}}
+
+cd {{jid}}
+
+gawk '{if ($5<0 && NF>4) {$5=60} else{ print $0} }' $prefix.sam > $prefix.fix.sam
+
+module load samtools/1.7
+
+samtools sort -@ 4 -o $prefix.fix.st.bam $prefix.fix.sam
+
+samtools index $prefix.fix.st.bam
+
+=cut email 3 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} pipeline is finished!" -j {{jid}}

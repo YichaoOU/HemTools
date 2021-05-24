@@ -1,0 +1,37 @@
+#!shell
+
+
+=cut indel 1
+
+inputFile=input_list
+
+## columns are gRNA, P1, P2, R1, R2, name
+
+ncore=1
+mem=12000
+
+in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_results.txt 2> {{jid}}/${COL6}_amplicons.fasta
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+amplicon=`tail -n 1 {{jid}}/${COL6}_amplicons.fasta`
+
+CRISPResso -r1 ${COL4} -r2 ${COL5} --amplicon_seq $amplicon --guide_seq ${COL1} --keep_intermediate --dump -o {{jid}}/${COL6}
+# CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL4} --guide_seq ${COL5} -o {{jid}}/${COL3} --keep_intermediate --dump {{add_on}}
+
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+

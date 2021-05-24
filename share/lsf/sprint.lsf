@@ -1,0 +1,29 @@
+#!shell
+
+
+# genome index was prepared using 
+
+# module load bwa/0.7.12 samtools/1.2
+# sprint pp -t ~/Data/Human/hg19/annotations/gencode.v30lift37.annotation.gtf ~/Data/Human/hg19/fasta/hg19.fa bwa
+# the index file goes to fasta/hg19.fa
+
+
+=cut trim 1
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load trimgalore cutadapt/1.1
+
+mkdir ${COL3}
+
+trim_galore --paired -o ${COL3} ${COL1} ${COL2}
+
+=cut SPRINT 2 trim[*]
+
+module load bwa/0.7.12 samtools/1.2
+
+sprint main -1 1000000_RFR001_S1_R1_val_2.fq -2 1000000_RFR001_S1_R2_val_1.fq -c 6 -p 4 -rp ~/Programs/SPRINT/dbrep/hg19_repeat.txt ~/Data/Human/hg19/fasta/hg19.fa . bwa samtools
+

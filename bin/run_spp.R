@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 # run_spp.R
 # =============
 # Author: Anshul Kundaje, Computer Science Dept., MIT

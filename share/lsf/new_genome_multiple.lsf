@@ -1,0 +1,78 @@
+#!shell
+
+
+
+=cut vcf2fa 1
+
+ncore=1
+mem=20000
+
+src=/home/yli11/Programs/vcf2diploid_v0.2.6a
+
+label={{label}}
+genome_fa={{genome_fa}}
+jid={{jid}}
+vcf_file={{vcf_file}}
+
+# 20	1	.	G	TTT	.	.	.	GT	1|1
+# 20	2	.	G	CCC	.	.	.	GT	1|1
+
+
+
+module load java
+
+outdir=$jid
+
+mkdir $outdir
+
+java -jar $src/vcf2diploid.jar -id $label -chr $genome_fa -vcf $vcf_file -outDir $outdir
+
+cd $outdir
+
+cat *_paternal.fa > $label.tmp.fasta
+
+python /home/yli11/HemTools/share/misc/rename_chr.py $label.tmp.fasta $label.fasta
+
+rm $label.tmp.fasta
+
+
+mkdir intermediate_files
+
+mv *.fa intermediate_files
+
+mv *.map intermediate_files
+
+mv maternal.chain intermediate_files
+
+module load bwa/0.7.16a
+
+bwa index $label.fasta
+
+### black_list
+
+module load python/2.7.13
+
+liftover.py -g custom --chain_file paternal.chain --bed {{black_list}} -o $label.black_list.bed
+
+
+### swap chain
+
+module load ucsc
+
+chainSwap paternal.chain paternal.swap.chain
+
+
+### gene annotation
+
+
+### chrom size
+
+module load samtools
+
+
+
+
+samtools faidx $label.fasta
+
+cut -f1,2 $label.fasta.fai > $label.chrom.sizes
+

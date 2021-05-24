@@ -1,0 +1,19 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=hdr_list
+
+## columns are amplicon, expected, r1, r2, name, sgRNA
+
+ncore=1
+mem=12000
+q=priority
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+CRISPResso -r1 ${COL3} -r2 ${COL4} -a ${COL1} -e ${COL2} --guide_seq ${COL6} -o {{jid}}/${COL5} --discard_indel_reads
+

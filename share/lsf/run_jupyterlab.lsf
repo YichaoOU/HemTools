@@ -1,0 +1,16 @@
+#!shell
+
+=cut jupyter 1 
+
+ncore=1
+mem={{memory}}
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+export XDG_RUNTIME_DIR=""
+export JUPYTER_RUNTIME_DIR=/tmp
+
+jupyterlab.py
+

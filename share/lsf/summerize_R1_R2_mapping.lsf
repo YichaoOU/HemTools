@@ -1,0 +1,60 @@
+#!shell
+
+
+=cut sumry 1
+
+inputFile=input
+
+ncore=1
+mem=16000
+
+module load bedtools
+
+cd {{jid}}
+
+bedtools bamtobed -i ${COL1} > ${COL3}_R1.bed
+
+bedtools bamtobed -i ${COL2} > ${COL3}_R2.bed
+
+module load python/2.7.13
+
+summerize_R1_R2_mapping.py ${COL3}_R1.bed ${COL3}_R2.bed ${COL3}
+
+=cut merge 2 all
+
+cd {{jid}}
+
+rm *.bed
+
+cat *.direction.summary.csv > direction.summary.csv
+
+cat *.distance.summary.csv > distance.summary.csv
+
+rm *.direction.summary.csv
+
+rm *.distance.summary.csv
+
+module load python/2.7.13
+
+mkdir mapping_info
+
+mv *.mapping.info.csv mapping_info
+
+plot_numeric_small_heatmap.py -f direction.summary.csv --columns "+ +,+ -,+ NA,- +,- -,- NA,NA +,NA -" --sort_by '+ -' --col_order "+ -,- +,+ +,- -,+ NA,- NA,NA +,NA -" -o mapping.direction 
+
+plot_numeric_small_heatmap.py -f distance.summary.csv --columns "NA +.overlap,+ +.overlap,- NA.overlap,+ NA.interCHR,- NA.neg-d,- +.pos-d,+ NA.overlap,+ +.pos-d,- NA.interCHR,NA +.neg-d,+ +.neg-d,- -.pos-d,- -.overlap,- -.neg-d,- +.interCHR,NA +.interCHR,+ +.interCHR,+ NA.pos-d,- NA.pos-d,+ -.pos-d,NA -.pos-d,- -.interCHR,+ -.neg-d,NA -.neg-d,- +.overlap,- +.neg-d,NA -.overlap,+ -.overlap,+ NA.neg-d,NA -.interCHR,+ -.interCHR,NA +.pos-d" --sort_by '+ -.interCHR' --col_order "+ -.interCHR,+ -.neg-d,+ -.overlap,+ -.pos-d,- +.interCHR,- +.neg-d,- +.overlap,- +.pos-d,- -.interCHR,- -.neg-d,- -.overlap,- -.pos-d,+ +.interCHR,+ +.neg-d,+ +.overlap,+ +.pos-d" -o mapping.distance 
+
+
+sed -i '1iName,+ +,+ -,+ NA,- +,- -,- NA,NA +,NA -' direction.summary.csv
+
+sed -i '1iName,NA +.overlap,+ +.overlap,- NA.overlap,+ NA.interCHR,- NA.neg-d,- +.pos-d,+ NA.overlap,+ +.pos-d,- NA.interCHR,NA +.neg-d,+ +.neg-d,- -.pos-d,- -.overlap,- -.neg-d,- +.interCHR,NA +.interCHR,+ +.interCHR,+ NA.pos-d,- NA.pos-d,+ -.pos-d,NA -.pos-d,- -.interCHR,+ -.neg-d,NA -.neg-d,- +.overlap,- +.neg-d,NA -.overlap,+ -.overlap,+ NA.neg-d,NA -.interCHR,+ -.interCHR,NA +.pos-d' distance.summary.csv
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

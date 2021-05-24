@@ -1,0 +1,57 @@
+#!shell
+
+
+=cut count 1
+
+inputFile=input_list
+
+ncore=1
+mem=10000
+q=priority
+
+module load subread
+module load bedtools
+
+
+cat ${COL3} ${COL4} > {{jid}}/$id.merged.bed
+
+cd {{jid}}
+
+sort -k1,1 -k2,2n $id.merged.bed > $id.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i $id.merged.st.bed > $id.merged.st.bedtools.bed
+
+cd ..
+
+module load ucsc/041619
+
+bigWigAverageOverBed ${COL1}  {{jid}}/$id.merged.st.bedtools.bed {{jid}}/$id.rep1.tsv  
+
+bigWigAverageOverBed ${COL2}  {{jid}}/$id.merged.st.bedtools.bed {{jid}}/$id.rep2.tsv  
+
+bedtools intersect -a {{jid}}/$id.merged.st.bedtools.bed -b {{highlight}} -u | cut -f 4 > {{jid}}/$id.highlight
+
+cd {{jid}}
+
+awk -F "\t" '{print $1"\t"$5}' $id.rep1.tsv > $id.rep1.signal
+
+awk -F "\t" '{print $1"\t"$5}' $id.rep2.tsv > $id.rep2.signal
+
+
+module load python/2.7.13
+
+dataframe_merge.py --header_list ${COL1},${COL2} $id.rep1.signal  $id.rep2.signal --output $id.signal.out -s "\t"
+
+echo "${COL1}"
+
+echo "${COL2}"
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+if ["{{highlight}}" = ""]; then
+	scatter_density.py -f $id.signal.out -x ${COL1} -y ${COL2} -o $id.out.pdf
+else
+	scatter_density.py -f $id.signal.out -x ${COL1} -y ${COL2} -o $id.out.pdf --highlight $id.highlight --index 0 --regression
+fi

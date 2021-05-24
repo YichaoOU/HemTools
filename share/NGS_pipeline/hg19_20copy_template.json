@@ -1,0 +1,28 @@
+{
+  "genome": "hgvirus",
+  "disable_sampletable": 1,
+  "browserview": {
+      "nativetracks": [
+      "RefGene"
+    ],
+
+    "position": {
+      "chr": "chr1_paternal",
+      "start": 235490000,
+      "stop": 235499999,
+      "gene": "GGPS1"
+    },
+	"tracks":[
+
+
+
+{{tracks_json_list}}			
+
+
+					
+	]
+
+  },
+  "show_browser": 1
+}
+

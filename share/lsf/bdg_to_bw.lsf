@@ -1,0 +1,34 @@
+#!shell
+
+
+=cut bdgToBw 1
+
+inputFile=bdg_files
+
+ncore=1
+mem=8000
+
+
+
+myBaseName=$(basename -- ${COL1})
+{{remove_first_line}}
+sort -k1,1 -k2,2n ${COL1} > {{jid}}/${myBaseName}.sorted
+cd {{jid}}
+module load ucsc/041619
+bedGraphToBigWig ${myBaseName}.sorted {{chrom_size}} ${myBaseName%.sorted}.bw
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+

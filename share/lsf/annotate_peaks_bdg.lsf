@@ -1,0 +1,39 @@
+#!shell
+
+=cut annotP 1
+
+inputFile=bed_list
+
+ncore=1
+mem=16000
+
+module load homer/4.9.1
+
+cd {{jid}}
+
+annotatePeaks.pl ${COL1} {{genome}} -bedGraph *.bdg > ${COL1}_homer.tsv
+
+module load python/2.7.13
+
+python tmp.py ${COL1}_homer.tsv
+
+=cut email 4 annotP
+
+module load python/2.7.13
+
+mv {{jid}}.homer.input {{jid}}/log_files
+
+cd {{jid}}
+
+mv *.lsf log_files
+
+rm *.bdg
+
+rm *.bed
+
+rm tmp.py
+
+send_email_v1.py -m "annotate peaks is finished!" -j {{jid}}
+
+
+

@@ -1,0 +1,32 @@
+#!shell
+=cut vtrx 1
+
+inputFile=input
+
+# ncore=2
+# mem=50000
+ncore=1
+mem=50000
+q=priority
+
+cd ${COL1}_results/${COL1}/outs
+
+fasta=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/cellranger/refdata/refdata-cellranger-GRCh38-3.0.0/fasta/genome.fa
+
+#vcf=/home/yli11/dirs/single_cell_yli11_2021-02-25/2133602_YY1_S1_results/2133602_YY1_S1/outs/test.vcf.gz
+vcf=/research/dept/hem/common/sequencing/weissgrp_215175_10x-1/analysis/single_cell_yli11_2021-02-25/MK.vcf.gz
+
+
+# vartrix_linux --bam possorted_genome_bam.bam --cell-barcodes ./filtered_feature_bc_matrix/barcodes.tsv.gz --fasta $fasta --vcf $vcf --threads 12 --out-matrix vartrix.matrix.all_coverage.out --out-variants vartrix.variant.all_coverage.out --primary-alignments --umi --out-barcodes vartrix.barcode.all_coverage.out --ref-matrix vartrix.ref_matrix.all_coverage.out -s coverage
+
+vartrix_linux --bam possorted_genome_bam.bam --cell-barcodes ./filtered_feature_bc_matrix/barcodes.tsv.gz --fasta $fasta --vcf $vcf --threads 12 --out-matrix vartrix.matrix.var_coverage.out --out-variants vartrix.variant.var_coverage.out --primary-alignments --umi --out-barcodes vartrix.barcode.var_coverage.out --ref-matrix vartrix.ref_matrix.var_coverage.out -s coverage
+
+
+
+#vartrix_linux --bam possorted_genome_bam.bam --cell-barcodes ./filtered_feature_bc_matrix/barcodes.tsv.gz --fasta $fasta --vcf $vcf --threads 12 --out-matrix vartrix.matrix.out --out-variants vartrix.variant.out --primary-alignments --umi --out-barcodes vartrix.barcode.out --ref-matrix vartrix.ref_matrix.out -s consensus
+
+#vartrix_linux --bam possorted_genome_bam.bam --cell-barcodes ./filtered_feature_bc_matrix/barcodes.tsv.gz --fasta $fasta --vcf $vcf --threads 12 --out-matrix vartrix.matrix.alt.out --out-variants vartrix.variant.alt.out --primary-alignments --umi --out-barcodes vartrix.barcode.alt.out --ref-matrix vartrix.ref_matrix.alt.out -s alt_frac
+
+
+
+

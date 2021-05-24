@@ -1,0 +1,121 @@
+#!shell
+
+=cut CaptC 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=16000
+
+module load trimgalore flash cutadapt/1.1 perl
+module load bowtie/1.2.2
+module load ucsc/041619
+
+script_path=/home/yli11/Programs/CaptureC
+
+mkdir ${COL3}
+
+## step0
+
+perl $script_path/dpngenome3_1.pl {{genome_fa}} {{cut_site}} ${COL3}.cut_coordinates.txt
+
+mv ${COL3}.cut_coordinates.txt ${COL3}
+
+## step 1
+trim_galore --paired -o ${COL3} ${COL1} ${COL2}
+## step 2 very fast
+flash --interleaved-output -d ${COL3} -o ${COL3}_flash ${COL3}/${COL1%.fastq.gz}_val_1.fq.gz ${COL3}/${COL2%.fastq.gz}_val_2.fq.gz
+
+## step 3
+cat ${COL3}/*_flash*.fastq > ${COL3}/${COL3}.Combined_reads.fastq
+
+## step 4
+perl $script_path/dpnII2E.pl ${COL3}/${COL3}.Combined_reads.fastq {{cut_site}}
+
+mkdir ${COL3}/bowtie_result
+
+## step 5 do not parallel this
+bowtie -p 1 -m 5 --best --strata --sam --chunkmb 256 {{index_file}}/{{genome}} ${COL3}/${COL3}.Combined_reads_REdig.fastq ${COL3}/bowtie_result/${COL3}.Combined_reads_REdig.fastq.sam 
+
+mkdir ${COL3}/CC
+mkdir ${COL3}/CC_vis
+mkdir ${COL3}/CC_vis/res-5k
+mkdir ${COL3}/CC_vis/res-10k
+mkdir ${COL3}/CC_vis/res-2k
+mkdir ${COL3}/CC_vis/res-1k
+cd ${COL3}/CC
+
+perl $script_path/CCanalyser3.pl -f ../bowtie_result/${COL3}.Combined_reads_REdig.fastq.sam -r ../${COL3}.cut_coordinates.txt -genome {{genome}} -o {{target}} -s ${COL3}-5kb -pf ../CC_vis/res-5k/ -b {{index_file}}/ -w 5000
+
+perl $script_path/CCanalyser3.pl -f ../bowtie_result/${COL3}.Combined_reads_REdig.fastq.sam -r ../${COL3}.cut_coordinates.txt -genome {{genome}} -o {{target}} -s ${COL3}-10kb -pf ../CC_vis/res-10k/ -b {{index_file}}/ -w 10000
+
+perl $script_path/CCanalyser3.pl -f ../bowtie_result/${COL3}.Combined_reads_REdig.fastq.sam -r ../${COL3}.cut_coordinates.txt -genome {{genome}} -o {{target}} -s ${COL3}-2kb -pf ../CC_vis/res-2k/ -b {{index_file}}/ -w 2000
+
+perl $script_path/CCanalyser3.pl -f ../bowtie_result/${COL3}.Combined_reads_REdig.fastq.sam -r ../${COL3}.cut_coordinates.txt -genome {{genome}} -o {{target}} -s ${COL3}-1kb -pf ../CC_vis/res-1k/ -b {{index_file}}/ -w 1000
+
+module load samtools/1.7
+
+cd ${COL3}-1kb_CC3
+
+for i in *sam;do samtools view -bS -h $i | samtools sort -o $i.bam - ; samtools index $i.bam;done
+
+cd ..
+
+cd ${COL3}-2kb_CC3
+
+for i in *sam;do samtools view -bS -h $i | samtools sort -o $i.bam - ; samtools index $i.bam;done
+
+cd ..
+
+cd ${COL3}-5kb_CC3
+
+for i in *sam;do samtools view -bS -h $i | samtools sort -o $i.bam - ; samtools index $i.bam;done
+
+cd ..
+
+cd ${COL3}-10kb_CC3
+
+for i in *sam;do samtools view -bS -h $i | samtools sort -o $i.bam - ; samtools index $i.bam;done
+
+cd ..
+
+cd ../CC_vis
+
+module load ucsc/041619
+
+
+bigWigMerge res-1k/*C[0-9].bw output.bdg
+
+sort -k1,1 -k2,2n  output.bdg > output.st.bdg
+
+bedGraphToBigWig output.st.bdg {{chrom_size}} ${COL3}.bw
+
+cd ..
+
+cd ..
+
+mv -f ${COL3} {{jid}}
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+# ../BGLT3/captureC_yli11_2021-05-04/CaptureC_NT_BGLT3_r1_S27/CC/CaptureC_NT_BGLT3_r1_S27-10kb_CC3/CaptureC_NT_BGLT3_r1_S27.Combined_reads_REdig.fastq_CC3_C0.gff .
+mkdir gff_files
+
+cd gff_files
+
+cp ../*/CC/*10kb_CC3/*Combined_reads_REdig*gff .
+
+cd ..
+
+cp /home/yli11/HemTools/share/script/captureC_merge_gff.py .
+
+python captureC_merge_gff.py gff_files
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+

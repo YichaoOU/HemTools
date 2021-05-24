@@ -1,0 +1,32 @@
+#!shell
+
+=cut indel 1
+
+inputFile=input_list
+
+ncore=1
+mem=8000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+module load bedtools
+
+# CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL4} --guide_seq ${COL5} -o {{jid}}/${COL3} --keep_intermediate --dump {{add_on}}
+
+CRISPResso -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL3} --guide_seq ${COL4} -o {{jid}}/${COL5} --keep_intermediate --dump
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+

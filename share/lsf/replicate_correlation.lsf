@@ -1,0 +1,36 @@
+#!shell
+
+
+=cut count 1
+
+inputFile=input_list
+
+ncore=1
+mem=10000
+
+module load subread
+module load bedtools
+
+
+cat ${COL3} ${COL4} > {{jid}}/merged.bed
+
+cd {{jid}}
+
+sort -k1,1 -k2,2n merged.bed > merged.st.bed
+
+bedtools merge -c 4 -o collapse -i merged.st.bed > merged.st.bedtools.bed
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print $4, $1, $2+1, $3, "."}' merged.st.bedtools.bed > merged.saf
+
+rm *.bed
+
+cd ..
+
+featureCounts {{featureCount_addon_parameters}} -T 4 -a {{jid}}/merged.saf -F SAF -o {{jid}}/count.out ${COL1} ${COL2}
+
+cd {{jid}}
+
+module load python/2.7.13
+
+scatter_density.py -f count.out -x ${COL1} -y ${COL2}
+

@@ -1,0 +1,49 @@
+
+=cut manorm 1
+
+inputFile=design_matrix
+
+ncore=1
+mem=12000
+
+module load bedtools
+
+uid=`openssl rand -hex 12`
+
+## merge peak
+
+cd {{jid}}
+
+a=`ls ${COL1}*.bed | cat`
+b=`ls ${COL2}*.bed | cat`
+
+cat $a > ${COL1}.$uid.manorm.merged.bed
+
+sort -k1,1 -k2,2n ${COL1}.$uid.manorm.merged.bed > ${COL1}.$uid.manorm.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i ${COL1}.$uid.manorm.merged.st.bed > ${COL1}.$uid.manorm.merged.bed
+
+rm ${COL1}.$uid.manorm.merged.st.bed
+
+cat $b > ${COL2}.$uid.manorm.merged.bed
+
+sort -k1,1 -k2,2n ${COL2}.$uid.manorm.merged.bed > ${COL2}.$uid.manorm.merged.st.bed
+
+bedtools merge -c 4 -o collapse -i ${COL2}.$uid.manorm.merged.st.bed > ${COL2}.$uid.manorm.merged.bed
+
+rm ${COL2}.$uid.manorm.merged.st.bed
+
+samtools merge ${COL1}.$uid.merge.bam ${COL1}*.bam
+samtools merge ${COL2}.$uid.merge.bam ${COL2}*.bam
+
+mkdir -p MAnorm_results
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/diffPeaks
+
+
+manorm --p1 ${COL1}.$uid.manorm.merged.bed --p2 ${COL2}.$uid.manorm.merged.bed --r1 ${COL1}.$uid.merge.bam --r2 ${COL2}.$uid.merge.bam --n1 ${COL1}.$uid --n2 ${COL2}.$uid -o MAnorm_results/${COL3} --rf bam {{MAnorm_PE_flag}}
+
+rm *${uid}*
+

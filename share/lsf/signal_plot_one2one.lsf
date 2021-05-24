@@ -1,0 +1,80 @@
+#!shell
+
+=cut sigPlot_center 1 
+
+inputFile=one_to_one
+
+ncore=1
+mem={{memory}}
+q=priority
+
+module load python/2.7.15-rhel7
+jid={{jid}}
+random_string=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13`
+cut -f 1,2,3,4,5,6 ${COL1} > ${jid}/${random_string}.${jid}.C.bed
+
+computeMatrix reference-point --referencePoint center -R ${jid}/${random_string}.${jid}.C.bed -S ${COL3} -b {{u}} -a {{d}} -o {{jid}}/${COL5}_matrixC.gz --samplesLabel ${COL4} --skipZeros -p 4 {{computeMatrix_addon_parameters}}
+
+plotHeatmap --heatmapHeight 15 -m {{jid}}/${COL5}_matrixC.gz -out {{jid}}/${COL5}_centerPlot.{{figure_type}} {{plotHeatmap_addon_parameters}}
+
+# rm ${COL5}_matrixC.gz
+
+rm ${jid}/${random_string}.${jid}.C.bed
+
+=cut sigPlot_region 1 
+
+inputFile=one_to_one
+
+ncore=1
+mem={{memory}}
+q=priority
+
+module load python/2.7.15-rhel7
+jid={{jid}}
+random_string=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13`
+cut -f 1,2,3,4,5,6 ${COL1} > ${jid}/${random_string}.${jid}.R.bed
+
+computeMatrix scale-regions -R ${jid}/${random_string}.${jid}.R.bed -S ${COL3} -b {{u}} -a {{d}} -o {{jid}}/${COL5}_matrixR.gz --samplesLabel ${COL4} --skipZeros -p 4 {{computeMatrix_addon_parameters}}
+
+plotHeatmap --heatmapHeight 15 -m {{jid}}/${COL5}_matrixR.gz -out {{jid}}/${COL5}_regionPlot.{{figure_type}} {{plotHeatmap_addon_parameters}}
+
+# rm ${COL5}_matrixR.gz
+
+rm ${jid}/${random_string}.${jid}.R.bed
+
+
+=cut email 3 all
+
+module load python/2.7.13
+
+mv *_centerPlot.{{figure_type}} {{jid}}
+
+mv *_regionPlot.{{figure_type}} {{jid}}
+
+cd {{jid}}
+
+mkdir {{figure_type}}_files
+
+mv *.{{figure_type}} {{figure_type}}_files
+
+zip -r figures.zip {{figure_type}}_files
+
+send_email_v1.py -a figures.zip -m "signal plot one to one is finished" -j {{jid}} --common
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

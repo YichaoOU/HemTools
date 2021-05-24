@@ -1,0 +1,33 @@
+#!shell
+
+=cut 1 sigPlot
+
+inputFile=commands_list
+
+ncore=1
+mem=8000
+
+module load python/2.7.15-rhel7
+
+${LINE}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

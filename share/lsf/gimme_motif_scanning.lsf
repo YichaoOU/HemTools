@@ -1,0 +1,42 @@
+#!shell
+=cut gimme 1
+
+inputFile=peak_list
+
+ncore=1
+mem=16000
+
+module load conda3
+
+source activate py2_copy1
+
+# size=50
+# gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size
+
+
+# size=100
+# gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size
+
+
+size=200
+# gimme background {{jid}}/$(basename ${COL1})_${size}.bg.bed gc -i ${COL1} -f BED -n 100000 -g hg19 -l $size
+# gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size -b {{jid}}/$(basename ${COL1})_${size}.bg.bed -f 0.5 -k
+gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size -k
+
+size=0
+# gimme background {{jid}}/$(basename ${COL1})_${size}.bg.bed gc -i ${COL1} -f BED -n 100000 -g hg19
+# gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size -b {{jid}}/$(basename ${COL1})_${size}.bg.bed -f 0.5 -kgimme background {{jid}}/$(basename ${COL1})_${size}.bg.bed gc -i ${COL1} -f BED -n 100000 -g hg19
+gimme motifs ${COL1} {{jid}}/$(basename ${COL1})_${size} -g {{genome}} -p {{motif_file}} --known --size $size  -k
+
+=cut email 5 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+rm -r tmp_*
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+

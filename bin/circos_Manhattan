@@ -1,0 +1,197 @@
+#!/usr/bin/env python
+from scipy.stats import zscore
+import pandas as pd
+import os
+import argparse
+import itertools
+import getpass
+import uuid
+import datetime
+import logging
+import uuid
+import numpy as np
+from Bio.Seq import Seq
+from joblib import Parallel, delayed
+from StringIO import StringIO
+import pandas as pd
+import sys
+from PIL import Image
+import numpy as np
+import os.path
+import yaml
+import glob
+"""When you have 100+ loci for Manhanttan plot, use circos
+
+Input
+-----
+
+1. bed4
+
+chr	start	end	value
+
+this file specifies loci coordinates on hg19, the values (last column) will be drawn as scatter plot. If a locus has 10 gRNAs, then you need to use 10 rows, where they have the same coordinates. 
+
+2. gene labels bed4
+
+chr	start	end	value
+
+the first 3 columns should match to input 1.
+
+Note
+----
+
+1. gRNA specific position is not important here, loci positions are, since so many loci are used, gRNA positions are not easy to see by eyes.
+
+Pipeline
+--------
+
+each locus will be a 'chromosome' on the circos plot ---> karyotype.txt
+the color will be picked from chr0 - chr22 with lum70,80,90
+
+The values will be used for scatter plot, where the background color is grey
+
+input files are sorted, because loci will be plotted by the input order. Chr can't be labelled because there's no true chr, it has to be manually labeled.
+
+scatter plot is on the outer circle
+gene names are shown in the inner circle.
+
+"""
+biogrid = "/home/yli11/Data/Human/hg19/annotation/standard.biogrid.human.interaction.tsv"
+gene_expression = "/home/yli11/Data/Human/hg19/annotation/standard.erythopoesis_expr.gene.tpm"
+gene_bed = "/home/yli11/Data/Human/hg19/annotation/standard.gene.bed"
+myChr = map(lambda x:"chr%s"%(x),range(1,23)) + ['chrX','chrY']
+pathway = "/home/yli11/Data/Human/gene_list/h.all.v6.2.symbols.gmt"
+housekeeping = "/home/yli11/Data/Human/gene_list/housekeeping.list"
+standard_color = ["red","orange","yellow","green","blue","purple"]
+myColors = map(lambda x:"chr%s"%(x),range(0,23))+map(lambda x:"lum70chr%s"%(x),range(0,23))+map(lambda x:"lum80chr%s"%(x),range(0,23))+map(lambda x:"lum90chr%s"%(x),range(0,23))
+# methylation = "/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/BS_seq"
+def check_nan_values(df,text):
+	print text,df.isnull().any().any()
+def write_list_to_file(outFile,outline):
+	f = open(outFile,"wb")
+	print >>f,"\n".join(outline)
+	f.close()
+def write_file(file_name,message):
+	out = open(file_name,"wt")
+	out.write(message)
+	out.close()
+
+def dos2unix(file):
+	os.system("dos2unix "+file)
+def multireplace(myString, myDict):
+	## keywords format is {{string}}
+	for k in myDict:
+		myString = myString.replace("{{"+str(k)+"}}",str(myDict[k]))
+	return myString
+def send_email_command(attachments,jid):
+	username = getpass.getuser()
+	command = 'echo "please see the attachment" | mailx {{attachments}} -s "JOB_ID is finished" -- User_name@stjude.org'
+	command = command.replace("JOB_ID",jid)
+	real_attachments = []
+	for item in attachments:
+		if os.path.isfile(item):
+			real_attachments.append(item)
+	attachments_string = map(lambda x: '-a "'+x+'" ',real_attachments)
+	command = command.replace("{{attachments}}","".join(attachments_string))
+	command = command.replace("User_name",username)
+	os.system(command)
+	print ("Done! You should receive the attachment shortly.")
+	
+def repositioning_genes(loci_bed,gene_bed):
+	print "reading",loci_bed
+	df = pd.read_csv(loci_bed,sep="\t",header=None,dtype=str)
+	df[4] = df[0]+"_"+df[1]+"_"+df[2]
+	print "reading",gene_bed
+	genes = pd.read_csv(gene_bed,sep="\t",header=None,dtype=str)
+	genes[4] = genes[0]+"_"+genes[1]+"_"+genes[2]
+	df[3] = df[3].astype(float)
+	gene_names = {}
+	for i in genes.index:
+		gene_names[genes.at[i,4]] = genes.at[i,3]
+	# print gene_names
+	myGene_pos = {}
+	loci_pos_count = 0
+	## output karyotype and gene txt
+	karyotypes_outline= []
+	karyotypes_template = "chr - %s %s 0 %s %s"
+	genes_outline = []
+	print "processing",loci_bed
+	for coord,group in df.groupby(4):
+		current_chr = "L%s"%(loci_pos_count)
+		color = myColors[loci_pos_count%len(myColors)]
+		# coord = df.at[i,4]
+		gRNA_pos_count = 0
+		if gene_names.has_key(coord):
+			# print coord,gene_names[coord]
+			current_gene_name = gene_names[coord]
+			genes_outline.append("\t".join([current_chr,"0",str(group.shape[0]),current_gene_name]))
+		loci_pos_count +=1
+		for i in group.index:	
+			myGene_pos[coord+"_"+str(gRNA_pos_count)] = [current_chr,gRNA_pos_count,gRNA_pos_count+1,group.at[i,3],"id=%s"%(color)]
+			gRNA_pos_count += 1
+		karyotypes_outline.append(karyotypes_template%(current_chr,current_chr,group.shape[0],color))
+		
+	write_list_to_file("karyotypes.txt",karyotypes_outline)
+	write_list_to_file("genes.txt",genes_outline)
+	myDict = {}
+	myGene_pos = pd.DataFrame.from_dict(myGene_pos,orient="index")
+	myDict['max_value'] = myGene_pos[3].max()
+	myDict['min_value'] = myGene_pos[3].min()
+	
+	
+	myGene_pos.to_csv("scatter1_data.txt",sep="\t",header=False,index=False)
+	return myDict
+
+def copy_circos(myDict):
+	file = "/home/yli11/HemTools/share/circos_Manhanttan/circos.conf"
+	lines = "\n".join(open(file).readlines())
+	lines = multireplace(lines, myDict)
+	write_file("circos.conf",lines)
+
+def main():
+	
+	
+	main_parser = argparse.ArgumentParser(description="circos_Manhanttan",formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+	main_parser.add_argument('-f',"--input",  help="input bed file (bed4 format, the last column is value)", type=str,required=True)
+	main_parser.add_argument("--genes",  help="input bed file (bed4 format, the last column is gene name)", type=str,required=True)
+
+	
+	
+	##------- add parameters above ---------------------
+	args = main_parser.parse_args()
+	
+	if not os.path.isfile(args.input):
+		print args.input,"does not exist"
+		exit()
+	if not os.path.isfile(args.genes):
+		print args.genes,"does not exist"
+		exit()
+	
+	##------- add functions below ----------------------
+	myDict = repositioning_genes(args.input,args.genes)
+	copy_circos(myDict)
+	################## run circos and send email ######################
+	
+	os.system("circos -conf circos.conf -noparanoid -param image/radius=2000p")
+	
+	send_email_command(['circos.png'],"circos_Manhanttan")
+	
+if __name__ == "__main__":
+	main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

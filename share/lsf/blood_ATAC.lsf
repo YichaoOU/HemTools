@@ -1,0 +1,19 @@
+#!shell
+
+
+=cut count 1
+
+ncore=1
+mem=4000
+
+module load subread
+
+cd {{jid}}
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print $4, $1, $2+1, $3, "."}' my.input > {{output}}.saf
+
+featureCounts -p -T 4 -a {{output}}.saf -F SAF -o {{output}}.tsv {{bam_file_list}}
+
+rm {{output}}.saf
+
+

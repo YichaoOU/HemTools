@@ -1,0 +1,26 @@
+#!shell
+
+
+
+=cut bamBw 1 
+
+module load python/2.7.15-rhel7
+
+module load samtools/1.7
+
+inputFile=bam_list
+
+ncore=1
+mem=16000
+
+
+samtools sort -@ 10 -o {{jid}}/${COL2}.sorted.bam ${COL1} 
+
+samtools index -@ 10 {{jid}}/${COL2}.sorted.bam
+
+bamCoverage --bam {{jid}}/${COL2}.sorted.bam -o {{jid}}/${COL2}.bw --binSize {{bin_size}} --effectiveGenomeSize {{effectiveGenomeSize}}  --normalizeUsing RPGC --ignoreForNormalization chrX -p 10 {{addon_parameters}}
+
+
+
+
+

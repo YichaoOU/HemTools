@@ -1,0 +1,70 @@
+#!shell
+
+
+=cut count 1
+
+ncore=1
+mem=4000
+
+inputFile=input_list
+
+module load subread
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print $4, $1, $2+1, $3, "."}' ${COL2} > {{jid}}/${COL3}.saf
+
+featureCounts -p -T 4 -a {{jid}}/${COL3}.saf -F SAF -o {{jid}}/${COL3}.out ${COL1}
+
+rm {{jid}}/${COL3}.saf
+
+=cut scale_F 2 count
+
+ncore=1
+mem=20000
+
+module load python/2.7.12
+module load python/2.7.15-rhel7
+module load samtools/1.7
+
+run_BamCoverage_with_scale_factor.py -f {{input_list}} -e {{effectiveGenomeSize}} {{flag}} -o {{jid}}
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+mv *.lsf log_files
+
+mv *.out log_files
+
+mv *.summary log_files
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+#!shell
+
+
+=cut PE 1
+
+inputFile=PE_input_list
+
+ncore=1
+mem=12000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+## columns are name, gRNA, amplicon_seq, R1, R2, rel_pos, ref, alt
+
+name=${COL1}
+gRNA=${COL2}
+amplicon=${COL3}
+R1=${COL4}
+R2=${COL5}
+
+
+CRISPResso -r1 $R1 -r2 $R2 --amplicon_seq $amplicon --guide_seq $gRNA --quantification_window_size 5 --quantification_window_center 1 --base_editor_output -o {{jid}}/$name --discard_indel_reads -s {{s}} -q {{q}}
+
+=cut SE 1
+
+inputFile=SE_input_list
+
+ncore=1
+mem=12000
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/crispresso2_env/
+
+## columns are name, gRNA, amplicon_seq, R1, R2, rel_pos, ref, alt
+
+name=${COL1}
+gRNA=${COL2}
+amplicon=${COL3}
+R1=${COL4}
+
+
+CRISPResso -r1 $R1 --amplicon_seq $amplicon --guide_seq $gRNA --quantification_window_size 5 --quantification_window_center 1 --base_editor_output -o {{jid}}/$name --discard_indel_reads -s {{s}} -q {{q}}
+
+
+
+=cut email 2 all
+
+
+ncore=1
+mem=2000
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+

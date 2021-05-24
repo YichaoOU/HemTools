@@ -1,0 +1,129 @@
+#!shell
+
+
+##
+# Variants can be listed in rsid or hg19 chr:pos format
+##
+=cut Enrich 1
+
+inputFile=config_list
+
+ncore=1
+mem=16000
+
+module load perl/5.28.1
+
+cd {{jid}}
+
+/home/yli11/HemTools/share/script/GREGOR.pl -conf ${COL1}
+
+label=${COL1%.config}
+
+cp $label/StatisticSummaryFile.txt summary_files/$label.tsv
+
+cd $label
+
+rm -r neighbor_SNP
+
+rm -r index_SNP
+
+# folder=`openssl rand -base64 12`
+folder=`openssl rand -hex 12`
+
+dest=/scratch_space/$USER/$folder
+
+mkdir $dest
+
+mv -f *.bed $dest
+
+mv -f *.bed.* $dest
+
+
+=cut END 2 all
+
+cd {{jid}}
+
+mkdir config_files
+
+mv *.config config_files
+
+mv ../{{jid}}.input config_files
+
+
+
+module load python/2.7.13
+
+cd summary_files
+
+## post processing
+
+echo -e 'import glob
+import pandas as pd
+import numpy as np
+import matplotlib
+matplotlib.use("agg")
+import seaborn as sns
+import matplotlib.pyplot as plt
+def parse_bed(x):
+\tdf = pd.read_csv(x,sep="\t",index_col=0)
+\tdf["ExpectNum_of_InBed_SNP"] = df["ExpectNum_of_InBed_SNP"].fillna(0)
+\tdf["PValue"] = df["PValue"].fillna(1)
+\tdf["%s-SNPs"%(x)] = df["InBed_Index_SNP"]
+\tdf["%s-PValue"%(x)] = df["PValue"]
+\treturn df[df.columns[-2:]]
+files = glob.glob("*")
+files.remove("heatmap.py")
+df_list = [parse_bed(x) for x in files]
+Num_SNPs = pd.concat([x[x.columns[0]] for x in df_list],axis=1)
+tmp = Num_SNPs.copy()
+tmp["bed"] = tmp.index.tolist()
+Pvalue_list = pd.melt(tmp,id_vars="bed")
+Pvalue_list = Pvalue_list.fillna(0)
+Pvalue_list = Pvalue_list.sort_values("value",ascending=False)
+Pvalue_list.to_csv("SNP_count_ranked.list")
+Num_SNPs_col_norm = Num_SNPs.copy()
+for c in Num_SNPs_col_norm:
+\tif Num_SNPs_col_norm[c].max() == 0:
+\t\tcontinue
+\tNum_SNPs_col_norm[c] = Num_SNPs_col_norm[c]/Num_SNPs_col_norm[c].max()
+try:
+\ta=sns.clustermap(Num_SNPs_col_norm,cmap="Reds",method="ward",linewidth=0.1)
+\treorder_cols = Num_SNPs.columns[a.dendrogram_col.reordered_ind].tolist()
+\treorder_rows = Num_SNPs.index[a.dendrogram_row.reordered_ind].tolist()
+\tratio = float(Num_SNPs_col_norm.shape[1])/Num_SNPs_col_norm.shape[0]
+\tH = 5
+\tW = int(ratio*H)
+\tplt.close()
+\tplt.figure()
+\ta=sns.clustermap(Num_SNPs_col_norm,cmap="Reds",method="ward",linewidth=0.1,figsize=(W,H),annot=Num_SNPs.loc[reorder_rows][reorder_cols],fmt="1g")
+\tax = a.ax_heatmap
+\tax.set_xlabel("")
+\tax.set_ylabel("")	
+\tplt.savefig("SNP_count.heatmap.pdf", bbox_inches="tight")	
+\tplt.figure()
+except:
+\tprint ("Figure too large")
+PValue = pd.concat([x[x.columns[1]] for x in df_list],axis=1)
+tmp = PValue.copy()
+tmp["bed"] = tmp.index.tolist()
+Pvalue_list = pd.melt(tmp,id_vars="bed")
+Pvalue_list = Pvalue_list.fillna(1)
+Pvalue_list = Pvalue_list.sort_values("value")
+Pvalue_list.to_csv("P_value_ranked.list")
+PValue = PValue.transform(lambda x:-np.log10(x+1e-300))
+try:
+\ta=sns.clustermap(PValue,cmap="Reds",method="ward",linewidth=0.1,figsize=(W,H))
+\tax = a.ax_heatmap
+\tax.set_xlabel("")
+\tax.set_ylabel("")    
+\tplt.savefig("PValue.heatmap.pdf", bbox_inches="tight")	
+except:
+\tprint ("Figure too large")
+' > heatmap.py
+
+python heatmap.py
+
+send_email_v1.py -a PValue.heatmap.pdf,SNP_count.heatmap.pdf -m "{{jid}}is finished" -j "{{jid}}" --common
+
+
+

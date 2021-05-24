@@ -1,0 +1,75 @@
+#!shell
+=cut trinity 1
+
+inputFile=input
+
+ncore=2
+mem=50000
+# ncore=1
+# mem=50000
+q=priority
+
+module load trinity/2.5.0
+
+Trinity --seqType fq --left ${COL1} --right ${COL2} --CPU 6 --max_memory 100G --output ${COL3}_trinity_out
+
+cd  ${COL3}_trinity_out
+
+gmap -n 0 -D /home/yli11/Data/Mouse/mm9/fasta/gmap/ -d genome Trinity.fasta -f samse --input-buffer-size 100000 -O -t 6 > trinity_gmap.sam
+
+module load samtools/1.7
+
+# samtools view -Sb trinity_gmap.sam > trinity_gmap.bam
+
+# samtools sort -o trinity_gmap.st.bam trinity_gmap.bam 
+
+# samtools index trinity_gmap.st.bam
+
+# samtools view -b trinity_gmap.st.bam chr8:87173540-87374477 > trinity_gmap.NFIX.bam
+
+# samtools index trinity_gmap.NFIX.bam
+
+module load kallisto/0.43.1
+
+# kallisto index -i ${COL3}_KI Trinity.fasta
+
+# cd ..
+
+# kallisto quant -i ${COL3}_trinity_out/${COL3}_KI --threads=6 --bootstrap-samples=100 --output-dir=${COL3}_trinity_out/${COL3}_abundance ${COL1} ${COL2}
+
+cd ${COL3}_abundance
+
+# [yli11@nodecn202 6_KO_abundance]$ table_subset.py abundance.tsv 1
+# (168090, 5)
+# [yli11@nodecn202 6_KO_abundance]$ wc -l *.list
+# 168090 read.cutoff.1.0.list
+
+module load python/2.7.13
+
+table_subset.py abundance.tsv 1
+
+table_subset.py abundance.tsv 2
+
+table_subset.py abundance.tsv 5
+
+module load java/1.8.0_181
+
+cd ..
+
+readList=${COL3}_abundance/read.cutoff.1.0.list
+outBam=trinity_gmap.NFIX.tpm1.bam
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=trinity_gmap.NFIX.bam O=$outBam READ_LIST_FILE=$readList FILTER=includeReadList;samtools index $outBam
+
+readList=${COL3}_abundance/read.cutoff.2.0.list
+outBam=trinity_gmap.NFIX.tpm2.bam
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=trinity_gmap.NFIX.bam O=$outBam READ_LIST_FILE=$readList FILTER=includeReadList;samtools index $outBam
+
+
+readList=${COL3}_abundance/read.cutoff.5.0.list
+outBam=trinity_gmap.NFIX.tpm5.bam
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=trinity_gmap.NFIX.bam O=$outBam READ_LIST_FILE=$readList FILTER=includeReadList;samtools index $outBam
+
+
