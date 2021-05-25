@@ -1,13 +1,14 @@
 ATAC-seq
 ========
 
-.. contents::
-    :local:
 
-Flowchart
-^^^^^^^^^
 
-.. image:: ../../images/atac_seq_pipeline.png
+Summary
+^^^^^^^
+
+The ATAC-seq pipeline first trims the raw reads to remove Tn5 adaptor sequence using skewer. Then reads are mapped to the genome (``-g``) using BWA mem. Raw mapped reads are labeled as ``.markdup.bam``. De-duplicated reads are labeled as ``.rmdup.bam``. De-duplicated and uniquely mapped reads are labeled as ``.rmdup.uq.bam``. Duplicated and multi-mapped reads were removed using samtools (v0.17). ATAC-seq peaks were called using MACS2 (v2.1.1) with the following parameters "macs2 callpeak --nomodel --shift -100 --extsize 200". BigWiggle files were generated using DeepTools bamCoverage (v3.2.0) with "--centerReads". 
+
+Code for this pipeline is provided in "https://github.com/YichaoOU/HemTools/blob/master/subcmd/". See ``atac_seq.py`` and ``utils.py``.
 
 Parameters
 ^^^^^^^^^^
@@ -17,6 +18,13 @@ Parameters
    :func: main_parser
    :prog: HemTools
    :path: atac_seq
+
+
+Flowchart
+^^^^^^^^^
+
+.. image:: ../../images/atac_seq_pipeline.png
+
 
 Usage
 ^^^^^

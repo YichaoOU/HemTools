@@ -2,6 +2,18 @@ Paired-end ChIP-seq
 ===================
 
 
+
+Summary
+^^^^^^^
+
+The PE ChIP-seq pipeline maps the raw reads to the genome (``-g``) using BWA mem. Raw mapped reads are labeled as ``.markdup.bam``. De-duplicated reads are labeled as ``.rmdup.bam``. De-duplicated and uniquely mapped reads are labeled as ``.rmdup.uq.bam``. Duplicated and multi-mapped reads were removed using samtools (v0.17). ChIP-seq peaks were called using MACS2 (v2.1.1) with “-f BAMPE”. BigWiggle files were generated using DeepTools bamCoverage (v3.2.0) with "--centerReads". 
+
+Code for this pipeline is provided in "https://github.com/YichaoOU/HemTools/blob/master/subcmd/". See ``chip_seq_pair.py`` and ``utils.py``.
+
+
+Parameters
+^^^^^^^^^^
+
 .. argparse::
    :filename: ../bin/HemTools
    :func: main_parser
