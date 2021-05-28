@@ -173,6 +173,47 @@ To increase space, simply increase the volumn on the webpage will not work. Foll
 
 TODO: I heard that "AWS S3 + Lambda" is much cheaper.
 
+
+Step 5. update eb app
+^^^^^^^^^^^^^^^
+
+Please do not delete or rebuild your env, otherwise you will have to configure a lot of things. 
+
+Things I have done, install many python packages, e.g. dash, and some bioinformatics tools, htslib.
+
+Now I have a new dash app, all I need to do is upload this as a zip folder and then deploy it, all using a browser!
+
+
+Where to upload and deploy
+------------------
+
+Find your application, click Actions and go to view versions.
+
+.. image:: ../../images/how_to_find_upload_button.png
+	:align: center
+
+Click upload first, when it is finish, then choose this new app and deploy it.
+
+.. image:: ../../images/how_to_deploy_and_upload.png
+	:align: center
+
+Then you can view deploy logs
+
+.. image:: ../../images/deploy_message.png
+	:align: center
+
+Once you have successfully deployed, you can then use the ssh terminal to do further updates, like I need to download hg19 to this /var/app/current folder.
+
+.. image:: ../../images/where_to_find_instance.png
+	:align: center
+
+.. image:: ../../images/where_to_find_connect.png
+	:align: center
+
+.. image:: ../../images/browser_ssh_connect.png
+	:align: center
+
+
 Notes
 ^^^^^
 
