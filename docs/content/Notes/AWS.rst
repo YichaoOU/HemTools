@@ -216,6 +216,33 @@ Once you have successfully deployed, you can then use the ssh terminal to do fur
 	:align: center
 
 
+Upload size error
+^^^^^^^^
+
+::
+
+	nano /etc/nginx/nginx.conf
+
+add ``client_max_body_size  50M;``. Then ``service nginx restart``.
+
+
+::
+
+
+	server {
+	listen80 default_server;
+	access_log    /var/log/nginx/access.log main;
+	client_header_timeout 60;
+	       client_body_timeout   60;
+	keepalive_timeout     60;
+	       client_max_body_size  50M;
+	gzipoff;
+	gzip_comp_level4;
+	gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+	# Include the Elastic Beanstalk generated locations
+	include conf.d/elasticbeanstalk/*.conf;
+	}
+
 Notes
 ^^^^^
 
