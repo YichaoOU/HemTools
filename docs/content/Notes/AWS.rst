@@ -187,6 +187,8 @@ Now I have a new dash app, all I need to do is upload this as a zip folder and t
 Where to upload and deploy
 ------------------
 
+link: https://us-west-2.console.aws.amazon.com/elasticbeanstalk/home?region=us-west-2#/environments
+
 Find your application, click Actions and go to view versions.
 
 .. image:: ../../images/how_to_find_upload_button.png
@@ -222,3 +224,4 @@ Notes
 	eb logs
 	eb ssh
 
+Your DASH stdout is here: ``/var/log/web.stdout.log``
