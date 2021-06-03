@@ -1,16 +1,23 @@
 Convert BCL basecall files to FASTQ files
 =========================================
 
-.. tip:: For demultiplexing, you must provide ``SampleSheet.csv``; otherwise, all fastq.gz files will be named as ``Undetermined``.
+.. tip:: For demultiplexing, you must provide ``SampleSheet.csv``; otherwise, all fastq.gz files will be named as ``Undetermined``. You have to upload ``SampleSheet.csv`` to the dir that conatins BCL files on HPC. Below is what this dir should look like (and the files and subfolders it should contain, not including fastq_files folder):
 
-.. note:: Please note that there should be no spaces (i.e., only spaces and _ is allowed) in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred. 
+.. image:: ../../images/BCL2fastq_dir.PNG
+	:align: center
+
+See this for SampleSheet format details: https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/sequencing-sheet-format-specifications-technical-note-970-2017-004.pdf
+
+You can download an example SampleSheet.csv here: https://github.com/YichaoOU/HemTools/tree/master/docs/gallery/SampleSheet.csv
+
+.. note:: Please note that there should be no spaces (i.e., only _ is allowed, for special char) in sample_ID (e.g., see some incorrect examples below). A unique sample_ID is also preferred. 
 
 
 .. note:: We found that for Miniseq and Nextseq, your R2 index in samplesheet.csv have to be reverse complemented. For Miseq, everything is normal.
 
 .. image:: ../../images/no_space_bcl2fastq.PNG
 	:align: center
-	
+
 **Step 1**
 
 .. highlight:: none
@@ -80,6 +87,14 @@ Question: "I have a pair-end 150bp sequencing run that stopped in the middle at 
 Solution: Add ``--ignore-missing-bcls`` option. 
 
 For example: ``bcl2fastq --no-lane-splitting -o fastq_files --ignore-missing-bcls``
+
+
+Which delmultiplexing pipeline I should use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+https://support.illumina.com/bulletins/2016/04/adapter-trimming-why-are-adapter-sequences-trimmed-from-only-the--ends-of-reads.html
+
 
 Comments
 ^^^^^^^^
