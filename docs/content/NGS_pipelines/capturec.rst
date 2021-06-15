@@ -83,6 +83,14 @@ Usage
 
 	module load python/2.7.13
 
+	captureC.py --guess_input # to generate fastq.tsv
+
+	captureC.py -f fastq.tsv -t target.bed 
+
+Default digested enzyme is MboI, which has the same cutting site as dpnII. If you used NlaIII, then please use:
+
+.. code:: bash
+
 	captureC.py -f fastq.tsv -t target.bed -e NlaIII -g hg19
 
 
