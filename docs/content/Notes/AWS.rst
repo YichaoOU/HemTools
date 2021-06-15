@@ -252,3 +252,10 @@ Notes
 	eb ssh
 
 Your DASH stdout is here: ``/var/log/web.stdout.log``
+
+
+re-build instances
+^^^^^^^^^^
+
+Today when I check again on Easy-Prime, the server is down! And I found that the enviorment is just gone. I have to start over. My AWS EB instance was replaced with a new one. I checked online, this could be caused by AWS auto-scaling. But I'm still not sure why it happened. Now I have to reinstalled everything.
+
