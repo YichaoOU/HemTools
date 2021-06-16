@@ -96,6 +96,16 @@ Which delmultiplexing pipeline I should use
 https://support.illumina.com/bulletins/2016/04/adapter-trimming-why-are-adapter-sequences-trimmed-from-only-the--ends-of-reads.html
 
 
+Generating I1 I2 reads
+^^^^^^^^^^
+
+::
+
+	bcl2fastq --no-lane-splitting -o fastq_files2 --create-fastq-for-index-reads --ignore-missing-bcls --minimum-trimmed-read-length 0 --mask-short-adapter-reads 0
+
+ref: https://manuals.cellecta.com/drivermap-targeted-expression-profiling-kits/v1/en/topic/run-data-extraction
+
+
 Comments
 ^^^^^^^^
 
