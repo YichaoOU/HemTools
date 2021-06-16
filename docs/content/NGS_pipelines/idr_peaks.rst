@@ -51,7 +51,6 @@ In the output, you will receive two emails. One is the link to the GREAT analysi
 
 Parameters have been updated. Basically MACS2 callpeak uses ``-p 0.2`` cutoff to produce more peaks, then top 500K is used. With these changes, the number of final peaks should increase. We expect the number of IDR peaks (cutoff at 5%) should be around 10K to 40K. One can use ``--macs2_addon_parameters " -p 0.05"`` to control the number of called peaks, and these will decrease the number of final peaks.
 
-Current peak calling method does not apply to ATAC-seq by default. One can generate ATAC-seq peaks using ``--macs2_addon_parameters " --nomodel --shift -100 --extsize 200"`` option.
 
 **5/16/2020**
 
@@ -67,6 +66,12 @@ ref:
 	https://personal.broadinstitute.org/anshul/softwareRepo/peakCallingPipelineForIdr.txt
 
 	https://rdrr.io/github/imbforge/encodeChIPqc/src/R/idr.R
+
+**6/16/2021**
+
+Update code for atac-seq idr peaks for multiple samples. Note that for chip-seq samples, the old code doesn't support multiple samples submission.
+
+
 
 Flowchart
 ^^^^^^^^^
@@ -135,6 +140,56 @@ For shorter peak width, pealse add ``half_width`` option:
 .. code:: bash
 
 	idr_peaks.py -r1 R1_input -r2 R2_input -g hg19 --macs_genome hs --macs2_addon_parameters " -f BAMPE" --half_width 200
+
+
+ATAC-seq IDR PEAKS
+^^^^^^^^
+
+
+::
+
+	usage: idr_peaks_atac.py [-h] [-j JID] -f INPUT_LIST
+	                         [--macs2_addon_parameters MACS2_ADDON_PARAMETERS]
+	                         [--half_width HALF_WIDTH] [-g GENOME]
+	                         [--macs_genome MACS_GENOME] [-b BLACK_LIST]
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+	                        Every output will be moved into this folder. (default:
+	                        idr_peaks_atac_yli11_2021-06-16)
+	  -f INPUT_LIST, --input_list INPUT_LIST
+	                        TSV file, 3 columns, Rep1 bam , Rep2 bam, and output
+	                        name (default: None)
+	  --macs2_addon_parameters MACS2_ADDON_PARAMETERS
+	  --half_width HALF_WIDTH
+	                        half.width: a numerical value to truncate the peaks to
+	                        +- half_width (default: 200)
+
+	Genome Info:
+	  -g GENOME, --genome GENOME
+	                        genome version: hg19, mm10, mm9 (default: hg19)
+	  --macs_genome MACS_GENOME
+	                        genome version: hs, mm (default: hs)
+	  -b BLACK_LIST, --black_list BLACK_LIST
+	                        Blacklist file (default: /home/yli11/Data/Human/hg19/a
+	                        nnotations/hg19.blacklist.bed)
+
+Input
+-----
+
+A tsv file containing 3 columns: Rep1 bam , Rep2 bam, and output
+
+Usage
+-----
+
+.. code:: bash
+
+    module load python/2.7.13
+
+	idr_peaks_atac.py -f input.list -g hg19 --macs_genome hs
+
+	idr_peaks_atac.py -f input.list -g mm9 --macs_genome mm
 
 
 
