@@ -4,7 +4,71 @@ single-cell RNA-seq analysis
 
 
 
+Markers
+^^^^^^^
 
+
+http://biocc.hrbmu.edu.cn/CellMarker/search.jsp?quickSearchInfo=mouse%20blood
+
+http://static.bdbiosciences.com/documents/cd_marker_handbook.pdf
+
+
+Public scRNA_seq data (Mouse)
+^^^^^^^^^^^^^^^^^^^^^
+
+
+
+Two formats in R:
+
+- SingleCellExperiment
+
+- Seurat
+
+https://satijalab.org/seurat/articles/conversion_vignette.html
+
+Baccin, C., Al-Sabah, J., Velten, L. et al. Combined single-cell and spatial transcriptomics reveal the molecular, cellular and spatial bone marrow niche organization. Nat Cell Biol 22, 38–48 (2020).
+
+::
+
+	https://nicheview.shiny.embl.de/
+
+
+.. image:: https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41556-019-0439-6/MediaObjects/41556_2019_439_Fig1_HTML.png
+
+
+
+Nestorowa, S. et al. A single-cell resolution map of mouse hematopoietic stem and progenitor cell differentiation. Blood 128, e20–31 (2016)
+
+::
+
+	https://hemberg-lab.github.io/scRNA.seq.datasets/
+	http://blood.stemcells.cam.ac.uk/single_cell_atlas.html
+
+
+RNA velocity
+^^^^^^^^^^^^
+
+Make sure we have most recent samtools version, otherwise we will see "cellsorted file not found" error.
+
+::
+
+	module load conda3/202011
+
+	source activate captureC
+
+	module load samtools/1.9
+
+	bsub -P scRNA -J mNFIXko -R 'rusage[mem=50000]' velocyto run10x mNFIXko $gtf
+
+
+Annotate cell clusters
+^^^^^^
+
+- scCATCH, not sure if it supports de novo clusters
+
+- given a reference Seurat obj, project all other data to this reference, this method support de novo clusters!
+
+TODO need reference Seurat obj
 
 
 projection

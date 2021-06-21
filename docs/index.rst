@@ -118,5 +118,10 @@ Error loading python
 
 A: Missing python module. Just do ``module load python``
  
+ERROR: temporary directory is not writable: 'normalize_bw_given_peak_yli11_2021-06-20'
+-----------------------
+
+Interesting, this should be an HPC error, not due to HemTools bug.
+
 
 
