@@ -28,8 +28,6 @@ Here, jupyter lab is the next generation of jupyter notebook. Here is the usage:
 
 	You will receive an email with the link to the jupyter notebook.
 
-Currently, notebook is good for python. jupyterlab is good for R. (in terms of libary completeness)
-
 Set up env (my notes for installation)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
