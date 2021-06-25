@@ -28,6 +28,7 @@ version = 'latest'
 # The full version, including alpha/beta/rc tags.
 release = 'latest'
 
+html_use_index = True
 
 # -- General configuration ---------------------------------------------------
 

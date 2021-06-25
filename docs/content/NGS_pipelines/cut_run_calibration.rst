@@ -132,6 +132,8 @@ Tags
 
 :tags: cut_run
 
+.. index:: cut_run
+
 Comments
 ^^^^^^^^
 
