@@ -94,11 +94,16 @@ Usage
 
 Create a new working dir, put the fastq files in (e.g., ``ln -s``) and run the following.
 
-Step 1: generate input file ``fastq.tsv`` using ``--guess_input``
+Step 0: Login to a compute node.
 
 ::
 
 	hpcf_interactive
+
+Step 1: generate input file ``fastq.tsv`` using ``--guess_input``
+
+::
+
 
 	module load python/2.7.13
 
