@@ -75,7 +75,13 @@ Put all your input data in the same working directory and inside this dir, do th
 
 	S3norm.py -f input.list -bam
 
-If you inputs are bigwig, use ``S3norm.py -f input.list -bw``, similarly, if inputs are bedgraph, use ``-bdg``
+To make S3norm run faster, we can only normalize signals around the peak region:
+
+.. code:: bash
+
+	S3norm.py -f v15input.list --peak_dir ../cut_run_rfeng_2021-05-20/peak_files -bam
+
+
 
 Output
 ^^^^^^
@@ -93,6 +99,11 @@ Common problems
 This could be caused by out of memory error if you have many files to be normalized at the same time. It also depends on number of entries (i.e., resolution, binsize) in your bedgraph file. In one example I have, 6 files with hg19 binsize=100bp, took almost 50G memory to run and finish in about 3 hours. 
 
 You shouldn't have this problem if your data looks similar to the example above because by default, we  require 80G memory.
+
+2. input bw or bdg
+-----
+
+not implemented. If you inputs are bigwig, use ``S3norm.py -f input.list -bw``, similarly, if inputs are bedgraph, use ``-bdg``
 
 Comments
 ^^^^^^^^

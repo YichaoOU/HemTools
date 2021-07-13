@@ -4,8 +4,10 @@ Crispresso2 for Base editor
 
 ::
 
-	usage: crispresso2_BE.py [-h] [-j JID]
-	                         (-f INPUT_LIST | --gRNA_and_primers GRNA_AND_PRIMERS | --gRNA_and_primers_BWA GRNA_AND_PRIMERS_BWA)
+	usage: crispresso2_BE.py [-h] [-j JID] [-r1 | -r2] [-f INPUT_LIST] [-q Q]
+	                         [-s S] [-m MIN_OVERLAP] [--ref REF] [--alt ALT]
+	                         [--queue QUEUE] [--gRNA_and_primers GRNA_AND_PRIMERS]
+	                         [--gRNA_and_primers_BWA GRNA_AND_PRIMERS_BWA]
 	                         [-g GENOME] [--genome_fasta GENOME_FASTA]
 	                         [--index_file INDEX_FILE]
 
@@ -13,10 +15,19 @@ Crispresso2 for Base editor
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        crispresso2_BE_yli11_2020-01-14)
+	                        crispresso2_BE_yli11_2021-07-13)
+	  -r1                   only use R1 read for analysis (default: False)
+	  -r2                   only use R2 read for analysis (default: False)
 	  -f INPUT_LIST, --input_list INPUT_LIST
 	                        tsv 5 columns, R1.fastq, R2.fastq, amplicon_seq,
 	                        gRNA_seq, output_name (default: None)
+	  -q Q                  read quality (default: 0)
+	  -s S                  base quality (default: 0)
+	  -m MIN_OVERLAP, --min_overlap MIN_OVERLAP
+	                        min_overlap for read merging (default: 10)
+	  --ref REF             reference base (default: A)
+	  --alt ALT             alternative base (default: G)
+	  --queue QUEUE         which queue to use (default: standard)
 	  --gRNA_and_primers GRNA_AND_PRIMERS
 	                        tsv 4 columns, unique ID that matches to fastq file
 	                        name, gRNA seq, Forward Primer, Reverse Primer
@@ -60,6 +71,26 @@ The command is:
 	--quantification_window_size 10 
 	--quantification_window_center -10
 	--base_editor_output -o {{jid}}/${COL5}
+
+Updates
+^^^^^^
+
+Users can now use ``-m`` to control minimal overlap for the FLASH command.
+
+Added two more parameters for users to use only R1 or R2 for cirspresso analysis. For example:
+
+To use only R1 read
+
+::
+
+	crispresso2_BE.py -r1 --gRNA_and_primers input.list 
+
+To use only R2 read
+
+::
+
+	crispresso2_BE.py -r2 --gRNA_and_primers input.list 
+
 
 Input
 ^^^^^
