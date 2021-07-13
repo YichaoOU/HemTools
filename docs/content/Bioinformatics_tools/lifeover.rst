@@ -33,6 +33,7 @@ Given a bed or a bw file, convert the genomic coordinates to a target genome ver
 
 Note that ``-g`` is the **target genome version**. For example, ``-g mm9`` means covert ``mm10`` to ``mm9``.
 
+Note: same coordinates but with different strand might have error using this script because we use chr:start-end as the key to match new and old files.
 
 Input
 ^^^^^
