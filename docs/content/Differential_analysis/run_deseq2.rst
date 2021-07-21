@@ -70,7 +70,7 @@ sample names mapping: samples.tsv
 
 First column is sample name, must match column names in count table
 
-Second count is group name
+Second column is group name
 
 Output
 ^^^^^^
