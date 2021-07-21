@@ -56,3 +56,21 @@ Reasons:
 - 3. In most cases, you don't need to write a book (i.e., a well-documented project), what you need is that your code is working to generate all outputs.
 
 
+What do we do daily
+^^^^^^^
+
+Basically four things:
+
+- Data cleaning
+
+- Data analysis
+
+- Data visualization
+
+- Data curation
+
+
+memory
+^^^^^
+
+STAR index, human + mouse, 6 cores, needs ~70G memory

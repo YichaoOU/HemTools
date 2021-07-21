@@ -181,7 +181,12 @@ How to use other installed conda (other people's conda)
 	module load homer/4.10
 	python ~/dirs/changeseq/changeseq/changeseq.py parallel -m 10062018_Tn5_hg38_chr_only.yaml
 
+::
 
+
+	export PATH=$PATH:/rgs01/project_space/tsaigrp/Genomics/common/anaconda3/condabin/
+	eval "$(conda shell.bash hook)"
+	conda activate /rgs01/project_space/tsaigrp/Genomics/common/anaconda3/envs/changeseq_py3/
 
 Use Helvetica
 ^^^^^

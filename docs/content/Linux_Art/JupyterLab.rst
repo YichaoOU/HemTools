@@ -2,23 +2,9 @@ Start JupyterLab in HPC
 =========================
 
 
-Previously I have setup a code to run ``jupyter notebook`` as below:
-
 .. code:: bash
 
-	export PATH=$PATH:"/home/yli11/HemTools/bin"
-	
-	module load python/2.7.13
-
-	run_lsf.py -p jupyter --memory 20000
-
-	You will receive an email with the link to the jupyter notebook.
-
-
-Here, jupyter lab is the next generation of jupyter notebook. Here is the usage:
-
-
-.. code:: bash
+	hpcf_interactive
 
 	export PATH=$PATH:"/home/yli11/HemTools/bin"
 	
@@ -26,7 +12,8 @@ Here, jupyter lab is the next generation of jupyter notebook. Here is the usage:
 
 	run_lsf.py -p jupyterlab --memory 20000
 
-	You will receive an email with the link to the jupyter notebook.
+You will receive an email with the link to the jupyter notebook within 5 minutes.
+
 
 Set up env (my notes for installation)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,4 +39,20 @@ in R
 
 	install.packages('IRkernel')
 	IRkernel::installspec()
+
+
+OLD
+^^^
+
+Previously I have setup a code to run ``jupyter notebook`` as below:
+
+.. code:: bash
+
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+	
+	module load python/2.7.13
+
+	run_lsf.py -p jupyter --memory 20000
+
+	You will receive an email with the link to the jupyter notebook.
 

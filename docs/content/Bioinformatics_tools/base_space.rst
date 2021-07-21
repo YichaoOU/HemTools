@@ -23,7 +23,7 @@ In the following commands, ``194763579`` is the runID. ``failed_download`` is th
 
 .. code:: bash
 
-	hpcf_interative.sh
+	hpcf_interactive.sh
 
 	bs authenticate
 

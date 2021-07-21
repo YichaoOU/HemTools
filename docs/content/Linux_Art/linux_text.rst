@@ -10,6 +10,14 @@ Remove the first line from a file
 
 	sed -i '1d' file.txt
 
+Remove the first 5 lines from a file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	sed -i '1,5d' gencode.v38.annotation.gtf
+
+
 
 Replace string in file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -17,6 +25,17 @@ Replace string in file
 .. code:: bash
 
 	sed -i 's/original/new/g' file.txt
+
+Add string to the beginning of each line in a file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+	sed -i -e 's/^/prefix/' file
+	## for example, add hg_ to each line
+	# head gencode.v38.annotation.gtf | sed -e 's/^/hg_/' - 
+	sed -e 's/^/hg_/' gencode.v38.annotation.gtf > hg_gencode.v38.annotation.gtf
+	sed -e 's/^/mm_/' gencode.vM27.annotation.gtf > hg_gencode.vM27.annotation.gtf
 
 Column operations
 ^^^^^^^^^^^^^^^^^
