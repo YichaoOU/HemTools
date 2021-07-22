@@ -186,7 +186,11 @@ OR
 Output
 ^^^^^^
 
-Once the job is finished, you will receive a notification email with the result attached for each CRISPResso run. Unzip the file and open the HTML file.
+Once the job is finished, you will receive a notification email.
+
+Inside the jobID folder, you can look at the crispresso2 result. The html file is inside in each sub-folder.
+
+``crispresso2_BE.edit_eff.tsv`` This file contains the ``ref`` to ``alt`` base editing eff for position -15 to 20 (e.g., 0-20 is the gRNA sequence). The last column is the indel rate. 
 
 
 Comments
