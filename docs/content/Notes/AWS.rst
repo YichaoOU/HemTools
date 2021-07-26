@@ -223,8 +223,9 @@ Upload size error
 
 	nano /etc/nginx/nginx.conf
 
-add ``client_max_body_size  50M;``. Then ``service nginx restart``.
+add ``client_max_body_size  50M;``. Then ``service nginx restart`` or ``systemctl reload nginx``.
 
+The bw file I'm using "https://www.dropbox.com/s/ojqvi0pbnw975cl/SRR8056671_293T.rmdup.uq.bw"
 
 ::
 
