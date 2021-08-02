@@ -3,8 +3,9 @@ Plot bw file correlation
 
 ::
 
-	usage: plot_bw_corr.py [-h] [-j JID] [-f BW_FILES] [-b BIN_SIZE] [-r REGION]
-	                       [-o OUTPUT] [--addon_parameter ADDON_PARAMETER]
+	usage: plot_bw_corr.py [-h] [-j JID] [-f BW_FILES] [-b BIN_SIZE]
+	                       [--bed_file BED_FILE] [-r REGION] [-o OUTPUT]
+	                       [--addon_parameter ADDON_PARAMETER]
 
 	plot correlation for all bw files in the current dir
 
@@ -12,24 +13,30 @@ Plot bw file correlation
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        plot_bw_corr_yli11_2019-09-18)
+	                        plot_bw_corr_yli11_2021-08-02)
 	  -f BW_FILES, --bw_files BW_FILES
 	                        input file or use all bw files in the current dir
 	                        (default: None)
 	  -b BIN_SIZE, --bin_size BIN_SIZE
+	  --bed_file BED_FILE
 	  -r REGION, --region REGION
 	                        Could be chr11:5267561-5277281, HBG region (default:
 	                        None)
 	  -o OUTPUT, --output OUTPUT
 	  --addon_parameter ADDON_PARAMETER
 
+
 Summary
 ^^^^^^^
 
 Plot spearman correlation given all bw files in the current dir. By default, bin size is 10kb.
 
+**Updates**: Now user can provide a peak file to calculate correlation.
+
 Input
 ^^^^^
+
+Copy the bw files to your working dir, if you have a peak file, you can also copy it here. If you have multiple peak files, merge the first (How to merge? see: :doc:`Merge_bed <../Bioinformatics_tools/merge_bed>`) and then copy the merged bed file here.
 
 No specific input files are needed because all bw files in the current dir will be automatically used.
 
@@ -70,6 +77,16 @@ Go to your data directory and type the following.
 .. code:: bash
 
 	plot_bw_corr.py -b 150 -r chr11:5267561-5277281
+
+
+Usage: user input bed file
+--------------------
+
+The following code uses all bw files in the current dir and a user-input bed file to calculate correlatin. Output is  ``[output_label]_spearman_bed.pdf`` and  ``[output_label]_pearson_bed.pdf``
+
+.. code:: bash
+
+	plot_bw_corr.py ---bed_file input.bed
 
 
 Re-order labels

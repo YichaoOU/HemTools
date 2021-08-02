@@ -156,7 +156,24 @@ https://github.com/satijalab/seurat/issues/1118
 
 
 
+Velocity analysis
+^^^^^^^^^^^^^^^
+
+This is different than trajectory or pseudotime analysis.
+
+Python
+-----
+
+https://github.com/basilkhuder/Seurat-to-RNA-Velocity
+
+velocyto is a good python package for this analysis. I used it to generate the loom file, however, simply reading this loom file doesn't seem have enough meta info. This link should work for generating the meta info. But I proceeded to R. 
 
 
+R
+----
 
+https://github.com/satijalab/seurat-wrappers/blob/master/docs/velocity.md
 
+http://pklab.med.harvard.edu/velocyto/notebooks/R/SCG71.nb.html
+
+https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/data_analysis/Velocyto_fixed
