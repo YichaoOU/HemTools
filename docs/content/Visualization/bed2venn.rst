@@ -2,10 +2,23 @@ Plot Venn diagram given two bed files
 ==================
 
 
-Please use "https://intervene.readthedocs.io/en/latest/examples.html"
+Please use ``intervene`` [here](https://intervene.readthedocs.io/en/latest/examples.html)
 
 
+.. code:: bash
 
+	hpcf_interactive
+
+	source activate /home/yli11/.conda/envs/py2
+
+	module load R/3.5.1
+
+	intervene upset -i *unmatched.realign.tsv
+
+Result is stored in a folder called ``Intervene_results``
+
+OLD notes
+^^^^^^^^^^^^^^
 
 ::
 
