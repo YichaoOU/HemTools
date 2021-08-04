@@ -1,4 +1,4 @@
-check sample barcode frequency
+check sample barcode frequency in index reads
 ======================
 
 ::
@@ -26,3 +26,19 @@ This is usually what we need. A sorted frequency table for each barcode pair.
 ----------
 
 Raw read names and barcode table.
+
+
+Barcode frequency in 5'-end
+==================
+
+create a working dir and copy your ``Undetermined_S0_R1_001.fastq.gz`` here.
+
+::
+
+	gunzip Undetermined_S0_R1_001.fastq.gz
+
+	module load homer/4.10
+
+	homerTools barcodes 8 Undetermined_S0_R1_001.fastq -min 1
+
+By default, homer checks the first 8bp frequency and output each 8bp to a file.
