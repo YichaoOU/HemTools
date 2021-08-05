@@ -4,7 +4,7 @@ SHARE-seq data analysis
 ::
 
 
-	usage: shareseq2.py [-h] [-j JID] -f1 SAMPLE_BARCODE -f2 CELL_BARCODE -r1 R1
+	usage: shareseq.py [-h] [-j JID] -f1 SAMPLE_BARCODE -f2 CELL_BARCODE -r1 R1
 	                    -r2 R2 [-n NUM_MISMATCH]
 	                    [--collision_threshold COLLISION_THRESHOLD]
 	                    [--min_reads_per_cell MIN_READS_PER_CELL] [--collision]
@@ -55,7 +55,7 @@ Usage
 
 	module load conda3
 
-	source activate /home/yli11/.conda/envs/py2
+	source activate /home/yli11/.conda/envs/cutadaptenv
 
 	# for collision analysis
 	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE python shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_L001_R1_001.fastq.gz -r2 Undetermined_S0_L001_R2_001.fastq.gz --collision -n 1 --min_reads_per_cell 10
