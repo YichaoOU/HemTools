@@ -135,3 +135,9 @@ There are several reasons:
 - 3. log-transformed is not linear. Differences in low-value will be larger and differences in high-value will be smaller. see: https://people.revoledu.com/kardi/tutorial/Regression/nonlinear/NonLinearTransformation.htm
 
 - 4. Specifically for MA-plot or any other count-based scatter plots, log-transform of low-values, for example, 1-10, the output will look quite sparse on X-axis. On Y-axis, since it's a ratio, it will still look like continous. Altogether, makes the MA-plot looks like https://mikelove.github.io/counts-model/model.html
+
+log2 or log10 transformation?
+^^^^^^^^^^^^^^^^^^^
+
+Not likely to have visuable differences.
+
