@@ -45,6 +45,8 @@ You can definitely control the input files using ``-f`` option. Files have to be
 Output
 ^^^^^^
 
+In these plots, blue color indicates density. 
+
 .. image:: ../../images/bw_corr.png
 	:align: center
 
@@ -86,7 +88,7 @@ The following code uses all bw files in the current dir and a user-input bed fil
 
 .. code:: bash
 
-	plot_bw_corr.py ---bed_file input.bed
+	plot_bw_corr.py --bed_file input.bed
 
 
 Re-order labels
@@ -118,5 +120,18 @@ Save the bw file list in :doc:`blood_data <../Data/blood_data>` as input.list.
 	plot_bw_corr.py
 
 
+Why the low-values looks wider than the high-values in the scatter plot?
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. image:: ../../images/log2_scatter_plots.png
+	:align: center
 
+There are several reasons:
+
+- 1. usually low-expressed genes tend to have more variance.
+
+- 2. scale is different. most dots are squezed in a small area, maybe 0-200, but the range is 0-1400 (left figure), makes it look like quite the same between the two conditions (X and Y). On the other hand, log-transformed plot will have smaller range, which makes the variance visuable.
+
+- 3. log-transformed is not linear. Differences in low-value will be larger and differences in high-value will be smaller. see: https://people.revoledu.com/kardi/tutorial/Regression/nonlinear/NonLinearTransformation.htm
+
+- 4. Specifically for MA-plot or any other count-based scatter plots, log-transform of low-values, for example, 1-10, the output will look quite sparse on X-axis. On Y-axis, since it's a ratio, it will still look like continous. Altogether, makes the MA-plot looks like https://mikelove.github.io/counts-model/model.html
