@@ -17,8 +17,6 @@ Usage
 ^^^^
 
 
-::
-
 .. code:: bash
 
 	hpcf_interactive
