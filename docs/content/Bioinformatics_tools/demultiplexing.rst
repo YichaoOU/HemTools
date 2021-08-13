@@ -135,7 +135,7 @@ Combining ``-e 0.15`` and ``--match-read-wildcards``
 
 	cutadapt \
 	--match-read-wildcards \
-	-e 0.15\
+	-e 0.15 \
 	--no-indels \
 	-g file:barcode.fa \
 	--no-trim \
