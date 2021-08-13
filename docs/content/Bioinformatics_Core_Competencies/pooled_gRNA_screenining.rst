@@ -17,12 +17,13 @@ Step 2: demultiplexing
 
 Link to the cutadapt demultiplexing: :doc:`demultiplexing <../Bioinformatics_tools/demultiplexing>`.
 
+
 .. raw:: html
 
   <video controls width="690" src="../../_static/pool_gRNA_screenining_demultiplexing.mp4#t=0.3"></video>
 
 
-
+For the above example, strict single matching didn't work for two samples. Have to relax the threshold, see: https://hemtools.readthedocs.io/en/latest/content/Bioinformatics_tools/demultiplexing.html?highlight=cutadapt#relaxed-string-matching
 
 
 
