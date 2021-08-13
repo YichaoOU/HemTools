@@ -106,6 +106,23 @@ Generating I1 I2 reads
 ref: https://manuals.cellecta.com/drivermap-targeted-expression-profiling-kits/v1/en/topic/run-data-extraction
 
 
+Generate Undetermined fastq
+^^^^^^^^^^^^^^^^^^^
+
+
+::
+
+	# if you haven't done hpcf_interactive, run the next command
+	hpcf_interactive -q standard -R "rusage[mem=32000]"
+
+	module load bcl2fastq
+
+	wget https://raw.githubusercontent.com/YichaoOU/HemTools/master/docs/gallery/minimal_SampleSheet.csv
+
+	bcl2fastq --no-lane-splitting -o raw_fastq --sample-sheet minimal_SampleSheet.csv
+
+
+
 Comments
 ^^^^^^^^
 
