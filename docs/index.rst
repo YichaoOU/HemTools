@@ -129,4 +129,6 @@ Here is a video
 
 .. video:: _static/video.mp4
 
+.. raw:: html
 
+  <video controls src="_static/video.mp4"></video>
