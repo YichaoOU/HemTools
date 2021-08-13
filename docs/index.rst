@@ -125,8 +125,3 @@ ERROR: temporary directory is not writable: 'normalize_bw_given_peak_yli11_2021-
 Interesting, this should be an HPC error, not due to HemTools bug.
 
 
-Here is a video
-
-.. raw:: html
-
-  <video controls width="690" src="_static/video.mp4#t=0.5"></video>
