@@ -43,8 +43,10 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx_gitstamp',
-    'nbsphinx'
+    'nbsphinx',
+    'sphinxcontrib.video'
 ]
+
 # extensions = [
 #     'sphinx.ext.autodoc',
 #     'sphinx.ext.doctest',
