@@ -27,7 +27,26 @@ For the above example, strict single matching didn't work for two samples. Have 
 
 
 
+Step 3: CRIRSPR screening pipeline
+^^^^^^^^^^^^^^^^^^
 
+Link to CRIRSPR screening pipeline: :doc:`MAGECK <../NGS_pipelines/crispr_seq>`.
+
+Video Part 1
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/crispr_screening_1.mp4#t=0.3"></video>
+
+Video Part 2
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/crispr_screening_2.mp4#t=0.3"></video>
+
+
+Step 4: Interpreting the result
+^^^^^^^^^^^^^^^^^^
 
 
 
