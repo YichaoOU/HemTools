@@ -37,8 +37,6 @@ My Ph.D advisor, Dr. Lonnie Welch, contributed significantly to Bioinformatics e
 
 Here is a video
 
-.. video:: _static/video.mp4
-
 .. raw:: html
 
-  <video controls width="690" src="../../_static/video.mp4#t=1"></video>
+  <video controls width="690" src="../../_static/video.mp4#t=0.3"></video>
