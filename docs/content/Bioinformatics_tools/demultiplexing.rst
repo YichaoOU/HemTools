@@ -65,6 +65,7 @@ Once you have the ``split.lsf`` on HPC, you can do the following to submit the j
 Include other parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+
 Allow one mismatch ``-e 0.15``
 """"""""""""""""""""""""""""""
 
@@ -116,6 +117,28 @@ Sometimes the read is CTGTANGTxxxxxx, your barcode is CTGTATGT, this is one mism
 	gRNA_S1_R1_001.fastq.gz
 
 
+Relaxed string matching
+""""""""""""""""""""""""""""""
 
+Combining ``-e 0.15`` and ``--match-read-wildcards``
 
+.. code:: bash
 
+	#BSUB -P split
+	#BSUB -oo split.out -eo split.err
+	#BSUB -n 1
+	#BSUB -q priority
+	#BSUB -R "rusage[mem=10000]"
+	#BSUB -J "Demultiplex"
+
+	module load python/3.7.0
+
+	cutadapt \
+	--match-read-wildcards \
+	-e 0.15\
+	--no-indels \
+	-g file:barcode.fa \
+	--no-trim \
+	--untrimmed-output untrimmed.fastq.gz \
+	-o {name}.fastq.gz \
+	Undetermined_S0_R1_001.fastq.gz
