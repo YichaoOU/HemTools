@@ -41,4 +41,4 @@ Here is a video
 
 .. raw:: html
 
-  <video controls width="690" src="../../_static/video.mp4#t=0.1"></video>
+  <video controls width="690" src="../../_static/video.mp4#t=1"></video>
