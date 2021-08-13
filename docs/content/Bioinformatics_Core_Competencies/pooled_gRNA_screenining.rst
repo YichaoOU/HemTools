@@ -48,5 +48,16 @@ Video Part 2
 Step 4: Interpreting the result
 ^^^^^^^^^^^^^^^^^^
 
+Video Part 1
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/mageck_pipeline_1.mp4#t=0.3"></video>
+
+Video Part 2
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/mageck_pipeline_2.mp4#t=0.3"></video>
 
 
