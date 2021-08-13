@@ -35,7 +35,7 @@ Reference
 My Ph.D advisor, Dr. Lonnie Welch, contributed significantly to Bioinformatics education, especially on setting up the framework for Bioinformatics Core Competencies. One of the paper I like the most is: [Bioinformatics Curriculum Guidelines: Toward a Definition of Core Competencies](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003496).
 
 
-Here is a video
+Here is a test video
 
 .. raw:: html
 
