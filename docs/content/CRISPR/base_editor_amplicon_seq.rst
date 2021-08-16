@@ -5,8 +5,11 @@ Crispresso2 for Base editor
 ::
 
 	usage: crispresso2_BE.py [-h] [-j JID] [-r1 | -r2] [-f INPUT_LIST] [-q Q]
-	                         [-s S] [-m MIN_OVERLAP] [--ref REF] [--alt ALT]
-	                         [--queue QUEUE] [--gRNA_and_primers GRNA_AND_PRIMERS]
+	                         [--tsv TSV] [-s S] [-m MIN_OVERLAP] [--ref REF]
+	                         [--alt ALT]
+	                         [--base_editor_commands BASE_EDITOR_COMMANDS]
+	                         [--default] [--queue QUEUE]
+	                         [--gRNA_and_primers GRNA_AND_PRIMERS]
 	                         [--gRNA_and_primers_BWA GRNA_AND_PRIMERS_BWA]
 	                         [-g GENOME] [--genome_fasta GENOME_FASTA]
 	                         [--index_file INDEX_FILE]
@@ -15,18 +18,25 @@ Crispresso2 for Base editor
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        crispresso2_BE_yli11_2021-07-13)
+	                        crispresso2_BE_yli11_2021-08-16)
 	  -r1                   only use R1 read for analysis (default: False)
 	  -r2                   only use R2 read for analysis (default: False)
 	  -f INPUT_LIST, --input_list INPUT_LIST
 	                        tsv 5 columns, R1.fastq, R2.fastq, amplicon_seq,
 	                        gRNA_seq, output_name (default: None)
 	  -q Q                  read quality (default: 0)
+	  --tsv TSV             not for end user (default: )
 	  -s S                  base quality (default: 0)
 	  -m MIN_OVERLAP, --min_overlap MIN_OVERLAP
 	                        min_overlap for read merging (default: 10)
 	  --ref REF             reference base (default: A)
 	  --alt ALT             alternative base (default: G)
+	  --base_editor_commands BASE_EDITOR_COMMANDS
+	                        alternative base (default:
+	                        --quantification_window_size 10
+	                        --quantification_window_center -10
+	                        --base_editor_output --keep_intermediate --dump)
+	  --default             not running in base editor mode (default: False)
 	  --queue QUEUE         which queue to use (default: standard)
 	  --gRNA_and_primers GRNA_AND_PRIMERS
 	                        tsv 4 columns, unique ID that matches to fastq file
@@ -50,6 +60,7 @@ Crispresso2 for Base editor
 	  --index_file INDEX_FILE
 	                        BWA index file (default: /home/yli11/Data/Human/hg19/i
 	                        ndex/bwa_16a_index/hg19.fa)
+
 
 
 
@@ -210,6 +221,14 @@ The solution to find these errors is using ``cat -et [your_file_name]``.
 .. image:: ../../images/crispresso2_BE_error2.jpg
 	:align: center
 
+
+
+Video tutorial 1: a custom 2 gRNA base editing quantification
+^^^^^^^^^^^^^
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/crispresso2_BE_custom.mp4#t=0.3"></video>
 
 
 Comments
