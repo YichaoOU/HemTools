@@ -226,6 +226,10 @@ The solution to find these errors is using ``cat -et [your_file_name]``.
 Video tutorial 1: a custom 2 gRNA base editing quantification
 ^^^^^^^^^^^^^
 
+The command I actually used is: ``crispresso2_BE.py -f fastq.tsv --base_editor_commands " --quantification_window_size 30 --quantification_window_center -20 --base_editor_output --keep_intermediate --dump --plot_window_size 30" --interactive``
+
+Current HPC has a long waiting time, so I just run the pipeline interactively by adding ``--interactive``. Also, I set the center to be somewhere in the middle of the two gRNA, ``--quantification_window_center -20`` and increased the quantification window and visualization window size to 30bp.
+
 .. raw:: html
 
   <video controls width="690" src="../../_static/crispresso2_BE_custom.mp4#t=0.3"></video>
