@@ -193,6 +193,25 @@ Inside the jobID folder, you can look at the crispresso2 result. The html file i
 ``crispresso2_BE.edit_eff.tsv`` This file contains the ``ref`` to ``alt`` base editing eff for position -15 to 20 (e.g., 0-20 is the gRNA sequence). The last column is the indel rate. 
 
 
+FAQ
+^^^^
+
+Input format error
+-------------------
+
+The input file requires specific number of columns. See some errors below:
+
+.. image:: ../../images/crispresso2_BE_error1.jpg
+	:align: center
+
+
+The solution to find these errors is using ``cat -et [your_file_name]``.
+
+.. image:: ../../images/crispresso2_BE_error2.jpg
+	:align: center
+
+
+
 Comments
 ^^^^^^^^
 
