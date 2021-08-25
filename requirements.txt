@@ -10,3 +10,5 @@ git+https://github.com/spatialaudio/nbsphinx.git@master
 sphinx-gitstamp==0.3.1
 pygments>=2.4.1
 git+https://github.com/sphinx-contrib/video.git
+pandoc
+
