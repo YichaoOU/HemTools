@@ -312,6 +312,8 @@ Video tutorial
 Example 1: PolII chip-seq data, signal_plot one_to_one option
 ----------------------------
 
+Actuall command I used is: ``signal_plot.py --one_to_one hg19.signal_plot_input.list --plotHeatmap_addon_parameters " --legendLocation none" --computeMatrix_addon_parameters " --missingDataAsZero --regionBodyLength 6000" -u 2500 -d 2500`` and ``signal_plot.py --one_to_one 20copy.signal_plot_input.list --plotHeatmap_addon_parameters "--legendLocation none" --computeMatrix_addon_parameters " --missingDataAsZero --regionBodyLength 2000" -u 1000 -d 1000``
+
 .. raw:: html
 
   <video controls width="690" src="../../_static/signal_plot_usage.mp4#t=0.3"></video>
