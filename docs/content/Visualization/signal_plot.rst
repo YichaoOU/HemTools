@@ -304,6 +304,22 @@ Given a list of bed files and a list of bw files, ``prepare_signal_plot_input.py
 
 Output file is a fixed name: ``signal_plot_input.list``
 
+
+Video tutorial
+^^^^^^^^^^^^^
+
+
+Example 1: PolII chip-seq data, signal_plot one_to_one option
+----------------------------
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/signal_plot_usage.mp4#t=0.3"></video>
+
+
+
+
+
 Comments
 ^^^^^^^^
 
