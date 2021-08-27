@@ -111,3 +111,18 @@ Individual motif position density plot is stored in ``homer_all_motifs`` folder.
 .. image:: ../../images/homer_denovo_motif.png
 	:align: center
 
+FAQ
+^^^^^
+
+How to get the motif bed file using homer
+---------------------
+
+To be consistent with homer motif analysis results (i.e., to match those numbers in the html file), we need to use homer motif scanning algorithm. Note, another more popular motif scanning tool is FIMO, but there are differences in terms of the output.
+
+The following video shows how to perform motif scanning and get a motif bed file using homer.
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/homer_scan_motif.mp4#t=0.3"></video>
+
+
