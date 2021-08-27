@@ -124,4 +124,29 @@ ERROR: temporary directory is not writable: 'normalize_bw_given_peak_yli11_2021-
 
 Interesting, this should be an HPC error, not due to HemTools bug.
 
+.. pyexcel-table::
 
+   ---pyexcel:example table---
+   Name,Age
+   Adam,28
+   Beatrice,29
+   Ceri,30
+   Dean,26
+
+
+.. pyexcel-table::
+
+  ---pyexcel:Sheet 1---
+  1,2,3
+  4,5,6
+  7,8,9
+  ---pyexcel---
+  ---pyexcel:Sheet 2---
+  X,Y,Z
+  1,2,3
+  4,5,6
+  ---pyexcel---
+  ---pyexcel:Sheet 3---
+  O,P,Q
+  3,2,1
+  4,3,2

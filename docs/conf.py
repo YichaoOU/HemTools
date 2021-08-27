@@ -56,6 +56,8 @@ extensions = [
 #     'sphinxarg.ext'
 # ]
 extensions += ['sphinxarg.ext']
+extensions += ['sphinx.ext.mathjax']
+extensions += ['sphinxcontrib.excel']
 extensions += ['sphinxcontrib.disqus']
 extensions += ['sphinx.ext.intersphinx']
 extensions.append('sphinx.ext.imgmath')

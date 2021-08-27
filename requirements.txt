@@ -1,4 +1,3 @@
-#sphinx==1.5.5
 sphinx==2.0.1
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
@@ -11,4 +10,4 @@ sphinx-gitstamp==0.3.1
 pygments>=2.4.1
 git+https://github.com/sphinx-contrib/video.git
 pandoc
-
+sphinxcontrib-excel
