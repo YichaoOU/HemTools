@@ -197,6 +197,17 @@ Not tested
 
 
 
+Video tutorial
+^^^^^^^^^^^^^
+
+
+In the video, I forgot to copy .bai files. 
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/diffPeaks_usage.mp4#t=0.3"></video>
+
+
 
 
 
