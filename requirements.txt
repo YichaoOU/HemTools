@@ -11,3 +11,5 @@ pygments>=2.4.1
 git+https://github.com/sphinx-contrib/video.git
 pandoc
 sphinxcontrib-excel
+https://github.com/pyexcel/pyexcel-pygal/archive/master.zip
+sphinx-copybutton

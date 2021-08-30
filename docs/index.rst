@@ -168,4 +168,4 @@ Interesting, this should be an HPC error, not due to HemTools bug.
 another test
 ^^^^^^
 
-.. pyexcel-table:: Data/data.tsv
+.. pyexcel-table:: content/Data/data.tsv
