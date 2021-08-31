@@ -129,7 +129,8 @@ html_context = {
   'github_version': 'master/source/'
 }
 
-
+html_js_files += ['https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js']
+html_css_files += ['https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css']
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
