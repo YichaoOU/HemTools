@@ -74,6 +74,20 @@ Example read looks like:
 	ATAC_2	CTCTCTAT	ATAC
 	RNA_2	AGAGTAGA	RNA
 
+3. barcode.list
+--------------
+
+::
+
+	AACGTGAT
+	AAACATCG
+	ATGCCTAA
+	AGTGGTCA
+	ACCACTGT
+	ACATTGGC
+	CAGATCTG
+
+
 
 Usage
 ^^^^^
@@ -87,10 +101,10 @@ Usage
 	source activate /home/yli11/.conda/envs/cutadaptenv
 
 	# for collision analysis
-	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE python shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_L001_R1_001.fastq.gz -r2 Undetermined_S0_L001_R2_001.fastq.gz --collision -n 1 --min_reads_per_cell 10
+	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_L001_R1_001.fastq.gz -r2 Undetermined_S0_L001_R2_001.fastq.gz --collision -n 1 --min_reads_per_cell 10
 
 	# for regular share-seq analysis
-	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE python shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_L001_R1_001.fastq.gz -r2 Undetermined_S0_L001_R2_001.fastq.gz -n 1 --min_reads_per_cell 10
+	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_L001_R1_001.fastq.gz -r2 Undetermined_S0_L001_R2_001.fastq.gz -n 1 --min_reads_per_cell 10
 
 
 
