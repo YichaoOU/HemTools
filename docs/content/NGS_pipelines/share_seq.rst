@@ -46,6 +46,35 @@ SHARE-seq data analysis
 	:align: center
 
 
+Input
+^^^^^
+
+1. Undetermined_S0_L001_R1_001.fastq.gz and Undetermined_S0_L001_R2_001.fastq.gz
+-----------------------
+
+Example read looks like:
+
+::
+
+	@M04990:66:000000000-G83PY:1:1101:15830:1333 1:N:0:TCGGACGATCATGGGGAGCTATTCAAGTATGCAGCGCGCTCAAGCACGTGGATTTTGTTGTAGTCGTACGCCGATGCGAAACATCGGCCACTTTGTTTG+AGAGTAGA
+	GTATCAACGTTAGTCGTACGCCGATGCGAAACATCGGCCACGAATCTGTA
+	+
+	AAAA?33>>AFFFFBAEGAA0EA?AEE0EE//FFAA//EEEEGGAEHBGG
+
+2. input.tsv
+------------
+
+3-column tsv to specify sample name, sample barcode and sample type (ATAC or RNA)
+
+::
+
+	[yli11@nodecn203 SHARE_seq_pipeline]$ head input.tsv 
+	ATAC_1	TAGATCGC	ATAC
+	RNA_1	TATCCTCT	RNA
+	ATAC_2	CTCTCTAT	ATAC
+	RNA_2	AGAGTAGA	RNA
+
+
 Usage
 ^^^^^
 
@@ -75,6 +104,9 @@ Usage
 
 
 
+Output
+^^^^^^
 
+Look for collision plot.
 
 
