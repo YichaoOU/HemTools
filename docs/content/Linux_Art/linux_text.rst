@@ -18,6 +18,12 @@ Remove the first 5 lines from a file
 	sed -i '1,5d' gencode.v38.annotation.gtf
 
 
+If you need the first 100 characters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+	cat file |colrm 101 
+
 
 Replace string in file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
