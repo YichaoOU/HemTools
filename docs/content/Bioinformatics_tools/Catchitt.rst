@@ -45,19 +45,18 @@ Predicting in vivo TFBS using Catchitt
 Summary
 ^^^^^^^^
 
+Catchitt can predict TFBS given motif and DNase/ATAC signal (bam file), the model is first need to be generated given a ChIP-seq peak.
 
 Catchitt is developed by a group from German, called J-Team, who won the shared first place in the ENCODE-DREAM competetion in the final phase. It was also the second place in the initial phase. They also provided the best documented and workable tutorial for their algorithm. I tried other teams methods, including the XGboost method (shared-first place) and the Deep Learning method (second place), they don't seem to work. 
 
-The learning algorithm used by J-team is adoptied from the team leader's Ph.D thesis on discriminative Baysian learning. I would say probably XGboost and DL are better learning algorithms, but both algirhtms need a good work on parameter tunining. Parameter tuning and feature engineering are usually much important than the learning algorithm itself. So on ML competitions, sometimes when you stick to one algorithm, you become reluctant to switch to another algorithm because all the work you have spent.
-
- 
+The learning algorithm used by J-team is adoptied from the team leader's Ph.D thesis on discriminative Baysian learning. 
 
 
 
 Flowchart
 ^^^^^^^^^^^^^^^^^^
 
-.. image:: ../images/TFBS_prediction_pipeline.png
+.. image:: ../../images/TFBS_prediction_pipeline.png
 	:align: center
 
 
@@ -66,7 +65,36 @@ Flowchart
 Input
 ^^^^^^^^^^^^
 
-The following ``ATAC.list``, 
+Raw data can be put anywhere, users only need to provide the abs/rel PATH to raw bam, motif and peak files.
+
+ATAC.list
+---------
+
+2-col tsv, cell type and path to bam.
+
+::
+
+	CFUe	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_CFUe_ATAC.markdup.bam
+	Ery	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_Ery_ATAC.markdup.bam
+	LTHSC	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_LTHSC_ATAC.markdup.bam
+	MEP	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_MEP_ATAC.markdup.bam
+	STHSC	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_STHSC_ATAC.markdup.bam
+	CMP	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_CMP_ATAC.markdup.bam
+	GMP	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_GMP_ATAC.markdup.bam
+	MEG	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_MEG_ATAC.markdup.bam
+	MPP	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Mouse/ATAC/blood_lineage/atac_seq_yli11_2021-09-24/bam_files/mouse_MPP_ATAC.markdup.bam
+	HPC5	/research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Projects/NFIX_megan/ATAC/HPC5_WT/single-end-run/atac_seq_yli11_2021-09-25/bam_files/HPC5_ATAC.markdup.bam
+
+motif.list
+---------
+
+2-col tsv, motif name and path to pfm or the SLIM model.
+
+Other required parameters
+-----------------------
+
+Users also need to provide a conserved peak set (``-c``) such as IDR peaks and a relaxed peak set (``-r``) such as the union of the MACS2 peaks. Users also need to give the training cell type ``-t``; this name needs to match the one specified in the atac.list file.
+
 
 
 Output
@@ -87,7 +115,13 @@ JID folder structure
 Usage
 ^^^^^^^^^^^^
 
+::
 
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	TFBS_predict.py -f ATAC.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9
 
 
 
