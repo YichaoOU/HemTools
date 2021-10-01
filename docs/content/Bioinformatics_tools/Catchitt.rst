@@ -90,6 +90,36 @@ motif.list
 
 2-col tsv, motif name and path to pfm or the SLIM model.
 
+Because the motif can be a pfm or xml file. the second column here should be ``d=PATH_to_xml`` or ``m=Jaspar j=PATH_to_pfm`` file. The motif SLIM model can be directly found in Catchitt downloads and to convert meme format to pfm, you can use http://embnet.ccg.unam.mx/rsat/convert-matrix_form.cgi
+
+::
+
+	Ctcf_H1hesc_shift20_bdeu_order-20_comp1-model-1	d=Ctcf_H1hesc_shift20_bdeu_order-20_comp1-model-1.xml
+	ENCSR000BHK_SP1-human_1_hg19-model-2	d=ENCSR000BHK_SP1-human_1_hg19-model-2.xml
+	intersect_all_relaxed_filtered_lslim3-model-1	d=intersect_all_relaxed_filtered_lslim3-model-1.xml
+	intersect_all_relaxed_filtered_lslim3-model-2	d=intersect_all_relaxed_filtered_lslim3-model-2.xml
+	intersect_all_relaxed_filtered_lslim3-model-3	d=intersect_all_relaxed_filtered_lslim3-model-3.xml
+	intersect_all_relaxed_filtered_lslim3-model-4	d=intersect_all_relaxed_filtered_lslim3-model-4.xml
+	intersect_all_relaxed_filtered_lslim3-model-5	d=intersect_all_relaxed_filtered_lslim3-model-5.xml
+	intersect_all_relaxed_filtered_lslim3-model-6	d=intersect_all_relaxed_filtered_lslim3-model-6.xml
+	intersect_all_relaxed_filtered_lslim3-model-7	d=intersect_all_relaxed_filtered_lslim3-model-7.xml
+	intersect_all_relaxed_filtered_pwm-model-1	d=intersect_all_relaxed_filtered_pwm-model-1.xml
+	NFIX.homer	m=Jaspar j=NFIX.homer.pfm
+	PU1.homer	m=Jaspar j=PU1.homer.pfm
+
+Example of pfm file:
+
+::
+
+	[yli11@nodecn203 NFIX_motif_model]$ head NFIX.homer.pfm 
+	>NFIX NFIX
+	A  [113  67  56   1  19 164 506 179 262 180 264   8  16   5 784 442 ]
+	C  [473 426   3   1   4 782 186 356 222 271  29  53 960 993 155  64 ]
+	G  [201  38 158 995 964  43  33 257 211 352 194 784   5   1   3 421 ]
+	T  [213 470 783   3  14  11 275 208 304 197 513 155  19   1  58  73 ]
+
+
+
 Other required parameters
 -----------------------
 
@@ -106,6 +136,7 @@ JID folder structure
 -------------
 
 ::
+
 	ATAC
 	Motif
 	labels
@@ -121,44 +152,11 @@ Usage
 
 	module load python/2.7.13
 
-	TFBS_predict.py -f ATAC.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9
+	TFBS_predict.py -f ATAC.list -m motif.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9
 
 
+Timming
+-------
 
-Learning motif features
-^^^^^^^^^^^^^^^^^
-
-These motif features are usually fixed. so you only need to do it once.
-
-Input.list
----------
-
-2-col tsv specifing the input motif model (SLIM model .xml or JASPAR pfm) and the output tranformed model.
-
-::
-
-	d=Ctcf_H1hesc_shift20_bdeu_order-20_comp1-model-1.xml	model/Ctcf_H1hesc_shift20_bdeu_order-20_comp1-model-1
-	d=ENCSR000BHK_SP1-human_1_hg19-model-2.xml	model/ENCSR000BHK_SP1-human_1_hg19-model-2
-	d=intersect_all_relaxed_filtered_lslim3-model-1.xml	model/intersect_all_relaxed_filtered_lslim3-model-1
-	d=intersect_all_relaxed_filtered_lslim3-model-2.xml	model/intersect_all_relaxed_filtered_lslim3-model-2
-	d=intersect_all_relaxed_filtered_lslim3-model-3.xml	model/intersect_all_relaxed_filtered_lslim3-model-3
-	d=intersect_all_relaxed_filtered_lslim3-model-4.xml	model/intersect_all_relaxed_filtered_lslim3-model-4
-	d=intersect_all_relaxed_filtered_lslim3-model-5.xml	model/intersect_all_relaxed_filtered_lslim3-model-5
-	d=intersect_all_relaxed_filtered_lslim3-model-6.xml	model/intersect_all_relaxed_filtered_lslim3-model-6
-	d=intersect_all_relaxed_filtered_lslim3-model-7.xml	model/intersect_all_relaxed_filtered_lslim3-model-7
-	d=intersect_all_relaxed_filtered_pwm-model-1.xml	model/intersect_all_relaxed_filtered_pwm-model-1
-	m=Jaspar j=NFIX.homer.pfm	model/NFIX.homer
-	m=Jaspar j=PU1.homer.pfm	model/PU1.homer
-
-
-Usage
------
-
-::
-
-	run_lsf.py -f input.list -p Catchitt_motif -g mm9
-
-Usually it takes less than 3 hours to finish with 3 threads and 64G memory.
-
-
+Motif feature generation: 3h per motif, 64G memory and 3 threads.
 
