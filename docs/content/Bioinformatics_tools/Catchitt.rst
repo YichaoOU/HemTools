@@ -136,15 +136,21 @@ JID folder structure
 -------------
 
 ::
-
+	
 	ATAC
+
 	Motif
+
 	labels
+
 	trained_model
+	
 	prediction
 
 Usage
 ^^^^^^^^^^^^
+
+You will receive an email notification when job is finished.
 
 ::
 
@@ -158,5 +164,10 @@ Usage
 Timming
 -------
 
-Motif feature generation: 3h per motif, 64G memory and 3 threads.
+- Motif feature generation: 3h per motif, 64G memory and 3 threads.
 
+- ATAC feature generation: 3h per motif, 64G memory and 3 threads.
+
+- Training
+
+- Prediction
