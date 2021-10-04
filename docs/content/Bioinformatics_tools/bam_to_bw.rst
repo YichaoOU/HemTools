@@ -83,6 +83,8 @@ For PE data, use:
 
 For no filter, use:
 
+::
+
 	bam_to_bw.py *.bam --no_filter
 
 Source code
