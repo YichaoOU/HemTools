@@ -144,7 +144,7 @@ JID folder structure
 	labels
 
 	trained_model
-	
+
 	prediction
 
 Usage
@@ -166,8 +166,20 @@ Timming
 
 - Motif feature generation: 3h per motif, 64G memory and 3 threads.
 
-- ATAC feature generation: 3h per motif, 64G memory and 3 threads.
+- ATAC feature generation: 1h per cell type, 10G memory and 1 threads.
 
-- Training
+- generate labels given peaks: 10 minutes
+
+- Training: 10h, 8 threads, 20G
 
 - Prediction
+
+
+Other notes
+--------
+
+My previous run failed at training step, so to user previously generated features, i use ``override_jid`` option
+
+::
+
+	TFBS_predict.py -f ATAC.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9 --override_jid -j TFBS_predict_yli11_2021-10-01_192f19c80968

@@ -5,7 +5,7 @@ Filter bam files and generate bw files
 ::
 
 	usage: bam_to_bw.py [-h] [-j JID] [--bamCoverage_addon BAMCOVERAGE_ADDON]
-	                    [-g GENOME] [-e EFFECTIVEGENOMESIZE]
+	                    [--no_filter] [-g GENOME] [-e EFFECTIVEGENOMESIZE]
 	                    file [file ...]
 
 	positional arguments:
@@ -15,10 +15,11 @@ Filter bam files and generate bw files
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        bam_to_bw_yli11_2019-10-31)
+	                        bam_to_bw_yli11_2021-10-04)
 	  --bamCoverage_addon BAMCOVERAGE_ADDON
 	                        for PE data, you add --center to get sharper peaks
-	                        (default: "")
+	                        (default: )
+	  --no_filter           no_filter for input bam (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -33,10 +34,16 @@ Filter bam files and generate bw files
 
 
 
+
 Summary
 ^^^^^^^
 
 Read all bam files in the current dir, keep only properly paired mapped reads (``-f 3``), remove ummapped and duplicated reads (``-F 4 -F 8 -F 1024``), and filter out low MAPQ reads (``-q 5``, this will also remove multi-mapped reads). Lastly, generate bw files using the filtered bam files.
+
+10/4/2021 updates
+-----------
+
+use ``--no_filter`` to convert input bam to bw without any filters.
 
 Input
 ^^^^^
@@ -74,6 +81,9 @@ For PE data, use:
 
 	bam_to_bw.py *.bam --bamCoverage_addon " --center"
 
+For no filter, use:
+
+	bam_to_bw.py *.bam --no_filter
 
 Source code
 ^^^^
