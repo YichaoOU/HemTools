@@ -12,6 +12,30 @@ Just like how I moved from Perl to Python, the key is to get familiar with the s
 
 A unique command in R is ``%>%``, which is similar to the pipe function in Linux ``|``.
 
+
+R plots
+^^^^^^^^
+
+I'm not a good R user. Some of the following plots took me hours to figure out.
+
+In this barplot, I have made clusters for WT and KO cells, I then want to make a barplot showing the "normalized value", basically cluster size divided by the corresponding WT or KO size. The key here is to use ``aes( y=..count../..Total_cell..)`` and a custom column in the ``aes`` mapping function.
+
+::
+
+  a=cell_data %>%
+      group_by(orig.ident) %>%
+      summarise(Total_cell = n()) 
+  cell_data2 = merge(cell_data,a,by=c("orig.ident"))
+  ggplot(cell_data2, aes(x = manual_label, fill = orig.ident,Total_cell=Total_cell)) +
+      geom_bar(aes( y=..count../..Total_cell..),position=position_dodge2(reverse = TRUE),size=0.6,alpha=0.5,color="black") +
+      scale_x_discrete(limits =new_level)+
+  scale_fill_manual(values = c("#0073C2FF","#EFC000FF"))+theme(axis.text.x = element_text(angle = 45, vjust =1, hjust=1),
+                                                               text = element_text(size=12))
+
+
+
+
+
 simple command differences
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 

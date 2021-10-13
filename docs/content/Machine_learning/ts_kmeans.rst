@@ -110,7 +110,13 @@ The output table is ``output_label.clusters.N.pdf``
 	:align: center
 
 
+Notes
+^^^^^
 
+I haven't had a very good result using this ts-kmeans algorithm as well as more advanced DTW algorithms. The best results, more interpretable ones I had were using hierarchical clustering. A review on time-seirs clustering showed the best algorithm is usually data dependent. But from the evaluation tables, I found heirarchnical clustering performance is quite good.
+
+
+Ref: https://www.sciencedirect.com/science/article/pii/S2666827020300013#sec4.3
 
 Comments
 ^^^^^^^^

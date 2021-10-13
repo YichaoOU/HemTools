@@ -97,5 +97,9 @@ Pie chart example
 .. image:: ../../images/pie_chart.png
 	:align: center
 
+::
 
-
+	n=3995
+	f=CFUe.06.peaks.bed
+	annotatePeaks.pl $f mm9 -gtf $ann > $f.annot.txt
+	pie_plot.py -f $f.annot.txt --use_col Annotation --header --homer -t "$f(n=$n)" -o $f.annot.pdf
