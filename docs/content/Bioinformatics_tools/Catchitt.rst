@@ -183,3 +183,27 @@ My previous run failed at training step, so to user previously generated feature
 ::
 
 	TFBS_predict.py -f ATAC.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9 --override_jid -j TFBS_predict_yli11_2021-10-01_192f19c80968
+
+My previous run failed at the prediction step, so I want to rerun prediction and make it fast. The following pipeline will run prediction for each chr, so the speed is very fast, also avoiding failing at some specific chr, for example chrY.
+
+::
+
+	TFBS_predict.py -f ATAC.list -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -g mm9 --override_jid -j TFBS_predict_yli11_2021-10-03 --predict_only --motif_features "m=TFBS_predict_yli11_2021-10-03/Motif/Ctcf_H1hesc_shift20_bdeu_order-20_comp1-model-1/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/ENCSR000BHK_SP1-human_1_hg19-model-2/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-1/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-2/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-3/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-4/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-5/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-6/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_lslim3-model-7/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/intersect_all_relaxed_filtered_pwm-model-1/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/NFIX.homer/Motif_scores.tsv.gz m=TFBS_predict_yli11_2021-10-03/Motif/PU1.homer/Motif_scores.tsv.gz"
+
+
+ATAC-seq notes
+--------------
+
+Using bam file, the algorithm will perform a local Fold-enrichment normalization similar to MACS2. I found the final prediction, since ATAC-seq is the only cell-type specific marker, the value will affect the final prediction. The ENCODE-DREAM competition mainly focusing on auPRC and auROC, which between-cell type normalization doesn't really needed. Based on the two TFs we are interested, it seems that another metric that the ENCODE-DREAM compeition failed to consider is this TF-TF interactions.
+
+Here, I first used S3norm to normalize ATAC-seq signal across cell-types then performed the whole pipeline. I had a bug at training, so the following commands split into two parts:
+
+::
+
+	TFBS_predict.py -f ATAC.list2 -m motif.list2 -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9 -j single_motif_ATAC_S3norm3 --bw
+
+	TFBS_predict.py -f ATAC.list2 -m motif.list2 -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9 -j single_motif_ATAC_S3norm3 --train_predict --override_jid
+
+
+
+

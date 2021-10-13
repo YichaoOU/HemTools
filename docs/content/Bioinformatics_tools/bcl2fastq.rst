@@ -1,10 +1,13 @@
 Convert BCL basecall files to FASTQ files
 =========================================
 
+
 .. tip:: For demultiplexing, you must provide ``SampleSheet.csv``; otherwise, all fastq.gz files will be named as ``Undetermined``. You have to upload ``SampleSheet.csv`` to the dir that conatins BCL files on HPC. Below is what this dir should look like (and the files and subfolders it should contain, not including fastq_files folder):
 
 .. image:: ../../images/BCL2fastq_dir.PNG
 	:align: center
+
+.. note:: ``SampleSheet.csv`` is a keyword, user much provide a file with exactly this name. Otherwise, the output will just be ``Undetermined``. A different name is OK for more advanced users.
 
 See this for SampleSheet format details: https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/sequencing-sheet-format-specifications-technical-note-970-2017-004.pdf
 
@@ -39,6 +42,8 @@ You can download an example SampleSheet.csv here: https://github.com/YichaoOU/He
 	bcl2fastq --no-lane-splitting -o fastq_files
 
 Once finished, you should be able to see the fastq files in folder `fastq_files`.
+
+.. note:: ``fastq_files`` is the output folder. Feel free to change it.
 
 .. tip:: By default, one mismatch is allowed for demultiplexing. If you want to allow for two mismatches, type the command below:
 
