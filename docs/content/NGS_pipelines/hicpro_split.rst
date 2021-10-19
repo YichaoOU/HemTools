@@ -183,6 +183,20 @@ These trans- pairs will not be included in captureC bw, HiC matrix, or TAD calcu
 Since these trans- pairs are totally randomly assigned, it should not create any bias, so we only lose some sensitivity for detecting "weak" signals. When we are more care about specificity, we don't really need to "rescus" these reads, because modifying the code and then test it could cost some time.
 
 
+generate hic bw file
+^^^^^^^^^^^^^^^^
+
+::
+
+	run_lsf.py -f mm10.bam.list -p bwt2pairs_to_bw -g custom --chrom_size /home/yli11/Data/Mouse/mm10/annotation/mm10.chrom.sizes
+
+
+visualization hicpro result
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
 FAQ
 ^^^
 

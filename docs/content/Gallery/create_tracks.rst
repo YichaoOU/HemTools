@@ -110,6 +110,13 @@ Put this json:
 
 
 
+automatically generate json file given all files in current_dir
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+	cd /home/yli11/dirs/genome_browser/yli11/Jingjing
+	ppr_json.py -d yli11/Jingjing -o tracks.json -g mm10
 
 
 
