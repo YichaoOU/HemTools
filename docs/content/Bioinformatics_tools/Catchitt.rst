@@ -204,6 +204,6 @@ Here, I first used S3norm to normalize ATAC-seq signal across cell-types then pe
 
 	TFBS_predict.py -f ATAC.list2 -m motif.list2 -c NFIX.idr.narrowPeak -r NFIX.union.narrowPeak -t HPC5 -q priority -g mm9 -j single_motif_ATAC_S3norm3 --train_predict --override_jid
 
-
+.. tip:: ``--train_predict`` is also good for tuning training parameters!
 
 
