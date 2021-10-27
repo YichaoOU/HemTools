@@ -68,7 +68,7 @@ Input
 fastq.tsv
 ---------
 
-Use ``--guess_input`` to automatically generate this.
+Use ``run_lsf.py --guess_input`` to automatically generate this.
 
 ::
 
