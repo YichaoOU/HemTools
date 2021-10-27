@@ -65,16 +65,29 @@ STARR-seq is an assay to profile self-transcribed active regions (e.g., enhancer
 Input
 ^^^^^
 
-fastq.tsv
+1. fastq.tsv
 ---------
 
 Use ``run_lsf.py --guess_input`` to automatically generate this.
 
 ::
 
-	Banana_R1.fastq.gz	Banana_R2.fastq.gz	Banana_lovers
-	Orange_R1.fastq.gz	Orange_R2.fastq.gz	Orange_lovers
+	myDNA1_R1.fastq.gz	myDNA1_R2.fastq.gz	myDNA1
+	myDNA2_R1.fastq.gz	myDNA2_R2.fastq.gz	myDNA2
+	myRNA1_R1.fastq.gz	myRNA1_R2.fastq.gz	myRNA1
+	myRNA2_R1.fastq.gz	myRNA2_R2.fastq.gz	myRNA2
+	myRNA3_R1.fastq.gz	myRNA3_R2.fastq.gz	myRNA3
 
+2. design matrix
+------------
+
+A tsv file containing three columns specifying comparisons. For example, RNA sample name, DNA sample name, comparison name. The names have to match the third column specified in fastq.tsv
+
+.. code:: bash
+
+	myRNA1	myDNA1	myRNA1.vs.myDNA1
+	myRNA2	myDNA1	anyName
+	myRNA3	myDNA2	Who
 
 Usage
 ^^^^^
@@ -87,7 +100,7 @@ Usage
 
 	run_lsf.py --guess_input # to generate fastq.tsv
 
-	starr_seq.py -f fastq.tsv 
+	starr_seq.py -f fastq.tsv -d design.tsv -g hg19
 
 
 
