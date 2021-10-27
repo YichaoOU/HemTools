@@ -81,10 +81,12 @@ Use ``run_lsf.py --guess_input`` to automatically generate this.
 	myRNA2_R1.fastq.gz	myRNA2_R2.fastq.gz	myRNA2
 	myRNA3_R1.fastq.gz	myRNA3_R2.fastq.gz	myRNA3
 
-2. design matrix
+2. peakcall.tsv
 ------------
 
-A tsv file containing three columns specifying comparisons. For example, RNA sample name, DNA sample name, comparison name. The names have to match the third column specified in fastq.tsv
+A tsv file containing three columns specifying comparisons. For example, RNA sample name, DNA sample name, comparison name. The names have to match the third column specified in fastq.tsv.
+
+Always RNA vs DNA
 
 .. code:: bash
 
@@ -103,7 +105,7 @@ Usage
 
 	run_lsf.py --guess_input # to generate fastq.tsv
 
-	starr_seq.py -f fastq.tsv -d design.tsv -g hg19
+	starr_seq.py -f fastq.tsv -d peakcall.tsv -g hg19
 
 
 
