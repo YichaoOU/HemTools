@@ -92,7 +92,6 @@ How indel is determined
 ----------------------
 
 
-
 .. image:: ../../images/count_indel_pipeline.png
 	:align: center
 
@@ -105,9 +104,13 @@ How indel is determined
 .. image:: ../../images/count_indel_cas12a.png
 	:align: center
 
+
 Optimal window size setting is from: https://www.biorxiv.org/content/10.1101/2020.11.13.382283v1.full
 
+
 "We determined the optimal window size to be the size at which the median difference of calculated indel editing between treatment and control samples was less than 0.1%. Using this rationale, we find that an optimal window can be defined as ``+/- 8bp`` for Cas9 (Figure 3A) and +/- 12bp for Cas12a (Figure S5). However, we found that if the center of the Cas12a window is shifted -3bp from the PAM distal cut site, the optimal variant window can be decreased to ``+/- 9bp`` (Figure 3B)."
+
+
 
 Usage
 ^^^^^
