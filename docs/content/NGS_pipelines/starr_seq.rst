@@ -3,11 +3,12 @@ STARR-seq analysis pipeline
 
 ::
 
-	usage: starr_seq.py [-h] [-j JID] -f FASTQ_TSV [-bs BIN_SIZE] [-ss STEP_SIZE]
-	                    [-c FDR_CUTOFF] [-min MIN_FRAG] [-max MAX_FRAG]
-	                    [-a ADDON_PARAMETERS] [-g GENOME] [-i INDEX_FILE]
-	                    [-s CHROM_SIZE] [-b BLACKLIST] [--gc_cov GC_COV]
-	                    [--map_cov MAP_COV] [--conv_cov CONV_COV]
+	usage: starr_seq.py [-h] [-j JID] -f FASTQ_TSV -d DESIGN_MATRIX [-bs BIN_SIZE]
+	                    [-ss STEP_SIZE] [-c FDR_CUTOFF] [-min MIN_FRAG]
+	                    [-max MAX_FRAG] [-q MAPQ] [-a ADDON_PARAMETERS]
+	                    [-g GENOME] [-i INDEX_FILE] [-s CHROM_SIZE] [-b BLACKLIST]
+	                    [--gc_cov GC_COV] [--map_cov MAP_COV]
+	                    [--conv_cov CONV_COV]
 
 	starr-seq pipeline
 
@@ -18,6 +19,8 @@ STARR-seq analysis pipeline
 	                        starr_seq_yli11_2021-10-27)
 	  -f FASTQ_TSV, --fastq_tsv FASTQ_TSV
 	                        paired-end fastq tsv (default: None)
+	  -d DESIGN_MATRIX, --design_matrix DESIGN_MATRIX
+	                        3 column tsv for design matrix (default: None)
 	  -bs BIN_SIZE, --bin_size BIN_SIZE
 	                        bin_size (default: 500)
 	  -ss STEP_SIZE, --step_size STEP_SIZE
@@ -28,6 +31,7 @@ STARR-seq analysis pipeline
 	                        min_frag size (default: 200)
 	  -max MAX_FRAG, --max_frag MAX_FRAG
 	                        max_frag size (default: 1000)
+	  -q MAPQ, --MAPQ MAPQ  MAPQ cutoff (default: 40)
 	  -a ADDON_PARAMETERS, --addon_parameters ADDON_PARAMETERS
 	                        other parameters to add to starrPeaker (default: )
 
@@ -54,7 +58,6 @@ STARR-seq analysis pipeline
 	  --conv_cov CONV_COV   conv_cov (default: /home/yli11/Data/Human/STARR_seq
 	                        /STARRPeaker_cov_hg19_linearfold-folding-energy-
 	                        100bp.bw)
-
 
 
 Summary
