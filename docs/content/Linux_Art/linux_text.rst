@@ -112,4 +112,9 @@ set attr
 	# file: webpage_6.html
 	user.test="123"
 
+combine figures
+^^^^^^^^^
 
+::
+
+	convert *rev.png -append control_combined_rev.png
