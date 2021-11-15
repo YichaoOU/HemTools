@@ -26,7 +26,7 @@ Call IDR peaks given bam files from two replicates
 	  --half_width HALF_WIDTH
 	                        half.width: -1 if using the reported peak width, a
 	                        numerical value to truncate the peaks to +- half_width
-	                        (default: -1)
+	                        (default: 200)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME

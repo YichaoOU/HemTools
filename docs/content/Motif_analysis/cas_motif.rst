@@ -49,7 +49,7 @@ This output can be uploaded to protein paint using the following command:
 
 	module load htslib
 
-	bed_to_bedjs_withName_Color.py match.bed.sorted 1
+	bed_to_bedjs_color_by_strand.py matches.bed.sorted
 
 The associated json file will look like below:
 

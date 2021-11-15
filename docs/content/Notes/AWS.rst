@@ -260,3 +260,11 @@ re-build instances
 
 Today when I check again on Easy-Prime, the server is down! And I found that the enviorment is just gone. I have to start over. My AWS EB instance was replaced with a new one. I checked online, this could be caused by AWS auto-scaling. But I'm still not sure why it happened. Now I have to reinstalled everything.
 
+
+Memory allocation problem
+^^^^^^
+
+ 5891 webapp    20   0 1388604 199624  51280 S  0.0 19.8   0:02.30 gunicorn                                                                                                  
+17153 webapp    20   0  234568  17876   2952 S  0.0  1.8  21:46.91 gunicorn 
+
+solution: find the one with higher memory usage and kill it. `top -u webapp`
