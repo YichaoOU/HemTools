@@ -95,6 +95,11 @@ Gain and Loss is relative speaking to control. So ``gain`` means the region has 
 2. DESEQ2 result (``control-[user_input_group].diffRegions.txt``) is generated in homer_motifs folder. In this file, ``logFC < 0 means gain,  the peak has less read count in control group.``. In all other files (e.g., values in bdg_files folder) are corrected.
 
 
+Apply LFC shrinkage
+^^^^^^^^^^^^^^^^^
+
+Users can use the generated count table ``count_table.bed`` and run the DESEQ2 analysis themself. An example to apply LFC shrinkage is here: :doc:`DEseq2_example <../../jupyter_notebooks/DEseq2_example>`
+
 FAQ
 ^^^^^^
 
