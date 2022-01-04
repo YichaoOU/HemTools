@@ -18,6 +18,14 @@ Cons
 
 De novo transcripts are not annotated, people can use the bam file from step2 to perform annotation.
 
+Usually I just use this pipeline to check some specific genes, so I will just subset the bam file and visualize in IGV. I can manually check the abundance in the abundance.tsv using the read names from IGV.
+
+::
+
+	samtools view -b trinity_gmap.st.bam chr8:87173540-87374477 > trinity_gmap.NFIX.bam
+
+	samtools index trinity_gmap.NFIX.bam
+
 Input
 ^^^^^
 
