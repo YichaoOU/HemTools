@@ -49,6 +49,8 @@ Usage
 
 	run_lsf.py -f fastq.tsv -p trinity.lsf
 
+Email notification will be sent once it is finished.
+
 Output
 ^^^^^^
 
