@@ -137,6 +137,11 @@ TODO
 HPC doesn't have the latest version of Mageck. A request has been submitted.
 
 
+For the insulator project
+^^^^^^^
+
+add ``--kallisto`` option to use kallisto to map R1 read to 250bp fasta library and count reads, generates Mageck format count table so that we can use Mageck to gengerate visualizations and comparisons.
+
 
 Comments
 ^^^^^^^^

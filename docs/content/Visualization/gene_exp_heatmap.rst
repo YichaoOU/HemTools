@@ -112,3 +112,18 @@ plot top diff genes after diff gene pipeline:
 	for i in *.csv;do plot_gene_exp_heatmap.py -f $i --index_by ext_gene -c1 qval,0.001 --sort_by logFC --remove_cols pval,num_aggregated_transcripts,X,treatment_mean,control_mean -W 5 -H 20 --show_name -o $i;done
 
 
+Example
+^^^^^^^
+
+Input table looks like:
+
+::
+	gene,logFC,AveExpr,t,P.Value,qval,B,NT_rep1,NT_rep2,VHLKO_rep107_log2CPM,VHLKO_rep2
+	PFKFB4,4.4497,5.0765,-76.651,6.29E-33,6.93E-30,63.675,3.1112,3.0504,7.5219,7.5368
+
+The command is:
+
+
+::
+
+	plot_gene_exp_heatmap.py -f input.csv -c1 qval,0.001 --sort_by logFC --remove_cols P.Value,AveExpr,t,B -W 5 -H 20 --show_name
