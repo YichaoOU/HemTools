@@ -6,6 +6,22 @@ Objective
 
 Our goal is to learn some network modules specific to the given gene expression data. No new PPIs are made by this algorithm. 
 
+Steps
+^^^^^
+
+1. graphSage to learn node embeddings
+
+2. dimension reduction of node embeddings into 2D space (e.g., TSNE, UMAP)
+
+3. clustering of 2D scatter plot. (e.g., k-means, community detection, louvain)
+
+Cons
+^^^^
+
+Resulted network modules could be unstable since in all three steps (mainly the first step), there are a great amount of randomness.
+
+Results can be used as an exploration. We've used it to prodive a motivation to study NFIX and PU.1 co-binding.
+
 Input
 ^^^^^
 

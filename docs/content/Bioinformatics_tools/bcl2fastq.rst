@@ -126,6 +126,21 @@ Generate Undetermined fastq
 
 	bcl2fastq --no-lane-splitting -o raw_fastq --sample-sheet minimal_SampleSheet.csv
 
+Generate R1 and R2 reads with I1 and I2 in the read name
+^^^^^^^^^^^^^^
+
+Header example: 
+
+::
+
+	@M04990:107:000000000-JYJGM:1:1101:20373:1000 1:N:0:NCTCCGAC+NTANNNCNNNNNNNNTTC
+
+By default, ```bcl2fastq`` indeed does put index reads in the read name. However, it is only when you have some samples specified in the ``SampleSheet.csv``. To get Undertermined R1, R2, I1, I2 with read name containing index, you need to have some dummy SampleSheet.csv.
+
+::
+
+	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /research/dept/hem/common/sequencing/210109_M04990_0003_000000000-J87CP/Data/Intensities/BaseCalls/SampleSheet.csv --create-fastq-for-index-reads
+
 
 
 Comments
