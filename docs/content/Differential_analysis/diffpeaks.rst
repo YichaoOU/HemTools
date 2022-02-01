@@ -127,10 +127,6 @@ Paired-end data needs to add ``--MAnorm_PE_flag`` option.
 
 PE data can be analyzed together with SE data.
 
-.. code:: bash
-
-	diffPeaks.py -f input.tsv -d design.txt -g hg19 --merge_distance "-1"
-
 
 Output
 ^^^^^^
