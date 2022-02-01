@@ -120,15 +120,118 @@ automatically generate json file given all files in current_dir
 
 
 
+Add an existing track to your tracks
+^^^^^^^^^^^^^^^^
+
+How to
+-----
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/add_json_ppr.mp4#t=0.3"></video>
+
+
+
+BCL11A motif (hg19)
+-----------
+
+::
+
+	{
+	"type":"bedj",
+	"name":"BCL11A(TGACCA)",
+	"file":"yli11/Chris/TGACCA/matches.bed.sorted.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
+
+ZBTB7A motif (hg19)
+-----------
+
+
+::
+
+	{
+	"type":"bedj",
+	"name":"LRF(homer)",
+	"file":"yli11/motif_tracks/ZBTB7A/LRF-Erythroblasts-ZBTB7A-GSE74977.hg19.fimo.bed.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
+
+
+GATA1 motif (hg19)
+------------------
+
+::
+
+	{
+	"type":"bedj",
+	"name":"GATA1(WGATAR)",
+	"file":"yli11/Chris/WGATAR/matches.bed.sorted.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
+
+
+NFIX motif (hg19)
+------------
+
+::
+
+	{"type":"bedj","name":"NFIX.hg19.bed.bedjs","file":"HemPipelines/yli11/create_tracks_syi_2021-08-26614c9833fb94/NFIX.hg19.bed.bedjs.sorted.gz","stackheight":10,"stackspace":1}
+
+
+
+CTCF motif (hg19)
+------------
+
+::
+
+	{"type":"bedj","name":"CTCF.hg19.bed.bedjs","file":"HemPipelines/yli11/create_tracks_syi_2021-08-26614c9833fb94/CTCF.hg19.bed.bedjs.sorted.gz","stackheight":10,"stackspace":1}         
 
 
 
 
+KLF1 motifs (hg19)
+--------
+
+::
+
+	{
+	"type":"bedj",
+	"name":"KLF1 motifs",
+	"file":"yli11/CRM_gRNA/KLF_hg19.bed.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
 
 
+Other motifs (hg19)
+-------
 
+::
 
+	{
+	"type":"bedj",
+	"name":"GATA_Ebox(8-9) motif",
+	"file":"yli11/CRM_gRNA/complete_per_A_scores/gata_ebox.bed.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
 
+	{
+	"type":"bedj",
+	"name":"LRF(MA0750.2)",
+	"file":"yli11/motif_tracks/ZBTB7A/JASPA_MA0750.2_ZBTB7A.hg19.fimo.bed.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
 
-
-
+	{
+	"type":"bedj",
+	"name":"LRF(MA0750.1)",
+	"file":"yli11/motif_tracks/ZBTB7A/HSAPIENS-ENCODE-MOTIFS-ZBTB7A_KNOWN3_MA0750.1.hg19.fimo.bed.bedjs.sorted.gz",
+	"stackheight":20,
+	"stackspace":1
+	}
