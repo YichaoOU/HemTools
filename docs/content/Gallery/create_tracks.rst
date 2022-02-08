@@ -140,7 +140,7 @@ BCL11A motif (hg19)
 	{
 	"type":"bedj",
 	"name":"BCL11A(TGACCA)",
-	"file":"yli11/Chris/TGACCA/matches.bed.sorted.bedjs.sorted.gz",
+	"file":"yli11/Chris/TGACCA/BCL11A_TGACCA.bed.bedjs.sorted.gz",
 	"stackheight":20,
 	"stackspace":1
 	}
@@ -168,7 +168,7 @@ GATA1 motif (hg19)
 	{
 	"type":"bedj",
 	"name":"GATA1(WGATAR)",
-	"file":"yli11/Chris/WGATAR/matches.bed.sorted.bedjs.sorted.gz",
+	"file":"yli11/Chris/WGATAR/GATA1_WGATAR.bed.bedjs.sorted.gz",
 	"stackheight":20,
 	"stackspace":1
 	}
