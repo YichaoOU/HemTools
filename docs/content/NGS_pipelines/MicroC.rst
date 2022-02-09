@@ -80,6 +80,7 @@ Need 4 columns, chr, start, end, name (R or L)
 	chr11	5277094	5277214	R
 	chr11	5275592	5275712	L
 
+.. note:: The 4th column in the bait.bed file has to be either R or L exactly, not other strings.
 
 2. fastq.tsv
 
@@ -115,13 +116,46 @@ Usage
 	MicroC.py -f fastq.tsv -g hg19
 
 
+QC
+^^^^^
+
+These reports are attached in the email notification.
+
+multiqc_report.html
+-------------
+
+``General statistics``, in this section, we may look at Length, M Seqs, and %Combined; average read length, total read count, and percentage of combined reads.
 
 
+``FastQC``, in this section, we may look at ``Sequence Quality Histograms``. 
 
 
+MicroC_summary.html
+-----------------
 
+In the summary table, we can look at capture efficiency and read duplication rate (for Left and Right oligo).
 
+Output
+^^^^^^^
 
+In the jobID folder, result is organized for each sample (``*_read_split`` folder). In each folder, you can find bw files:
 
+::
 
+	L_H1_10_HBG1_ALL_FP.bw
+	L_H1_10_HBG1_UP_FP.bw
+	R_H1_10_HBG1_DO_FP_plusone.bw
+	L_H1_10_HBG1_ALL_FP_plusone.bw
+	L_H1_10_HBG1_UP_FP_plusone.bw
+	R_H1_10_HBG1.read_pileup.bw
+	L_H1_10_HBG1_de_norm_rep.bw
+	R_H1_10_HBG1_ALL_FP.bw
+	R_H1_10_HBG1_UP_FP.bw
+	L_H1_10_HBG1_DO_FP.bw
+	R_H1_10_HBG1_ALL_FP_plusone.bw
+	R_H1_10_HBG1_UP_FP_plusone.bw
+	L_H1_10_HBG1_DO_FP_plusone.bw
+	R_H1_10_HBG1_de_norm_rep.bw
+	L_H1_10_HBG1.read_pileup.bw
+	R_H1_10_HBG1_DO_FP.bw
 
