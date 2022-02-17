@@ -58,7 +58,7 @@ Summary
 
 Pipeline adopted and customized from https://github.com/jojdavies/Micro-Capture-C
 
-Only work for hg19 right now, by 2/8/2022.
+Only work for hg19/mm9 right now, by 2/16/2022.
 
 Input
 ^^^^^
@@ -67,20 +67,18 @@ Example: ``Sequencing_runs/chenggrp_253074_HiC-1_MCC/analysis``
 
 1. Target bait bed file
 
-Need 4 columns, chr, start, end, name (R or L)
+Need 4 columns, chr, start, end, name
 
 ::
 
 	==> HBG1_bait.bed <==
-	chr11	5272143	5272263	R
-	chr11	5270668	5270788	L
+	chr11	5272143	5272263	gene1
+	chr11	5270668	5270788	gene2
 
 
 	==> HBG2_bait.bed <==
-	chr11	5277094	5277214	R
-	chr11	5275592	5275712	L
-
-.. note:: The 4th column in the bait.bed file has to be either R or L exactly, not other strings.
+	chr11	5277094	5277214	ABC
+	chr11	5275592	5275712	DEF
 
 2. fastq.tsv
 
@@ -128,6 +126,8 @@ multiqc_report.html
 
 
 ``FastQC``, in this section, we may look at ``Sequence Quality Histograms``. 
+
+``FLASH``, we can look at the fragment length distribution
 
 
 MicroC_summary.html
