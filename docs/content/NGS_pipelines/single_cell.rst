@@ -153,6 +153,19 @@ Gene density plot
 
 
 
+Ribosomal protein reads
+^^^^^^^^^^^^^^^^
+
+https://kb.10xgenomics.com/hc/en-us/articles/218169723-What-fraction-of-reads-map-to-ribosomal-proteins-
+
+We have a recent blood scRNA-seq data where the RP reads% is about 30-40% and most DEGs are actually RP proteins.
+
+::
+
+		RP	non-RP
+	all genes (count>20)	67	20
+	all DEG (count>20)	23	6
+	as a percentage	0.343283582	0.3
 
 
 

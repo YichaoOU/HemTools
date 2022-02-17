@@ -45,6 +45,8 @@ Summary
 
 IDR peaks are conserved binding peaks that usually can boost motif enrichment. Note that peaks called from individual replicate can be still useful.
 
+Also note that MACS2 peak calling is bad for broad peaks. So this pipeline is not suitable for broad peaks.
+
 In the output, you will receive two emails. One is the link to the GREAT analysis (i.e., peak annotations). The other one is a notification of job completion.
 
 **10/30/2019**
@@ -206,4 +208,14 @@ You can also find outputs from homer analysis: ``homer_motifs_result`` and ``idr
 Ref: https://hbctraining.github.io/Intro-to-ChIPseq/lessons/07_handling-replicates-idr.html
 
 
+
+IDR on broad peaks
+^^^^^^^^^^^
+
+Conclusion: not good mainly because of broad peak calling.
+
+https://github.com/ENCODE-DCC/chip-seq-pipeline2/issues/30
+
+
+https://groups.google.com/g/idr-discuss/c/_a_GKfw7kwM?pli=1
 
