@@ -96,3 +96,13 @@ Output
 All output figures and tables are stored in ``scJupyter_[outputLabel]_[Data]`` folder. HPC log files are stored in the ``jid`` folder.
 
 
+Notes on SCTransform
+^^^^^^^^^^^^^
+
+Great disscussions have been made here where the Seurat author was initially thought DE on SCTransform-ed data is better and then sticked to the log-normalization, scale-data, and findmarker approach on the RNA assay (i.e., raw counts). 
+
+https://github.com/satijalab/seurat/discussions/4032?sort=new
+
+https://github.com/satijalab/seurat/issues/1501
+
+I also found that DE on SCT data gave more DEGs but the percentage of expressed cell on the original data is so low.

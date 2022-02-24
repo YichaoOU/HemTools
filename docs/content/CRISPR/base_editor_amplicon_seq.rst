@@ -83,6 +83,8 @@ The command is:
 	--quantification_window_center -10
 	--base_editor_output -o {{jid}}/${COL5}
 
+..note:: Note that the sgRNA sequence needs to be input as the guide RNA sequence (usually 20 nt) immediately adjacent to but not including the PAM sequence (5' of NGG for SpCas9). 
+
 Updates
 ^^^^^^
 
