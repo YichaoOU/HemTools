@@ -2,6 +2,9 @@ Inspection of multi-mapped reads
 ================================
 
 
+
+bamtools filter -in RNA_1.st.bam -out multi_mapped.bam -tag "NH:>=2"
+
 Summary
 ^^^^^^^
 
@@ -59,9 +62,15 @@ Basically, it shows the number (and percentage) of multi-mapped reads that are m
 
 ``flag256`` means ``secondary alignment``. For multi-mapped reads, only the first match will be set as ``primary alginment``. So this is a parameter to extract multi-mapped reads.
 
-Number of mapped reads is shown in ``*.mapped.uniq.txt``.
+Number of multi-mapped reads is shown in ``*.multi.uniq.txt``.
 
 Number of mapped reads in hemoglobin gene is shown in ``*.hem.uniq.txt``
+
+A multiQC report is attached in the email showing fastqc and %align to the genes by Kallisto.
+
+You can also go inside the jobID folder and do ``head *tsv`` to check the top mapped region or exons.
+
+
 
 
 Comments
