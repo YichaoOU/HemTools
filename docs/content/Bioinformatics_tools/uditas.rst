@@ -74,6 +74,10 @@ Summary
 
 UDiTaS (UniDirectional Targeted Sequencing) is a method to capture indels and structural rearrangements. 
 
+
+.. image:: ../../images/uditas_flowchart.png
+	:align: center
+
 Original code is modified (customized for st. jude), see: https://github.com/YichaoOU/uditas
 
 Input
