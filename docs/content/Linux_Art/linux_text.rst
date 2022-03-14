@@ -32,6 +32,13 @@ Replace string in file
 
 	sed -i 's/original/new/g' file.txt
 
+Remove header, select columns, replace str
+^^^^^^^^^^^^^^^^
+
+::
+
+	for f in *cov.gz;do zcat $f | cut -f 1,2,3,6 | sed "1d" | sed -e 's/chr/hs/' > $f.circos.hist;done
+
 Add string to the beginning of each line in a file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
