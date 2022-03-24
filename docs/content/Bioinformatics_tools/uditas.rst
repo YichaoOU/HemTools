@@ -284,6 +284,20 @@ total_aligned_junctions_collapsed is the sum of the above numbers, used as denom
 You can also get mapping rate from this table, for example: total_aligned/read_count
 
 
+UDITAS pipeline notes
+^^^^^^^^^^^^^^^^^^^^
+
+These notes are mainly for me to better understand the code.
+
+1. The pipeline creates results for each sample, stored in the sample name folder. They have a ``only_summarize`` option so that I can run UDITAS pipeline for each sample (so as to parallize the pipeline) and then once everything is finished, run the summarize function.
+
+Steps 
+------
+
+1. Demultiplexing: based on hamming distance, allowing for 1 mismatch. Stats stored in ``reports`` folder
+
+
+
 Comments
 ^^^^^^^^
 
