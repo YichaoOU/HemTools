@@ -18,6 +18,9 @@ You can download an example SampleSheet.csv here: https://github.com/YichaoOU/He
 
 .. note:: We found that for Miniseq and Nextseq, your R2 index in samplesheet.csv have to be reverse complemented. For Miseq, everything is normal.
 
+
+.. note:: Basic sequence information is in ``RunInfo.xml`` if you are not sure about SE or PE or read/index length.
+
 .. image:: ../../images/no_space_bcl2fastq.PNG
 	:align: center
 
@@ -139,7 +142,19 @@ By default, ```bcl2fastq`` indeed does put index reads in the read name. However
 
 ::
 
+	# if read length is 301bp
 	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /research/dept/hem/common/sequencing/210109_M04990_0003_000000000-J87CP/Data/Intensities/BaseCalls/SampleSheet.csv --create-fastq-for-index-reads
+
+	# if read length is 151bp
+	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /home/yli11/HemTools/share/misc/SampleSheet.csv --create-fastq-for-index-reads
+
+
+Sequence data is paired-end with 8bp i7 and i5, but my actual data is just single-end read with just index 1 6bp.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this case, you don't need to do anything different for bcl2fastq command. You just need to only put i7 6bp index in the ``SampleSheet.csv`` file. After bcl2fastq, you will have R1 and R2 reads, but you only need R1 reads.
+
+
 
 
 
