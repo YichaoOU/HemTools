@@ -189,6 +189,15 @@ Reference
 
 https://chipster.csc.fi/manual/library-type-summary.html
 
+Tutorial
+^^^^^^^
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/diffGenes.mp4#t=0.3"></video>
+
+
+
 Comments
 ^^^^^^^^
 
