@@ -26,8 +26,7 @@ Find number of off-targets
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
-	                        genome version: hg19, hg38, mm9, mm10. currently, only
-	                        hg19 is available (default: hg19)
+	                        genome version: hg19, hg38, mm9, mm10.(default: hg19)
 	  --chr_fa CHR_FA       This will be automatically changed with -g option
 	                        (default: /home/yli11/Data/Human/hg19/fasta/chr)
 
@@ -43,7 +42,7 @@ Latest updates:
 
 ::
 
-	cas_offinder.py -f hg38 --add_PAM --allow_PAM_mis --PAM_seq NGG -f input2.list -j mis_4_GA -n 4
+	cas_offinder.py -g hg38 --add_PAM --allow_PAM_mis --PAM_seq NGG -f input2.list -j mis_4_GA -n 4
 
 2. To allow G-A mismatch in the protospacer sequence, change G to R in the protospacer sequence:
 
