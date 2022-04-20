@@ -155,6 +155,9 @@ Sequence data is paired-end with 8bp i7 and i5, but my actual data is just singl
 In this case, you don't need to do anything different for bcl2fastq command. You just need to only put i7 6bp index in the ``SampleSheet.csv`` file. After bcl2fastq, you will have R1 and R2 reads, but you only need R1 reads.
 
 
+.. raw:: html
+
+  <video controls width="690" src="../../_static/bcl2fastq_single_index.mp4#t=0.3"></video>
 
 
 

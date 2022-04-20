@@ -40,5 +40,10 @@ Use ``g.axes.flat`` and ``int(count/3),count%3`` to manage which sub plot. Here 
 
 
 
+displot, histplot, kdeplot
+^^^^^^^^^^^^^^^
 
+::
+
+	sns.histplot(data=model_selection,x="N_outlier",hue="treatment",multiple="dodge")
 
