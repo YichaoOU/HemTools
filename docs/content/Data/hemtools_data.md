@@ -99,9 +99,14 @@ chromatin_state_info|/home/yli11/HemTools/share/misc/chromatin_state_info.tsv
 
 
 
+## Mouse RNA-seq data
+
+/home/yli11/dirs/blood_regulome/chenggrp/Sequencing_runs/rwu_data/GSE116177/renamed_data
 
 
+## Human RNA-seq data
 
+run_lsf.py -f fastq.tsv -p simple_kallisto -j gencode_v39_kallisto_mapping
 
 
 

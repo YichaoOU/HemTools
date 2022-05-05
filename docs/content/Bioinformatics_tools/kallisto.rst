@@ -10,6 +10,9 @@ Transcript-level abundance quantification
 	
 
 
+Note
+^^^^
 
+Based on my own testing, a multi-mapped read will only be counted once in the abundance.tsv, but will occur multiple times in the pseudobam file.
 
 

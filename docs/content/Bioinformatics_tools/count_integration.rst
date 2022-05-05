@@ -149,3 +149,13 @@ default is cas9 setting, to choose other options, use:
 ::
 
 	run_lsf.py -p count_integration -f fastq.tsv --setting cas12a
+
+
+g34 indel quantification
+^^^^^^^^^^^^^^^
+
+::
+
+	run_lsf.py --guess_input
+
+	run_lsf.py -f fastq.tsv -p count_integration_g34
