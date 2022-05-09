@@ -148,6 +148,9 @@ By default, ```bcl2fastq`` indeed does put index reads in the read name. However
 	# if read length is 151bp
 	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /home/yli11/HemTools/share/misc/SampleSheet.csv --create-fastq-for-index-reads
 
+	# for starr-seq
+	bcl2fastq --no-lane-splitting -o starr_seq_fastq --sample-sheet /home/yli11/HemTools/share/misc/starr_seq_SampleSheet.csv --create-fastq-for-index-reads
+
 
 Sequence data is paired-end with 8bp i7 and i5, but my actual data is just single-end read with just index 1 6bp.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
