@@ -1,8 +1,14 @@
 ENCODE database query
 =============
 
+Input
+^^^^^
+
+You should have your query bed file.
 
 
+Usage
+^^^^^
 
 ::
 
@@ -13,8 +19,18 @@ ENCODE database query
 
 	igd search $db -q my.bed -f > out.tsv
 
+Output
+^^^^^^
 
+Each line in the query bed file will be shown as ``Query chr,start,end`` in the output table, followed by the overlaped file name
 
+::
+
+	Query chr11, 5268397, 5268664: 			
+	0	5268508	5268848	 ENCFF388LUX_MLLT1-human.bed
+	Query chr11, 5268798, 5269050: 			
+	0	5268508	5268848	 ENCFF388LUX_MLLT1-human.bed
+	Total overlaps: 2			
 
 
 
