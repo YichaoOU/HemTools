@@ -1,6 +1,55 @@
 Hosting web server on AWS
 =========================
 
+Latest updates
+^^^^^^^^^^^
+
+My AWS EC2 instance is somehow completely down and I have no clue how to fix it. I can't even SSH to it. I also tried rebuild/ clone the environment, they all failed.
+
+I decided to use docker container and AWS ECS (a subset of EC2) to host my web application because EC2 is so hard to manage:
+
+- 1. I have to build the VM by SSH to it and install some dependencies and download some data. Now with docker container, I can just do it locally and then check if my modification looks correct or not.
+
+- 2. If the server error happends again, I can just create a new and upload the docker contaniner without building the dependencies ever again.
+
+
+My deployment is finally succedded, according to this tutorial: https://acloudguru.com/blog/engineering/deploying-a-containerized-flask-application-with-aws-ecs-and-docker
+
+The key is to directly use port 80 in app.py
+
+::
+
+	if __name__ == "__main__":
+	    app.run(host='0.0.0.0', port=80)
+
+and in the ``Dockerfile``
+
+::
+
+	EXPOSE 80
+
+The following tutorial didn't work, mainly due to port 8050 issues. I don't know if it is because AWS updated their protocol.
+
+- https://towardsdatascience.com/deploy-containerized-plotly-dash-app-to-heroku-with-ci-cd-f82ca833375c
+- https://towardsdatascience.com/how-to-use-docker-to-deploy-a-dashboard-app-on-aws-8df5fb322708
+
+
+I found docker hub upload speed is slower than AWS ECR. But it is free. With hg19 genome, my docker size is almost 8GB. But I found it is fine as long as your docker size is below 20GB.
+
+my commands
+-------
+
+	# create docker
+	docker build -t easy_prime .
+	# test docker container to identify bugs before publish
+	docker run -p 80:80 easy_prime
+	# upload docker container
+	docker tag easy_prime:latest liyc1989/easy_prime:latest
+	docker push liyc1989/easy_prime:latest
+	# set up AWS sever
+
+
+
 
 Summary
 ^^^^^^
