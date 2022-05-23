@@ -46,8 +46,14 @@ my commands
 	# upload docker container
 	docker tag easy_prime:latest liyc1989/easy_prime:latest
 	docker push liyc1989/easy_prime:latest
-	# set up AWS sever
+	# set up AWS sever using browser
+	# Remember to add port mapping 80
 
+
+AWS ECS change IP everytime
+^^^^^^^^^^^^^^^
+
+May need to use load balancer: https://www.youtube.com/watch?v=TsVO14-lqp0
 
 
 
