@@ -3,17 +3,25 @@ Across cell type NGS data normalization
 
 ::
 
-	usage: S3norm.py [-h] [-j JID] -f INPUT (-bam | -bw | -bdg) [-g GENOME]
-	                 [-s CHROM_SIZE]
+	usage: S3norm.py [-h] [-j JID] -f INPUT [--smoothLength SMOOTHLENGTH]
+	                 [--binSize BINSIZE] [--peak_dir PEAK_DIR]
+	                 [--file_name_pattern FILE_NAME_PATTERN] (-bam | -bw | -bdg)
+	                 [-g GENOME] [-s CHROM_SIZE] [-b BLACK_LIST]
+
+	NGS read counts normalization
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        S3norm_yli11_2020-03-19)
+	                        S3norm_yli11_2022-05-23)
 	  -f INPUT, --input INPUT
 	                        TSV file, 1 or 2 columns. If the 2nd col is available,
 	                        it will be used as control. (default: None)
+	  --smoothLength SMOOTHLENGTH
+	  --binSize BINSIZE     bin size for s3norm (default: 20)
+	  --peak_dir PEAK_DIR
+	  --file_name_pattern FILE_NAME_PATTERN
 	  -bam                  input files are bam, bam need index (default: False)
 	  -bw                   input files are bigwig (default: False)
 	  -bdg                  input files are bedgraph (default: False)
@@ -27,7 +35,10 @@ Across cell type NGS data normalization
 	                        those options. (default: hg19)
 	  -s CHROM_SIZE, --chrom_size CHROM_SIZE
 	                        chrome size (default: /home/yli11/Data/Human/hg19/anno
-	                        tations/hg19.chrom.sizes)
+	                        tations/hg19.chrom.sizes.sorted)
+	  -b BLACK_LIST, --black_list BLACK_LIST
+	                        Blacklist file (default: /home/yli11/Data/Human/hg19/a
+	                        nnotations/hg19.blacklist.bed)
 
 Summary
 ^^^^^^^

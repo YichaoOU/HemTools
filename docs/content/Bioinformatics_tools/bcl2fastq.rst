@@ -142,8 +142,11 @@ By default, ```bcl2fastq`` indeed does put index reads in the read name. However
 
 ::
 
-	# if read length is 301bp
+	# if read length is 301bp, uditas, I8, I18
 	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /research/dept/hem/common/sequencing/210109_M04990_0003_000000000-J87CP/Data/Intensities/BaseCalls/SampleSheet.csv --create-fastq-for-index-reads
+
+	# uditas, 151 read, I8, I18
+	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /home/yli11/HemTools/share/misc/SampleSheet_I8_I18.csv --create-fastq-for-index-reads
 
 	# if read length is 151bp
 	bcl2fastq --no-lane-splitting -o fastq_files --sample-sheet /home/yli11/HemTools/share/misc/SampleSheet.csv --create-fastq-for-index-reads
