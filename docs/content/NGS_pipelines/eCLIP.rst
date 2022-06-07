@@ -39,6 +39,29 @@ Usage
 	# for single-end data
 	run_lsf.py -f fastq.tsv -p eclip_se
 
+
+Output
+^^^^^^
+
+1. eCLIP QC report
+-----------------
+
+Please check the QC in the html file.
+
+2. strand specific signals
+----------------------
+
+See the bw files
+
+3. called peaks
+---------------
+
+See the bed files.
+
+
+
+
+
 Reference
 ^^^^^^^
 
