@@ -58,9 +58,16 @@ See the bw files
 
 See the bed files.
 
+QC
+^^^^^
 
+eCLIP experiments should have 1 million unique fragments or have saturated peak detection in each biological replicate.
 
+The following stats are obtained by re-analysis ENCODE data, not part of the data standards.
 
+FASTqc: duplicates, 30%-40%, input control maybe up to 60%.
+
+STAR align of rRNA removed reads, ~40% mapping rate. Input control maybe lower.
 
 Reference
 ^^^^^^^
@@ -72,5 +79,5 @@ Reference
 
 3. https://www.nature.com/articles/nmeth.3810
 
-
+4. https://www.encodeproject.org/eclip/
 
