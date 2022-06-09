@@ -25,7 +25,7 @@ Input
 input.list
 -------
 
-A 2-column tsv file.
+A 2-column tsv file, the first column is PacBio hifi reads, the last column is sample ID, should be unique.
 
 ::
 
@@ -64,12 +64,12 @@ Results can be found in the $jid folder.
 1. raw read annotation file
 -----------------
 
-``*talon_read_annot.tsv``
+``*final_talon_read_annot.tsv``
 
 2. transcript/gene abundance file (main results)
 ----------------------
 
-``*talon_abundance.tsv``
+``*final_talon_abundance.tsv``
 
 3. custom gene annotation file
 ---------------
