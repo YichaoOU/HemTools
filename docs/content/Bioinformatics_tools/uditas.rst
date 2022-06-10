@@ -298,6 +298,57 @@ Steps
 
 
 
+
+Replicate figure 2C
+^^^^^^^^^^^^^^^^^^^
+
+It took me a while to find the actual primer name for each SRA ID because it was not provided in the SRA metadata file.
+
+::
+
+	Run,Library Name,LibraryLayout,replicate,Antibody
+	SRR6704713,library_13_umi,SINGLE,biological replicate 2,OLI6256
+	SRR6704714,library_13,PAIRED,biological replicate 2,OLI6256
+	SRR6704715,library_14_umi,SINGLE,biological replicate 1,OLI6259
+	SRR6704716,library_14,PAIRED,biological replicate 1,OLI6259
+	SRR6704719,library_12_umi,SINGLE,biological replicate 1,OLI6256
+	SRR6704720,library_12,PAIRED,biological replicate 1,OLI6256
+	SRR6704721,library_15_umi,SINGLE,biological replicate 2,OLI6259
+	SRR6704722,library_15,PAIRED,biological replicate 2,OLI6259
+
+
+Download data from SRA. /home/yli11/dirs/shengdar_group/users/Yichao/Uditas/PRJNA433666/sra_download_yli11_2022-06-06/names
+
+UMI and R1/R2 have different read names, I have to preprocess them so that:
+
+ - 1. read name is the same
+
+ - 2. index1 and index2 contains sample barcode because the Uditas code must start from demultiplexing, otherwise you have to make sure the folder structure is the same to skip demultiplexing.
+
+.. code-block:: python
+
+	seq_1a = genome[amplicon_info['chr_guide_1']][start_coordinate1:int(cut1)]
+	seq_1b = genome[amplicon_info['chr_guide_1']][int(cut1):end_coordinate1]
+	seq_2a = genome[amplicon_info['chr_guide_2']][start_coordinate2:int(cut2)]
+	seq_2b = genome[amplicon_info['chr_guide_2']][int(cut2):end_coordinate2]
+
+	amplicon_list.append(['1a_1a', seq_1a + reverse_complement(seq_1a)])
+	amplicon_list.append(['1a_1b', seq_1a + seq_1b])
+	amplicon_list.append(['1a_2a', seq_1a + reverse_complement(seq_2a)])
+	amplicon_list.append(['1a_2b', seq_1a + seq_2b])
+
+	amplicon_list.append(['1b_1b', reverse_complement(seq_1b) + seq_1b])
+	amplicon_list.append(['2a_1b', seq_2a + seq_1b])
+	amplicon_list.append(['2b_1b', reverse_complement(seq_2b) + seq_1b])
+
+	amplicon_list.append(['2a_2a', seq_2a + reverse_complement(seq_2a)])
+	amplicon_list.append(['2a_2b', seq_2a + seq_2b])
+
+	amplicon_list.append(['2b_2b', reverse_complement(seq_2b) + seq_2b])
+
+Because the 2 cuts are from 2 different chromosomes, so the output is directly the chromosome rearrangements results for these two chromosomes (exactly in figure 2c).
+
+
 Comments
 ^^^^^^^^
 
