@@ -95,7 +95,9 @@ For reads do not align to our gRNA, there are several possible reasons.
 
 ``unaligned.stat.csv`` to check the stats for 1,2,3 mentioned above.
 
-``unaligned.casOffinder_to_check.list`` to run cas-offinder to identify ``Percentage of perfectly matched contaminants``
+``unaligned.casOffinder_to_check.list`` to run cas-offinder to identify ``Percentage of perfectly matched contaminants``, specifically the command is like: ``cas_offinder.py -g hg38 --add_PAM --PAM_seq NGG -j find_contaminants -n 1 -f unaligned.casOffinder_to_check.list``
+
+
 
 
 Comments
