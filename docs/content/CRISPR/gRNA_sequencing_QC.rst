@@ -27,8 +27,13 @@ Usage
 
 	module load python/2.7.13
 
-	run_lsf.py -f input.list -p gRNA_sequencing_QC
+	run_lsf.py -f input.list -p gRNA_sequencing_QC --min_length 22 -j read_length_22_filter_results
+	
+	run_lsf.py -f input.list -p gRNA_sequencing_QC --min_length 50 -j read_length_50_filter_results
+	
+	run_lsf.py -f input.list -p gRNA_sequencing_QC --min_length 100 -j read_length_100_filter_results
 
+The ``--min_length`` parameter will perform read filter based on poly-A trimmed read length. Higher value, e.g., 100, will give more high quality reads, thus, increasing the percentage of reads matching perfect product, however, the number/percentage of reads passing filter might decreased. The expected read length after trim is 103bp, which contains a 3bp GGG (from SMARTer smRNA-seq kit) + 20bp gRNA sequence + 80bp scaffold sequence.
 
 Output
 ^^^^^^
@@ -38,7 +43,7 @@ Once finished, you will be notified by email.
 1. read quality
 -------------
 
-The multiQC html report will be emailed to you. This file provides the overall sequencing quality and filtered reads stats. Important metric is the ``FASTQC mean quality scores``, ``Number/percent reads passing filter``, and ``Sequence Length Distribution``. The ``--min_length`` parameter will perform read filter based on trimmed read length.
+The multiQC html report will be emailed to you. This file provides the overall sequencing quality and filtered reads stats. Important metric is the ``FASTQC mean quality scores``, ``Number/percent reads passing filter``, and ``Sequence Length Distribution``. 
 
 
 .. image:: ../../images/fastqc_mean_quality.PNG
