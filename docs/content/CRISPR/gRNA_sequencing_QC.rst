@@ -38,14 +38,34 @@ Once finished, you will be notified by email.
 1. read quality
 -------------
 
-The multiQC html report will be emailed to you. This file provides the overall sequencing quality. Important metric is the "FASTQC mean quality scores".
+The multiQC html report will be emailed to you. This file provides the overall sequencing quality and filtered reads stats. Important metric is the ``FASTQC mean quality scores``, ``Number/percent reads passing filter``, and ``Sequence Length Distribution``. The ``--min_length`` parameter will perform read filter based on trimmed read length.
 
 
 .. image:: ../../images/fastqc_mean_quality.PNG
 	:align: center
 
+``Number/percent reads passing filter`` with ``--min_length 100``
 
-2. read visualization
+.. image:: ../../images/P_read_filter.PNG
+	:align: center
+
+``Sequence Length Distribution`` with ``--min_length 100``
+
+.. image:: ../../images/seq_length.PNG
+	:align: center
+
+
+2. read length distribution
+------------------
+
+Barplot of read length distribution after poly-A trimming for one sample. Please look for files with ``*.trimmed_read_length_dist.png``
+
+.. image:: ../../images/seq_length_one_sample_barplot.PNG
+	:align: center
+
+
+
+3. read visualization
 ----------------
 
 If our reads contain 100% perfect product (20bp gRNA + 80bp scaffold sequence), then all reads will look exact the same. Otherwise, this read visualization provides a view of the most abundanct sequence. See png files in ``fastq_vis``.
@@ -54,7 +74,7 @@ If our reads contain 100% perfect product (20bp gRNA + 80bp scaffold sequence), 
 .. image:: ../../images/fastq_vis_gRNA_example.png
 	:align: center
 
-3. Mapping_summary.csv and perfect_gRNA_vs_product_scatter.png
+4. Mapping_summary.csv and perfect_gRNA_vs_product_scatter.png
 --------------------
 
 This file provides the perfect gRNA% and count, the aligned gRNA% and count, and the same thing for scaffold and full product (gRNA+scaffold).
@@ -65,22 +85,45 @@ The ``perfect_gRNA_vs_product_scatter.png`` file provides "Overall frequency of 
 .. image:: ../../images/perfect_gRNA_vs_product_scatter.png
 	:align: center
 
-4. gRNA logo
+5. top20 most frequency gRNA, scaffold, full product sequences
+-------------------------------------------------------------
+
+See ``*.top20.[gRNA|scaffold|full_product].png``
+
+The Y-axis shows the number of reads. The same read count occuring more than once will be shown as ``[read_count].xx``
+
+
+.. image:: ../../images/top20.gRNA.PNG
+	:align: center
+
+
+.. image:: ../../images/top20.scaffold.PNG
+	:align: center
+
+6. Top200 Mismatch visualization, a complex plot
 ------------
 
-This visualize aims to provide "Expected gRNA base versus unintended bases". Only aligned gRNA reads will be used. For those unaligned, we will look for contaminants.
+This visualize aims to provide "Expected gRNA base versus unintended bases". Top 200 most frequency sequences (one complex plot for each of gRNA, scaffold, and full product).
 
-.. image:: ../../images/gRNA_logo.png
+The complex plot contains 3 parts:
+
+1. line plot showing percent of error
+
+2. heatmap showing ACGT-N occurring frequency per aligned position
+
+3. a gRNA logo for visualizing the heatmap.
+
+.. image:: ../../images/gRNA_complex.PNG
 	:align: center
 
-The sequence logo is not good for bases below 1%. To see them we can look at heatmaps.
 
-.. image:: ../../images/gRNA_logo_heatmap.png
+
+.. image:: ../../images/scaffold_complex.PNG
 	:align: center
 
 
 
-5. Check contaminants
+7. Check contaminants
 -------------------
 
 For reads do not align to our gRNA, there are several possible reasons.
