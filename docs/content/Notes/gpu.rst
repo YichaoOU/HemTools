@@ -40,13 +40,14 @@ Keras2+Tensorflow2
 	# pysam install has an error in my system, so I used conda to install it
 	pip install --no-deps janggu[tf2_gpu] 
 	# install those dependences manually
+	pip install biopython==1.77
 
 	vim ~/.conda/envs/keras/lib/python3.9/site-packages/janggu/layers.py
 	# change from keras.layers.wrappers import Wrapper to 
 	# from tensorflow.keras.layers import Wrapper
 
 
-Submit GPU job
+Submit GPU job: ``bsub -gpu "num=1/host:mode=exclusive_process" < keras.lsf``
 
 ::
 
@@ -80,6 +81,27 @@ Submit GPU job
 	cp /home/yli11/HemTools/share/tutorial/* run_jupyterlab_gpu_yli11_2022-07-07/
 	yes | cp -rf /research/rgs01/home/clusterHome/yli11/.local/share/jupyter/kernels/ ~/.local/share/jupyter/
 	jupyterlab.py run_jupyterlab_gpu_yli11_2022-07-07/Introduction_6_21_2021_v2.ipynb
+
+
+ref
+^^^
+
+https://github.com/kheyer/Genomic-ULMFiT
+https://github.com/kheyer/Genomic-ULMFiT/blob/master/Methods/Methods%20Long%20Form.ipynb
+https://github.com/rschwess/tutorial_dl_for_genomics
+https://www.tensorflow.org/api_docs/python/tf/keras/applications/efficientnet_v2/EfficientNetV2S
+https://keras.io/examples/vision/image_classification_efficientnet_fine_tuning/
+https://towardsdatascience.com/an-in-depth-efficientnet-tutorial-using-tensorflow-how-to-use-efficientnet-on-a-custom-dataset-1cab0997f65c
+
+Efficient net is probably good enough, but I want to try adding attention and some forget gate units, GELU, bidirectional, BERT.
+I haven't try deep learning methods based on MSA, I think the reason protein people like to use MSA instead of one-hot encoding is because amino acid is 20 and DNA is only 4.
+
+https://www.biorxiv.org/content/10.1101/2020.11.27.401232v2.full.pdf
+https://github.com/facebookresearch/esm
+https://www.biorxiv.org/content/10.1101/622803v4.full.pdf
+https://github.com/shashwattrivedi/Simple-TransformerEncoder-keras
+
+
 
 
 Tensorflow
