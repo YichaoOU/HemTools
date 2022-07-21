@@ -25,6 +25,21 @@ g34 has two occurrences in the genome, so its bed file look like below
 	chr11	5249956	5249975	HBG1	1	+
 	chr11	5254880	5254899	HBG2	2	+
 
+Pre-define gRNA bed file
+-----------------------
+
+You can find the following gRNA bed file here:
+
+::
+
+	/home/yli11/HemTools/share/misc/DNMT3A.bed
+	
+	/home/yli11/HemTools/share/misc/g34.bed
+	
+	/home/yli11/HemTools/share/misc/p53.bed
+	
+	/home/yli11/HemTools/share/misc/TET2.bed
+
 
 Output
 ^^^^^^
