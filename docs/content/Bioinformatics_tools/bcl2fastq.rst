@@ -158,6 +158,10 @@ By default, ```bcl2fastq`` indeed does put index reads in the read name. However
 	starr_seq_demultiplex.py ATTACTCG TATAGCCT ATAGAGGC 1
 	# DNA barcode R1, R2, RNA barcode, mismatch cutoff
 
+	# for g34 iSeq
+	cp /home/yli11/dirs/hem_seq/20220505_FS10001356_32_BPN80008-1429/SampleSheet.csv .
+	bcl2fastq --no-lane-splitting -o fastq_files
+
 
 
 Sequence data is paired-end with 8bp i7 and i5, but my actual data is just single-end read with just index 1 6bp.

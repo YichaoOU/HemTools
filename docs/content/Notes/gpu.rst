@@ -49,6 +49,8 @@ Keras2+Tensorflow2
 
 Submit GPU job: ``bsub -gpu "num=1/host:mode=exclusive_process" < keras.lsf``
 
+check usage: ``nvidia-smi ``
+
 ::
 
 
