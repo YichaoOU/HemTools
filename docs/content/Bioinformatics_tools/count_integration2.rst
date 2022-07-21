@@ -61,3 +61,10 @@ Step 2: submit job
 
 	run_lsf.py -p count_integration2 -f fastq.tsv --gRNA_bed gRNA.bed
 
+Tutorial
+^^^^^^^
+
+.. raw:: html
+
+  <video controls width="690" src="../../_static/count_indel.mp4#t=0.3"></video>
+
