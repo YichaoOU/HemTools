@@ -80,7 +80,17 @@ Sleuth uses `beta` from wald test as a biased estimator for logFC. It gives lowe
 Output
 ^^^^^^
 
+RNA-seq QC
+------
+
+We use ``nf-core/rnaseq`` (https://nf-co.re/rnaseq/usage) for RNA-seq QC. This pipeline provides a very comprehensive QC checks for sequencing quality (fastqc), mapping quality (STAR, RSEM), and gene library quality (pre-seq for library complexity, mapped read category, e.g., exon% vs intron%, visualization of gene qualityfication, heatmaps and PCA plots.)
+
+Differential gene analysis results
+-----------------------------
+
 Look for ``*final*.csv`` in ``_sleuth`` folder.
+
+We generate ``_sleuth`` folder for each comparison specified in the ``design matrix``.
 
 ``_sleuth`` contains differential analysis and normalized TPM/read count (ext_count) information for both transcript-level and gene-level.
 
@@ -88,9 +98,13 @@ Fold change is calculated based on both TPM and ext_count, but they should be ve
 
 Use ``{{output_name}}.transcript.final.combined.tpm.csv`` for transcript level estimation.
 
-Use ``{{output_name}}.gene.final.combined.tpm.csv`` for gene level estimation.
+Use ``{{output_name}}.gene.final.combined.tpm.csv`` for gene level estimation. Gene level is more accurate.
 
 For volcano plot of differential genes, see :doc:`volcano <../Visualization/volcano_plot>`
+
+For replicate correlation, see ``replicate_correlation`` folder. Pairwise replicate scatter plots based on log2TPM is provided as the pdf files. PCA plot can be found in the html file.
+
+For GO enrichment, pathway analysis, go to ``GO_pathway_analysis`` folder. Enrichment analysis is based on |logFC|>=1 and fdr<=0.05. 
 
 A known problem
 ^^^^^^^^^^^^^^^
