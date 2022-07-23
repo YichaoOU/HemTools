@@ -72,23 +72,16 @@ Usage
 
     diffGenes.py -f fastq.tsv -d design.matrix -g hg19
 
-A note on logFC
-^^^^^^^^^^^^^^^
-
-Sleuth uses `beta` from wald test as a biased estimator for logFC. It gives lower fold change for high variance transcript/gene. "For instance, if there is a very little variation for a transcript, the beta-value is very close to being the fold change measure. For a transcript with high variability, the beta will account for less of the estimated counts."
-
 Output
 ^^^^^^
 
 RNA-seq QC
 ------
 
-We use ``nf-core/rnaseq`` (https://nf-co.re/rnaseq/usage) for RNA-seq QC. This pipeline provides a very comprehensive QC checks for sequencing quality (fastqc), mapping quality (STAR, RSEM), and gene library quality (pre-seq for library complexity, mapped read category, e.g., exon% vs intron%, visualization of gene qualityfication, heatmaps and PCA plots.)
+We use ``nf-core/rnaseq`` (https://nf-co.re/rnaseq/usage) for RNA-seq QC. This pipeline provides a very comprehensive QC checks for sequencing quality (fastqc), mapping quality (STAR, RSEM), and gene library quality (pre-seq for library complexity, mapped read category, e.g., exon% vs intron%, visualization of gene qualityfication, heatmaps and PCA plots). Please check out ``{{jid}}/nfcore_RNA_seq_results/multiqc/star_rsem/multiqc_report.html``
 
 Differential gene analysis results
 -----------------------------
-
-Look for ``*final*.csv`` in ``_sleuth`` folder.
 
 We generate ``_sleuth`` folder for each comparison specified in the ``design matrix``.
 
