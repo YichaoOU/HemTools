@@ -63,7 +63,9 @@ Usage
 
     module load conda3/202011
 
-    source activate /homt/yli11/.conda/envs/captureC
+    source activate /home/yli11/.conda/envs/captureC
+
+    # cd to your data dir
 
     interactive_heatmap.py -f input.txt --reformat_config kasey --header -o test.html
 
