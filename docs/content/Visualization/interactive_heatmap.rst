@@ -3,7 +3,7 @@ Interactive heatmap
 
 ::
 
-	usage: untitled.py [-h] -f INPUT -o OUTPUT [--reformat_config REFORMAT_CONFIG] [--header] [--index] [--sep SEP]
+	usage: interactive_heatmap.py [-h] -f INPUT -o OUTPUT [--reformat_config REFORMAT_CONFIG] [--header] [--index] [--sep SEP]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -65,7 +65,7 @@ Usage
 
     source activate /homt/yli11/.conda/envs/captureC
 
-    python untitled.py -f input.txt --reformat_config kasey --header -o test.html
+    interactive_heatmap.py -f input.txt --reformat_config kasey --header -o test.html
 
 
 
