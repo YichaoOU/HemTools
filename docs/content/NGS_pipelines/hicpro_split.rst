@@ -130,6 +130,11 @@ Overall > 90% aligned PE reads
 2. Duplicated pairs
 
 < 40%
+Analysis of 13 cell types, most of them <30%:  https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1658-7
+
+Capture C may have higher % duplication due to high number of PCR cycles (NG capture, 20-24 cycles, compared to 11 cycles typically for PCHi-C) and higher sequencing depth. Just remove them: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6102006/
+
+For promoter capture HiC, with/w.o duplicates, the tracks look very similar, see s figures in: https://www.nature.com/articles/ng.2871
 
 3. Valid interactions
 
