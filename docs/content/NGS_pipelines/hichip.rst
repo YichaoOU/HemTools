@@ -77,7 +77,7 @@ Pipeline is adopted from: https://hichip.readthedocs.io/en/latest/index.html
 Input
 ^^^^^
 
-Requires paired-end fastq files and a peak (narrowPeak format) file.
+Requires paired-end fastq files and a peak (narrowPeak format) file. If we are doing a CTCF HiChIP, then we should have done a CTCF ChIP-seq in order to have the CTCF narrowPeak file.
 
 Usage
 ^^^^^
@@ -102,5 +102,44 @@ Go to your fastq files folder and do the following:
 Output
 ^^^^^^
 
+1. Library QC
+-------------
+
+See ``hichip_qc_summary.html``. QC standards are:
+
++----------------------------------------------+----------------------+------------------------+
+|Metric                                        |Shallow Seq (20M)     |Deep Seq (100-200M)     |
++==============================================+======================+========================+
+|No-Dup Read Pairs                             |>75%                  |>50%                    |
++----------------------------------------------+----------------------+------------------------+
+|No-dup cis read pairs ≥ 1kb                   |>20%                  |>20%                    |
++----------------------------------------------+----------------------+------------------------+
+|Total reads in 1000 bp around center of peaks |>2%                   |>2%                     |
++----------------------------------------------+----------------------+------------------------+
 
 
+
+2. Called interactions
+---------------------
+
+``*fithic.merged.counts.bedpe`` and ``*fithic.merged.pvalue.bedpe``
+
+FitHiChIP detailed results are provided in ``fihichip_results``. It also provides a result summary html file.
+
+
+3. Tracks visualization
+--------------------
+
+In the ``upload`` folder, users can find:
+
+- mapped.PT.bw: read pairs bw files
+
+- macs2_peaks.narrowPeak: de-novo called peaks from HiCHIP data
+
+- fithic.merged.counts.bedpe: FitHiChIP called interactions
+
+- user-provided peak file
+
+Users can run ``create_tracks.py --current_dir -g $genome`` to upload these files to protein paint.
+
+.. image:: ../../images/hichip.example.PNG
