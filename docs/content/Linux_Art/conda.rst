@@ -35,20 +35,9 @@ Commonly used python libraries
 
 	import pandas as pd
 	import seaborn as sns
-	%matplotlib inline
 	import matplotlib.pyplot as plt
-	import matplotlib.colors as clr
-	import numpy as np
-	from matplotlib.colors import ListedColormap
-	import numpy as np
-	import matplotlib.pyplot as plt
-	from matplotlib import cm
-	from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-	import pandas as pd
-	import matplotlib.pylab as plt
 	import numpy as np
 	import scipy
-	import seaborn as sns
 	import glob
 
 Ignore python warning
