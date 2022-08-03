@@ -239,6 +239,20 @@ Softlink your fastq files to a working dir:
 
 	crispresso2_BE.py -f fastq.tsv -a $amp -gRNA $gRNA --custom_mutation custom_mutation.tsv
 
+Output
+------
+
+Here: ``edited_reads`` is the read counts for reference sequence. ``total_reads`` is the total number of aligned reads. ``editing_freq`` is the ratio.
+
+::
+
+	label	edited_reads	total_reads	editing_freq
+	pAC20_pool7_gRNA_sel_rep3_S21	117	188	0.622340426
+	pAC20_pool4_gRNA_sel_rep2_S11	185	1492	0.123994638
+	pAC21_pool5_gRNA_sel_rep2_S70	924	18761	0.049251106
+	pAC20_pool3_gRNA_sel_rep1_S7	61	494	0.123481781
+	pAC21_pool3_gRNA_nosel_rep1_S91	9188	33268	0.276181315
+
 
 FAQ
 ^^^^
