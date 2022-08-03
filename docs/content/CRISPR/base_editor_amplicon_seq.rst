@@ -206,6 +206,40 @@ Inside the jobID folder, you can look at the crispresso2 result. The html file i
 ``crispresso2_BE.edit_eff.tsv`` This file contains the ``ref`` to ``alt`` base editing eff for position -15 to 20 (e.g., 0-20 is the gRNA sequence). The last column is the indel rate. 
 
 
+Usage2: Quantify custom mutations
+^^^^^^^^^^^^^^^^
+
+This example is an improvement from previous example: :doc:`custom mutation <crispr_custom_edit>`
+
+Input <custom_mutation.tsv>
+-----
+
+User needs to provide a 2-col tsv file, the first column is the reference sequence, the second column is the mutated sequence.
+
+::
+
+	TCGATCACATTGT	TCGATGCCATTGT
+
+Command
+------
+
+Softlink your fastq files to a working dir:
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	run_lsf.py --guess_input
+
+	amp=CTGTGGAAAATACCCAATTGCAGAACGAGAAACT # this is just an example, you should have longer sequence
+
+	gRNA=TCGATCACATTGT # gRNA sequences can be anything
+
+	crispresso2_BE.py -f fastq.tsv -a $amp -gRNA $gRNA --custom_mutation custom_mutation.tsv
+
+
 FAQ
 ^^^^
 
