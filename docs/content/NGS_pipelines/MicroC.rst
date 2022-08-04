@@ -69,6 +69,11 @@ Example: ``Sequencing_runs/chenggrp_253074_HiC-1_MCC/analysis``
 
 Need 4 columns, chr, start, end, name
 
+.. warning::
+	
+	The bait name in the last column should not contain "_". This char is used in the MCC code as a key separator.
+	
+
 ::
 
 	==> HBG1_bait.bed <==
