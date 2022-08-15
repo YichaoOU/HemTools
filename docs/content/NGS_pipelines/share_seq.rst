@@ -117,6 +117,15 @@ Usage
 	:align: center
 
 
+New case: map to gRNA vector
+^^^^^
+
+::
+
+	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J SHARE python /home/yli11/Tools/SHARE_seq_pipeline/shareseq.py -f1 input.tsv -f2 barcode1.list -r1 Undetermined_S0_R1_001.fastq.gz -r2 Undetermined_S0_R2_001.fastq.gz -n 1 --min_reads_per_cell 10 --vector /home/yli11/Tools/SHARE_seq_pipeline/vector.fa
+
+
+
 
 Output
 ^^^^^^
