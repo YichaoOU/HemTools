@@ -38,7 +38,7 @@ Copy paired-end fastq files to a working dir
 Usage
 ^^^^^
 
-This example only uses chr11 sequence for faster computation.
+This example only uses chr11 sequence for faster computation. We found some regions tend to have reads that are forced mapped by bwa. So it is not recommened to map to just one chr. For testing purposes, it is OK.
 
 ::
 
@@ -51,6 +51,8 @@ This example only uses chr11 sequence for faster computation.
 	run_lsf.py --guess_input
 
 	methylseq.py -f fastq.tsv -fa /home/yli11/test/chr11.fa
+
+	methylseq.py -f fastq.tsv -fa /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa
 
 You will see the following message indicating the job is submitted.
 ::
@@ -69,3 +71,15 @@ Output
 
 In the jobID folder ``Methyl_seq_yli11_2022-08-11``, you will find results for each sample. The coverage track (``.bedGraph`` file) is inside ``MethylDackel`` folder.
 
+Some post analysis
+^^^^^^^^
+
+By default methyldackel give C and G values for each CpG sies, but users just want one value. Run the following pipeline to merge.
+
+
+::
+
+	[yli11@noderome134 whole_genome_mapping_results_8_17]$ ls > input.list
+	[yli11@noderome134 whole_genome_mapping_results_8_17]$ less input.list 
+	[yli11@noderome134 whole_genome_mapping_results_8_17]$ vim input.list 
+	[yli11@noderome134 whole_genome_mapping_results_8_17]$ run_lsf.py -f input.list -p methyldackel_merge
