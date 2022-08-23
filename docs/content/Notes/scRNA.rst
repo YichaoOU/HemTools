@@ -3,6 +3,13 @@ single-cell RNA-seq analysis
 
 
 
+Intron reads are used by default in cellranger v7
+^^^^^^^^^^^^^^^
+
+https://assets.ctfassets.net/an68im79xiti/awNZTarmwqmwxKcvDv9wv/b05500661e36290b8ce59689ff889ea8/CG000376_TechNote_Antisense_Intronic_Reads_SingleCellGeneExpression_RevA.pdf
+
+20%-40% reads could come from intron (mainly due to internal poly-A priming). Previous version, those reads were not counted toward gene expression. 
+
 
 Markers
 ^^^^^^^

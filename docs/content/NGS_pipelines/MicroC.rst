@@ -138,7 +138,13 @@ multiqc_report.html
 MicroC_summary.html
 -----------------
 
-In the summary table, we can look at capture efficiency and read duplication rate (for Left and Right oligo).
+In the summary table, we can look at capture efficiency, read duplication rate and number of unique interactions. If ``number of unique interactions`` less than 10k, might consider sequencing more. >100k is consdered to be deep. 
+
+Some numbers
+^^^^^^^
+
+Third, we generated extremely deep data from individual viewpoints (``up to 500,000 unique contacts (mean, 140,000) per 120-bp viewpoint``) (Supplementary Table 1). This equates to more than 1,000-fold the depth of data obtained with ‘all versus all’ approaches such as Hi-C and Micro-C (more than 3 trillion ligation junctions would be required for this depth of coverage genome-wide).
+
 
 Output
 ^^^^^^^
@@ -163,4 +169,10 @@ In the jobID folder, result is organized for each sample (``*_read_split`` folde
 	R_H1_10_HBG1_de_norm_rep.bw
 	L_H1_10_HBG1.read_pileup.bw
 	R_H1_10_HBG1_DO_FP.bw
+
+Ref
+^^^^
+
+
+https://www.nature.com/articles/s41586-021-03639-4
 
