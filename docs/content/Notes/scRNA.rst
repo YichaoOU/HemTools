@@ -19,6 +19,10 @@ http://biocc.hrbmu.edu.cn/CellMarker/search.jsp?quickSearchInfo=mouse%20blood
 
 http://static.bdbiosciences.com/documents/cd_marker_handbook.pdf
 
+proliferation marker: PLK1,MYBL2,BUB1  https://www.nature.com/articles/nrc1802
+
+
+
 
 Public scRNA_seq data (Mouse)
 ^^^^^^^^^^^^^^^^^^^^^

@@ -52,7 +52,9 @@ This example only uses chr11 sequence for faster computation. We found some regi
 
 	methylseq.py -f fastq.tsv -fa /home/yli11/test/chr11.fa
 
-	methylseq.py -f fastq.tsv -fa /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa
+	# methylseq.py -f fastq.tsv -fa /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa
+	# default is to use hgb1 promoter masked hg19 genome
+	methylseq.py -f fastq.tsv
 
 You will see the following message indicating the job is submitted.
 ::
@@ -83,3 +85,28 @@ By default methyldackel give C and G values for each CpG sies, but users just wa
 	[yli11@noderome134 whole_genome_mapping_results_8_17]$ less input.list 
 	[yli11@noderome134 whole_genome_mapping_results_8_17]$ vim input.list 
 	[yli11@noderome134 whole_genome_mapping_results_8_17]$ run_lsf.py -f input.list -p methyldackel_merge
+
+
+FAQ
+^^^^
+
+One sample was failed due to memory in Picard Markdup, we need to add a config file to increase memory:
+
+https://github.com/nf-core/rnaseq/issues/293
+
+::
+
+	head bigmem.config 
+	-----------
+
+	process {
+	  withName:markDuplicates {
+	    memory = '240 GB'
+	    time = '120h'
+	  }
+	}
+
+
+::
+
+	bsub -q priority -n 16 -P Methy -R 'span[hosts=1] rusage[mem=15000]' -J Methy nextflow run nf-core/methylseq --input '*_R{1,2}.fastq.gz' -profile singularity --fasta /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa --fasta_index /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa.fai --bwa_meth_index /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa --save_reference --accel --aligner bwameth -resume -c bigmem.config

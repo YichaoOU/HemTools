@@ -23,6 +23,13 @@ hg19 data
 
 ::
 
+
+	H1 GATA1 Day0 IDR peak: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-05-16_13c13bb9aad9/idr_peaks.rmblck.merged_peaks.bed
+
+	H2 GATA1 Day0 IDR peak: /home/yli11/dirs/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-06-04/idr_peaks.rmblck.merged_peaks.bed
+	
+	blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/unknown/ATAC_seq/atac_seq_yli11_2020-06-12/peak_files/H2_ATAC_peak.union.bed
+
 	blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/
 
 	CD34/ChIP_seq/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_CD34.merged.bed
