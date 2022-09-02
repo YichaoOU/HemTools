@@ -21,6 +21,10 @@ In this dataset, each gene can have multiple TSSs, but gene-TSS combination is u
 hg19 data
 ---------
 
+
+TF histone peaks
+--------------
+
 ::
 
 
@@ -39,6 +43,23 @@ hg19 data
 	./Hudep2/unknown/Histone_chip_seq_single/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H2_D0.merged.bed
 
 	Sequencing_runs/Li_data/raw_data_ABE_CRM/ChIP_seq/histone/chip_seq_single_yli11_2020-08-21/peak_files/H3K27ac_H2_D3.merged.bed
+
+
+chromHMM data
+-------
+
+There is chromatin states annotation ``chromHMM_heatmap.pdf`` in the same folder. 
+
+::
+	
+	Hudep2 Day0: blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chromHMM/chromHMM_yli11_2022-09-01/learned_model_10/myCellLine_10_segments.bed
+
+	CD34: blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/chromHMM/chromHMM_yli11_2022-09-01/learned_model_10/myCellLine_10_segments.bed
+
+
+
+Data Table
+--------
 
 +-----------------------------+-----------------------------------------------------------------------------------------+
 | Name                        | Path                                                                                    |
