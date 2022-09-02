@@ -170,6 +170,12 @@ In the jobID folder, result is organized for each sample (``*_read_split`` folde
 	L_H1_10_HBG1.read_pileup.bw
 	R_H1_10_HBG1_DO_FP.bw
 
+
+Known Problem
+^^^^^^^^^^^
+
+FASTQC has a memory upper limit that we can't set. Need to manually kill the process to let the pipeline continue
+
 Ref
 ^^^^
 

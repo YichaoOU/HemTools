@@ -188,3 +188,39 @@ https://github.com/satijalab/seurat-wrappers/blob/master/docs/velocity.md
 http://pklab.med.harvard.edu/velocyto/notebooks/R/SCG71.nb.html
 
 https://ucdavis-bioinformatics-training.github.io/2020-August-Advanced-scRNAseq/data_analysis/Velocyto_fixed
+
+
+Data imputation
+^^^^^^^^^^^^^
+
+https://academic.oup.com/nar/article/50/9/4877/6582166
+
+``The results showed that DCA and DeepImpute outperformed other methods.``
+
+
+https://www.nature.com/articles/s41598-022-06500-4.pdf, this ``sciSR`` tool is the latest one. Not mentioned in the above review paper but they did compare sciSR to MAGIC and they have similar performance, however, in the test above, MAGIC doesn't seem to perform well on simulated data.
+
+https://github.com/theislab/dca
+
+Step1, save matrix raw count:
+
+::
+
+	write.table(as.matrix(merged_obj@assays$RNA@counts), 
+	            'counts.csv', 
+	            sep = ',', row.names = T, col.names = T, quote = F)
+
+::
+
+	module load conda3/202011
+
+	source activate captureC
+
+	dca counts.csv DCA_results
+
+pseudo time inference
+^^^^^^^^^^^^^
+
+https://www.nature.com/articles/s41587-019-0071-9
+
+this review paper suggests ``slingshot``
