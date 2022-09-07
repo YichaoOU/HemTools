@@ -17,6 +17,14 @@ A 3-col tsv file containing R1 fastq, sample name, and gRNA sequence (no PAM seq
 	YYY_R1_001.fastq.gz	YYY	gRNA_sequence2
 
 
+9/2 update for PE data
+^^^^^^^
+
+::
+
+	run_lsf.py -f input.tsv -p gRNA_sequencing_QC_PE --min_length 30 -j read_length_30_filter_results
+
+
 Usage
 ^^^^^
 

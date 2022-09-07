@@ -48,7 +48,7 @@ TF histone peaks
 chromHMM data
 -------
 
-There is chromatin states annotation ``chromHMM_heatmap.pdf`` in the same folder. 
+There is chromatin states (N=10) annotation ``chromHMM_heatmap.pdf`` in the same folder. 
 
 ::
 	
