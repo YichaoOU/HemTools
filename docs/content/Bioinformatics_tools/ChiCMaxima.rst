@@ -54,6 +54,27 @@ ChiCMaxima_Caller has to roll back to v0.9, because the latest one does not have
 	# create_tracks.py --current_dir
 
 
+Review on ChiCMaxima
+^^^^^
 
+1. https://www.frontiersin.org/articles/10.3389/fgene.2022.786501/full
 
+CHiCAGO and CHiCMaxima can be a good compromise
+between false positive and false negative rates, as these
+identify 4–18 times as many interactions as CHiCANE, and
+the proportion of those significant interactions that overlap
+with regulatory features is not much below CHiCANE’s.
+
+2.  A supervised learning framework for chromatin loop detection in genome-wide contact maps
+
+ChiCMaxima avoids statistical tests by using strategies from the
+signal processing field to find local maxima and integrates biological replicate information to reduce false-positive rates
+
+3. Detecting chromosomal interactions in Capture Hi-C data with CHiCAGO and companion tools
+
+CHiCMaxima43 proposes a ranking approach for interaction detection that does not involve a
+formal statistical test. It averages through the interaction profile with a sliding window and reports
+local maxima, which occur at a frequency above local averaged count, as true interactions.
+
+Better to use CTCF or H3K27ac peak to determine the best cutoff.
 
