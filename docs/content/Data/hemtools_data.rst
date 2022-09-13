@@ -22,6 +22,24 @@ hg19 data
 ---------
 
 
+Hi-CHIP
+--------
+
+::
+
+	Hudep2 GATA1 HiCHIP 20kb: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/jchen6/GATA1_TFBS_ABE8e_screening/pre-test_vali/HiChIP/merged/GATA1_ATAC_P_to_all_results/GATA1_H2_HiCHIP/fihichip_results/FitHiChIP_Peak2ALL_b20000_L10000_U2000000/P2PBckgr_0/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/GATA1_H2_HiCHIP.interactions_FitHiC_Q0.05_MergeNearContacts.bed
+
+	H3K27AC Hudep2 2.5kb: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/HICHIP
+
+   7880 1374932_1400249_Hudep2_H3K27AC_HiChIP.count.bedpe
+  13109 1374933_1400250_Hudep2_H3K27AC_HiChIP_FS.count.bedpe
+   6781 1482819_1512832_Hudep2_D3_H3K27AC_HiChIP.count.bedpe
+  18979 1482820_1512831_CD34_D13_rep1_H3K27AC.count.bedpe
+
+  Jurkat CTCF hichip: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/insulator_screen/insulator_oligo_screen/hichip_dove_raw_data/hichip_dshresth_2022-09-09/ctcf_hichip/merged_CTCF_peak.fithichip_005.results/FitHiChIP_Peak2ALL_b5000_L10000_U2000000/P2PBckgr_0/Coverage_Bias/FitHiC_BiasCorr/ctcf_hichip.interactions_FitHiC_Q0.05.bed
+
+
+
 TF histone peaks
 --------------
 
@@ -43,6 +61,8 @@ TF histone peaks
 	./Hudep2/unknown/Histone_chip_seq_single/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H2_D0.merged.bed
 
 	Sequencing_runs/Li_data/raw_data_ABE_CRM/ChIP_seq/histone/chip_seq_single_yli11_2020-08-21/peak_files/H3K27ac_H2_D3.merged.bed
+
+	Jurkat CTCF merged peak: blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Jurkat/ChIP_seq/CTCF/Jurkat_CTCF.merged.bed
 
 
 chromHMM data
