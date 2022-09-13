@@ -117,6 +117,17 @@ See ``hichip_qc_summary.html``. QC standards are:
 |Total reads in 1000 bp around center of peaks |>2%                   |>2%                     |
 +----------------------------------------------+----------------------+------------------------+
 
+NOTE: The FitHiCHIP author said if ``No-dup cis read pairs ≥ 10kb `` is around 10M, you should increase bin size (i.e., lower resolution) to 20kb in order to see more significant loops. I found if the value is near 50M, then 2.5kb or 5kb bin is OK; I'm aiming for 10k to 20k total interactions.
+
+I also found this GATA1 HiCHIP data in mouse https://www.pnas.org/doi/full/10.1073/pnas.2008672117 where they used juicer tools and identified 40K-80K interactions (I guess these are ALL to ALL interactions). 
+
+To just redo fithichip calling, modify the config file (``hichip.config.txt``) in the jobID folder and run the following: 
+
+Remember to change ``OutDir``, otherwise the default output folder ``fithichip_results`` will be overwritten.
+
+::
+
+	bsub -q priority -P Genomics -R 'rusage[mem=30000]' -J fit /home/yli11/Programs/FitHiChIP/FitHiChIP_HiCPro.sh -C hichip.config.txt
 
 
 2. Called interactions
@@ -126,6 +137,9 @@ See ``hichip_qc_summary.html``. QC standards are:
 
 FitHiChIP detailed results are provided in ``fihichip_results``. It also provides a result summary html file.
 
+For fitHiCHIP called interactions, 10k to 20k are already good numbers (Q value 0.05) because this tool is quite stringent. 
+
+The above files contain merged loops. We found the unmerged interactions seem to be better (more sensitive). You can find them in folders like ``fithichip_results/FitHiChIP_Peak2ALL_{binSize}_L10000_U2000000/P2PBckgr_0/Coverage_Bias/FitHiC_BiasCorr/*.interactions_FitHiC_{Q-value}.bed``
 
 3. Tracks visualization
 --------------------

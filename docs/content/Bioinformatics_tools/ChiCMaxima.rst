@@ -78,3 +78,8 @@ local maxima, which occur at a frequency above local averaged count, as true int
 
 Better to use CTCF or H3K27ac peak to determine the best cutoff.
 
+captureC data analysis
+^^^^^^^^^^^^
+
+https://www.nature.com/articles/s41467-020-20809-6#Sec11
+
