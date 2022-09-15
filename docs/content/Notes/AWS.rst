@@ -39,6 +39,8 @@ I found docker hub upload speed is slower than AWS ECR. But it is free. With hg1
 my commands
 -------
 
+::
+
 	# create docker
 	docker build -t easy_prime .
 	# test docker container to identify bugs before publish
