@@ -43,6 +43,8 @@ Input
 
 .. note:: This program assumes the fastq files for each sample is stored in an individual folder. For example, if you have A,B,C sample fastq files in the same directory, then please create a folder for each sample and mv the corresponding fastq files there.
 
+.. note:: If you have A_S1_L001 and A_S2_L001, please note that each sample name should match to a unique S number. So in this example, you can rename A_S2_L001 to A_S1_L002.
+
 
 You need two input files: ``library.csv`` and ``antibody.csv``, corresponding to the Library CSV and Feature Reference CSV here: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/feature-bc-analysis
 
