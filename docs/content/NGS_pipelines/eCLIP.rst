@@ -58,6 +58,29 @@ See the bw files
 
 See the bed files.
 
+``clipper`` results looks more accurate than ``pureCLIP``, because ``pureCLIP`` predicted binding sites are basically merged bed file from the predicted cross-link sites, and if we look at the signals, these binding sites do not align well with the binding sites. P.S., I don't know why crosslink site is different than binding sites yet.
+
+``clipper`` takes a week to finish for 100-200M bam file (UMI-deduplicated).
+
+Example of clipper output:
+
+::
+
+	# column names
+	chr, start, end
+	gene_ID|unique ID|read count (default read count cutoff is 3)
+	minimal pvalue (clipper has a p-value for each position)
+	strand, peak center start, peak center end
+
+::
+
+
+	chr1    133723  133804  ENSG00000233750.3_0_4   0.006532397293615632    +       133761  133765
+	chr1    235687  235773  ENSG00000228463.4_0_3   0.021506732213281816    -       235722  235726
+	chr1    329595  329633  ENSG00000233653.3_0_3   0.023548354478527544    -       329611  329615
+	chr1    564499  564571  ENSG00000230021.2_0_29  3.452872201838815e-29   -       564545  56454
+
+
 QC
 ^^^^^
 
