@@ -25,6 +25,8 @@ And the GSEA analysis (``GSEApy``) based on the MSIG database ``/home/yli11/Data
 - KEGG_2016
 - Reactome_2016
 
+Takes about 10-30 min to finish the whole analysis.
+
 Input
 ^^^^^
 
