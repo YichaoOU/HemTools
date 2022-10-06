@@ -42,7 +42,7 @@ Usage
 
 	module load conda3/202011
 
-	source activate /home/yli11/.conda/captureC
+	source activate /home/yli11/.conda/envs/captureC
 
 	# suppose our input is from the diffgene pipeline, then we need to reformat the data
 
