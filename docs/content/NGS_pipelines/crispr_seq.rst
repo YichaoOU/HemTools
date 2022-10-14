@@ -106,6 +106,22 @@ OR you can perform MaGeCK RRA paired test by add ``--paired`` option:
     $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed --paired
 
 
+
+Increase mapping rate
+-------------------
+
+If you have different length of gRNAs in your library, automatic determination may decrease the gRNA mapping rate. In these cases, you may want to fix the gRNA search positions, such as ``--trim_5 40,41,42,43,44,45,46``
+
+trim position depends on your library preparation. In Cheng lab, it is mostly at 43.
+
+The complete command is:
+
+
+.. code:: bash
+
+    $ HemTools crispr_seq -d design_matrix.tsv --gRNA_library my_gRNAs.csv --control_gRNAs my_controls.list --bed my_gRNAs.bed --trim_5 40,41,42,43,44,45,46
+
+
 Output files
 ^^^^^^^^^^^^
 
