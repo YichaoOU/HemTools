@@ -75,7 +75,7 @@ def main():
 	## additional commands
 	if args.motif_subset != None:
 		args.motif_file = subset_homer(args.motif_file,args.motif_subset)
-		exit()
+		# exit()
 	
 
 	pipeline_name = current_file_base_name

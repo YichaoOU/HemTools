@@ -9,6 +9,8 @@ import glob
 iter=0
 while True:
 	iter +=1
+	if iter > 1000:
+		exit()
 	print ("%s iteration %s"%(sra_id,iter))
 	files = glob.glob("%s*fastq"%(sra_id))
 	print (files)

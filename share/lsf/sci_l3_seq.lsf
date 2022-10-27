@@ -172,8 +172,8 @@ echo $PATH
 
 src=/home/yli11/Programs/Sci-L3-seq/src
 
-module load conda3
-source activate Sci_L3
+module load conda3/202011
+source activate /home/yli11/.conda/envs/Sci_L3
 
 
 cd ${COL3}/${COL3}_barcode_demultiplexing

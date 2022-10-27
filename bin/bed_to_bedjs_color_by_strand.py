@@ -20,6 +20,11 @@ for line in lines:
 			name = """{"strand":"%s","color":"rgba(0,0,255,0.8)"}"""%("-")
 	except:
 		name = """{"strand":"%s"}"""%("+")
+		try:
+			if "color" in line[3]:
+				name = line[3]
+		except:
+			pass
 	print >>out,"\t".join([line[0],line[1],line[2],name])
 
 out.close()

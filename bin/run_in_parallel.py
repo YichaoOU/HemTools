@@ -15,7 +15,7 @@ def read_file_to_list(x):
 
 myList = read_file_to_list(sys.argv[1])
 # Parallel(n_jobs=-1,verbose=10)(delayed(os.system)(m) for m in myList)
-Parallel(n_jobs=5,verbose=10)(delayed(os.system)(m) for m in myList)
+Parallel(n_jobs=10,verbose=10)(delayed(os.system)(m) for m in myList)
 
 
 

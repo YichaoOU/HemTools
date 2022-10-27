@@ -8,6 +8,7 @@ inputFile=input_list
 
 ncore=1
 mem=12000
+q={{queue}}
 
 module load bwa/0.7.16a
 module load samtools/1.7
@@ -31,9 +32,9 @@ amplicon=`tail -n 1 ${COL6}.fa`
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
-CRISPResso -r1 ${COL6}.R1.fastq.gz -r2 ${COL6}.R2.fastq.gz --amplicon_seq $amplicon --guide_seq ${COL1} --quantification_window_size 20 --quantification_window_center 0 --base_editor_output -o ${COL6} -q {{q}} -s {{s}}
+CRISPResso --min_paired_end_reads_overlap {{min_overlap}} -r1 ${COL6}.R1.fastq.gz -r2 ${COL6}.R2.fastq.gz --amplicon_seq $amplicon --guide_seq ${COL1} --quantification_window_size 20 --quantification_window_center 0 --base_editor_output -o ${COL6} -q {{q}} -s {{s}}
 
 mv ${COL6}.* ${COL6}
 
@@ -67,6 +68,7 @@ mv ${COL6}_* ${COL6}
 
 ncore=1
 mem=2000
+q={{queue}}
 
 module load python/2.7.13
 

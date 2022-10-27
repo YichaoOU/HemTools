@@ -1,0 +1,28 @@
+
+=cut CROP 1
+
+inputFile=input
+
+ncore=1
+
+mem=30000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv
+
+fastq=$COL1
+label=$COL2
+
+
+python /home/yli11/Tools/SHARE_seq_pipeline/share_seq_step2_rename_fastq.py -r1 $fastq -r2 $fastq --sample_ID $label --barcode_list barcode1.list --revcomp
+
+
+python /home/yli11/Tools/SHARE_seq_pipeline/match_gRNA.py -f $label.matched.R1.fastq.gz -o $label.gRNA.count.csv -g ${COL3}
+
+rm $label.junk.R2.fastq.gz
+rm $label.matched.R2.fastq.gz
+
+
+
+

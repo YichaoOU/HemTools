@@ -33,6 +33,7 @@ def my_args():
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update index file, black list, chrom size and effectiveGenomeSize, unless a user explicitly sets those options. input of hg19custom will replace anything that is supplied by user and use the default if not supplied", default='hg19',type=str)
 	genome.add_argument('-b','--black_list',  help="Blacklist file", default=None)
 	genome.add_argument('-fa','--genome_fa',  help="genome fasta file", default=None)
+	genome.add_argument('-gtf','--genome_gtf',  help="genome gtf file", default=None)
 		
 
 
@@ -58,6 +59,7 @@ def main():
 	else:
 		args.black_list = myData['%s_black_list'%(args.genome)]
 		args.genome_fa = myData['%s_fasta'%(args.genome)]		
+		args.genome_gtf = myData['%s_gtf'%(args.genome)]		
 
 
 	##------- check if jid exist  ----------------------

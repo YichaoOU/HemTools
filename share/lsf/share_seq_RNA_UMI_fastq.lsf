@@ -1,0 +1,21 @@
+#!shell
+=cut dem 1
+
+inputFile=input
+
+ncore=1
+mem=30000
+
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/cutadaptenv
+
+r1=$1
+r2=$2
+label=$3
+
+cutadapt --cut 10 -o $label.cut10.R2.fastq.gz --rename='{id} {comment} {cut_prefix}' $r2
+
+cutadapt --overlap 6 -G ^TTTTTT --no-trim --untrimmed-output $label.untrimmed.R1.fastq.gz --untrimmed-paired-output $label.untrimmed.cut10.R2.fastq.gz -e 0.2 -o $label.trimmed.R1.fastq.gz -p $label.trimmed.cut10.R2.fastq.gz $r1 $r2
+

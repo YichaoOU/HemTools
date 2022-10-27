@@ -27,9 +27,10 @@ def my_args():
 
 	mainParser.add_argument('-r1',"--R1_input",  help="TSV file, 2 columns, treatment, control files for replicate 1",required=True)
 	mainParser.add_argument('-r2',"--R2_input",  help="TSV file, 2 columns, treatment, control files for replicate 2",required=True)
+	mainParser.add_argument('-idr',"--idr_threshold",  help="idr cutoff",default=0.05,type=float)
 	mainParser.add_argument("--merged_input",  help="Not for end-user anymore")
 	mainParser.add_argument("--macs2_addon_parameters", default="")
-	mainParser.add_argument("--half_width", default=-1,type=int,help="half.width: -1 if using the reported peak width,  a numerical value to truncate the peaks to +- half_width")
+	mainParser.add_argument("--half_width", default=200,type=int,help="half.width: -1 if using the reported peak width,  a numerical value to truncate the peaks to +- half_width")
 
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, mm10, mm9", default='hg19',type=str)

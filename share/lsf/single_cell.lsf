@@ -4,7 +4,7 @@
 
 # module load cellranger/2.1.1
 # module load cellranger/5.0.1
-module load cellranger/6.0.0
+module load cellranger/7.0.0
 
 ncore=4
 mem=30000
@@ -17,34 +17,34 @@ cd ${COL1}_results
 
 ln -s ../${COL1}*.gz .
 
-cellranger count --id=${COL1} --project=${COL1} --fastqs=. --transcriptome={{cellranger_refdata}} --localcores 12
+cellranger count --id=${COL1} --project=${COL1} --fastqs=. --transcriptome={{cellranger_refdata}} --localcores 12 --nosecondary
 # cellranger count --id=${COL1} --project=${COL1} --fastqs=. --transcriptome=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/cellranger/refdata/refdata-cellranger-mm10-3.0.0/ --localcores 8
 
 # rm *.gz
 
-cd ..
+# cd ..
 
-mv ${COL1}_results {{jid}}
+# mv ${COL1}_results {{jid}}
 
-cd {{jid}}
+# cd {{jid}}
 
-cd ${COL1}_results
+# cd ${COL1}_results
 
-cd ${COL1}
+# cd ${COL1}
 
-cd outs
+# cd outs
 
-cellranger mat2csv filtered_feature_bc_matrix.h5 out.csv
+# cellranger mat2csv filtered_feature_bc_matrix.h5 out.csv
 
-gunzip filtered_feature_bc_matrix/features.tsv.gz 
+# gunzip filtered_feature_bc_matrix/features.tsv.gz 
 
-module load python/2.7.13
+# module load python/2.7.13
 
-dataframe.py -f out.csv --remove_zero -s , --header --index -o cellrange_final_gene_expression_removed_all_zeros.csv --merge filtered_feature_bc_matrix/features.tsv
+# dataframe.py -f out.csv --remove_zero -s , --header --index -o cellrange_final_gene_expression_removed_all_zeros.csv --merge filtered_feature_bc_matrix/features.tsv
 
-table_sum_top.py -f cellrange_final_gene_expression_removed_all_zeros.csv -p -i 0,1 -n 50 -o top50_gene_read_percent.tsv
+# table_sum_top.py -f cellrange_final_gene_expression_removed_all_zeros.csv -p -i 0,1 -n 50 -o top50_gene_read_percent.tsv
 
-gzip filtered_feature_bc_matrix/features.tsv 
+# gzip filtered_feature_bc_matrix/features.tsv 
 
 
 =cut qc 2 all

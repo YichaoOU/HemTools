@@ -7,19 +7,26 @@ inputFile=bam_list
 
 ncore=1
 mem=16000
-
+q=priority
 module load homer/4.10
 
 module load samtools
 
 module load ucsc/041619
+module load bedtools/2.29.2
 
 makeTagDirectory {{jid}}/${COL1}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL2} 
 
 cd {{jid}}
 
 # makeUCSCfile  ${COL1}_tag -o ${COL1}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr chrM -fragLength 150 > ${COL1}-bigWig.trackInfo.txt
-makeUCSCfile  ${COL1}_tag -o ${COL1}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 150 > ${COL1}-bigWig.trackInfo.txt
+# makeUCSCfile  ${COL1}_tag -o ${COL1}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 150 > ${COL1}-bigWig.trackInfo.txt
+
+makeUCSCfile  ${COL1}_tag -o ${COL1}.bedgraph -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 150 
+bedtools intersect -a ${COL1}.bedgraph.gz -b {{chrom_size_bed}} -u -f 1 > ${COL1}.clean.bedgraph
+bedGraphToBigWig ${COL1}.clean.bedgraph {{genome_chrom_size}} ${COL1}.bw
+rm ${COL1}.bedgraph.gz
+
 
 # rm -rf ${COL1}_tag
 

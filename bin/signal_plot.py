@@ -30,7 +30,7 @@ def my_args():
 	mainParser.add_argument("--plotHeatmap_addon_parameters",  help="add user-defined parameters to plotHeatmap",default=" --regionsLabel ${COL2}")
 	mainParser.add_argument("-u",  help="upstream flanking length",default=5000,type=int)
 	mainParser.add_argument("-d",  help="downstream flanking length",default=5000,type=int)
-	mainParser.add_argument("-m",'--memory',  help="memory limit, higher the limit, longer the wait time for your job to start",default=4000,type=int)
+	mainParser.add_argument("-m",'--memory',  help="memory limit, higher the limit, longer the wait time for your job to start",default=10000,type=int)
 	mainParser.add_argument("--commands_list",  help="not for end-user")
 	mainParser.add_argument("--bw_files",  help="not for end-user")
 	mainParser.add_argument("--bed_files",  help="not for end-user")
@@ -47,6 +47,7 @@ def my_args():
 	group.add_argument("--multi_bw_to_one_bed",  help="5 columns tsv, path_to_bed, bed_label, path_to_bw, bw_file_label, output_name. Most common usage.",default="None")
 	group.add_argument("--one_to_one",  help="5 columns tsv, path_to_bed, bed_label, path_to_bw, bw_file_label, output_name. Most common usage.",default="None")		
 	group.add_argument("--multi_to_multi",  help="5 columns tsv, path_to_bed, bed_label, path_to_bw, bw_file_label, output_name. Most common usage.",default="None")		
+	group.add_argument("--multi_bed_to_one_bw",  help="5 columns tsv, path_to_bed, bed_label, path_to_bw, bw_file_label, output_name. Most common usage.",default="None")		
 
 	##------- add parameters above ---------------------
 	args = mainParser.parse_args()	
@@ -82,6 +83,24 @@ def multi_to_multi_input(args):
 	args.bed_files = " ".join(tmp[0].unique().tolist())
 	args.samplesLabel_list = " ".join(tmp[3].unique().tolist())
 	args.regionsLabel_list = " ".join(tmp[1].unique().tolist())
+
+
+def multi_bed_to_one_bw(args):
+	df = pd.read_csv(args.multi_bed_to_one_bw,sep="\t",header=None)
+	check_input(df,0)
+	check_input(df,2)
+	tmp = df.copy()
+	tmp = tmp.drop_duplicates(0)
+	args.bed_files = " ".join(tmp[0].tolist())
+	args.regionsLabel_list = " ".join(tmp[1].tolist())
+	
+	# create bw input list
+	tmp2 = df.copy()
+	tmp2 = tmp2.drop_duplicates(2)
+	tmp2[[2,3]].to_csv("%s.input"%(args.jid),sep="\t",index=False,header=False)
+	args.input_list = "%s.input"%(args.jid)
+	
+
 
 
 def main():
@@ -121,6 +140,9 @@ def main():
 	if args.multi_to_multi != "None":
 		multi_to_multi_input(args)
 		submit_pipeline_jobs(myPipelines["signal_plot_multi_bw_multi_bed"],args)
+	if args.multi_bed_to_one_bw != "None":
+		multi_bed_to_one_bw(args)
+		submit_pipeline_jobs(myPipelines["signal_plot_multile_bed_one_bw"],args)
 	
 
 # def run_computMatrix(args):

@@ -24,6 +24,7 @@ def my_args():
 	mainParser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument('--pipeline_type',  help="Not for end-user.", default=current_file_base_name)
 	mainParser.add_argument('-f',"--data_list",  help="a list of SRA IDs, one per line",required=True)
+	mainParser.add_argument('-m',"--meta",  help="a list of SRA IDs, one per line",required=False,default=None)
 
 	##------- add parameters above ---------------------
 	args = mainParser.parse_args()	

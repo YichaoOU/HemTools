@@ -48,7 +48,7 @@ mem=8000
 inputFile=merged_input
 
 
-
+# p 0.2 will be replaced if additional -p is used
 macs2 callpeak -p 0.2 -t ${COL1} ${COL3} -c ${COL2} ${COL4} -g {{macs_genome}} -n {{jid}}/merged {{macs2_addon_parameters}}
 
 cd {{jid}}
@@ -68,7 +68,7 @@ mem=8000
 
 cd {{jid}}
 
-idr --samples R1.top500k.narrowPeak R2.top500k.narrowPeak --peak-list merged.top500k.narrowPeak --idr-threshold 0.05 --plot -o idr_peaks.bed
+idr --samples R1.top500k.narrowPeak R2.top500k.narrowPeak --peak-list merged.top500k.narrowPeak --idr-threshold {{idr_threshold}} --plot -o idr_peaks.bed
 
 
 
@@ -117,7 +117,9 @@ mem=8000
 
 cd {{jid}}
 
-findMotifsGenome.pl idr_peaks.rmblck.merged_peaks.bed {{genome}} homer_motifs_result -size 200 -mask -preparsedDir homer_genome_dir
+head -n 1000 idr_peaks.rmblck.merged_peaks.bed > top1000_IDR.peaks
+
+findMotifsGenome.pl top1000_IDR.peaks {{genome}} homer_motifs_result -size 200 -mask -preparsedDir homer_genome_dir
 
 
 =cut email 4 all

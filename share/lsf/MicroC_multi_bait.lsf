@@ -1,0 +1,202 @@
+#!shell
+
+=cut MCC 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem={{memory}}
+q={{queue}}
+ 
+
+
+module load python/2.7.13 fastqc
+module load flash
+module load blat
+
+src={{src}}
+
+perl $src/MCC_BLATfa.pl -f ${COL4} -g {{genome_fasta}} -o ${COL3}_${COL4}_split_800bp.fa
+
+fastqc ${COL1}
+fastqc ${COL2}
+
+
+trim_galore --fastqc -q 10 --paired ${COL1} ${COL2} --basename ${COL3}
+
+flash -f 200 -M {{FLASH_max_overlap}} -m {{FLASH_min_overlap}} ${COL3}_val_1.fq.gz ${COL3}_val_2.fq.gz -o ${COL3} 2>&1 | tee ${COL3}_flash.log
+
+
+
+# custom fragment length filter
+# awk 'BEGIN {OFS = "\n"} {header = $0 ; getline seq ; getline qheader ; getline qseq ; if (length(seq) >= 0 && length(seq) <= 150) {print header, seq, qheader, qseq}}' < ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.filter.fastq
+
+awk 'BEGIN {OFS = "\n"} {header = $0 ; getline seq ; getline qheader ; getline qseq ; if (length(seq) >= 150 && length(seq) <= 300) {print header, seq, qheader, qseq}}' < ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.filter.fastq
+
+mv ${COL3}.extendedFrags.filter.fastq ${COL3}.extendedFrags.fastq
+
+
+sed -n '1~4s/^@/>/p;2~4p' ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.fa
+
+
+
+# please don't change BLAT parameter here
+blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 ${COL3}_${COL4}_split_800bp.fa ${COL3}.extendedFrags.fa ${COL3}.read.psl
+
+
+
+perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r ${COL3}_read_split -limit 0 -all
+
+# step 2
+
+module load bowtie2
+module load samtools/1.7
+module load macs2 bedtools
+module load ucsc/041619
+
+mv ${COL3}_${COL4}_split_800bp.fa ${COL3}_read_split
+
+mv ${COL3}_val_1.fq.gz ${COL3}_read_split
+mv ${COL3}_val_2.fq.gz ${COL3}_read_split
+mv ${COL3}_flash.log ${COL3}_read_split
+mv  ${COL3}*.txt ${COL3}_read_split
+mv  ${COL3}*fastqc* ${COL3}_read_split
+mv  ${COL3}*notCombined* ${COL3}_read_split
+mv  ${COL3}*hist* ${COL3}_read_split
+mv ${COL3}.extendedFrags.fastq  ${COL3}_read_split
+mv ${COL3}.extendedFrags.fa  ${COL3}_read_split
+mv ${COL3}.read.psl  ${COL3}_read_split
+mv ${COL3}*zip  ${COL3}_read_split
+mv ${COL3}*html  ${COL3}_read_split
+
+
+cd ${COL3}_read_split
+
+
+
+
+
+fastqc ${COL3}.extendedFrags.fastq
+
+bowtie2 -p 1 -X 1000 -x {{bowtie2_index}} R_${COL3}.extendedFrags.fastq -S R_${COL3}.sam 
+
+samtools view -S -b -o R_${COL3}.bam R_${COL3}.sam
+
+samtools sort R_${COL3}.bam  -o R_${COL3}.sorted.bam
+
+samtools index R_${COL3}.sorted.bam
+
+bedtools genomecov -ibam R_${COL3}.sorted.bam -bg > R_${COL3}.read_pileup.bdg
+sort -k1,1 -k2,2n R_${COL3}.read_pileup.bdg > R_${COL3}.read_pileup.st.bdg
+bedGraphToBigWig R_${COL3}.read_pileup.st.bdg {{chrom_size}} R_${COL3}.read_pileup.bw
+
+
+samtools sort -n -o R_${COL3}_sort.sam R_${COL3}.sam 
+
+mv R_${COL3}_sort.sam R_${COL3}.sam
+
+# perl $src/MCC_analyser.pl -f R_${COL3}.sam -genome {{genome}} -o ${COL3}_${COL4}_split_800bp.fa 
+
+perl $src/MCC_analyser.pl -f R_${COL3}.sam -pf . -bf {{chrom_size}} -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+
+macs2 callpeak -t R_${COL3}.sorted.bam -f BAM --nomodel --extsize 100 -n R_${COL3}
+
+
+samtools view -S -b -o R_${COL3}_junction.bam R_${COL3}_junction.sam
+
+samtools sort R_${COL3}_junction.bam  -o R_${COL3}_junction.st.bam
+
+samtools index R_${COL3}_junction.st.bam
+
+bedtools genomecov -ibam R_${COL3}_junction.st.bam -bg > R_${COL3}.junction_pileup.bdg
+sort -k1,1 -k2,2n R_${COL3}.junction_pileup.bdg > R_${COL3}.junction_pileup.st.bdg
+bedGraphToBigWig R_${COL3}.junction_pileup.st.bdg {{chrom_size}} R_${COL3}.junction_pileup.bw
+
+
+
+
+bowtie2 -p 1 -X 1000 -x {{bowtie2_index}} L_${COL3}.extendedFrags.fastq -S L_${COL3}.sam 
+
+samtools view -S -b -o L_${COL3}.bam L_${COL3}.sam
+
+samtools sort L_${COL3}.bam  -o L_${COL3}.sorted.bam
+
+samtools index L_${COL3}.sorted.bam
+
+bedtools genomecov -ibam L_${COL3}.sorted.bam -bg > L_${COL3}.read_pileup.bdg
+sort -k1,1 -k2,2n L_${COL3}.read_pileup.bdg > L_${COL3}.read_pileup.st.bdg
+bedGraphToBigWig L_${COL3}.read_pileup.st.bdg {{chrom_size}} L_${COL3}.read_pileup.bw
+
+
+
+samtools sort -n -o L_${COL3}_sort.sam L_${COL3}.sam 
+
+mv L_${COL3}_sort.sam L_${COL3}.sam
+
+# perl $src/MCC_analyser.pl -f L_${COL3}.sam -genome {{genome}} -o ${COL3}_${COL4}_split_800bp.fa 
+
+perl $src/MCC_analyser.pl -f L_${COL3}.sam -pf . -bf {{chrom_size}} -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+
+macs2 callpeak -t L_${COL3}.sorted.bam -f BAM --nomodel --extsize 100 -n L_${COL3}
+
+samtools view -S -b -o L_${COL3}_junction.bam L_${COL3}_junction.sam
+
+samtools sort L_${COL3}_junction.bam  -o L_${COL3}_junction.st.bam
+
+samtools index L_${COL3}_junction.st.bam
+
+bedtools genomecov -ibam L_${COL3}_junction.st.bam -bg > L_${COL3}.junction_pileup.bdg
+sort -k1,1 -k2,2n L_${COL3}.junction_pileup.bdg > L_${COL3}.junction_pileup.st.bdg
+bedGraphToBigWig L_${COL3}.junction_pileup.st.bdg {{chrom_size}} L_${COL3}.junction_pileup.bw
+
+
+
+cd ..
+
+mv ${COL3}_read_split {{jid}}
+
+=cut email 2 all
+
+ncore=1
+mem={{memory}}
+q={{queue}}
+
+mv *fastqc.zip {{jid}}
+mv *fastqc.html {{jid}}
+mv *trimming_report.txt {{jid}}
+
+cd {{jid}}
+
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+module load texlive/20190410
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+src={{src}}
+cp $src/MicroC_summary.ipynb .
+jupyter nbconvert --to notebook --execute MicroC_report_summary.ipynb --output MicroC_report_summary --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+jupyter nbconvert MicroC_report_summary.ipynb --to html 
+
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+module load python/2.7.13
+
+
+
+send_email_v1.py -a multiqc_report.html,MicroC_summary.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

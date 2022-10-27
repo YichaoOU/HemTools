@@ -20,6 +20,11 @@ cd ${COL1}
 
 bash run_trim_galore.sh
 
+mv *zip ../../../log_files
+mv *html ../../../log_files
+mv *txt ../../../log_files
+
+
 cd ../..
 
 module load hic-pro/2.11.1
@@ -42,7 +47,7 @@ hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20
 
 source activate /home/yli11/.conda/envs/fithic/
 
-fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 2
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1
 
 cd ../../../
 

@@ -38,11 +38,13 @@ def to_casOffinder_input(args):
 
 	df = pd.read_csv(args.input,header=None)
 	gRNA = df[0].tolist()
+	gRNA_length = args.gRNA_length
 	if args.remove_first_G:
 		gRNA = [x[1:] for x in gRNA]
+		gRNA_length = args.gRNA_length - 1
 	# gRNA_length = len(gRNA[0])
 	# args.gRNA_length = gRNA_length
-	gRNA_length = args.gRNA_length
+	
 	out = []
 	out.append(myData['%s_fasta'%(args.genome)])
 	example_N_seq = ["N"]*gRNA_length

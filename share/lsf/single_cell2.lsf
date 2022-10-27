@@ -5,34 +5,42 @@
 # module load cellranger/2.1.1
 # module load cellranger/5.0.1
 # supposed to be more generic
-module load cellranger/6.0.0
+# module load cellranger/6.0.0
+module load cellranger/7.0.0
 
-ncore=4
-mem=30000
+ncore=12
+mem=10000
 
 inputFile=input_list
 
 cd {{jid}}
 
-cellranger count --id=${COL1} --libraries=${COL1}.library.csv --transcriptome={{cellranger_refdata}} --localcores 12 --feature-ref={{antibody_barcode}}
+cellranger count --id=${COL1} --libraries=${COL1}.library.csv --transcriptome={{cellranger_refdata}} --localcores 12 --feature-ref={{antibody_barcode}} --nosecondary
+# cellranger count --id=${COL1} --libraries=${COL1}.library.csv --transcriptome=/research/rgs01/applications/hpcf/authorized_apps/rhel7_apps/cellranger/refdata/refdata-cellranger-mm10-3.0.0/ --localcores 12 --feature-ref=antibody.csv
 
 # cd ${COL1}_results
 
-cd ${COL1}
+# cd ${COL1}
 
-cd outs
+# cd outs
 
-cellranger mat2csv filtered_feature_bc_matrix.h5 out.csv
+# cellranger mat2csv filtered_feature_bc_matrix.h5 out.csv
 
-gunzip filtered_feature_bc_matrix/features.tsv.gz 
+# gunzip filtered_feature_bc_matrix/features.tsv.gz 
 
-module load python/2.7.13
+# module load python/2.7.13
 
-dataframe.py -f out.csv --remove_zero -s , --header --index -o cellrange_final_gene_expression_removed_all_zeros.csv --merge filtered_feature_bc_matrix/features.tsv
+# dataframe.py -f out.csv --remove_zero -s , --header --index -o cellrange_final_gene_expression_removed_all_zeros.csv --merge filtered_feature_bc_matrix/features.tsv
 
-table_sum_top.py -f cellrange_final_gene_expression_removed_all_zeros.csv -p -i 0,1 -n 50 -o top50_gene_read_percent.tsv
+# table_sum_top.py -f cellrange_final_gene_expression_removed_all_zeros.csv -p -i 0,1 -n 50 -o top50_gene_read_percent.tsv
 
-gzip filtered_feature_bc_matrix/features.tsv 
+# gzip filtered_feature_bc_matrix/features.tsv 
+
+# module load conda3
+
+# source activate /home/yli11/.conda/envs/captureC
+
+# cite_seq_norm_AB.R filtered_feature_bc_matrix ADT.CLR.norm.csv
 
 
 =cut qc 2 all
@@ -65,6 +73,12 @@ dataframe_merge.py */*/metrics_summary.csv --rename_index_by_folder 0 --by_row -
 
 cite_seq_vis.py --current_dir
 
+
+if ["{{scjupyter}}" = ""]; then
+	echo "not running scjupyter"
+else
+	run_lsf.py -p scJupyter -m 40000
+fi
 
 
 

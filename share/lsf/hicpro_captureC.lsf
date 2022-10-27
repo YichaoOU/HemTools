@@ -4,8 +4,8 @@
 
 inputFile=input_list
 
-ncore=2
-mem=20000
+ncore=4
+mem=10000
 
 module load hic-pro/2.11.1
 

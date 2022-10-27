@@ -31,7 +31,7 @@ amplicon=`tail -n 1 ${COL6}.fa`
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 CRISPResso -r1 ${COL6}.R1.fastq.gz -r2 ${COL6}.R2.fastq.gz --amplicon_seq $amplicon --guide_seq ${COL1} --keep_intermediate --dump -o ${COL6} -q {{q}} -s {{s}}
 

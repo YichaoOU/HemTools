@@ -1,5 +1,15 @@
 #!shell
 
+=cut rnaseq 1
+
+ncore=16
+mem=1500
+
+module load nextflow/21.10.5 singularity
+
+nextflow run nf-core/rnaseq --input {{jid}}.sample.csv --outdir {{jid}}/nfcore_RNA_seq_results --genome {{nfcore_genome}} -profile singularity --aligner star_rsem --pseudo_aligner salmon
+
+
 
 =cut kallisto 1 
 
@@ -16,7 +26,7 @@ kallisto quant {{strandness}} -i {{index_file}} --threads=$ncore --bootstrap-sam
 
 =cut sleuth 2 kallisto
 
-module load conda3
+module load conda3/202011
 source activate /home/yli11/.conda/envs/sleuth/
 module load python/2.7.13
 
@@ -36,7 +46,7 @@ touch /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
 
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
-
+# run_sleuth.py -t ${COL1} -c ${COL2} -o ${COL3} -g hg19_lncRNA --gene_info /home/yli11/Data/Human/hg19/lncRNA/lncRNA.hg19.t2g
 run_sleuth.py -t ${COL1} -c ${COL2} -o ${COL3} -g {{genome}} --gene_info {{gene_info}}
 
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
@@ -45,11 +55,44 @@ chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
 
 mv ${COL3}*.csv ${COL3}_sleuth
 
-=cut email 3 sleuth
+cd ${COL3}_sleuth
+
+awk -F "," '{print $4"\t"$13"\t"$3}' ${COL3}.gene.final.combined.tpm.csv > tmp.tsv
+
+mkdir GO_pathway_analysis
+
+module remove python/2.7.13
+
+source activate /home/yli11/.conda/envs/captureC
+
+echo `which python`
+
+/home/yli11/.conda/envs/captureC/bin/python /home/yli11/HemTools/bin/run_GSEA.py tmp.tsv 1 0.05 logFC qval GO_pathway_analysis/${COL3}
+
+rm tmp.tsv
+
+mkdir replicate_correlation
+
+# plot_PCA.py -f ${COL3}.gene.final.combined.tpm.csv --index --header --transpose --use_cols L26_3,L26_4,L26_5,L26_6 --log2_transform -o replicate_correlation/PCA_plot_log2TPM.html
+
+# scatter_density.py -f ${COL3}.gene.final.combined.tpm.csv -s , -x L26_3 -y L26_5 --log2 -o replicate_correlation/L26_3.L26_5.scatter.pdf
+# scatter_density.py -f${COL3}.gene.final.combined.tpm.csv -s , -x L26_4 -y L26_6 --log2 -o replicate_correlation/L26_4.L26_6.scatter.pdf
+# python -c 'import pandas as pd;df = pd.read_csv("{{input_file}}",sep="\\t",skiprows=1);df.columns = map(lambda x:x.split("/")[-1],df.columns.tolist());df.to_csv("{{input_file}}",index=False,sep="\\t")'
+plot_PCA.py -f ${COL3}.gene.final.combined.tpm.csv --index --header --transpose --use_cols ${COL4} --log2_transform -o replicate_correlation/PCA_plot_log2TPM.html
+plot_corr.py -f ${COL3}.transcript.final.combined.tpm.csv --use_cols ${COL4} --log2 -o replicate_correlation/sample_corr.heatmap --annot
+
+scatter_density.py -f ${COL3}.gene.final.combined.tpm.csv -s , ${COL5} --log2 -o replicate_correlation/group1.replicate.scatter.pdf
+scatter_density.py -f${COL3}.gene.final.combined.tpm.csv -s , ${COL6} --log2 -o replicate_correlation/group2.replicate.scatter.pdf
+
+rm replicate_correlation/*cosine*pdf
+
+=cut email 3 all
 
 module load python/2.7.13
 
 cd {{jid}}
 
-send_email_v1.py -m "Kallisto Sleuth pipeline is finished!" -j {{jid}}
+mv ../{{jid}}.sample.csv log_files
+
+send_email_v1.py -m "diff gene pipeline is finished!" -j {{jid}}
 

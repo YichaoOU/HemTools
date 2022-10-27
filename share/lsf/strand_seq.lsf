@@ -1,0 +1,99 @@
+#!shell
+
+=cut bwa 1
+
+module load bwa/0.7.16a
+module load samtools/1.7
+module load picard/2.9.4 gatk/4.1.8.0
+
+inputFile=input
+
+ncore=1
+mem=40000
+q={{queue}}
+
+# currently only work for hg38
+
+#Path to reference genome and Index files.
+# ref="/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.reordered.fa"
+# ref="/home/yli11/Data/Human/hg19/fasta/hg19.fa"
+ref={{fasta}}
+echo $ref
+
+echo -e "["$(date)"]\tRunning BWA mapping.."
+#------------------------------------------------
+bwa mem -t {{njobs}} {{index_file}} ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
+cd {{jid}}
+samtools sort -@ {{njobs}} -o ${COL3}.st.bam ${COL3}.bam
+mv ${COL3}.st.bam ${COL3}.bam
+# rm ${COL3}.st.bam
+samtools index ${COL3}.bam
+
+
+
+echo -e "["$(date)"]\tRunning GATK, sort, add RG tag.."
+#------------------------------------------------
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar MarkDuplicates I=${COL3}.bam O=${COL3}.markdup.bam CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=${COL3}.picard.metrics.txt
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar AddOrReplaceReadGroups I=${COL3}.markdup.bam O=${COL3}.markdup.rg_added.bam SO=coordinate RGID=${COL3} RGLB=${COL3} RGPL=illumina RGPU=Hart_Center RGSM=${COL4} CREATE_INDEX=true
+rm ${COL3}.bam
+rm ${COL3}.markdup.bam
+mv ${COL3}.markdup.rg_added.bam ${COL3}.bam
+# java -jar /hpcf/apps/picard/install/2.9.4/picard.jar ReorderSam I=${COL3}.bam O=${COL3}.st.bam R=${ref} CREATE_INDEX=TRUE
+samtools sort -@ {{njobs}} -o ${COL3}.st.bam ${COL3}.bam
+mv ${COL3}.st.bam ${COL3}.bam
+# rm ${COL3}.st.bam
+samtools index ${COL3}.bam
+
+
+mkdir -p bam
+mkdir -p bam/${COL4}
+mkdir -p bam/${COL4}/all
+mkdir -p bam/${COL4}/selected
+ln ${COL3}.bam bam/${COL4}/all
+ln ${COL3}.bam.bai bam/${COL4}/all
+ln ${COL3}.bam bam/${COL4}/selected
+ln ${COL3}.bam.bai bam/${COL4}/selected
+
+
+=cut SV 2 bwa
+
+ncore=1
+mem=40000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/snakemake2
+
+cd {{jid}}
+
+git clone https://github.com/YichaoOU/mosaicatcher-pipeline
+
+mv -f mosaicatcher-pipeline/* .
+
+R_REF={{BSgenome}}
+
+REF={{fasta}}
+
+snakemake \
+    -j 6 \
+    --configfile Snake.config-singularity.json \
+    --use-singularity \
+    --singularity-args "-B ${REF}:/reference.fa:ro \
+                        -B ${REF}.fai:/reference.fa.fai:ro \
+                        -B ${R_REF}:/usr/local/lib/R/site-library/BSgenome.Hsapiens.UCSC.hg38/extdata/single_sequences.2bit:ro" \
+    --latency-wait 200 \
+    --printshellcmd
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

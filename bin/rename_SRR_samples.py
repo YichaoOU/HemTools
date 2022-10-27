@@ -91,6 +91,14 @@ for f in fastq_files:
 	except:
 		pass
 	try:
+		source_name = df.at[sra_id,'chromatin_state']
+		source_name = source_name.replace("+","plus")
+		source_name = source_name.replace("-","minus")
+		source_name = re.sub(r'[^.a-zA-Z0-9]', "_", source_name)
+		final_name.append(source_name)
+	except:
+		pass
+	try:
 		if "Antibody" in df.columns:
 			antibody = df.at[sra_id,'Antibody']
 		elif "antibody" in df.columns:
@@ -173,6 +181,14 @@ for f in fastq_files:
 		pass		
 	try:
 		population = df.at[sra_id,'LibrarySelection']
+		population = population.replace("+","plus")
+		population = population.replace("-","minus")
+		population = re.sub(r'[^.a-zA-Z0-9]', "_", population)
+		final_name.append(population)
+	except:
+		pass		
+	try:
+		population = df.at[sra_id,'time']
 		population = population.replace("+","plus")
 		population = population.replace("-","minus")
 		population = re.sub(r'[^.a-zA-Z0-9]', "_", population)

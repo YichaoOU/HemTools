@@ -22,7 +22,7 @@ def my_args():
 	mainParser.add_argument('-x',  help="X-axis",required=True)
 	mainParser.add_argument('-y',  help="Y-axis",required=True)
 	mainParser.add_argument('-s',"--sep",  help="separator",default="\t")
-	
+	mainParser.add_argument('--log2',  help="force to draw a dignal line", action='store_true')
 	mainParser.add_argument("--xlabel",default="")
 	mainParser.add_argument("--ylabel",default="")
 	mainParser.add_argument("--title",default="")
@@ -52,6 +52,8 @@ def main():
 	plot_df = pd.DataFrame()
 	plot_df['x'] = df[args.x].tolist()
 	plot_df['y'] = df[args.y].tolist()
+	if args.log2:
+		plot_df = plot_df.transform(lambda x:np.log2(x+1))
 	if args.color_using:
 		plot_df['color'] = df[args.color_using].tolist()
 	else:
@@ -70,8 +72,14 @@ def main():
 		plot_df['text'] = ""
 	
 	#-------------- pre-processing ----------------------
-	plotly_scatter(plot_df,is_discrete=True,colorscale='Viridis',showlegend=True,xlabel=args.xlabel,ylabel=args.ylabel,title=args.title,output=args.output)
-	
+	fig = plotly_scatter(plot_df,is_discrete=True,colorscale='Viridis',showlegend=True,xlabel=args.xlabel,ylabel=args.ylabel,title=args.title,output=args.output)
+	for s,d in plot_df.groupby("color"):
+		x = d.x.mean()
+		y = d.y.mean()
+		fig.add_annotation(x=x, y=y,
+				text=s,
+				showarrow=False)
+	fig.write_html('%s.with_text.html'%(args.output), include_plotlyjs=True,auto_open=False)
 if __name__ == "__main__":
 	main()
 

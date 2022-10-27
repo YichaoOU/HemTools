@@ -40,6 +40,7 @@ def my_args():
 	mainParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 	mainParser.add_argument('-f',"--input",help="2 column tsv, no header, the values for each cell type",required=True)	
 	mainParser.add_argument("--min",help="set min value, otherwise infered from data",default="None")	
+	mainParser.add_argument("--max",help="set max value, otherwise infered from data",default="None")	
 	mainParser.add_argument("--custom_color_scale",help="You can define your own color scheme (linear from lowest to highest) using hex color, separated by comma",default="#ffffff,#ff8000,#660000")	
 	mainParser.add_argument("--svg_template",default="/home/yli11/HemTools/share/misc/blood_lineage_Hchang_13cells.svg")	
 	mainParser.add_argument('-o',"--output",  help="output file name",default=username+"_"+str(datetime.date.today())+"_"+addon_string)
@@ -86,7 +87,11 @@ def main():
 		vmin = float(args.min)
 	else:
 		vmin = df[1].min()
-	vmax = df[1].max()
+	if args.max != "None":
+		vmax = float(args.max)
+	else:
+		vmax = df[1].max()
+	# vmax = df[1].max()
 	color_bar = clr.LinearSegmentedColormap.from_list('custom',args.custom_color_scale.split(","),N=256)
 	m = interp1d([vmin,vmax],[1,256])
 

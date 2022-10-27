@@ -4,13 +4,37 @@
 
 ncore=1
 mem={{memory}}
+q=priority
+
+echo $PATH
+
+# https://github.com/satijalab/seurat/issues/1836
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin:/home/yli11/Programs/HiC-Pro-2.11.1/bin/utils:/research/dept/hem/common/sequencing/chenggrp/pipelines/bin
+
+echo $PATH
 
 module load conda3/202011
 
 source activate /home/yli11/.conda/envs/captureC
 
-export XDG_RUNTIME_DIR=""
-export JUPYTER_RUNTIME_DIR=/tmp
+module load texlive/20190410
 
-jupyterlab.py
+echo $PATH
+
+echo `which python`
+
+export XDG_RUNTIME_DIR=""
+# export JUPYTER_RUNTIME_DIR=/tmp
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+# export JOBLIB_TEMP_FOLDER=/tmp
+# export JUPYTER_RUNTIME_DIR="/home/{{username}}"
+
+cp /home/yli11/HemTools/share/misc/Introduction_6_21_2021_v2.ipynb {{jid}}/
+cp /home/yli11/HemTools/share/tutorial/* {{jid}}/
+
+yes | cp -rf /research/rgs01/home/clusterHome/yli11/.local/share/jupyter/kernels/ ~/.local/share/jupyter/
+
+# jupyterlab.py {{jid}}/NGS101.ipynb
+jupyterlab.py {{jid}}/Introduction_6_21_2021_v2.ipynb
 
