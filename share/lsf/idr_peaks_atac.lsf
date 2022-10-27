@@ -1,0 +1,150 @@
+#!shell
+
+
+=cut callPeak 1
+
+
+module load macs2/2.1.1
+
+inputFile=input_list
+
+ncore=1
+mem=20000
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -p 0.2 -t ${COL1} -B -g {{macs_genome}} -n {{jid}}/${COL3}_R1 {{macs2_addon_parameters}}
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -p 0.2 -t ${COL2} -B -g {{macs_genome}} -n {{jid}}/${COL3}_R2 {{macs2_addon_parameters}}
+
+cd {{jid}}
+NPEAKS=500000
+
+sort -k 8gr,8gr ${COL3}_R1_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$2=$2+$10-{{half_width}};$3=$2+$10+{{half_width}}; print $0}' | head -n ${NPEAKS} > ${COL3}_R1_summit_half_width.top500k.narrowPeak
+
+sort -k 8gr,8gr ${COL3}_R2_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$2=$2+$10-{{half_width}};$3=$2+$10+{{half_width}}; print $0}' | head -n ${NPEAKS} > ${COL3}_R2_summit_half_width.top500k.narrowPeak
+
+
+=cut MP 1
+
+
+module load macs2/2.1.1
+
+ncore=1
+mem=20000
+
+inputFile=input_list
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -p 0.2 -t ${COL1} ${COL2} -B -g {{macs_genome}} -n {{jid}}/${COL3}_merged {{macs2_addon_parameters}}
+
+cd {{jid}}
+NPEAKS=500000
+
+sort -k 8gr,8gr ${COL3}_merged_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$2=$2+$10-{{half_width}};$3=$2+$10+{{half_width}}; print $0}' | head -n ${NPEAKS} > ${COL3}_merged_summit_half_width.top500k.narrowPeak
+
+
+=cut idr 2 all
+
+inputFile=input_list
+
+module load conda3
+source activate /home/yli11/.conda/envs/idr/
+module load bedtools/2.29.2
+
+ncore=1
+mem=10000
+
+cd {{jid}}
+
+idr --samples ${COL3}_R1_summit_half_width.top500k.narrowPeak ${COL3}_R2_summit_half_width.top500k.narrowPeak --peak-list ${COL3}_merged_summit_half_width.top500k.narrowPeak --idr-threshold 0.05 --plot -o ${COL3}_idr_peaks.bed
+
+
+bedtools intersect -a ${COL3}_idr_peaks.bed -b {{black_list}} -v -wa > ${COL3}_idr_peaks.rmblck.bed
+
+
+# bedtools intersect -a ${COL3}_merged_peaks.narrowPeak -b ${COL3}_idr_peaks.rmblck.bed -u > ${COL3}_idr_peaks.rmblck.merged_peaks.bed
+
+
+=cut pyGREAT 3 idr
+
+inputFile=input_list
+
+module load conda3
+source activate /home/yli11/.conda/envs/share_url/
+
+cd {{jid}}
+
+pyGREAT.py -f ${COL3}_idr_peaks.rmblck.bed -g {{genome}} --email
+
+=cut annoP 3 idr
+
+
+inputFile=input_list
+
+module load homer/4.9.1
+
+ncore=1
+mem=8000
+
+cd {{jid}}
+
+annotatePeaks.pl ${COL3}_idr_peaks.rmblck.bed {{genome}} -annStats log_files/${COL3}_annotate.log  > ${COL3}_idr_peaks.rmblck.annotated.tsv
+
+module load conda3
+source activate /home/yli11/.conda/envs/py2
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+annot_gene_features.py -f ${COL3}_idr_peaks.rmblck.bed -o ${COL3}_idr_peaks.rmblck.annot.tsv -g {{genome}}
+
+pie_plot.py -f ${COL3}_idr_peaks.rmblck.annot.tsv --order Exon,Promoter,5UTR,3UTR,Intron,Intergenic --use_col -1 --header -o ${COL3}_idr_peaks.rmblck.genomic_features.pie_chart
+
+
+
+=cut motif 3 idr
+
+inputFile=input_list
+
+module load homer/4.9.1
+
+ncore=1
+mem=10000
+
+cd {{jid}}
+
+head -n 1000 ${COL3}_idr_peaks.rmblck.bed > ${COL3}_idr_peaks.rmblck.top1k.bed
+
+findMotifsGenome.pl ${COL3}_idr_peaks.rmblck.top1k.bed {{genome}} ${COL3}_homer_motifs_result -size 200 -mask -preparsedDir ${COL3}_homer_genome_dir
+
+rm -r ${COL3}_homer_genome_dir
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+
+cd {{jid}}
+
+mv *lsf log_files/
+mv *idr_peaks.bed log_files/
+mv *xls log_files/
+mv *bdg log_files/
+mv *narrowPeak log_files/
+mv *summits.bed log_files/
+
+send_email_v1.py -m "IDR ATAC peaks pipeline is finished!" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

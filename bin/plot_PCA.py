@@ -392,6 +392,7 @@ def main():
 	
 	"""
 	df = general_df_reader(args)
+	print (df.head())
 	if args.use_cols != None:
 		cols = args.use_cols.split(",")
 		df = df[cols]
@@ -476,8 +477,8 @@ def main():
 		print ("size after remove zero:",df.shape)
 
 	if args.log2_transform:
-		# print (df.head())
-		if df.shape[1]>100:
+		print (df.head())
+		if df.shape[1]>100 and args.color_by_a_col!="None":
 			df2 = df.drop([args.color_by_a_col],axis=1).transform(lambda x:np.log2(x+1))
 			df2[args.color_by_a_col] = df[args.color_by_a_col]
 			df = df2

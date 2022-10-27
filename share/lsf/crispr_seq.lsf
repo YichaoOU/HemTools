@@ -13,7 +13,7 @@ module load texlive/20190410
 module load gcc/6.3.0
 mkdir {{jid}}/raw_counts
 
-mageck count --output-prefix {{jid}}/raw_counts/mageck -l {{gRNA_library}} --fastq {{fastq_files}} --sample-label {{sample_ids}} --pdf-report
+mageck count --output-prefix {{jid}}/raw_counts/mageck -l {{gRNA_library}} --fastq {{fastq_files}} --sample-label {{sample_ids}} --pdf-report {{add_on_parameters}}
 
 cd {{jid}}/raw_counts/
 

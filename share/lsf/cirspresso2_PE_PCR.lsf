@@ -14,7 +14,7 @@ in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_res
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 amplicon=`tail -n 1 {{jid}}/${COL6}_amplicons.fasta`
 

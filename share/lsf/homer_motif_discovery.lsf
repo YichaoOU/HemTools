@@ -20,14 +20,21 @@ module load bedtools
 # -norevopp (don't search reverse strand for motifs)
 
 echo "Homer motif discovery"
-findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}} -size {{homer_region_size}} -preparsedDir ${COL1}_genome_dir -p 12 -len 8,10,12,14,16,18 -S {{number_motif}} -mis {{mismatch}} {{homer_addon}} -dumpFasta
+findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_fast -size {{homer_region_size}} -preparsedDir ${COL1}_genome_dir_$$ -p 12 -mask -len 8,10
+
+findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}}_short -size {{homer_region_size}} -preparsedDir ${COL1}_genome_dir_$$ -p 12 -len 8,10 -S {{number_motif}} -mis {{mismatch}} {{homer_addon}} -dumpFasta
+
+findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}} -size {{homer_region_size}} -preparsedDir ${COL1}_genome_dir_$$ -p 12 -len 8,10,12,14,16,18 -S {{number_motif}} -mis {{mismatch}} {{homer_addon}} -dumpFasta
 
 # findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}} -size {{homer_region_size}} -preparsedDir ${COL1}_genome_dir -p 12 -S {{number_motif}} -mis {{mismatch}} {{homer_addon}}
 # findMotifsGenome.pl ${COL1} {{genome}} ${COL1}_result -size {{homer_region_size}} -mask -preparsedDir ${COL1}_genome_dir -p 8 -len 8,10 -S 10 -mis 2
-rm -rf ${COL1}_genome_dir
+rm -rf ${COL1}_genome_dir_$$
+cp ${COL1} ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}}/user_input_peak.bed
 cd ${COL1}_result_{{homer_region_size}}_{{number_motif}}_{{mismatch}}_{{homer_addon}}
 module load meme/4.11.2
-meme target.fa -nmotifs 10 -minw 6 -maxw 18 -revcomp -p 10
+module load seqtk
+seqtk sample target.fa 200 > random.200.fa
+meme random.200.fa -nmotifs 10 -minw 6 -maxw 18 -revcomp -p 10
 # cd ${COL1}_result_{{homer_region_size}}
 # ln -s ../${COL1} .
 # plot_homer_motif_peak.py -f ${COL1} -g {{genome}}
@@ -39,7 +46,19 @@ meme target.fa -nmotifs 10 -minw 6 -maxw 18 -revcomp -p 10
 # motif_file=all.motifs.meme
 # bedtools getfasta -fi {{genome_fasta}} -bed ../../${COL1} -fo peak.fa
 # fimo --thresh {{fimo_cutoff}} --parse-genomic-coord -oc fimo_result $motif_file peak.fa
+plot_homer_motif_peak.py -f user_input_peak.bed -g {{genome}}
 
+cd knownResults
+
+annotatePeaks.pl ../user_input_peak.bed {{genome}} -m *motif > known_motif_occ.tsv
+
+annotatePeaks.pl ../user_input_peak.bed {{genome}} -m known[1-9].motif known10.motif > top10.known_motif_occ.tsv
+
+cd ../homerResults
+
+annotatePeaks.pl ../user_input_peak.bed {{genome}} -m *motif > denovo_motif_occ.tsv
+
+annotatePeaks.pl ../user_input_peak.bed {{genome}} -m motif[1-9].motif motif10.motif > top10.denovo_motif_occ.tsv
 
 =cut email 4 all
 

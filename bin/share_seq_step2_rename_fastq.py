@@ -177,6 +177,9 @@ def share_seq_demultiplexing(Read1,Read2,label, barcode_1_list, barcode_2_list, 
 	bc3_count =0
 	bc2_count =0
 	bc1_count =0
+	bc1_bc2_count =0
+	bc1_bc3_count =0
+	bc2_bc3_count =0
 	line1 = f1.readline()
 	line2 = f2.readline()
 	count = 0
@@ -201,14 +204,19 @@ def share_seq_demultiplexing(Read1,Read2,label, barcode_1_list, barcode_2_list, 
 		bc1_dist,barcode_1 = find_dist(bc1_kmer,bc1,barcode_1_list)
 		bc2_dist,barcode_2 = find_dist(bc2_kmer,bc2,barcode_2_list)
 		bc3_dist,barcode_3 = find_dist(bc3_kmer,bc3,barcode_3_list)
-
+		
 		if bc1_dist:
 			bc1_count+=1
 		if bc2_dist:
 			bc2_count+=1
 		if bc3_dist:
 			bc3_count+=1
-
+		if bc1_dist and bc2_dist:
+			bc1_bc2_count += 1
+		if bc1_dist and bc3_dist:
+			bc1_bc3_count += 1
+		if bc2_dist and bc3_dist:
+			bc2_bc3_count += 1
 		if bc1_dist and bc2_dist and bc3_dist :
 			barcode_dict[barcode_1][barcode_2][barcode_3]+=1
 			first_line_r1 = '@' + ",".join(["NNNN",barcode_1,barcode_2,barcode_3]) + ',' + name_r1[1:]
@@ -262,7 +270,8 @@ def share_seq_demultiplexing(Read1,Read2,label, barcode_1_list, barcode_2_list, 
 	df = dict3d_to_df(barcode_dict)
 	df.to_csv(output_folder + "/" + label + ".total_number_reads.tsv",sep="\t",index=False)
 	print ("Sample: %s has %s BC1 %s BC2 %s BC3"%(label,bc1_count,bc2_count,bc3_count))
-	print ("Sample: %s has %s total valid reads"%(label,total_valid_reads))
+	print ("Sample: %s has %s BC1_2 %s BC1_3 %s BC2_3"%(label,bc1_bc2_count,bc1_bc3_count,bc2_bc3_count))
+	print ("Sample: %s has %s total valid reads. Total read is %s"%(label,total_valid_reads,count))
 
 def main():
 

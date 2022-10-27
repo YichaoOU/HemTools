@@ -22,7 +22,7 @@ import matplotlib.colors as pltcolors
 
 
 
-def plot_correlation(corr_matrix,labels, plot_filename, colormap='RdYlBu', image_format="png", plot_numbers=True, plotWidth=11, plotHeight=9.5):
+def plot_correlation(corr_matrix,labels, plot_filename, colormap='RdYlBu', image_format="pdf", plot_numbers=True, plotWidth=11, plotHeight=9.5):
 	"""
 	plots a correlation using a symmetric heatmap
 	
@@ -171,6 +171,7 @@ def main():
 	if args.sep =="auto":
 		args.sep=guess_sep(args.reorder_names)	
 	new_names = pd.read_csv(args.reorder_names,sep=args.sep,header=None)
+	new_names[0] = [x.replace(".bw","") for x in new_names[0]]
 	print (new_names)
 	df = df[new_names[0].tolist()]
 	df = df.loc[new_names[0].tolist()]

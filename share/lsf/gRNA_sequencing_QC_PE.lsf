@@ -1,0 +1,110 @@
+#!shell
+
+
+=cut fq_check 1
+
+inputFile=input
+
+ncore=8
+mem=3000
+
+module load fastqc/0.11.5
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+module load seqtk
+
+module load flash
+
+flash -f 100 ${COL1} ${COL2} -o {{jid}}/${COL3}.merged 2>&1 | tee ${COL3}_flash.log
+
+
+
+cd {{jid}}
+
+# VK2108.merged.fastq.gz.extendedFrags.fastq
+
+fastqc ${COL3}.merged.extendedFrags.fastq
+
+
+seqtk sample ${COL3}.merged.extendedFrags.fastq 1000 > {{jid}}/${COL3}.1k.fastq
+
+
+
+seqlength=80
+
+seqtk trimfq -L $seqlength ${COL3}.1k.fastq > ${COL3}.trimfq.fastq
+
+seqtk seq -L $seqlength -A ${COL3}.trimfq.fastq > ${COL3}.trimfq.fa
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+weblogo -f ${COL3}.trimfq.fa -F png -o ${COL3}.trimfq.png
+
+
+
+# module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+
+# module load fastqc
+
+# gunzip ${COL3}.merged.fastq.gz
+
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+echo `which python`
+
+# COL5 is scaffold sequence, Varun used internal primer so the sacffold sequence can be truncated, users need to input the sequence
+
+/home/yli11/.conda/envs/captureC/bin/python $src/align_reads4.py ${COL3}.merged.extendedFrags.fastq ${COL4} ${COL5} 
+
+mv ${COL3}*zip log_files
+
+mv ${COL3}*html log_files
+
+=cut email 2 all
+
+ncore=8
+mem=2000
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+cd {{jid}}
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+
+/home/yli11/.conda/envs/captureC/bin/python $src/gRNA_summarize2.py
+
+
+# organize
+
+mkdir -p fastq_vis
+
+mv *trimfq.png  fastq_vis
+
+rm *trimfq*
+
+rm *1k*
+
+
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

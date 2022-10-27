@@ -1,0 +1,53 @@
+
+
+=cut M_merge 1
+
+inputFile=input
+
+ncore=1
+mem=30000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/long_reads
+
+# /home/yli11/.conda/envs/long_reads/bin/MethylDackel mergeContext ${COL1}/results/reference_genome/genome.fa ${COL1}/results/MethylDackel/${COL1}.sorted.markDups_CpG.bedGraph -o ${COL1}.bdg
+/home/yli11/.conda/envs/long_reads/bin/MethylDackel mergeContext /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa ${COL1}/results/MethylDackel/${COL1}.sorted.markDups_CpG.bedGraph -o ${COL1}.bdg
+
+sed -i "1d" ${COL1}.bdg
+
+cut -f 1-4 ${COL1}.bdg > ${COL1}.tmp
+
+module load ucsc
+
+bedSort ${COL1}.tmp ${COL1}.st.bdg
+
+#bedGraphToBigWig ${COL1}.st.bdg ${COL1}/results/reference_genome/genome.fa.fai ${COL1}.bw
+bedGraphToBigWig ${COL1}.st.bdg /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa.fai ${COL1}.bw
+
+# rm ${COL1}.bdg
+
+rm ${COL1}.tmp
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+#!shell
+
+
+=cut step1 1
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+inputFile=input
+
+ncore=1
+# mem=110000
+mem=30000
+q=priority
+
+bwa mem -t 4 {{index_file}} ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
+cd {{jid}}
+samtools sort -@ 4 -o ${COL3}.st.bam ${COL3}.bam
+samtools index ${COL3}.st.bam
+#Path to reference genome and Index files.
+# ref="/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.reordered.fa"
+ref="/home/yli11/Data/Human/hg19/fasta/hg19.fa"
+#Path to gatk bundle set files
+millsIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf"
+KGIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/1000G_phase1.indels.hg19.vcf"
+dbSNP138="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/dbsnp_138.hg19.vcf"
+
+
+module load star/2.5.3a picard/2.9.4 gatk/4.1.8.0 samtools/1.7
+
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar MarkDuplicates I=${COL3}.st.bam O=${COL3}.markdup.bam CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=${COL3}.Aligned.picard.metrics 
+
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar AddOrReplaceReadGroups I=${COL3}.markdup.bam O=${bam}${COL3}.markdup.rg_added.bam SO=coordinate RGID=${COL3} RGLB=${COL3} RGPL=illumina RGPU=Hart_Center RGSM=${COL3} CREATE_INDEX=true
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar ReorderSam I=${COL3}.markdup.rg_added.bam O=${COL3}.markdup.rg_added.st.bam R=${ref} CREATE_INDEX=TRUE
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

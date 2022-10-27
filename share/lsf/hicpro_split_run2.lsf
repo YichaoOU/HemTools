@@ -120,7 +120,7 @@ hicpro2fithic.py -i raw/20000/{{sample_id}}_20000.matrix -b raw/20000/{{sample_i
 module load conda3
 source activate /home/yli11/.conda/envs/fithic/
 
-fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 4
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1
 
 # =cut onTAD 4 ice
 

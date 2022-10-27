@@ -1,0 +1,14 @@
+=cut bam2bed 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+
+module load bedtools/2.29.2
+
+myBaseName=$(basename -- ${COL1})
+
+bedtools bamtobed -i ${COL1} -split > {{jid}}/${myBaseName}.bed
+
+

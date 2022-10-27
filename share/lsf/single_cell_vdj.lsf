@@ -1,0 +1,32 @@
+#!shell
+
+=cut CR 1
+
+
+module load cellranger/7.0.0
+
+ncore=12
+mem=10000
+
+inputFile=input
+
+
+cellranger vdj --id=${COL1} --fastqs=$PWD --reference={{cellranger_vdj}} --localcores 12 --sample=${COL1}
+
+
+=cut email 3 all
+
+
+module load python/2.7.13
+
+
+mv {{jid}}.input {{jid}}/log_files
+
+send_email_v1.py -m "{{jid}} is finished." -j {{jid}}
+
+
+
+
+
+
+

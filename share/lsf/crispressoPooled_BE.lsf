@@ -15,11 +15,12 @@ export PATH=$PATH:"/home/yli11/HemTools/bin"
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 module load samtools/1.7
+module load bowtie2/2.2.9
 
-CRISPRessoPooled -r1 ${COL1} -r2 ${COL2} --name ${COL3} -o {{jid}}/${COL3}_results -f ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --conversion_nuc_from {{ref}} --conversion_nuc_to {{alt}}
+CRISPRessoPooled -r1 ${COL1} -r2 ${COL2} --name ${COL3} -o {{jid}}/${COL3}_results -f ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --conversion_nuc_from {{ref}} --conversion_nuc_to {{alt}} --min_reads_to_use_region 100
 
 module load python/2.7.13
 

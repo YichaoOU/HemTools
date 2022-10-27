@@ -1,0 +1,78 @@
+#!shell
+=cut svnn 1
+
+inputFile=input
+
+ncore=4
+
+mem=10000
+q=priority
+
+
+
+module load bbmap/38.86 gcc/9.1.0
+
+module load bedtools/2.30.0 samtools/1.7
+
+module load smrttools/10.1
+
+
+# bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+
+cd {{jid}}
+
+mkdir ${COL2}
+
+# reformat.sh in=${COL2}.fq.fastq out=${COL2}/fixed.fq qin=33 qout=64 maxcalledquality=41
+
+
+module load conda3/202011 
+
+source activate long_reads
+
+# genomeFasta=~/Data/Human/hg38/fasta/hg38.main.fa
+genomeFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/mix.fa
+
+minimap2 -t 16 -ax map-hifi --MD --secondary=no \
+$genomeFasta \
+${COL2}.fastq \
+> ${COL2}/minimap.sam
+
+cd ${COL2}
+
+samtools view -bS minimap.sam > minimap.bam
+samtools sort -@ 6 -o minimap.st.bam minimap.bam
+samtools index minimap.st.bam
+
+samtools view -bs 0.1 minimap.st.bam > minimap.st.1.bam
+
+samtools index minimap.st.1.bam
+
+
+svnn -r ~/Data/Human/hg38/fasta/hg38.main.fa -q ../${COL2}.fastq -s1 10 -s2 10
+
+module load bedtools
+
+bedtools intersect -a temp_mini_ngmlr.bam -b /home/yli11/dirs/shengdar_group/sequencing/PacBio/2022_02_16_amplicon/my_target.bed -F 0.95 > valid_reads.bam
+
+samtools index valid_reads.bam
+
+sniffles --output-rnames -i valid_reads.bam -v valid_reads.sniffles.vcf --reference /home/yli11/Data/Human/hg38/fasta/hg38.main.fa -t 8 --minsupport 10
+
+samtools view -bs 0.1 valid_reads.bam > valid_reads.1.bam
+
+samtools index valid_reads.1.bam
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

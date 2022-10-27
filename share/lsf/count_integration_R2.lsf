@@ -1,0 +1,71 @@
+#!shell
+
+=cut count 1
+
+inputFile=input
+
+ncore=2
+mem=20000
+q={{queue}}
+
+module purge
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+
+
+module load bwa
+module load samtools/1.7
+module load fastp
+
+mkdir {{jid}}/${COL3}_results
+
+fastp -i ${COL2} -o {{jid}}/${COL3}_results/${COL3}.SE.fastq.gz --html {{jid}}/${COL3}_results/${COL3}.html -j {{jid}}/${COL3}_results/${COL3}.json
+
+# Run flash to combine reads 
+
+cd {{jid}}/${COL3}_results
+
+bwa mem -t 6 /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38.fa ${COL3}.SE.fastq.gz > ${COL3}.sam
+samtools sort -o ${COL3}.bam ${COL3}.sam
+samtools index ${COL3}.bam
+samtools flagstat ${COL3}.bam > ${COL3}.flagstat
+samtools stats ${COL3}.bam > ${COL3}.stats
+
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+cd ../..
+
+#bed_fix.py ${COL4} output.bed
+
+/home/yli11/.conda/envs/cutadaptenv/bin/python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/src/cas9engineering/count_indels_integrations2.py --bed ${COL4} --ref /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38.fa --bam {{jid}}/${COL3}_results/${COL3}.bam --out {{jid}}/${COL3}_results/${COL3}.counts.tsv --setting {{setting}} --site ${COL5}
+
+=cut email 3 all
+
+
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+mv multiqc_report.html count_indel_report.html
+
+send_email_v1.py -a count_indel_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

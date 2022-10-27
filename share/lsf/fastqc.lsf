@@ -1,0 +1,32 @@
+#!shell
+
+=cut qc 1
+
+inputFile=input
+
+ncore=1
+mem=4000
+
+module load fastqc/0.11.5
+
+fastqc ${COL1} -o {{jid}}
+
+=cut email 2 all
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+mv multiqc_report.html fastqc_report.html
+
+send_email_v1.py -a fastqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+

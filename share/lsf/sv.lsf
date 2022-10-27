@@ -1,0 +1,48 @@
+#!shell
+
+=cut SV 1
+
+inputFile=input
+
+ncore=1
+mem=50000
+q=priority
+
+module purge
+module load python/2.7.13
+# umi tag
+
+python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/UDiTAS/20220321_UDiTAS_VK/3_22_analysis/translocation_analysis/add_umitag.py -r1 ${COL1} -r2  ${COL2} -o1 ${COL3}.r1.umitagged.fastq -o2 ${COL3}.r2.umitagged.fastq
+
+# consolidate
+
+/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/python/bin/python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/UDiTAS/20220321_UDiTAS_VK/3_22_analysis/translocation_analysis/consolidate.py ${COL3}.r1.umitagged.fastq ${COL3}.r1.consolidated.fastq 15 0.9
+/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/python/bin/python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/UDiTAS/20220321_UDiTAS_VK/3_22_analysis/translocation_analysis/consolidate.py ${COL3}.r2.umitagged.fastq ${COL3}.r2.consolidated.fastq 15 0.9
+# /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/python/bin/python consolidate.py ${COL3}.r1.umitagged.fastq ${COL3}.r1.consolidated.fastq 0 0.5
+# /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/python/bin/python consolidate.py ${COL3}.r2.umitagged.fastq ${COL3}.r2.consolidated.fastq 0 0.5
+
+# bowtie2 mapping
+
+module load bowtie2/2.2.9
+
+module load java/1.8.0_181
+
+module load samtools/1.7
+
+index=/home/yli11/Data/Human/hg38/bowtie2/hg38
+
+bowtie2 --local -p 8 -X 8000 -k 2 -x $index -1 ${COL3}.r1.consolidated.fastq -2 ${COL3}.r2.consolidated.fastq -S ${COL3}.sam
+
+samtools view -Sb ${COL3}.sam > ${COL3}.bam
+
+samtools sort -@ 4 -o ${COL3}.st.bam ${COL3}.bam
+
+samtools index ${COL3}.st.bam
+
+# run socrates
+
+java -Xmx50g -jar /home/yli11/HemTools/share/script/jar/socrates-1.13.1-jar-with-dependencies.jar -t 6 --keep-duplicates $index ${COL3}.st.bam
+
+
+
+

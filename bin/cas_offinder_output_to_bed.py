@@ -30,14 +30,14 @@ try:
 	filter_G = sys.argv[4]
 except:
 	filter_G = None
-if filter_G != None:
-	df['first_two'] = [x[0:2] for x in df[3]]
-	df = df[df['first_two']!="CC"]
+# if filter_G != None:
+	# df['first_two'] = [x[0:2] for x in df[3]]
+	# df = df[df['first_two']!="CC"]
 if df.shape[0]==0:
 	print ("no rows, nothing to process")
 	exit()
 PAM_length = len(PAM_seq)
-if PAM_length > 5:
+if PAM_length > 10:
 	PAM_length = 0
 def row_apply(x):
 	if x[4] == "-":
@@ -45,11 +45,13 @@ def row_apply(x):
 	else:
 		start = x[2]
 	return start
-df['start'] = df.apply(row_apply,axis=1)
+# df['start'] = df.apply(row_apply,axis=1)
+df['start'] = df[2]
 # df['end'] = 
-df['end'] = df['start']+gRNA_length
+df['end'] = df['start']+gRNA_length+PAM_length
 # df['seq'] = [x.replace(PAM_seq,"") for x in df[0].tolist()]
-df['seq'] = [x.upper()[:gRNA_length] for x in df[3].tolist()]
+# df['seq'] = [x.upper()[:gRNA_length] for x in df[3].tolist()]
+df['seq'] = [x.upper() for x in df[3].tolist()]
 print (df.head())
 
 if filter_G != None:

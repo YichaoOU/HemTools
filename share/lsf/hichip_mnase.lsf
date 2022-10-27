@@ -1,0 +1,121 @@
+#!shell
+
+=cut hichip 1
+
+inputFile=fastq_tsv
+
+ncore=6
+mem=10000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/HiChIP
+
+module load bwa/0.7.16a
+
+module load samtools/1.9
+
+
+src=/home/yli11/Programs/HiChiP
+# bwa_index=/home/yli11/Data/Human/hg38/bwa_16a_index/hg38.fa
+# chrom_size=/home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes.sorted
+peak_bed={{peak_bed}} # need to be abs
+bwa_index={{bwa_index}}
+IntType={{IntType}}
+BINSIZE={{BINSIZE}}
+LowDistThr={{LowDistThr}}
+UppDistThr={{UppDistThr}}
+UseP2PBackgrnd={{UseP2PBackgrnd}}
+BiasType={{BiasType}}
+MergeInt={{MergeInt}}
+QVALUE={{QVALUE}}
+chrom_size={{chrom_size}}
+mapq_cutoff={{mapq_cutoff}}
+tmp_dir=/scratch_space/{{username}}/
+mkdir -p {{jid}}/${COL3}
+out_label={{jid}}/${COL3}/${COL3}
+R1=${COL1}
+R2=${COL2}
+
+# step 1 mapping and generate pairs
+bwa mem -5SP -T0 -t $ncore $bwa_index $R1 $R2 | pairtools parse --min-mapq $mapq_cutoff --walks-policy 5unique --max-inter-align-gap 30 --chroms-path $chrom_size | pairtools sort --tmpdir=$tmp_dir --nproc $ncore |pairtools dedup --mark-dups --output-stats ${out_label}.stats.txt|pairtools split --output-pairs ${out_label}.mapped.pairs --output-sam -|samtools view -bS -@ $ncore | samtools sort -@ $ncore -o ${out_label}.mapped.PT.bam;samtools index ${out_label}.mapped.PT.bam
+
+module load htslib bedtools/2.30.0
+
+# step 2 QC
+python $src/get_qc.py -p ${out_label}.stats.txt -o ${out_label}.get_qc.out.csv > ${out_label}.get_qc.out
+
+$src/enrichment_stats.sh -g $chrom_size -b ${out_label}.mapped.PT.bam -p $peak_bed -t $ncore -x ${out_label}
+
+python $src/plot_chip_enrichment.py -bam ${out_label}.mapped.PT.bam -peaks $peak_bed -output ${out_label}.enrichment.png
+
+module load juicer_tools
+
+
+# module load nextflow/21.5 singularity
+
+module load hic-pro/2.11.1
+
+# step 3 vis pairs, .hic file
+
+java -Xmx48000m  -Djava.awt.headless=true -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.22.01.jar pre --threads $ncore ${out_label}.mapped.pairs ${out_label}.contact_map.hic $chrom_size
+
+grep -v '#' ${out_label}.mapped.pairs| awk -F"\t" '{print $1"\t"$2"\t"$3"\t"$6"\t"$4"\t"$5"\t"$7}' | gzip -c > ${out_label}.hicpro_mapped.pairs.gz
+
+cd {{jid}}/${COL3}
+
+samtools view -h -F 0x900 $COL3.mapped.PT.bam | bedtools bamtobed -i stdin > $COL3.primary.aln.bed
+
+module load macs2
+
+macs2 callpeak -t $COL3.primary.aln.bed -n $COL3.macs2
+
+bamCoverage -b $COL3.mapped.PT.bam -o $COL3.mapped.PT.bw -p 8 
+
+source activate /home/yli11/.conda/envs/captureC
+
+# generate library QC html file
+module load texlive/20190410
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+cp $src/hichip_qc_summary.ipynb .
+
+echo `which jupyter`
+echo `which python`
+
+/home/yli11/.conda/envs/captureC/bin/jupyter nbconvert --to notebook --execute hichip_qc_summary.ipynb --output hichip_qc_summary --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+/home/yli11/.conda/envs/captureC/bin/jupyter nbconvert hichip_qc_summary.ipynb --to html 
+
+mkdir fihichip_results
+
+# step 4, call loops
+
+# echo $'ValidPairs=/home/yli11/Pipelines/HiChIP/test.hicpro_mapped.pairs.gz\nsdf' > t
+
+printf "ValidPairs=$PWD/$COL3.hicpro_mapped.pairs.gz \nInterval= \nMatrix= \nBed= \nPeakFile=$peak_bed \nOutDir=$PWD/fihichip_results \nIntType=$IntType \nBINSIZE=$BINSIZE \nLowDistThr=$LowDistThr \nUppDistThr=$UppDistThr \nUseP2PBackgrnd=$UseP2PBackgrnd \nBiasType=$BiasType \nMergeInt=$MergeInt \nQVALUE=$QVALUE \nChrSizeFile=$chrom_size \nPREFIX=$COL3 \nOverWrite=1 \n" > hichip.config.txt
+
+/home/yli11/Programs/FitHiChIP/FitHiChIP_HiCPro.sh -C hichip.config.txt
+
+# generate bedpe
+
+cut -f 1-7 ./fihichip_results/FitHiChIP_Peak2Peak_b2500_L10000_U2000000/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.counts.bedpe
+
+cut -f 1-6,8 ./fihichip_results/FitHiChIP_Peak2Peak_b2500_L10000_U2000000/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.pvalue.bedpe
+
+sed -i '1d' $COL3.fithic.merged.counts.bedpe
+
+sed -i '1d' $COL3.fithic.merged.pvalue.bedpe
+
+
+# rm *peak_intersect_*.bed*
+
+mkdir upload
+cd  upload
+ln -s ../*merged.counts.bedpe .
+ln -s ../*macs2_peaks.narrowPeak .
+cp $peak_bed .
+ln -s ../*mapped.PT.bw .

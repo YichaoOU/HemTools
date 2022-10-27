@@ -77,7 +77,8 @@ def main():
 		df = df.transform(lambda x:np.log2(x+1))
 	if args.scale_t0:
 		df = df.subtract(df[new_columns[0]],axis=0)
-	km = TimeSeriesKMeans(n_clusters=args.nclusters, verbose=True, random_state=0,metric=args.metric,n_jobs=-1,n_init=2,max_iter=500,tol=1e-8)
+	# km = TimeSeriesKMeans(n_clusters=args.nclusters, verbose=True, random_state=0,metric=args.metric,n_jobs=-1,n_init=2,max_iter=500,tol=1e-8)
+	km = KShape(n_clusters=args.nclusters, verbose=True, random_state=0)
 	# km = KShape(n_clusters=args.nclusters, verbose=True, random_state=0)
 	# km = KernelKMeans(n_clusters=args.nclusters, verbose=True, random_state=0,n_jobs =-1)
 	df['cluster'] = km.fit_predict(df.values)

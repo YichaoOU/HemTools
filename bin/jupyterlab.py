@@ -1,4 +1,4 @@
-#!/home/yli11/.conda/envs/py2/bin/python
+#!/home/yli11/.conda/envs/captureC/bin/python
 
 
 import os
@@ -6,7 +6,12 @@ import io
 import numpy as np
 import subprocess
 import random
+import sys
 
+try:
+	init_url = sys.argv[1]
+except:
+	init_url = None
 a = subprocess.Popen("ip addr show | grep 220",stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
 b=a.communicate()
 # print (b)
@@ -22,7 +27,11 @@ import getpass
 username = getpass.getuser()
 def send_email_no_attachment(IP,port):
 	command = ' echo "{{message}}" | mailx -s "jupyter notebook links" -- %s@stjude.org '%(username)
-	message = "Please click http://%s:%s to access the jupyter notebook. This link is only accessible within stjude."%(IP,port)
+	# 
+	if init_url:
+		message = "Please click http://%s:%s/lab/tree/%s to access the jupyter notebook. This link is only accessible within stjude."%(IP,port,init_url)
+	else:
+		message = "Please click http://%s:%s to access the jupyter notebook. This link is only accessible within stjude."%(IP,port)
 	command = command.replace("{{message}}",message)
 	os.system(command)
 

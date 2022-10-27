@@ -15,7 +15,15 @@ module load homer/4.10
 # findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size}
 
 size=200
-findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size}_mask -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask
+size=200
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta 
+
+size=100
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size}_mask -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask
+size=100
+findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta 
+
 
 size="given"
 findMotifsGenome.pl ${COL1} {{genome}} {{jid}}/$(basename ${COL1})_${size} -size ${size} -mknown {{motif_file}} -nomotif -preparsedDir {{jid}}/tmp_$(basename ${COL1})_${size} -dumpFasta -mask

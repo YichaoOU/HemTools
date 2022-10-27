@@ -1,0 +1,52 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+ncore=1
+mem=12000
+q={{queue}}
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+module load samtools/1.7
+module load bowtie2/2.2.9
+
+# CRISPRessoPooled -r1 ${COL1} -r2 ${COL2} --name ${COL3} -o {{jid}}/${COL3}_results -f ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --conversion_nuc_from {{ref}} --conversion_nuc_to {{alt}} --min_reads_to_use_region 3
+
+CRISPRessoPooled -r1 ${COL1} --name ${COL2} -o {{jid}}/${COL2}_results -f ${COL3} --quantification_window_size 1 --quantification_window_center -3 --base_editor_output --min_reads_to_use_region 3 --keep_intermediate --dump --limit_open_files_for_demux --plot_window_size 20
+
+
+=cut email 2 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+
+cd {{jid}}
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load conda3/202011
+
+source acitvate /home/yli11/.conda/envs/captureC/
+
+
+crispressoPooled_PE_edit_frequency.py -f ../{{jid}}.input -i ../{{jid}}_info.tsv -rtt {{RTT}} -o {{jid}}.stats.csv
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+
+

@@ -126,6 +126,7 @@ mv *norm.bw other_bw_files
 mv *raw*.bw other_bw_files
 mv *strand*.bw other_bw_files
 mv *.wig other_bw_files
+mv ../*.rgt.input.bed log_files
 
 mv *.info log_files
 

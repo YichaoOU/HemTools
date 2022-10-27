@@ -1,0 +1,105 @@
+#!shell
+
+=cut fq_check 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+q=priority
+
+module load fastqc/0.11.5
+
+module load bbmap/38.86
+
+module load seqtk
+
+fastqc ${COL1} -o {{jid}}
+
+module load fastp
+
+fastp -i ${COL1} -o {{jid}}/${COL2}.fastq.gz -h {{jid}}/${COL2}.html -j {{jid}}/${COL2}.json
+
+seqtk sample ${COL1} 2000000 > {{jid}}/${COL2}.fastq
+
+tmp=`head -n 4 {{jid}}/${COL2}.fastq | tail -n 1`
+
+seqlength=${#tmp}
+
+seqtk trimfq -L $seqlength {{jid}}/${COL2}.fastq > {{jid}}/${COL2}.trimfq.fastq
+
+seqtk seq -L $seqlength {{jid}}/${COL2}.trimfq.fastq > {{jid}}/${COL2}.fastq
+
+
+
+clumpify.sh in={{jid}}/${COL2}.fastq  out={{jid}}/${COL2}.clumpify.fastq reorder
+
+cd {{jid}}
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+# fastqsplitter -i ${COL2}.clumpify.fastq -o ${COL2}.split.1.fq -o ${COL2}.split.2.fq -o ${COL2}.split.3.fq -o ${COL2}.split.4.fq -o ${COL2}.split.5.fq -o ${COL2}.split.6.fq -o ${COL2}.split.7.fq -o ${COL2}.split.8.fq -o ${COL2}.split.9.fq -o ${COL2}.split.0.fq 
+fastqsplitter -i ${COL2}.clumpify.fastq -o ${COL2}.split.1.fq  -o ${COL2}.split.0.fq 
+
+# -L INT
+seqtk sample ${COL2}.split.1.fq 100 | seqtk seq -a > ${COL2}.split.1.fa
+weblogo -f ${COL2}.split.1.fa -F png -o ${COL2}.split.1.png
+
+
+# seqtk sample ${COL2}.split.2.fq 100 | seqtk seq -a > ${COL2}.split.2.fa
+# weblogo -f ${COL2}.split.2.fa -F png -o ${COL2}.split.2.png
+
+# seqtk sample ${COL2}.split.3.fq 100 | seqtk seq -a > ${COL2}.split.3.fa
+# weblogo -f ${COL2}.split.3.fa -F png -o ${COL2}.split.3.png
+
+# seqtk sample ${COL2}.split.4.fq 100 | seqtk seq -a > ${COL2}.split.4.fa
+# weblogo -f ${COL2}.split.4.fa -F png -o ${COL2}.split.4.png
+
+# seqtk sample ${COL2}.split.5.fq 100 | seqtk seq -a > ${COL2}.split.5.fa
+# weblogo -f ${COL2}.split.5.fa -F png -o ${COL2}.split.5.png
+
+# seqtk sample ${COL2}.split.6.fq 100 | seqtk seq -a > ${COL2}.split.6.fa
+# weblogo -f ${COL2}.split.6.fa -F png -o ${COL2}.split.6.png
+
+# seqtk sample ${COL2}.split.7.fq 100 | seqtk seq -a > ${COL2}.split.7.fa
+# weblogo -f ${COL2}.split.7.fa -F png -o ${COL2}.split.7.png
+
+# seqtk sample ${COL2}.split.8.fq 100 | seqtk seq -a > ${COL2}.split.8.fa
+# weblogo -f ${COL2}.split.8.fa -F png -o ${COL2}.split.8.png
+
+# seqtk sample ${COL2}.split.9.fq 100 | seqtk seq -a > ${COL2}.split.9.fa
+# weblogo -f ${COL2}.split.9.fa -F png -o ${COL2}.split.9.png
+
+seqtk sample ${COL2}.split.0.fq 100 | seqtk seq -a > ${COL2}.split.0.fa
+weblogo -f ${COL2}.split.0.fa -F png -o ${COL2}.split.0.png
+
+
+=cut email 2 all
+
+cd {{jid}}
+
+rm *fastq
+
+rm *fq
+
+rm *fa
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+mv multiqc_report.html fastqc_report.html
+
+send_email_v1.py -a fastqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

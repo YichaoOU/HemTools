@@ -85,7 +85,7 @@ def main():
 	df = df[df[' Enrichment ']>=1]
 	print (df.shape)
 	os.system("rm %stmp"%(args.output))
-	os.system("rm %s.ibed"%(args.output))
+	# os.system("rm %s.ibed"%(args.output))
 	df.columns = [x.replace(" ","") for x in df.columns]
 	mango_columns = ["chr_Bait","start_Bait","end_Bait","chr_OE","start_OE","end_OE","Enrichment"]
 	df.to_csv("%s.tsv"%(args.output),sep="\t")

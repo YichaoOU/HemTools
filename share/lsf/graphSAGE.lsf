@@ -1,0 +1,15 @@
+=cut sage 1
+
+inputFile=input
+
+ncore=5
+mem=10000
+q=priority
+
+module load conda3/202011
+
+source activate network2020
+
+#count.csv and Biogrid network txt, label
+
+run_graphSAGE.py ${COL1} ${COL2} ${COL3}

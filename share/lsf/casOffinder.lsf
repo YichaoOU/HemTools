@@ -2,9 +2,10 @@
 
 =cut cas 1
 
-ncore=2
-mem=10000
+ncore=8
+mem=20000
 # q=gpu_rhel7
+q=priority
 
 module load conda3
 source activate /home/yli11/.conda/envs/Cas_Offinder/
@@ -30,6 +31,10 @@ mv matches.bed cas_offinder_output.tsv
 module load bedtools
 
 bedtools getfasta -fi {{genome_fasta}} -bed matches.bed.sorted -fo test.bed -s -name -tab
+
+awk '$1!=toupper($2){print $1,$2}' test.bed
+
+
 
 send_email_v1.py -a number_matches.tsv -m "cas-offinder Finished" -j {{jid}} --common
 

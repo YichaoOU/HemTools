@@ -4,9 +4,10 @@
 inputFile=input
 
 ncore=2
-mem=20000
+mem=40000
+q=priority
 
-module load conda3
+module load conda3/202011
 
 source activate /home/yli11/.conda/envs/uditas_env
 
@@ -18,7 +19,7 @@ module load bowtie2/2.2.9
 
 module load java/1.8.0_181
 
-uditasHBG $PWD -process_amplicon ${COL1}
+uditasHBG $PWD -process_amplicon ${COL1} -default_amplicon_window_around_cut 3000
 
 =cut summary 2 Uditas
 
@@ -38,6 +39,6 @@ uditasHBG $PWD -only_summarize 1
 
 module load python/2.7.13
 
-send_email_v1.py -m "UditasHBG pipeline is finished!" -j UditasHBG
+send_email_v1.py -m "UditasHBG pipeline is finished!" -j UditasHBG -default_amplicon_window_around_cut 3000
 
 

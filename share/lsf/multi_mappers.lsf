@@ -6,7 +6,13 @@ inputFile=bam_tsv
 ncore=2
 mem=4000
 
-module load samtools/1.7
+module load samtools/1.7 bamtools
+module load bedtools
+
+
+
+bamtools filter -in ${COL1} -out {{jid}}/${COL2}.multi.bam -tag "NH:>=2"
+
 
 samtools view -@ 4 -b -f 256 -F 4 -h ${COL1} > {{jid}}/${COL2}.flag256.bam
 
@@ -16,17 +22,41 @@ samtools view -@ 4 -b -F 4 -h ${COL1} > {{jid}}/${COL2}.mapped.bam
 
 cd {{jid}}
 
-module load bedtools
+module load macs2/2.1.1 fastqc
+
+samtools index ${COL2}.multi.bam
+
+macs2 callpeak -t ${COL2}.multi.bam -f BAMPE -n ${COL2}.multi.peak --keep-dup all
+
+# sort -k 8gr,8gr ${COL2}.multi.peak_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' > ${COL2}.st.peak_peaks.narrowPeak
+
+bedtools multicov -bams ${COL2}.multi.bam -bed ${COL2}.multi.peak_peaks.narrowPeak -D | sort -k 11gr,11gr > ${COL2}.peak.count.tsv
+
+
+bedtools multicov -bams ${COL2}.multi.bam -bed {{exon}} -D | sort -k 7gr,7gr > ${COL2}.exon.count.tsv
+
+# sort -k 11gr,11gr out 
+
+# bedtools multicov -bams RNA1.multi.bam -bed RNA1.multi.peak_peaks.narrowPeak -D > out
+
+samtools sort -@ 4 -n -o ${COL2}.multi.st.bam ${COL2}.multi.bam
+
+bedtools bamtofastq -i ${COL2}.multi.st.bam -fq ${COL2}.multi.fastq
+
+seqkit rmdup ${COL2}.multi.fastq -o ${COL2}.multi.uniq.fastq
+
+fastqc ${COL2}.multi.uniq.fastq
 
 samtools sort -@ 4 -n -o ${COL2}.flag256.qsort.bam ${COL2}.flag256.bam
 
 bedtools bamtofastq -i ${COL2}.flag256.qsort.bam -fq ${COL2}.flag256.R1.fastq -fq2 ${COL2}.flag256.R2.fastq
 
-gzip *.fastq
+gzip ${COL2}*.fastq
 
 samtools view -@ $ncore -b -L {{hem_bed}} ${COL2}.mapped.bam > ${COL2}.hem.bam
 
 samtools view -@ $ncore ${COL2}.mapped.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.mapped.uniq.txt
+samtools view -@ $ncore ${COL2}.multi.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.multi.uniq.txt
 
 samtools view -@ $ncore ${COL2}.hem.bam | cut -f1 | sort | uniq | wc -l > ${COL2}.hem.uniq.txt
 
@@ -63,9 +93,17 @@ cd {{jid}}
 
 kallisto quant -i {{index_file}} --threads=8 --bootstrap-samples=100 --output-dir=${COL2}_gene_exp ${COL2}.flag256.R1.fastq.gz ${COL2}.flag256.R2.fastq.gz
 
+kallisto quant -i {{index_file}} --threads=8 --bootstrap-samples=100 --output-dir=${COL2}_gene_exp2 ${COL2}.multi.uniq.fastq.gz
+
 module load python/2.7.13
 
 /research/dept/hem/common/sequencing/chenggrp/pipelines/dev_subcmd/combine_kallisto.py ${COL2}_gene_exp/abundance.tsv ${COL2} {{gene_info}} ${COL2}.transcript.tpm.csv
+
+
+/research/dept/hem/common/sequencing/chenggrp/pipelines/dev_subcmd/combine_kallisto.py ${COL2}_gene_exp2/abundance.tsv ${COL2} {{gene_info}} ${COL2}.2.transcript.tpm.csv
+
+
+
 
 =cut stats 2 multi
 
@@ -75,7 +113,23 @@ summerize_multi_mapped_statistics.py {{bam_tsv}} {{jid}}
 
 =cut email 3 stats
 
+# module load python/2.7.13
+
+# send_email_v1.py -a {{jid}}/check_multi_mapped_stats.csv -m "multi-mapper check is finished" -j "multi-mapper check is finished" --common
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
 module load python/2.7.13
 
-send_email_v1.py -a {{jid}}/check_multi_mapped_stats.csv -m "multi-mapper check is finished" -j "multi-mapper check is finished" --common
+mv multiqc_report.html fastqc_report.html
 
+send_email_v1.py -a fastqc_report.html -m "{{jid}} is finished" -j {{jid}} --common

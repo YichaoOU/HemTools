@@ -1,0 +1,345 @@
+#!shell
+
+=cut fastQC 1 
+
+module load fastqc/0.11.5
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=4000
+
+fastqc ${COL1} -o {{jid}}/log_files
+fastqc ${COL2} -o {{jid}}/log_files
+
+=cut BWA 2 
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+
+inputFile=fastq_tsv
+
+ncore=2
+mem=20000
+set +e
+echo -e "["$(date)"]\tRunning BWA_mapping .."
+
+mkdir -p {{jid}}/bam_files
+bwa mem -t 6 {{index_file}} ${COL1} ${COL2} |samtools view -bS - > {{jid}}/bam_files/${COL3}.bam
+samtools view -b -f 2 -F 4 -F 8 -F 256 -F 512 -F 2048 {{jid}}/bam_files/${COL3}.bam > {{jid}}/bam_files/${COL3}.tmp.bam
+samtools sort -@ 6 -o {{jid}}/bam_files/${COL3}.st.bam {{jid}}/bam_files/${COL3}.tmp.bam
+samtools index -@ 6 {{jid}}/bam_files/${COL3}.st.bam
+rm {{jid}}/bam_files/${COL3}.tmp.bam
+samtools view -q 1 -b {{jid}}/bam_files/${COL3}.st.bam > {{jid}}/bam_files/${COL3}.uq.st.bam
+samtools index -@ 6 {{jid}}/bam_files/${COL3}.uq.st.bam
+samtools flagstat -@ 6 {{jid}}/bam_files/${COL3}.st.bam > {{jid}}/log_files/${COL3}.st.bam.report
+samtools flagstat -@ 6 {{jid}}/bam_files/${COL3}.uq.st.bam > {{jid}}/log_files/${COL3}.uq.st.bam.report
+
+echo -e "["$(date)"]\tRunning BWA_E_coli_mapping .."
+
+mkdir -p {{jid}}/E_coli_mapping
+bwa mem -t 6 {{Ecoli_index_file}} ${COL1} ${COL2} |samtools view -bS - > {{jid}}/E_coli_mapping/${COL3}.ecoli.bam
+samtools view -b -f 2 -F 4 -F 8 -F 256 -F 512 -F 2048 {{jid}}/E_coli_mapping/${COL3}.ecoli.bam > {{jid}}/E_coli_mapping/${COL3}.ecoli.tmp.bam
+samtools sort -@ 6 -o {{jid}}/E_coli_mapping/${COL3}.st.bam {{jid}}/E_coli_mapping/${COL3}.ecoli.tmp.bam
+samtools index -@ 6 {{jid}}/E_coli_mapping/${COL3}.st.bam
+rm {{jid}}/E_coli_mapping/${COL3}.ecoli.tmp.bam
+
+# bedtools bamtobed -i {{jid}}/E_coli_mapping/${COL3}.st.bam | cut -f 1,2,6 | sort -k1,1 -k2,2n -k3,3n > {{jid}}/E_coli_mapping/${COL3}.ecoli.bed
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/cut_run
+module load bedtools/2.29.2
+
+echo -e "["$(date)"]\tRunning MACS2_randsample_E_coli .."
+macs2 randsample -i {{jid}}/E_coli_mapping/${COL3}.st.bam -f BAMPE -p 100 -o {{jid}}/E_coli_mapping/${COL3}.ecoli.bed
+
+
+echo -e "["$(date)"]\tRunning MACS2_randsample_main .."
+
+min_len=0
+max_len=2000
+# bedtools bamtobed -i {{jid}}/bam_files/${COL3}.st.bam | cut -f 1,2,6 | sort -k1,1 -k2,2n -k3,3n | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.st.bed
+# bedtools bamtobed -i {{jid}}/bam_files/${COL3}.uq.st.bam | cut -f 1,2,6 | sort -k1,1 -k2,2n -k3,3n | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.uq.st.bed
+macs2 randsample -i {{jid}}/bam_files/${COL3}.st.bam -f BAMPE -p 100 -o {{jid}}/bam_files/${COL3}.st.tmp.bed
+cat {{jid}}/bam_files/${COL3}.st.tmp.bed | sort -k1,1 -k2,2n -k3,3n | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.st.bed
+
+macs2 randsample -i {{jid}}/bam_files/${COL3}.uq.st.bam -f BAMPE -p 100 -o {{jid}}/bam_files/${COL3}.st.tmp.bed
+cat {{jid}}/bam_files/${COL3}.st.tmp.bed | sort -k1,1 -k2,2n -k3,3n | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.uq.st.bed
+
+rm {{jid}}/bam_files/${COL3}.st.tmp.bed
+
+min_len=0
+max_len=120
+cat {{jid}}/bam_files/${COL3}.st.bed | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.st.0_120.bed
+cat {{jid}}/bam_files/${COL3}.uq.st.bed | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.uq.st.0_120.bed
+
+
+min_len=150
+max_len=2000
+cat {{jid}}/bam_files/${COL3}.st.bed | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.st.150_2000.bed
+cat {{jid}}/bam_files/${COL3}.uq.st.bed | awk -v min=$min_len -v max=$max_len '{len=$3-$2;if (len >= min && len <= max) print}'> {{jid}}/bam_files/${COL3}.uq.st.150_2000.bed
+
+
+
+
+=cut bedgraph 3 BWA[*]
+
+
+module load bedtools/2.29.2
+module load ucsc/041619
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=20000
+
+mkdir -p {{jid}}/bdg_files
+mkdir -p {{jid}}/bw_files
+set +e
+## ---- vars------
+scale={{scale_multiplier}}
+spike_bed={{jid}}/E_coli_mapping/${COL3}.ecoli.bed
+
+
+## code from: https://github.com/Henikoff/Cut-and-Run/blob/master/spike_in_calibration.csh
+## will generate bw for all and uq reads, and frag<120 and all
+spike_count=`wc -l $spike_bed | awk '{print $1+100}'`
+scale_factor=`echo "$scale / $spike_count" | bc -l`
+
+genome_bed={{jid}}/bam_files/${COL3}.st.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.calibrated.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.calibrated.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.calibrated.bw
+
+
+genome_bed={{jid}}/bam_files/${COL3}.uq.st.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.uq.calibrated.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.uq.calibrated.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.uq.calibrated.bw
+
+
+genome_bed={{jid}}/bam_files/${COL3}.st.0_120.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.calibrated.0_120.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.calibrated.0_120.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.calibrated.0_120.bw
+
+
+genome_bed={{jid}}/bam_files/${COL3}.uq.st.0_120.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.uq.calibrated.0_120.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.uq.calibrated.0_120.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.uq.calibrated.0_120.bw
+
+
+genome_bed={{jid}}/bam_files/${COL3}.st.150_2000.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.calibrated.150_2000.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.calibrated.150_2000.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.calibrated.150_2000.bw
+
+
+genome_bed={{jid}}/bam_files/${COL3}.uq.st.150_2000.bed
+bedtools genomecov -bg -scale $scale_factor -i $genome_bed -g {{chrom_size}} > {{jid}}/bdg_files/${COL3}.uq.calibrated.150_2000.bdg
+bedGraphToBigWig {{jid}}/bdg_files/${COL3}.uq.calibrated.150_2000.bdg {{chrom_size}} {{jid}}/bw_files/${COL3}.uq.calibrated.150_2000.bw
+
+
+
+
+# rm $$.temp.bed
+
+=cut QC_plots 4 bedgraph
+
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/cut_run
+
+ncore=1
+mem=20000
+
+mkdir -p {{jid}}/plots
+
+cd {{jid}}/bam_files
+set +e
+for i in *st*bam;do bamPEFragmentSize -hist $i.frag.dist.png -T "Fragment size distribution" -b $i;done
+
+multiBamSummary bins -p 4 --bamfiles *st*bam -o results.npz
+
+plotCorrelation -in results.npz --corMethod pearson --skipZeros --plotTitle "Pearson Correlation of Read Count" --whatToPlot scatterplot -o PearsonCorr.scatter.png
+plotCorrelation -in results.npz --corMethod pearson --skipZeros --plotTitle "Pearson Correlation of Read Count" --whatToPlot heatmap -o PearsonCorr.heatmap.png
+
+plotPCA -in results.npz -o PCA.readCounts.png -T "PCA of read counts"
+
+plotCoverage -b *st*bam --plotFile coverage.png -n 1000000 --plotTitle "Read Coverage" --ignoreDuplicates --minMappingQuality 10 -p 4
+
+mv *png ../plots/
+
+mv *npz ../log_files/
+
+cd ../bw_files
+
+
+computeMatrix scale-regions -S *calibrated.bw -R {{gene_body}} --beforeRegionStartLength 3000 --regionBodyLength 5000 --afterRegionStartLength 3000 --skipZeros -o matrix.mat.gz -p 4
+
+plotHeatmap -m matrix.mat.gz -out Gene_body_enrichment_plot.calibrated.png 
+
+computeMatrix scale-regions -S *calibrated.0_120.bw -R {{gene_body}} --beforeRegionStartLength 3000 --regionBodyLength 5000 --afterRegionStartLength 3000 --skipZeros -o matrix.mat.gz -p 4
+
+plotHeatmap -m matrix.mat.gz -out Gene_body_enrichment_plot.calibrated.0_120.png 
+
+computeMatrix scale-regions -S *calibrated.150_2000.bw -R {{gene_body}} --beforeRegionStartLength 3000 --regionBodyLength 5000 --afterRegionStartLength 3000 --skipZeros -o matrix.mat.gz -p 4
+
+plotHeatmap -m matrix.mat.gz -out Gene_body_enrichment_plot.calibrated.150_2000.png 
+
+mv *png ../plots/
+
+mv *npz ../log_files/
+
+mv matrix.mat.gz ../log_files/
+
+=cut macs2 3 BWA
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/cut_run
+module load bedtools/2.29.2
+
+inputFile=peakcall_tsv
+
+ncore=1
+mem=30000
+
+mkdir -p {{jid}}/peak_files
+label=st
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -p 1e-5 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+
+label=uq.st
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -p 1e-5 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+
+label=st.0_120
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -p 1e-5 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+
+label=uq.st.0_120
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -p 1e-5 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.narrowPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+
+
+label=st.150_2000
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -q 1e-2 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all --broad 
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.broadPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.broadPeak 
+
+label=uq.st.150_2000
+genome_bed_t={{jid}}/bam_files/${COL1}.${label}.bed
+genome_bed_c={{jid}}/bam_files/${COL2}.${label}.bed
+macs2 callpeak -t $genome_bed_t -c $genome_bed_c -f BEDPE -q 1e-2 -n {{jid}}/peak_files/${COL3}.${label} -g {{MACS2_genome}} --keep-dup all --broad 
+bedtools intersect -a {{jid}}/peak_files/${COL3}.${label}_peaks.broadPeak -b {{black_list}} -v -wa > {{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.broadPeak 
+
+cd {{jid}}/peak_files/
+
+
+
+=cut motif_finding 4 macs2[*]
+
+module load homer/4.10
+module load bedtools/2.29.2
+
+inputFile=peakcall_tsv
+
+ncore=1
+mem=30000
+
+mkdir -p {{jid}}/homer_motifs
+
+label=st
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_150 -size 150 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+label=uq.st
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_150 -size 150 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+label=st.0_120
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_150 -size 150 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+label=uq.st.0_120
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.narrowPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_150 -size 150 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+
+label=st.150_2000
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.broadPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_500 -size 500 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+label=uq.st.150_2000
+peak={{jid}}/peak_files/${COL3}.${label}_peaks.rmblck.broadPeak
+NPEAKS=200
+sort -k 8gr,8gr $peak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > ${peak}.top200.bed
+findMotifsGenome.pl ${peak}.top200.bed {{genome}} {{jid}}/homer_motifs/${COL3}.${label}_result_500 -size 500 -preparsedDir {{jid}}/log_files/${COL3}_genome_dir -p 4 
+rm ${peak}.top200.bed
+
+
+
+=cut email 9 all
+
+
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+mv multiqc_report.html cut_run_QC.html
+
+send_email_v1.py -a cut_run_QC.html -m "{{jid}} is finished" -j {{jid}} --common
+
+mv *lsf log_files/
+
+mv -f E_coli_mapping log_files/
+
+mv -f bdg_files log_files/
+
+
+
+
+# move
+
+mkdir -p bw_files/others
+mv -f bw_files/*0_120.bw bw_files/others/
+mv -f bw_files/*150_2000.bw bw_files/others/
+
+
+
+mkdir -p peak_files/others/
+mv  peak_files/*0_120* peak_files/others/
+mv  peak_files/*150_2000* peak_files/others/
+mv peak_files/*xls log_files
+mv peak_files/*summits.bed log_files
+
+
+mkdir -p homer_motifs/others
+mv -f homer_motifs/*0_120* homer_motifs/others/
+mv -f homer_motifs/*150_2000* homer_motifs/others/

@@ -1,0 +1,12 @@
+=cut map 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+
+
+# index=/home/yli11/Data/Human/hg19/index/chromap/hg19.index
+
+# chromap --preset hic -x $index -r ~/Data/Human/hg19/fasta/hg19.fa -1 ${COL1} -2 ${COL2} -o ${COL3}.pairs --trim-adapters
+chromap --preset hic -x {{chromap_index}} -r {{fasta}} -1 ${COL1} -2 ${COL2} -o ${COL3}.pairs --trim-adapters

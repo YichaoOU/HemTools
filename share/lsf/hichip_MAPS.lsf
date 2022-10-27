@@ -41,7 +41,7 @@ hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20
 
 source activate /home/yli11/.conda/envs/fithic/
 
-fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 2
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1
 
 cd ../../../
 
@@ -50,7 +50,7 @@ cd ..
 module purge
 module load conda3
 source activate /home/yli11/.conda/envs/hichipper/
-module load bedtools samtools/1.9
+module load bedtools samtools/1.10
 which R
 cp ../hichipper.yaml .
 
@@ -65,7 +65,7 @@ mem=20000
 
 module load conda3
 source activate /home/yli11/.conda/envs/HiChIP_MAPS/
-module load bwa/0.7.16a samtools/1.9
+module load bwa/0.7.16a samtools/1.10
 
 cd {{jid}}
 

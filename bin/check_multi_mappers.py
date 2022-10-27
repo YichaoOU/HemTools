@@ -33,6 +33,7 @@ def my_args():
 	genome.add_argument('--hem_bed',  help="Hemoglobin genes", default=myData['hg19_hem'])
 	genome.add_argument('-i','--index_file',  help="Kallisto index file", default=myData['hg19_kallisto_index'])
 	genome.add_argument('--gene_info',  help="gene info t2g file for sleuth", default=myData['hg19_t2g'])
+	genome.add_argument('--exon',  help="gene info t2g file for sleuth", default=myData['hg19_exon'])
 
 
 	##------- add parameters above ---------------------
@@ -42,7 +43,8 @@ def my_args():
 def main():
 
 	args = my_args()
-	
+	if not args.genome == "custom":
+		args.exon = myData['%s_exon'%(args.genome)]	
 
 		
 	##------- check if jid exist  ----------------------
@@ -56,9 +58,9 @@ def main():
 
 	##--------------- parameter replacement ------------
 	
-	args.rRNA_bed = myData['%s_rRNA'%(args.genome)]
-	args.HBG_bed = myData['%s_HBG'%(args.genome)]
-	args.hem_bed = myData['%s_hem'%(args.genome)]
+	# args.rRNA_bed = myData['%s_rRNA'%(args.genome)]
+	# args.HBG_bed = myData['%s_HBG'%(args.genome)]
+	# args.hem_bed = myData['%s_hem'%(args.genome)]
 	
 	#-------------- run jobs ----------------------
 	

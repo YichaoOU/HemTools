@@ -7,9 +7,9 @@ inputFile=input_list
 ncore=1
 mem=8000
 
-module load conda3
+module load conda3/202011
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 module load bedtools
 
@@ -26,6 +26,8 @@ mem=2000
 module load python/2.7.13
 
 cd {{jid}}
+
+crispresso2_BE_get_eff.py ../{{tsv}} 3 4 A G
 
 send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
 

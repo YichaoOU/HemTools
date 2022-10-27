@@ -1,0 +1,112 @@
+#!shell
+
+=cut QC 1
+
+inputFile=fastq_tsv
+
+module load fastqc/0.11.5
+
+fastqc ${COL1} -o {{jid}}/log_files
+fastqc ${COL2} -o {{jid}}/log_files
+
+=cut BWA 1
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+inputFile=fastq_tsv
+
+ncore=1
+mem=30000
+
+# rename_fastq.py ${COL1} {{jid}}/${COL3}.rename.R1.fastq.gz
+# rename_fastq.py ${COL2} {{jid}}/${COL3}.rename.R2.fastq.gz
+
+# cd {{jid}}
+
+# bwa mem -t 6 {{index_file}} ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
+# bwa mem -t 6 {{index_file}} ${COL3}.rename.R1.fastq.gz ${COL3}.rename.R2.fastq.gz  |samtools view -bS - > ${COL3}.bam
+
+
+bwa mem -t 6 {{index_file}} ${COL1} ${COL2}  | samtools view -bS - > {{jid}}/${COL3}.bam
+
+cd {{jid}}
+
+samtools view -b -F 3852 -f 2 -q {{MAPQ}} ${COL3}.bam > ${COL3}.filter.bam
+samtools sort -@ 6 -o ${COL3}.st.bam ${COL3}.filter.bam
+samtools index ${COL3}.st.bam
+
+samtools flagstat ${COL3}.bam > ${COL3}.flagstat
+samtools stats ${COL3}.bam > ${COL3}.stats
+# samtools idxstats ${COL3}.bam > ${COL3}.idxstats
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv
+
+umi_tools dedup --stdin=${COL3}.st.bam --log=${COL3}.dedup.log --output-stats=${COL3}.stats --paired > ${COL3}.dedup.bam
+
+samtools index ${COL3}.dedup.bam
+
+
+=cut peak 2 all
+
+inputFile=design_matrix
+
+ncore=1
+mem=30000
+
+cd {{jid}}
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/ML_py2
+
+module load bedtools
+
+# parser.add_argument('-i', '--input', help='STARR-seq DNA Input BAM File', required=True)
+# parser.add_argument('-o', '--output', help='STARR-seq RNA Output BAM File', required=True)
+
+starrpeaker --prefix ${COL3}_raw_results --chromsize {{chrom_size}} --blacklist {{blacklist}} --cov {{gc_cov}} {{map_cov}} {{conv_cov}} --input ${COL2}.st.bam --output ${COL1}.st.bam --threshold {{FDR_cutoff}} --min {{min_frag}} --max {{max_frag}} --length {{bin_size}} --step {{step_size}}  {{addon_parameters}}
+
+starrpeaker --prefix ${COL3}_dedup_results --chromsize {{chrom_size}} --blacklist {{blacklist}} --cov {{gc_cov}} {{map_cov}} {{conv_cov}} --input ${COL2}.st.bam --output ${COL1}.dedup.bam --threshold {{FDR_cutoff}} --min {{min_frag}} --max {{max_frag}} --length {{bin_size}} --step {{step_size}}  {{addon_parameters}}
+
+
+#starrpeaker --prefix test --chromsize /home/yli11/Data/Human/STARR_seq/hg19.chrom.sizes.simple.sorted --blacklist /home/yli11/Data/Human/hg19/annotations/hg19.blacklist.bed --cov /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_ucsc-gc-5bp.bw /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_gem-mappability-100mer.bw /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_linearfold-folding-energy-100bp.bw --input test.st.bam --output test.starr.out.bam --threshold 0.05 --min 200 --max 1000 --length 500 --step 100  
+
+
+mkdir ${COL3}_results
+mv ${COL3}* ${COL3}_results
+
+
+=cut email 100 all
+
+ncore=1
+mem=40000
+cd {{jid}}
+
+mkdir bam_files
+
+mv *bam bam_files
+mv *bai bam_files
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+touch multiqc_config.yaml
+
+echo 'read_count_multiplier: 0.001' >> multiqc_config.yaml
+echo 'read_count_prefix: "K"' >> multiqc_config.yaml
+echo 'read_count_desc: "thousands"' >> multiqc_config.yaml
+
+multiqc .
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+

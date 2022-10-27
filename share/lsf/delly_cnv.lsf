@@ -1,0 +1,64 @@
+#!shell
+
+# Call SV for each sample
+=cut germline1 1
+
+inputFile=input
+ncore=1
+mem=150000
+q=priority
+
+# delly call -g {{fasta}} -o ${COL2}.bcf -x {{excl}} ${COL1}
+
+delly cnv -o ${COL2}.cnv.bcf -g {{fasta}} -m {{delly_map}} -l {{delly_sv}} -c ${COL2}.cov.gz ${COL1}
+
+
+# Merge SV
+=cut merge1 2 germline1
+
+ncore=1
+mem=150000
+q=priority
+
+delly merge -e -p -m 1000 -n 100000 -o merged_germline.cnv.bcf *cnv.bcf
+
+# Genotyping SV for each sample
+=cut germline2 3 merge1
+
+inputFile=input
+ncore=1
+mem=150000
+q=priority
+
+# delly call -g {{fasta}} -v merged_germline.bcf -o ${COL2}.geno.bcf -x {{excl}} ${COL1}
+
+delly cnv -u -v merged_germline.cnv.bcf -g {{fasta}} -m {{delly_map}} -o ${COL2}.geno.cnv.bcf ${COL1}
+
+
+
+# merge genotypes
+=cut merge2 4 germline2
+
+ncore=1
+mem=150000
+q=priority
+
+module load bcftools
+
+# bcftools merge -m id -O b -o merged_final_germline.bcf *.geno.bcf
+
+bcftools merge -m id -O b -o merged_final_germline.cnv.bcf *.geno.cnv.bcf
+
+# delly classify -f germline -o filtered.bcf merged.bcf
+
+
+
+# users can do filtering later
+
+
+
+
+
+
+
+

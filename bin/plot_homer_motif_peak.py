@@ -14,7 +14,7 @@ Usage
 
 Run this program inside the homer motif folder!
 
-module load homer
+module load homer/4.10
 module load python/2.7.13
 
 plot.py
@@ -81,7 +81,7 @@ def lineplot(s,df):
 	plt.savefig(file_name)
 	plt.close()
 	return file_name
-
+import subprocess
 def main(command):
 	args = my_args()
 	args.flanking_size = args.flanking_size*2
@@ -94,7 +94,9 @@ def main(command):
 	argsDict = vars(args)
 	command = multireplace(command, argsDict)
 	write_file("tmp.sh",command)
-	os.system("bash tmp.sh")
+	print ("Running homer")
+	# os.system("bash tmp.sh")
+	subprocess.call("bash tmp.sh",shell=True)
 	df = pd.read_csv("homer_all_motifs/motif_density.tsv",sep="\t",index_col=0)
 	sel_cols = []
 	for x in df.columns.tolist():

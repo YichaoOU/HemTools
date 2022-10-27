@@ -1,0 +1,70 @@
+#!shell
+=cut dem 1
+
+inputFile=input
+
+ncore=1
+mem=30000
+
+share_seq_step2_rename_fastq.py --revcomp -r1 ${COL1} -r2 ${COL2} --sample_ID ${COL3} --barcode_1_list barcode1.list --barcode_2_list barcode2.list --barcode_3_list barcode3.list 
+
+
+cd ${COL3}_renamed_fastq
+
+bwa_mouse_index=/home/yli11/dirs/pipelines/hg38_mm10/hg38_mm10.fa
+
+
+mkdir human_mouse_mapping
+
+cd human_mouse_mapping
+
+module load bwa/0.7.16a
+module load samtools/1.7
+module load fastp
+
+bwa mem -t 8 $bwa_mouse_index ../${COL3}.matched.R1.fastq.gz ../${COL3}.matched.R2.fastq.gz | samtools view -bS - > ${COL3}.bam
+
+
+
+samtools sort -o ${COL3}.st.bam ${COL3}.bam
+
+samtools index ${COL3}.st.bam
+
+samtools view -b -F 2048 -F 256 -f 2 ${COL3}.st.bam > ${COL3}.filter.bam
+
+samtools index ${COL3}.filter.bam
+
+module load bedtools/2.29.2
+
+bedtools bamtobed -i ${COL3}.filter.bam > ${COL3}.bed
+
+grep "/1" ${COL3}.bed > ${COL3}.R1.bed
+
+module load conda3
+source activate Sci_L3
+
+cd ..
+
+src=/home/yli11/Programs/Sci-L3-seq/src
+
+$src/step4_calculate_collision_rate_hybrid.py --relax --table ${COL3}.total_number_reads.tsv --reads human_mouse_mapping/${COL3}.R1.bed
+
+module load R/3.5.1
+
+Rscript $src/draw_collision_figure.R for_collision_plot.tsv ${COL3}_collision.pdf
+
+module load python/2.7.13
+
+send_email_v1.py -a ${COL3}_collision.pdf -m "${COL3} analysis is finished" -j {{jid}} --common
+
+
+
+
+
+
+
+
+
+
+
+
