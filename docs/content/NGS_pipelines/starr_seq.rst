@@ -65,6 +65,50 @@ Summary
 
 STARR-seq is an assay to profile self-transcribed active regions (e.g., enhancer). This pipeline produces called peaks for these active regions.
 
+
+
+To generate fastq for starr-seq from bcl file
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+1. two DNA barcodes and 1 RNA barcode + RNA UMI
+------------------------------------
+
+::
+
+	# login to compute node
+	hpcf_interactive.sh
+
+	module load bcl2fastq
+	
+	bcl2fastq --no-lane-splitting -o starr_seq_fastq --sample-sheet /home/yli11/HemTools/share/misc/starr_seq_SampleSheet.csv --create-fastq-for-index-reads
+
+	cd starr_seq_fastq
+	module load conda3/202011
+	source activate /home/yli11/.conda/envs/captureC
+	starr_seq_demultiplex.py ATTACTCG TATAGCCT ATAGAGGC 1
+	# DNA barcode R1, R2, RNA barcode, mismatch cutoff. Please replace barcode sequence with your barcode sequence.
+
+2. One DNA barcodes and One RNA barcode + DNA UMI and RNA UMI
+------------------------------------
+
+::
+
+	# login to compute node
+	hpcf_interactive.sh
+
+	module load bcl2fastq
+	
+	bcl2fastq --no-lane-splitting -o starr_seq_fastq --sample-sheet /home/yli11/HemTools/share/misc/starr_seq_SampleSheet2.csv --create-fastq-for-index-reads
+
+	cd starr_seq_fastq
+	module load conda3/202011
+	source activate /home/yli11/.conda/envs/captureC
+	starr_seq_demultiplex2.py AGGCTATA AGGATAGG 1
+	# DNA barcode, RNA barcode, mismatch cutoff. Please replace barcode sequence with your barcode sequence.
+
+
+
 Input
 ^^^^^
 
