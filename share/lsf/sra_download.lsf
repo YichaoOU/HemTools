@@ -15,11 +15,20 @@ sra_check_download.py ${COL1}
 
 gzip ${COL1}*fastq
 
+
 =cut email 4 all
 
 module load python/2.7.13
 
 cd {{jid}}
+
+# mkdir rename
+
+# cd rename
+
+# ln -s ../*gz .
+
+# rename_SRR_samples.py ../../{{meta}}
 
 send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
 

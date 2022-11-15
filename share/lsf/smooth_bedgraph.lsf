@@ -1,0 +1,27 @@
+#!shell
+
+
+=cut smooth 1 
+
+
+inputFile=input_list
+
+ncore=1
+mem=10000
+
+module load bedops/2.4.35
+
+window_size={{window_size}}
+step_size={{step_size}}
+awk -F "\t" '{print ($1"\t"$2"\t"$3"\t.\t"$4)}' ${COL1} > {{jid}}/$$.temp.ref
+
+cd {{jid}}
+
+# bedops -w $window_size --stagger $step_size --range $window_size $$.temp.ref | bedmap --skip-unmapped --faster --echo --mean --delim "\t" --bases-uniq-f - $$.temp.ref | awk -F "\t" '{print ($1"\t"$2"\t"$2+{{step_size}}"\t"$4*$5)}' > $(basename ${COL1}).smooth.bdg
+bedops -w $window_size --stagger $step_size --range $window_size $$.temp.ref | bedmap --skip-unmapped --faster --echo --mean --delim "\t" --bases-uniq-f - $$.temp.ref | awk -F "\t" '{print ($1"\t"$2+{{half_window_size}}"\t"$2+{{half_window_size}}+{{step_size}}"\t"$4*$5)}' | awk -F "\t" '$4>={{min_value}} {print $0}' > $(basename ${COL1}).smooth.bdg
+
+module load ucsc/041619
+
+bedGraphToBigWig $(basename ${COL1}).smooth.bdg {{chrom_size}} $(basename ${COL1}).smooth.bw
+
+rm $$.temp.ref

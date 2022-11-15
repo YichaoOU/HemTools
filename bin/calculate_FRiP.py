@@ -4,7 +4,7 @@ import sys
 import os
 import uuid
 import glob
-
+import subprocess
 tmp = str(uuid.uuid4()).split("-")[-1]
 
 bam=sys.argv[1]
@@ -27,8 +27,9 @@ awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print $4, $1, $
 
 """.replace("{peak}",peak).replace("{tmp}",tmp)
 
-
-os.system(bed2saf)
+output = subprocess.check_output(bed2saf, shell=True)
+print (output)
+# os.system(bed2saf)
 
 feature_count = """
 
@@ -38,7 +39,9 @@ featureCounts -p -T 4 -a {0}.saf -F SAF -o {0}.out {1} > /dev/null 2>&1
 
 
 """.format(tmp,bam)
-os.system(feature_count)
+# os.system(feature_count)
+output = subprocess.check_output(feature_count, shell=True)
+print (output)
 import pandas as pd
 df = pd.read_csv("%s.out.summary"%(tmp),sep="\t",index_col=0)
 df = df.loc['Assigned']/df[df.columns[0]].sum()

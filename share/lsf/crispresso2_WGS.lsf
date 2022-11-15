@@ -21,7 +21,7 @@ samtools index ${COL3}.st.bam
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 
 CRISPRessoWGS -b ${COL3}.st.bam -f ${COL4} -r {{genome_fasta}} --name ${COL3} --plot_window_size 20 --base_editor_output

@@ -1,0 +1,69 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+ncore=1
+mem=8000
+q={{queue}}
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+module load bedtools
+
+# version: 2.2.7
+CRISPResso --min_paired_end_reads_overlap {{min_overlap}} -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL3} --guide_seq ${COL4} -o {{jid}}/${COL5} {{base_editor_commands}}
+
+# =cut email 2 BaseE[*]
+
+# inputFile=input_list
+
+# ncore=1
+# mem=2000
+
+# module load python/2.7.13
+
+# cd {{jid}}
+
+# zip -r ${COL5}.zip ${COL5}
+
+# send_email_v1.py -a ${COL5}.zip -m "${COL5} crispresso2 base editor is finished" -j {{jid}} --common
+
+
+# module load python/2.7.13
+
+# cd {{jid}}
+
+# crispresso2_BE_get_eff.py ../{{jid}}.input {{ref}} {{alt}} 
+
+
+# crispresso2_BE_get_background.py ${COL3} ../{{jid}}_info.tsv {{SNP}}
+
+# crispresso2_BE_allele_edit_eff.py ${COL3} ../{{jid}}_info.tsv {{ref}} {{alt}} {{SNP}}
+
+
+# table2heatmap.py -f ${COL3}.max_edit.tsv -o ${COL3}.max_edit.pdf -d gRNA
+
+# crispresso2_BE_plot_all_conversion.py ${COL3} ../{{jid}}_info.tsv {{SNP}}
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+# crispresso2_BE_get_eff.py ../{{tsv}} 3 4 {{ref}} {{alt}}
+crispresso2_BE_get_eff.py ../{{tsv}} 3 4 {{ref}} {{alt}}
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+
+

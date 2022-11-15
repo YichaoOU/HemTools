@@ -44,7 +44,15 @@ cd hic_results/matrix/${COL1}
 
 module load python/2.7.13
 
-hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20000_abs.bed -s iced/20000/GSM3489137_20000_iced.matrix.biases
+# -i MATRIX, --matrix MATRIX     Input matrix file with raw contact frequencies. Required.
+# -b BED, --bed BED     BED file with bins coordinates. Required.
+# -s BIAS, --bias BIAS     The bias file provided after IC normalization.
+# -o OUTPUT, --output OUTPUT     Output path.
+# -r RESOLUTION, --resolution RESOLUTION     Resolution of the matrix.
+
+# hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20000_abs.bed -s iced/20000/GSM3489137_20000_iced.matrix.biases
+
+# hicpro2fithic.py -i raw/20000/Tcell_HiC_2_3_4_20000.matrix -b raw/20000/Tcell_HiC_2_3_4_20000_abs.bed -s iced/20000/Tcell_HiC_2_3_4_20000_iced.matrix.biases -o Tcell_HiC_2_3_4.fithic -r 20000
 
 source activate /home/yli11/.conda/envs/fithic/
 

@@ -1,0 +1,25 @@
+
+
+
+module load trimgalore cutadapt/1.1 fastqc
+module load flash
+module load blat
+
+
+perl MCC_BLATfa.pl -f target.bed -g ~/Data/Human/hg19/fasta/hg19.fa
+
+trim_galore --fastqc -q 10 --dont_gzip --paired test_R1.fastq.gz test_R2.fastq.gz 
+
+
+flash -f 200 -M 100 test_R1_val_1.fq.gz test_R2_val_2.fq.gz -o test 2>&1 | tee test_flash.log
+mv test.extendedFrags.fastq test_ext.fastq
+
+
+sed -n '1~4s/^@/>/p;2~4p' test_ext.fastq > test_ext.fa
+
+
+blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 target_split_800bp.fa test_ext.fa test_ext.psl
+
+
+perl /research/rgs01/home/clusterHome/yli11/Programs/Micro-Capture-C/MCC_splitter.pl -f test_ext.fastq -p test_ext.psl -r hg19test -limit 0 -all
+

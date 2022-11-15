@@ -67,7 +67,10 @@ def my_args():
 	mainParser.add_argument('-f',"--input",help="correlation matrix with index and header",required=True)	
 	mainParser.add_argument('-s',"--sep",  help="this program can infer separator automatically, but it may fail. Use auto if the input tables contain different separators.",default="auto")
 	mainParser.add_argument('--skiprows',  help="Pandas read_csv parameter to skip first N rows", default=0,type=int)
-	mainParser.add_argument('--cmap',  help="Pandas read_csv parameter to skip first N rows", default="Reds",type=str)
+	mainParser.add_argument('--use_cols',  help="use which columns", default="")
+	mainParser.add_argument('--log2',  help="log2 transform value", action='store_true')
+	mainParser.add_argument('--annot',  help="annot", action='store_true')
+	mainParser.add_argument('--cmap',  help="Pandas read_csv parameter to skip first N rows", default="RdBu_r",type=str)
 	mainParser.add_argument('-o',"--output",  help="output file name",default=username+"_"+str(datetime.date.today()))
 	mainParser.add_argument("--size", help="Figure size, default=Ncol/4",default="auto")
 	mainParser.add_argument("--smart_label",  help="try to infer a meaning unique group name, string will be splited by . - |, items that occur only once or occur above %s will be removed"%default.replace(r"%", r"%%"), action='store_true')
@@ -96,23 +99,30 @@ def main():
 	if args.sep =="auto":
 		args.sep=guess_sep(args.input)
 	df = pd.read_csv(args.input,sep=args.sep,skiprows=args.skiprows,index_col=0)
+	if args.use_cols:
+		cols = args.use_cols.split(",")
+		df = df[cols]
+	if args.log2:
+		df = df.transform(lambda x:np.log2(x+1))
+		df = df.corr()
 	column_list = df.columns.tolist()
 	if args.smart_label:
 		column_list = smart_names(column_list)
 		df.columns = column_list
 		df.index = column_list
 	if args.size == "auto":
-		args.size = int(len(column_list)/4)
+		args.size = min(int(len(column_list)/4),8)
 	else:
 		args.size = int(args.size)
 	print (df.head())
+	sns.set(font_scale=0.3)
 	print ("plotting correlation matrix clustering based on euclidean distance")
-	plt.figure()
-	sns.clustermap(df,cmap=args.cmap,figsize=(args.size,args.size),method="average",metric="euclidean")
+	# plt.figure()
+	sns.clustermap(df,cmap=args.cmap,fmt='.2f',annot=args.annot,figsize=(args.size,args.size),method="average",metric="euclidean")
 	plt.savefig("%s.euclidean.pdf"%(args.output), bbox_inches='tight')	
-	plt.close()
+	# plt.close()
 	print ("plotting correlation matrix clustering based on cosine distance")
-	plt.figure()
+	# plt.figure()
 	sns.clustermap(df,cmap=args.cmap,figsize=(args.size,args.size),method="average",metric="cosine")
 	plt.savefig("%s.cosine.pdf"%(args.output), bbox_inches='tight')		
 

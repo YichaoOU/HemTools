@@ -64,7 +64,7 @@ def add_identity(axes, *line_args, **line_kwargs):
 	axes.callbacks.connect('xlim_changed', callback)
 	axes.callbacks.connect('ylim_changed', callback)
 	return axes
-def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color='#0000ff',highlight_color="red",lowess=False,diagnal_line=False):
+def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color='#0000ff',highlight_color="red",lowess=False,diagnal_line=False,log2=False,gamma=1):
 
 	# x="treatment_mean"
 	# y="control_mean"
@@ -88,14 +88,18 @@ def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color=
 	if diagnal_line:
 		linewidth=0
 		n_boot=0
-	# df = df.transform(lambda x:np.log2(x+1))
+		fit_reg=False
+	if log2:
+		df = df.transform(lambda x:np.log2(x+1))
 	# df[0]
 	# df[x] = df[x].apply(lambda x:np.log2(x+1))
 	# df[y] = df[y].apply(lambda x:np.log2(x+1))
 
-	cmap_blue = clr.LinearSegmentedColormap.from_list('custom blue', ['#e8e8e8',background_dots_color], N=1000)
+	cmap_blue = clr.LinearSegmentedColormap.from_list('custom blue', ['#e8e8e8',background_dots_color], N=1000,gamma=gamma)
+	# print (df.head())
 
-	R2 = scipy.stats.pearsonr(df[x],df[y])[0]
+	R2 = scipy.stats.pearsonr(df[x].tolist(),df[y].tolist())[0]
+
 	# R2 = scipy.stats.spearmanr(df[x],df[y])[0]
 	
 	
@@ -107,9 +111,13 @@ def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color=
 	scatter=True
 	non_highlight = list(set(df.index)-set(highlight_list))
 	df_non_highlight = df.loc[non_highlight]
-	if df_non_highlight.shape[0]>4000:
-		df_non_highlight = df_non_highlight.sample(n=4000)
-	df = pd.concat([df_non_highlight,df.loc[highlight_list]])
+	if df_non_highlight.shape[0]>20000:
+		df_non_highlight = df_non_highlight.sample(n=20000)
+	try:
+		df = pd.concat([df_non_highlight,df.loc[highlight_list]])
+	except:
+		highlight_list = [",".join(highlight_list)]
+		df = pd.concat([df_non_highlight,df.loc[highlight_list]])
 	non_highlight = list(set(df.index)-set(highlight_list))
 	# if df.shape[0]>8000:
 		# df = df.sample(n=8000)
@@ -118,7 +126,7 @@ def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color=
 	
 	xy = np.vstack([df.loc[non_highlight][x],df.loc[non_highlight][y]])
 	z = gaussian_kde(xy)(xy)
-	plt.scatter(x=df.loc[non_highlight][x],y=df.loc[non_highlight][y],c=z,alpha=0.3,s=50,cmap=cmap_blue,label=None,edgecolors="")
+	plt.scatter(x=df.loc[non_highlight][x],y=df.loc[non_highlight][y],c=z,alpha=0.3,s=50,cmap=cmap_blue,label=None,edgecolors=None) ## edgecolors="" caused error: https://stackoverflow.com/questions/63408934/matplotlib-throws-error-with-figure-canvas-draw-and-figure-savefig-valueer
 	if highlight == None:
 		plt.legend()
 
@@ -140,7 +148,7 @@ def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color=
 		margin = (vmax-vmin)*0.1
 		plt.xlim(vmin-margin,vmax+margin)
 		plt.ylim(vmin-margin,vmax+margin)
-		plt.legend()
+		plt.legend([r"$\rho$=%.3f"%(R2)])
 	# ax = plt.gca()
 	# diag_line, = ax.plot(ax.get_xlim(), ax.get_ylim(), ls="-", c=".3")
 	# max_value = df.max().max()
@@ -148,6 +156,7 @@ def plot_scatter(x,y,df,output,highlight,regression=False,background_dots_color=
 	# plt.ylim(0,max_value)
 	# plt.yscale('log')
 	# plt.xscale('log')
+	# print (output)
 	plt.savefig(output,bbox_inches='tight')
 	
 	
@@ -162,9 +171,12 @@ def my_args():
 	mainParser.add_argument("--index",help="index name for index",default=None,type=str)	
 	mainParser.add_argument('--regression',  help="by default it is a dignal line", action='store_true')
 	mainParser.add_argument('--diagnal_line',  help="force to draw a dignal line", action='store_true')
+	mainParser.add_argument('--log2',  help="force to draw a dignal line", action='store_true')
+	mainParser.add_argument('--no_email',  help="no email", action='store_true')
 	mainParser.add_argument('--lowess',  help="fit a curve", action='store_true')
 	mainParser.add_argument('-bc','--background_dots_color',  help="background_dots_color", default="#0000ff")
 	mainParser.add_argument('-hc','--highlight_color',  help="highlight_color", default="#ff1500")
+	mainParser.add_argument('--gamma',  help="lower value give more color to less dense area", default=1,type=float)
 	mainParser.add_argument("--highlight",help="column name for y axis, sep by comma",default=None,type=str)	
 	
 
@@ -183,9 +195,12 @@ def main():
 	if not args.index == None:
 		df.index = df[args.index].tolist()
 		# print (df.head())
-	plot_scatter(args.x,args.y,df,args.output,args.highlight,regression = args.regression,background_dots_color=args.background_dots_color,highlight_color=args.highlight_color,lowess=args.lowess,diagnal_line=args.diagnal_line)
+	plot_scatter(args.x,args.y,df,args.output,args.highlight,regression = args.regression,background_dots_color=args.background_dots_color,highlight_color=args.highlight_color,lowess=args.lowess,diagnal_line=args.diagnal_line,log2=args.log2,gamma=args.gamma)
 	
-	send_email([args.output])
+	if args.no_email:
+		print ("No Email")
+	else:
+		send_email([args.output])
 
 	
 

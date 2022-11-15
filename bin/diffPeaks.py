@@ -38,6 +38,7 @@ def my_args():
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update chrom size.", default='hg19',type=str)
 	genome.add_argument('-s','--genome_chrom_size',  help="chrome size", default=myData['hg19_homer_chrom_size'])
 	genome.add_argument('--skip_chrom_size',  help="for homer chrom error, not for end-user. chrome size", default=myData['hg19_chrom_size'])
+	genome.add_argument('--chrom_size_bed',  help="for homer chrom error, not for end-user. chrome size bed file to filter out out-coordinate regions", default=myData['hg19_chrom_size_bed'])
 	
 	##------- add parameters above ---------------------
 	args = mainParser.parse_args()	
@@ -72,6 +73,7 @@ def main():
 	args = my_args()
 	args.genome_chrom_size = myData['%s_homer_chrom_size'%(args.genome)]
 	args.skip_chrom_size = myData['%s_chrom_size'%(args.genome)]
+	args.chrom_size_bed = myData['%s_chrom_size_bed'%(args.genome)]
 	args.skip_chrom_size = find_other_chr(args.skip_chrom_size)
 	## guess input
 	if args.guess_input:

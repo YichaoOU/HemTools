@@ -9,7 +9,7 @@ mem=10000
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 module load bedtools
 

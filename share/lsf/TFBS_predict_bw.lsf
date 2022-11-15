@@ -1,0 +1,502 @@
+#!shell
+
+# mainly used for testing
+# when you have already learned the motif model, use this
+# Catchitt_path=/home/yli11/HemTools/share/script/jar/Catchitt-0.1.3.jar 
+
+# best practise
+
+=cut atac_bw 1
+
+
+inputFile=atac_list
+
+ncore=1
+mem=20000
+q={{queue}}
+
+
+Catchitt_path={{Catchitt_path}}
+module load java/10.0.2
+
+java -jar -Xmx20g ${Catchitt_path} access d="Bigwig" \
+i=${COL2} \
+f={{faidx}} \
+outdir={{jid}}/ATAC/${COL1} \
+b={{bin_size}}
+
+=cut motif 1
+
+inputFile=motif_list
+
+ncore=1
+mem=65000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx64g ${Catchitt_path} motif ${COL2} \
+g={{fasta}} \
+f={{faidx}} \
+b={{bin_size}} outdir={{jid}}/Motif/${COL1} l=false threads=20
+
+
+
+=cut label 1
+
+
+ncore=1
+mem=8000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx8g ${Catchitt_path} labels \
+c={{conserved_peak}} \
+r={{relaxed_peak}} \
+f={{faidx}} \
+b={{bin_size}} outdir={{jid}}/labels
+
+
+=cut break_point 2 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+
+
+
+=cut train8 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr13,chr14,chr15,chr16,chr17,chr18' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=7 \
+abb=2 \
+aba=6 \
+p=0.01 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_3_26_001
+
+=cut train7 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+abb=2 \
+aba=6 \
+p=0.01 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_5_26_001
+
+
+=cut train1 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=7 \
+abb=1 \
+aba=4 \
+p=0.01 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_3_14_001
+
+=cut train2 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+abb=1 \
+aba=4 \
+p=0.01 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_5_14_001
+
+
+
+
+=cut train3 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=7 \
+abb=2 \
+aba=6 \
+p=0.2 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_3_26_02
+
+=cut train4 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+abb=2 \
+aba=6 \
+p=0.2 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_5_26_02
+
+
+=cut train5 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=7 \
+abb=1 \
+aba=4 \
+p=0.2 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_3_14_02
+
+=cut train6 3 break_point
+
+ncore=4
+mem=15000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr1,chr2,chr3,chr4,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+abb=1 \
+aba=4 \
+p=0.2 \
+b={{bin_size}} outdir={{jid}}/trained_model/model1_5_14_02
+
+
+
+
+=cut predict 4 all
+
+
+inputFile=atac_list2
+
+ncore=1
+mem=20000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+label=model1_5_14_02
+
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+label=model1_5_14_001
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+
+label=model1_5_26_001
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+label=model1_5_26_02
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+
+
+
+label=model1_3_14_02
+
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+label=model1_3_14_001
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+
+label=model1_3_26_001
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+label=model1_3_26_02
+mkdir {{jid}}/prediction/$label/
+mkdir {{jid}}/prediction/$label/${COL1}/
+mkdir {{jid}}/prediction/$label/${COL1}/${COL2}
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/$label/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/$label/${COL1}/${COL2}
+
+
+
+
+
+=cut predict2 5 all
+
+
+inputFile=atac_list
+
+ncore=1
+mem=10000
+q={{queue}}
+
+module load python/2.7.13
+
+
+label=model1_3_26_02
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+label=model1_3_26_001
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+
+
+label=model1_3_14_02
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+label=model1_3_14_001
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+
+
+
+label=model1_5_26_02
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+label=model1_5_26_001
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+
+
+label=model1_5_14_02
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+label=model1_5_14_001
+cd {{jid}}/prediction/$label/${COL1}
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+mv ${COL1}.05.peaks.bed ../
+cd ../../../../
+
+
+=cut email 6 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+

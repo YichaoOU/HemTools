@@ -1,0 +1,44 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input_list
+
+## columns are gRNA, P1, P2, R1, R2, name
+
+ncore=1
+mem=12000
+q={{queue}}
+
+in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_results.txt 2> {{jid}}/${COL6}_amplicons.fasta
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+amplicon=`tail -n 1 {{jid}}/${COL6}_amplicons.fasta`
+
+CRISPResso --min_paired_end_reads_overlap {{min_overlap}} -r1 ${COL5} --amplicon_seq $amplicon --guide_seq ${COL1} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output -o {{jid}}/${COL6}
+
+=cut email 2 all
+
+inputFile=input_list
+
+ncore=1
+mem=4000
+q={{queue}}
+
+module load python/2.7.13
+
+cd {{jid}}
+
+crispresso2_BE_get_eff.py ../{{tsv}} {{ref}} {{alt}}
+
+
+zip -r ${COL6}.zip ${COL6}
+
+send_email_v1.py -a ${COL6}.zip -m "${COL5} crispresso2 base editor is finished" -j {{jid}} --common
+
+
+

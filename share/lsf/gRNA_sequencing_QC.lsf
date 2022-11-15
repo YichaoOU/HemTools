@@ -1,0 +1,113 @@
+#!shell
+
+
+=cut fq_check 1
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load fastqc/0.11.5
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+module load seqtk
+
+# fastqc ${COL1} -o {{jid}}
+
+seqtk sample ${COL1} 1000 > {{jid}}/${COL2}.1k.fastq
+
+cd {{jid}}
+
+seqlength=130
+
+seqtk trimfq -L $seqlength ${COL2}.1k.fastq > ${COL2}.trimfq.fastq
+
+seqtk seq -L $seqlength -A ${COL2}.trimfq.fastq > ${COL2}.trimfq.fa
+
+module load conda3
+
+source activate /home/yli11/.conda/envs/py2
+
+weblogo -f ${COL2}.trimfq.fa -F png -o ${COL2}.trimfq.png
+
+
+
+=cut trim 1
+
+ncore=8
+mem=3000
+
+inputFile=input
+
+# module load fastp
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+# fastp bug
+# fastp -i ${COL1} --adapter_sequence AAAAAAAAAA -o {{jid}}/${COL2}.fastq.gz -l 20 -h {{jid}}/${COL2}.html -j {{jid}}/${COL2}.json
+
+# /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA PDCD_Bio_VK2091_S5_R1_001.fastq.gz > out.fastq
+/home/yli11/.conda/envs/CaptureC/bin/cutadapt --max-n 0.05 --trim-n -m {{min_length}} -a AAAAAAAAAA ${COL1} > {{jid}}/${COL2}.fastq 2>{{jid}}/${COL2}.cutadapt.txt
+
+
+cd {{jid}}
+
+module load fastqc
+
+fastqc ${COL2}.fastq
+
+
+src=/home/yli11/Tools/gRNA_sequencing
+python $src/align_reads3.py ${COL2}.fastq ${COL3}
+
+mv ${COL2}*zip log_files
+
+mv ${COL2}*html log_files
+
+=cut email 2 all
+
+ncore=8
+mem=2000
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+cd {{jid}}
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+
+python $src/gRNA_summarize2.py
+
+
+# organize
+
+mkdir -p fastq_vis
+
+mv *trimfq.png  fastq_vis
+
+rm *trimfq*
+
+rm *1k*
+
+
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

@@ -1,0 +1,17 @@
+=cut Cmap 1
+
+inputFile=input
+
+ncore=1
+mem=40000
+
+
+chromap -t 8 --preset hic -x {{chromap_index}} -r {{fasta}} -1 ${COL1} -2 ${COL2} --SAM -o {{jid}}/${COL3}.sam
+
+module load samtools/1.7
+
+cd {{jid}}
+
+samtools view -bS ${COL3}.sam > ${COL3}.bam
+
+

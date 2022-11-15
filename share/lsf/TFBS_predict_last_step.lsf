@@ -1,0 +1,61 @@
+#!shell
+
+# not used
+=cut predict 3 
+
+
+inputFile=atac_list2
+
+ncore=1
+mem=20000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+mkdir {{jid}}/prediction/${COL1}/
+mkdir {{jid}}/prediction/${COL1}/${COL2}
+
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/Classifiers.xml \
+# a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+a=two_motif_only_IDR_S3Norm_50bp_ab1cdb6b1013/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+# {{motif_features}} \
+m=two_motif_only_IDR_S3Norm_50bp_ab1cdb6b1013/Motif/NFIX.homer/Motif_scores.tsv.gz m=two_motif_only_IDR_S3Norm_50bp_ab1cdb6b1013/Motif/PU1.homer/Motif_scores.tsv.gz \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/${COL1}/${COL2}
+
+
+=cut predict2 3 all
+
+
+inputFile=atac_list
+
+ncore=1
+mem=2000
+q={{queue}}
+
+cd {{jid}}/prediction/${COL1}
+
+module load python/2.7.13
+
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.7 ${COL1}.peaks.bed
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+

@@ -38,6 +38,12 @@ def my_args():
 	args = mainParser.parse_args()	
 	return args
 
+def match_rgt_database_chromosome_names(f,rgt_chr_size):
+	command = """awk -F "\t" '{print $1"\t0\t"$2}' %s > rgt.bed"""%(rgt_chr_size)
+	os.system(command)
+	command = "module load bedtools;bedtools intersect -a %s -b rgt.bed -u > %s.rgt.input.bed"%(f,f)
+	os.system(command)
+	return "%s.rgt.input.bed"%(f)
 def main():
 
 	args = my_args()
@@ -74,6 +80,12 @@ def main():
 	if username != "yli11":	
 		os.system("ln -s /home/yli11/rgtdata/ /home/%s/rgtdata"%(username))
 		args.softlinks = "rm /home/%s/rgtdata"%(username)
+	new_names = []
+	for f in df[1].tolist():
+		new_names.append(match_rgt_database_chromosome_names(f,"/home/yli11/rgtdata/{0}/chrom.sizes.{0}".format(args.genome)))
+	df[1] = new_names
+	df.to_csv("%s.input"%(args.jid),sep="\t",header=False,index=False)
+	args.input = "%s.input"%(args.jid)
 	submit_pipeline_jobs(myPipelines[pipeline_name],args)
 
 		

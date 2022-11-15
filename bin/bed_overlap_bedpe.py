@@ -29,6 +29,7 @@ out = pd.concat([t1,t2])
 # print (out.head())
 out.to_csv("bedpe.bed",sep="\t",header=False,index=False)
 command = "bedtools intersect -a %s -b bedpe.bed -wo > tmp.bed"%(bed_file)
+print (command)
 os.system(command)
 
 df = pd.read_csv("tmp.bed",sep="\t",header=None)
@@ -38,6 +39,7 @@ start = df.columns[-3]
 end = df.columns[-2]
 df.index = df[chr]+"-"+df[start].astype(str)+"-"+df[end].astype(str)
 out = []
+subset_interactions = []
 for i,r in df.iterrows():
 	line = r.tolist()
 	# print ("line",line,i)

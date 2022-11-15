@@ -35,7 +35,7 @@ def my_args():
 	mainParser.add_argument('--hichipper_config',  default=myData['hichipper_config'])
 	mainParser.add_argument('--MAPS_config',  default=myData['MAPS_config'])
 	mainParser.add_argument('-a','--anchor',  default="None", help="anchor list to search for interactions, if given, MAPS will be run as well")
-	mainParser.add_argument('--cutsite',  default="GATC", help="Mbol cut site")
+	# mainParser.add_argument('--cutsite',  default="GATC", help="Mbol cut site")
 	## fastq files must end with _R1.fastq.gz
 	mainParser.add_argument('-r1', help="fastq R1", required=True)
 	mainParser.add_argument('-r2', help="fastq R2", required=True)
@@ -134,8 +134,8 @@ def main():
 		args.juicer_genome_size = args.chrom_size
 		args.digested_fragments = args.digested_enzyme
 		args.genome = args.ref_genome # seems not used?
-		
-		
+	if "hybrid" in args.genome:
+		args.ref_genome = args.genome
 		
 	if args.debug:
 		submit_pipeline_jobs(myPipelines["hicpro_split_debug"],args)

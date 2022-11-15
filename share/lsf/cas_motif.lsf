@@ -3,7 +3,7 @@
 =cut cas 1
 
 ncore=1
-mem=8000
+mem=20000
 # q=gpu_rhel7
 
 module load conda3
