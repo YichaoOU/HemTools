@@ -1,0 +1,51 @@
+#!shell
+=cut readsFilter 1
+
+inputFile=input
+
+ncore=2
+mem=50000
+
+
+module load bwa
+module load samtools/1.7
+module load bbmap/38.86
+
+fasta={{my_fasta}}
+
+bwa index -p {{jid}}/myIndex $fasta
+
+bwa mem {{jid}}/myIndex ${COL1} ${COL2} > {{jid}}/${COL3}.sam
+
+cd {{jid}}
+
+samtools view -F 4 -F 8 -F 512 -q 40 -f 2 ${COL3}.sam | cut -f 1 > ${COL3}.list
+
+sed 's/$/\/1/' ${COL3}.list > ${COL3}.r1.list
+
+
+sed 's/$/\/2/' ${COL3}.list > ${COL3}.r2.list
+
+cat ${COL3}*.list > ${COL3}.union.list
+
+cd ..
+
+filterbyname.sh in=${COL1} in2=${COL2} names={{jid}}/${COL3}.union.list out={{jid}}/${COL3}.R1.fastq.gz out2={{jid}}/${COL3}.R2.fastq.gz include=f ow=t
+
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+rm myIndex*
+
+rm *sam
+
+rm *list
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

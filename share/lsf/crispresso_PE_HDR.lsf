@@ -13,7 +13,7 @@ q=priority
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 CRISPResso -r1 ${COL3} -r2 ${COL4} -a ${COL1} -e ${COL2} --guide_seq ${COL6} -o {{jid}}/${COL5} --discard_indel_reads
 

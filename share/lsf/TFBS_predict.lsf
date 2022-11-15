@@ -1,0 +1,143 @@
+#!shell
+
+# mainly used for testing
+# when you have already learned the motif model, use this
+# Catchitt_path=/home/yli11/HemTools/share/script/jar/Catchitt-0.1.3.jar 
+
+=cut atac 1
+
+
+inputFile=atac_list
+
+ncore=1
+mem=20000
+q={{queue}}
+
+
+Catchitt_path={{Catchitt_path}}
+module load java/10.0.2
+
+java -jar -Xmx20g ${Catchitt_path} access \
+i=${COL2} \
+outdir={{jid}}/ATAC/${COL1} \
+b={{bin_size}}
+
+=cut motif 1
+
+inputFile=motif_list
+
+ncore=1
+mem=65000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx64g ${Catchitt_path} motif ${COL2} \
+g={{fasta}} \
+f={{faidx}} \
+b={{bin_size}} outdir={{jid}}/Motif/${COL1} l=false threads=4
+
+
+
+=cut label 1
+
+
+ncore=1
+mem=8000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx8g ${Catchitt_path} labels \
+c={{conserved_peak}} \
+r={{relaxed_peak}} \
+f={{faidx}} \
+b={{bin_size}} outdir={{jid}}/labels
+
+
+=cut train 2 all
+
+ncore=4
+mem=10000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx40g ${Catchitt_path} itrain \
+t={{training_chromosomes}} \
+itc='chr10,chr11,chr12,chr13,chr14' \
+threads=8 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+b={{bin_size}} outdir={{jid}}/trained_model
+
+
+
+
+=cut predict 3 train
+
+
+inputFile=atac_list2
+
+ncore=1
+mem=20000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+mkdir {{jid}}/prediction/${COL1}/
+mkdir {{jid}}/prediction/${COL1}/${COL2}
+
+java -jar -Xmx20g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="${COL2}" \
+outdir={{jid}}/prediction/${COL1}/${COL2}
+
+
+=cut predict2 4 all
+
+
+inputFile=atac_list
+
+ncore=1
+mem=2000
+q={{queue}}
+
+cd {{jid}}/prediction/${COL1}
+
+module load python/2.7.13
+
+cat */Predictions.tsv.gz > Predictions.tsv.gz
+
+Catchitt_prediction_to_bed.py Predictions.tsv.gz 0.5 ${COL1}.05.peaks.bed {{bin_size}}
+
+zcat Predictions.tsv.gz | awk -F "\t" '{print $1"\t"$2"\t"$2+50"\t"$3}' > ${COL1}.bdg
+
+
+=cut email 5 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+

@@ -34,7 +34,12 @@ library(ATACseqQC)
 #  source(system.file("extdata", "IGVSnapshot.R", package = "ATACseqQC"))
 
 ## -----------------------------------------------------------------------------
-#bamQC(bamfile, outPath=NULL)
+a=bamQC(bamfile,outPath=NULL)
+
+sink(paste(bamfile,".bam.stat.txt",sep=""))
+print(a)
+sink()
+
 png(paste(bamfile,".LibComplexity.png",sep=""))
 estimateLibComplexity(readsDupFreq(bamfile))
 dev.off()
@@ -97,9 +102,12 @@ png(paste(bamfile,".TSS_enrichment.png",sep=""))
 plot(100*(-9:10-.5), tsse$values, type="b", 
      xlab="distance to TSS",
      ylab="aggregate TSS score")
+# plot(100*(-9:10-.5), tsse$TSS.mean, type="b", 
+     # xlab="distance to TSS",
+     # ylab="aggregate TSS score")
 dev.off()
 
-
+save.image("test.Rdata")
 # png(paste(bamfile,".LibComplexity.png",sep=""))
 
 fileConn<-paste(bamfile,".TSS_enrichment.tsv",sep="")

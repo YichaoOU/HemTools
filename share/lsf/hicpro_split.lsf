@@ -36,7 +36,7 @@ ncore=1
 mem=30000
 q={{queue}}
 
-module load hic-pro/2.11.1
+module load hic-pro/2.11.1 R/3.5.1
 
 cd {{jid}}/hicpro_results
 
@@ -81,15 +81,18 @@ makeTagDirectory {{sample_id}}_homer_tag -format HiCsummary {{sample_id}}.allVal
 module load R/3.5.1
 
 ## add homer AB compartment
-runHiCpca.pl {{sample_id}}_homer_PCA {{sample_id}}_homer_tag -cpu 8 -genome {{genome}}
+# runHiCpca.pl {{sample_id}}_homer_PCA {{sample_id}}_homer_tag -cpu 8 -genome {{genome}}
+# when to add -genome {{genome}}, I forgot
+runHiCpca.pl {{sample_id}}_homer_PCA {{sample_id}}_homer_tag -cpu 8
 
 tagDir2hicFile.pl {{sample_id}}_homer_tag/ -juicer auto -genome $genome -p 10 -juicerExe "java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar"
 
-
-java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar arrowhead --ignore-sparsity -k KR {{sample_id}}.allValidPairs.hic {{sample_id}}.TAD
+s={{sample_id}}_homer_tag/{{sample_id}}_homer_tag.hic
+java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar arrowhead --ignore-sparsity -k KR $s {{sample_id}}.TAD
 # java -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.21.01.jar arrowhead --ignore-sparsity -k KR {{sample_id}}.allValidPairs.hic {{sample_id}}.TAD
 
 
+java -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar hiccups --cpu -c X $s ${s}_results -r 10000,25000,50000 -k KR -f .2,.2,.2  -p 4,2,1 -i 7,5,3 -t 0.02,1.5,1.75,2 -d 20000,20000,50000 
 
 
 =cut qc 3 pairs
@@ -178,9 +181,13 @@ module load hic-pro/2.11.1
 
 hicpro2fithic.py -i raw/20000/{{sample_id}}_20000.matrix -b raw/20000/{{sample_id}}_20000_abs.bed -s iced/20000/{{sample_id}}_20000_iced.matrix.biases
 
+# hicpro2fithic.py -i raw/20000/Tcell_HiC_2_3_4_20000.matrix -b raw/20000/Tcell_HiC_2_3_4_20000_abs.bed -s iced/20000/Tcell_HiC_2_3_4_20000_iced.matrix.biases -o Tcell_HiC_2_3_4.fithic -r 20000
+
+module load conda3/202011
+
 source activate /home/yli11/.conda/envs/fithic/
 
-fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 4
+fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1 -v
 
 # =cut onTAD 4 ice
 
@@ -189,7 +196,7 @@ fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic
 inputFile=h5_list
 
 ncore=1
-mem=60000
+mem=120000
 q={{queue}}
 
 module load conda3
@@ -202,7 +209,8 @@ hicFindTADs --matrix {{sample_id}}.hicexplorer_20kb.h5 --correctForMultipleTesti
 
 hicPCA -m {{sample_id}}.hicexplorer_20kb.h5 -o {{sample_id}}_20kb_PC1.bw {{sample_id}}_20kb_PC2.bw
 
-hicTransform -m {{sample_id}}.hicexplorer_20kb.h5 --outFileName {{sample_id}}.hicTransform_20kb.h5 --method all
+# hicTransform -m {{sample_id}}.hicexplorer_20kb.h5 --outFileName {{sample_id}}.hicTransform_20kb.h5 --method all
+hicTransform -m {{sample_id}}.hicexplorer_20kb.h5 --outFileName {{sample_id}}.hicTransform_20kb.h5 --method pearson
 
 hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_20kb.h5 --outFileName {{sample_id}}_20kb_PC1.png --perChr --bigwig {{sample_id}}_20kb_PC1.bw
 
@@ -214,7 +222,8 @@ hicFindTADs --matrix {{sample_id}}.hicexplorer_10kb.h5 --correctForMultipleTesti
 
 hicPCA -m {{sample_id}}.hicexplorer_10kb.h5 -o {{sample_id}}_10kb_PC1.bw {{sample_id}}_10kb_PC2.bw
 
-hicTransform -m {{sample_id}}.hicexplorer_10kb.h5 --outFileName {{sample_id}}.hicTransform_10kb.h5 --method all
+# hicTransform -m {{sample_id}}.hicexplorer_10kb.h5 --outFileName {{sample_id}}.hicTransform_10kb.h5 --method all
+hicTransform -m {{sample_id}}.hicexplorer_10kb.h5 --outFileName {{sample_id}}.hicTransform_10kb.h5 --method pearson
 
 hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_10kb.h5 --outFileName {{sample_id}}_10kb_PC1.png --perChr --bigwig {{sample_id}}_10kb_PC1.bw
 
@@ -223,7 +232,8 @@ hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_10kb.h5 --outFileName {{samp
 
 hicPCA -m {{sample_id}}.hicexplorer_100kb.h5 -o {{sample_id}}_10kb_PC1.bw {{sample_id}}_10kb_PC2.bw
 
-hicTransform -m {{sample_id}}.hicexplorer_100kb.h5 --outFileName {{sample_id}}.hicTransform_100kb.h5 --method all
+# hicTransform -m {{sample_id}}.hicexplorer_100kb.h5 --outFileName {{sample_id}}.hicTransform_100kb.h5 --method all
+hicTransform -m {{sample_id}}.hicexplorer_100kb.h5 --outFileName {{sample_id}}.hicTransform_100kb.h5 --method pearson
 
 hicPlotMatrix -m pearson_{{sample_id}}.hicTransform_100kb.h5 --outFileName {{sample_id}}_100kb_PC1.png --perChr --bigwig {{sample_id}}_100kb_PC1.bw
 

@@ -8,6 +8,7 @@ ncore=1
 mem=16000
 
 module load trimgalore flash cutadapt/1.1 perl
+# module load trimgalore flash perl
 module load bowtie/1.2.2
 module load ucsc/041619
 
@@ -22,6 +23,11 @@ perl $script_path/dpngenome3_1.pl {{genome_fa}} {{cut_site}} ${COL3}.cut_coordin
 mv ${COL3}.cut_coordinates.txt ${COL3}
 
 ## step 1
+
+# module load conda3/202011
+# source activate /home/yli11/.conda/envs/cutadaptenv
+# module load trimgalore 
+
 trim_galore --paired -o ${COL3} ${COL1} ${COL2}
 ## step 2 very fast
 flash --interleaved-output -d ${COL3} -o ${COL3}_flash ${COL3}/${COL1%.fastq.gz}_val_1.fq.gz ${COL3}/${COL2%.fastq.gz}_val_2.fq.gz

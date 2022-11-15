@@ -10,6 +10,15 @@ from Bio import SeqIO
 import logging
 import Colorer
 import itertools
+import string
+
+def revcomp(seq):
+	try: ## python2
+		tab = string.maketrans(b"ACTG", b"TGAC")
+	except:  ## python3
+		tab = bytes.maketrans(b"ACTG", b"TGAC")
+	return seq.translate(tab)[::-1]
+
 
 def mismatch_sequence(seq,n):
 	bases=['A','T','G','C']
@@ -43,7 +52,7 @@ def my_args():
 	mainParser.add_argument('-r2',  help="input undetermined R2 fastq.gz", required=True)	
 	mainParser.add_argument('-b',"--barcode",  help="barcode file in fasta format", required=True)	
 	mainParser.add_argument('-n',"--num_mismatch",  help="number of mismatch allowed", default=1,type=int)	
-
+	mainParser.add_argument("--revcomp",  help="revcomp barcode",action='store_true')
 	# mainParser.add_argument('--config_list',help=argparse.SUPPRESS)
 
 
@@ -52,10 +61,13 @@ def my_args():
 	return args
 
 
-def read_fasta(f):
+def read_fasta(f,rc=False):
 	my_dict = {}
 	for r in SeqIO.parse(f, "fasta"):
-		my_dict[r.id] = str(r.seq).upper()
+		seq = str(r.seq).upper()
+		if rc:
+			seq = revcomp(seq)
+		my_dict[r.id] = seq
 	return my_dict	
 	
 
@@ -64,8 +76,8 @@ def main():
 	args = my_args()
 	
 	# read barcode
-	barcode = read_fasta(args.barcode)
-	
+	barcode = read_fasta(args.barcode,rc = args.revcomp)
+	print (barcode)
 	# open files
 	R1 = {}
 	R2 = {}
@@ -94,15 +106,16 @@ def main():
 			lines.append(line.strip())
 			if len(lines) == n:
 				# print (lines)
-				count += 1
+				
 				# logging.info("%s reads processed"%(count))
-				if count %10000 == 0:
+				if count %50000 == 0:
 					# print (count,"reads has been processed")
-					logging.info("%s reads processed"%(count))
+					logging.info("%s matched reads processed"%(count))
 				# @NB551526:91:HC27NAFX2:1:11101:17620:1055 1:N:0:CTGCCTAA
 				myString = lines[0].split("+")[-1]
 				# print (myString)
 				try:
+					count += 1
 					R1[myString].write("\n".join(lines)+"\n")
 				except:
 					R1['unmatched'].write("\n".join(lines)+"\n")
@@ -117,15 +130,16 @@ def main():
 			lines.append(line.strip())
 			if len(lines) == n:
 				# print (lines)
-				count += 1
+				
 				# logging.info("%s reads processed"%(count))
-				if count %10000 == 0:
+				if count %50000 == 0:
 					# print (count,"reads has been processed")
-					logging.info("%s reads processed"%(count))
+					logging.info("%s matched reads processed"%(count))
 				# @NB551526:91:HC27NAFX2:1:11101:17620:1055 1:N:0:CTGCCTAA
 				myString = lines[0].split("+")[-1]
 				# print (myString)
 				try:
+					count += 1
 					R2[myString].write("\n".join(lines)+"\n")
 				except:
 					R2['unmatched'].write("\n".join(lines)+"\n")

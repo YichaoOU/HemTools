@@ -70,8 +70,8 @@ def main():
 	print (args.chain_file)
 	args.output = args.output.replace(".bed","").replace(".bw","")
 	if args.bed:
-		temp_output1 = str(uuid.uuid4()).split("-")[-1]
-		temp_output2 = str(uuid.uuid4()).split("-")[-1]
+		temp_output1 = str(uuid.uuid4()).split("-")[-1]+".input"
+		temp_output2 = str(uuid.uuid4()).split("-")[-1]+".output"
 		## extract first 3 column
 		command = """dos2unix %s;awk NF %s|awk  -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3}' > %s"""%(args.bed,args.bed,temp_output1)
 		os.system(command)
@@ -134,7 +134,7 @@ def main():
 		total = float(df.shape[0])
 		print ("%s mapped, %s total, %s successfully converted"%(mapped,total,mapped/total))
 		
-		df2.to_csv(args.output+".bed",index=False,header=False,sep="\t")
+		df2.sort_values([0,1]).to_csv(args.output+".bed",index=False,header=False,sep="\t")
 		os.system("rm %s.bed"%(temp_output2))
 
 	

@@ -1,0 +1,17 @@
+#!shell
+
+=cut sam 1
+
+module load samtools/1.7
+
+inputFile=input
+
+ncore=1
+mem=20000
+q=priority
+
+samtools view -bS ${COL1} > {{jid}}/${COL2}.bam
+cd {{jid}}
+samtools sort -@ 6 -o ${COL2}.st.bam ${COL2}.bam
+samtools index ${COL2}.st.bam
+

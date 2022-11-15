@@ -1,0 +1,70 @@
+#!shell
+=cut UTrans 1
+
+inputFile=input
+
+ncore=5
+mem=10000
+
+# COL4 is primer location bed file
+
+# demultiplexing
+
+
+# cutadapt trim illumina adapter
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+jid={{jid}}
+
+
+
+mkdir $jid/$COL3
+
+cp ${COL4}  $jid/$COL3
+
+cutadapt -j 5 -m 10 -e 0.33 -O 6 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -o $jid/$COL3/step2.trim_adapt.R1.fastq.gz -p $jid/$COL3/step2.trim_adapt.R2.fastq.gz ${COL1} ${COL2}
+
+# bwa R2 filter out mis-priming
+
+cd $jid/$COL3
+
+module load bwa/0.7.16a
+
+bwa mem -t 6 {{index_file}} step2.trim_adapt.R2.fastq.gz |samtools view -bS - > step3.bam
+samtools sort -@ 6 -o step3.st.bam step3.bam
+samtools index step3.st.bam
+
+module load bedtools
+
+bedtools bamtobed  -i step3.st.bam > step3.st.bed
+# M04990:161:000000000-JYH4C:1:2102:2907:15778
+bedtools intersect -a step3.st.bed -b ${COL4} -u | cut -f 4 > step3.read.list
+
+module load seqtk
+
+seqtk subseq step2.trim_adapt.R1.fastq.gz step3.read.list > step3.filtered.R1.fastq
+
+seqtk subseq step2.trim_adapt.R2.fastq.gz step3.read.list > step3.filtered.R2.fastq
+
+seqtk seq step3.filtered.R2.fastq -A > step3.filtered.R2.fa
+
+# Read split (blat to identify fusion point), unfinished
+
+module load blat
+
+bedtools getfasta -fi {{fasta}} -fo bait.fa -bed ${COL4}
+
+blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 bait.fa step3.filtered.R2.fa step4.psl
+
+# reformat read, add UMI to read name
+
+
+# Bwa-mem, paired end
+
+
+# UMI collapsing (umi-tools)
+
+# ../*/fastq_files/*R1*fastq.gz

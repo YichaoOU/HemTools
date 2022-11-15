@@ -105,7 +105,7 @@ def main():
 	write_file("%s.R"%(args.output),deseq2)
 	import os
 	os.system("Rscript %s.R"%(args.output))
-	os.system("mkdir {0};mv {0}* {0}".format(args.output))
+	os.system("mkdir {0} 2>/dev/null;mv {0}* {0} 2>/dev/null".format(args.output))
 	
 if __name__ == "__main__":
 	main()

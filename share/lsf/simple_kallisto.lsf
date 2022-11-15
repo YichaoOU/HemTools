@@ -1,0 +1,16 @@
+#!shell
+
+=cut quant 1 
+
+inputFile=input
+
+ncore=8
+mem=2000
+
+module load kallisto
+
+# kallisto quant -i /home/yli11/Data/Human/hg38/annotations/gencode_39/gencode.v39.idx --threads=4 --bootstrap-samples=100  --output-dir={{jid}}/${COL3} ${COL1}  ${COL2}
+# kallisto quant -i /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/temp_data/hg19.protein_coding.wInsert.idx --threads=4 --bootstrap-samples=100  --output-dir={{jid}}/${COL3} ${COL1}  ${COL2}
+kallisto quant -i /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/temp_data/new_kallisto_index/HS.Ensemble106.wInsert.idx --threads=8 --bootstrap-samples=100  --output-dir={{jid}}/${COL3} ${COL1}  ${COL2}
+# kallisto quant -i /home/yli11/Data/Mouse/mm10/gencode/mm10.vM29.idx --threads=4 --bootstrap-samples=100  --output-dir={{jid}}/${COL3} ${COL1}  ${COL2}
+# kallisto quant -i /home/yli11/Data/Mouse/mm10/gencode/mm10.vM29.idx --single -l 300 -s 100 --threads=4 --bootstrap-samples=100  --output-dir={{jid}}/${COL2} ${COL1} 

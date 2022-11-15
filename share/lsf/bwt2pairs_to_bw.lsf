@@ -1,0 +1,35 @@
+#!shell
+
+
+=cut bdgToBw 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+
+module load bedtools
+
+module load samtools/1.7
+
+samtools sort -@ 8 -o {{jid}}/${COL2}.bam ${COL1}
+
+cd {{jid}}
+
+bedtools genomecov -ibam ${COL2}.bam -bg -split > ${COL2}.bdg
+
+module load ucsc/041619
+
+bedGraphToBigWig  ${COL2}.bdg {{chrom_size}}  ${COL2}.bw
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+

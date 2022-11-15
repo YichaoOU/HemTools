@@ -1,0 +1,30 @@
+#!shell
+=cut svnn 1
+
+inputFile=input
+
+ncore=1
+
+mem=40000
+
+module load conda3/202011 
+
+source activate long_reads
+
+module load bbmap/38.86 gcc/9.1.0
+
+mkdir ${COL2}
+
+reformat.sh in=${COL1} out=${COL2}/fixed.fq qin=33 qout=64 maxcalledquality=41
+
+cd ${COL2}
+
+svnn -r ~/Data/Human/hg38/fasta/hg38.main.fa -q fixed.fq -s1 10 -s2 10
+
+module load bedtools
+
+bedtools intersect -a temp_mini_ngmlr.bam -b ../my_target.bed -F 0.95 > valid_reads.bam
+
+samtools index valid_reads.bam
+
+sniffles --output-rnames -i valid_reads.bam -v valid_reads.sniffles.vcf --reference /home/yli11/Data/Human/hg38/fasta/hg38.main.fa -t 8 --minsupport 10

@@ -17,7 +17,9 @@ bsub -q priority -P Genomics -R 'rusage[mem=30000]' find_all_gRNA.py -f region.b
 def my_args():
 
 	mainParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-	mainParser.add_argument('-f','--bed_file',  help="input regions to look for gRNAs", required=True)
+	group = mainParser.add_mutually_exclusive_group(required=True)
+	group.add_argument('-f','--bed_file',  help="input regions to look for gRNAs")
+	group.add_argument('-fa','--fasta',  help="input fasta to look for gRNAs")
 	mainParser.add_argument('-e','--extend',  help="extend search area to left and right", default=100,type=int)
 	mainParser.add_argument('-l','--sgRNA_length',  help="sgRNA_length", default=20)
 	mainParser.add_argument('-g','--genome_fa',  help="genome fasta", default="/home/yli11/Data/Human/hg19/fasta/hg19.fa")
@@ -48,10 +50,12 @@ def get_fasta(genome_fa,extended_file):
 	print (command)
 	return out
 	
-def run_casOFFinder(genome_fasta,PAM,your_seq_list,nMisMatch=0,chr_dir=None):
-	cas_input = str(uuid.uuid4()).split("-")[-1]
-	cas_output = str(uuid.uuid4()).split("-")[-1]
+def run_casOFFinder(genome_fasta,PAM,your_seq_list,nMisMatch=0,chr_dir=None,include_PAM_mismatch=False):
+	cas_input = str(uuid.uuid4()).split("-")[-1]+".cas_input"
+	cas_output = str(uuid.uuid4()).split("-")[-1]+".cas_output"
 	pattern = "N"*len(your_seq_list[0])+PAM
+	if include_PAM_mismatch:
+		pattern = "N"*(len(your_seq_list[0])+len(PAM))
 	if chr_dir:
 		genome_fasta = chr_dir
 	# print (chr_dir)
@@ -96,6 +100,54 @@ def cas_to_bed(x,PAM,output,sgRNA_length):
 	df['strand'] = df[4]
 	df['N_mismatch_to_target'] = df[5]
 	df[['#chr','start','end','seq','gc','strand','N_mismatch_to_target','target']].to_csv(output+".genome.sgRNA.bed",sep="\t",header=True,index=False)
+	df['target'].value_counts().to_csv(output+".num_targets.tsv",sep="\t",header=True,index=True)
+
+def list_to_fasta(l):
+	out = []
+	for i in l:
+		if len(i) != 23:
+			print ("something is wrong")
+		out.append(">%s"%(i[:20]))
+		out.append("AAAA%sAAA"%(i))
+	return "\n".join(out)
+def parse_webpage(c):
+	a=re.findall('"([^"]*)"', str(c))
+	# get the random id
+	for x in a:
+		# random id format could be changed during version updates
+		if "DeepSpCas9/job/user" in x:
+			random_id = x.split("/")[-1]
+	url = "http://deepcrispr.info/DeepSpCas9/data/%s/Results.zip"%(random_id)
+	df = pd.read_csv(url,sep="\t")
+	df[df.ID==df['Guide Sequence (20bp)']]
+	df.index = df.ID.tolist()
+	return df['DeepSpCas9 Score'].to_dict()
+	
+def get_DeepSpCas9_score(gRNA_list):
+	"""Grab score from web server
+	
+	input gRNA list should include PAM sequence, PAM is NGG
+	"""
+	url="http://deepcrispr.info/DeepSpCas9/"
+	br = mechanize.Browser()
+	br.set_handle_robots(False) # ignore robots
+	br.open(url)
+	br.select_form(nr=0)
+	br["ENTER_FASTA"] = list_to_fasta(gRNA_list)
+	res = br.submit()
+	output = res.read()
+	res = parse_webpage(output)
+	flag = False
+	for i in gRNA_list:
+		if not i[:20] in res:
+			print ("gRNA: %s NOT FOUND!"%(i[:20]))
+			print ("DeepSpCas9 API error!")
+			flag = True
+			res[i[:20]] = 0
+	if flag:
+		print (output)
+		print (res)
+	return res
 
 	
 def find_offtarget(locus_bed_file, gRNA_bed_file):
@@ -144,24 +196,29 @@ def main():
 	args = my_args()
 	# find_offtarget("a746985b8f5d", args.output)
 	# exit()
-	extended_file = extend_bed(args)
-	extended_fa = get_fasta(args.genome_fa,extended_file)
+	if not args.fasta:
+		extended_file = extend_bed(args)
+		args.fasta = get_fasta(args.genome_fa,extended_file)
 	# run 1 
-	cas_output = run_casOFFinder(extended_fa,args.PAM,["N"*args.sgRNA_length])
+	cas_output = run_casOFFinder(args.fasta,args.PAM,["N"*args.sgRNA_length])
 	# get sequneces
 	df = pd.read_csv(cas_output,sep="\t",header=None)
 	df = df.dropna()
 	candidate_gRNAs = [x[:-len(args.PAM)] for x in df[3].tolist()]
 	print ("Total number of possible gRNA is: %s"%(len(candidate_gRNAs)))
-	os.system("rm %s"%(cas_output))
+	# os.system("rm %s"%(cas_output))
 	# run 2 to get genomic coordinates
-	cas_output = run_casOFFinder(args.genome_fa,args.PAM,candidate_gRNAs,args.mis_match,args.chr_dir)
-	cas_to_bed(cas_output,args.PAM,args.output,args.sgRNA_length)
-	## check if bedtools getfasta can get exact sequence - YES
-	find_offtarget(extended_file, args.output)
-	os.system("rm %s"%(extended_fa))
-	os.system("rm %s"%(extended_file))
-	os.system("rm %s"%(cas_output))
+	if args.bed_file:
+		cas_output = run_casOFFinder(args.genome_fa,args.PAM,candidate_gRNAs,args.mis_match,args.chr_dir,True)
+		cas_to_bed(cas_output,args.PAM,args.output,args.sgRNA_length)
+		## check if bedtools getfasta can get exact sequence - YES
+		find_offtarget(extended_file, args.output)
+		os.system("rm %s"%(args.fasta))
+		os.system("rm %s"%(extended_file))
+	else:
+		cas_output = run_casOFFinder(args.genome_fa,args.PAM,candidate_gRNAs,args.mis_match,args.chr_dir,True)
+		cas_to_bed(cas_output,args.PAM,args.output,args.sgRNA_length)
+	# os.system("rm %s"%(cas_output))
 	
 	
 if __name__ == "__main__":

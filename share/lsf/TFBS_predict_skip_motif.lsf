@@ -1,0 +1,87 @@
+#!shell
+
+# mainly used for testing
+# when you have already learned the motif model, use this
+# Catchitt_path=/home/yli11/HemTools/share/script/jar/Catchitt-0.1.3.jar 
+#  not used
+
+=cut label 1
+
+
+ncore=1
+mem=8000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx8g ${Catchitt_path} labels \
+c={{conserved_peak}} \
+r={{relaxed_peak}} \
+f={{faidx}} \
+b=50 outdir={{jid}}/labels
+
+
+=cut train 2 all
+
+ncore=4
+mem=10000
+q=priority
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+# i should be an important parameter, not sure how the algorithm will control overfitting
+
+java -jar -Xmx100g ${Catchitt_path} itrain \
+t='chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr17,chr18,chr19,chr20,chr22,chrX,chrY' \
+itc='chr10,chr11,chr12,chr13,chr14' \
+threads=20 \
+a={{jid}}/ATAC/{{training_cell_type}}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+l={{jid}}/labels/Labels.tsv.gz \
+f={{faidx}} \
+i=5 \
+b={{bin_size}} outdir={{jid}}/trained_model
+
+
+
+
+
+=cut predict 3 all
+
+
+inputFile=atac_list
+
+ncore=1
+mem=30000
+q={{queue}}
+
+module load java/10.0.2
+Catchitt_path={{Catchitt_path}}
+
+java -jar -Xmx30g ${Catchitt_path} predict  \
+c={{jid}}/trained_model/Classifiers.xml \
+a={{jid}}/ATAC/${COL1}/Chromatin_accessibility.tsv.gz \
+{{motif_features}} \
+f={{faidx}} \
+p="chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr17,chr18,chr19,chr20,chr22,chrX" \
+outdir={{jid}}/prediction/${COL1}
+
+
+
+=cut email 4 all
+
+
+ncore=1
+mem=2000
+q={{queue}}
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+
+send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
+

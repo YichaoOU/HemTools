@@ -5,7 +5,7 @@
 =cut vcf2fa 1
 
 ncore=1
-mem=20000
+mem=150000
 
 src=/home/yli11/Programs/vcf2diploid_v0.2.6a
 
@@ -31,6 +31,9 @@ cd $outdir
 
 cat *_paternal.fa > $label.tmp.fasta
 
+module load python/2.7.13
+
+
 python /home/yli11/HemTools/share/misc/rename_chr.py $label.tmp.fasta $label.fasta
 
 rm $label.tmp.fasta
@@ -47,6 +50,16 @@ mv maternal.chain intermediate_files
 module load bwa/0.7.16a
 
 bwa index $label.fasta
+
+module load crossmap/0.2.4
+
+sed -i 's/_paternal//g' paternal.chain
+
+CrossMap.py gff paternal.chain {{genome_gtf}} $label.gtf
+
+module load star/2.5.3a
+
+STAR --runMode genomeGenerate --runThreadN 4  --genomeDir . --genomeFastaFiles $label.fasta   --sjdbGTFfile $label.gtf  --sjdbOverhang 100
 
 ### black_list
 

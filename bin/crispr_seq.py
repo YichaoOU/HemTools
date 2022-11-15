@@ -28,6 +28,8 @@ def my_args():
 	mainParser.add_argument("-c","--control_gRNA_group", help="(Required) mageck format", required=False)
 	mainParser.add_argument("--min_read_count", help="filter sgRNAs using read count, sgRNAs with less than the given value will be filtered out", default=10,type=int)
 	mainParser.add_argument("-b",'--bed',  help="Genomic coordinates for gRNAs (Format: chr, start, end, name). If provided, raw counts, logFC, logFDR will be uploaded to protein paint for visualization.",default=None)
+	mainParser.add_argument('--add_on_parameters',  help="",default="")
+	mainParser.add_argument('--trim_5',  help="fix gRNA position to count",default=None)
 	
 	group = mainParser.add_mutually_exclusive_group(required=True)
 	group.add_argument('-f',"--fastq_tsv",  help="tab delimited 3 columns (tsv file): Read 1 fastq, Sample ID, group ID")
@@ -53,6 +55,8 @@ def main():
 	if args.guess_input:
 		flag,fname = prepare_single_end_input_with_group_infer()
 		sys.exit(1)	
+	if args.trim_5:
+		args.add_on_parameters += " --trim-5 %s"%(args.trim_5)
 	##------- check if jid exist  ----------------------
 	if isdir(args.jid):
 		addon_string = str(uuid.uuid4()).split("-")[-1]

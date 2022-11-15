@@ -34,6 +34,7 @@ def my_args():
 	mainParser.add_argument("--rename_col_with_filename", action='store_true')
 	mainParser.add_argument("--by_row", action='store_true')
 	mainParser.add_argument("--index", action='store_true')
+	mainParser.add_argument("--fillna", default=None)
 	
 	mainParser.add_argument("--intersection",  help="merge dataframes only on overlapping row names",action='store_true')
 	mainParser.add_argument('-o',"--output",  help="output table name",default=username+"_"+str(datetime.date.today())+"_"+addon_string+".tsv")
@@ -65,21 +66,27 @@ def parse_df(x,args):
 	if sep =="auto":
 		error_flag = True
 		sep=guess_sep(x)
+		args.sep = sep
 	if args.header_list == "None":
 		if args.index_col==0:
 			df = pd.read_csv(x,sep=sep,index_col=0)
+		elif args.index_col==-1:
+			df = pd.read_csv(x,sep=sep)
 		else:
 			df = pd.read_csv(x,sep=sep)
 			df = df.set_index(df.columns[args.index_col])	
 	else:
 		if args.index_col==0:
 			df = pd.read_csv(x,sep=sep,index_col=0,header=None)
+		elif args.index_col==-1:
+			df = pd.read_csv(x,sep=sep,header=None)
 		else:
 			df = pd.read_csv(x,sep=sep,header=None)
 			df = df.set_index(df.columns[args.index_col])	
 		# print (df.head())
-		
-		df.columns = args.header_list.split(",")
+		# print (args.header_list)
+		# print (df.head())
+		# df.columns = args.header_list.split(",") # 7/2/2021, causing error, why do I have it here?
 			
 	print ("%s shape: %s X %s"%(x,df.shape[0],df.shape[1]))
 	# print (df.head())
@@ -108,7 +115,7 @@ def parse_df(x,args):
 	if args.name_col_with_filename != "None":
 		df[x] = df[args.name_col_with_filename]
 		df = df.drop([args.name_col_with_filename],axis=1)
-	print (df.head())
+	# print (df.head())
 	if args.rename_index_by_folder>=-5:
 		df.index = [x.split("/")[args.rename_index_by_folder]] * df.shape[0]
 	return df
@@ -116,11 +123,13 @@ def parse_df(x,args):
 def main():
 
 	args = my_args()
+	print (args)
 	if args.glob != "None":
 		files = glob.glob("%s"%(args.glob))
 		print (files)
 		df_list = [parse_df(x,args) for x in files]
 	else:
+		print (args.file)
 		df_list = [parse_df(x,args) for x in args.file]
 	if args.intersection: # default by col
 		df = pd.concat(df_list,join="inner",axis=1)
@@ -136,7 +145,15 @@ def main():
 		df.columns = args.header_list.split(",")
 	except:
 		pass
-	df.to_csv(args.output,sep="\t")
+	if args.fillna:
+		for c in args.fillna.split(","):
+			df[c] = df[c].fillna(0)
+	if args.sep=="\\t":
+		args.sep="\t"
+	if args.index_col == -1:
+		df.to_csv(args.output,sep=args.sep,index=False)
+	else:
+		df.to_csv(args.output,sep=args.sep)
 	print ("Output to table: %s"%(args.output))
 if __name__ == "__main__":
 	main()

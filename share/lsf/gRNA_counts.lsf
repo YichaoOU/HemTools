@@ -1,0 +1,13 @@
+=cut count 1
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+fastq_count_gRNA.py ${COL1}
+

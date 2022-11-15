@@ -1,0 +1,49 @@
+#!shell
+
+=cut bamBW 1
+
+inputFile=input
+
+ncore=1
+mem=16000
+
+inbam=$(basename ${COL1})
+outbam=${inbam%.bam}.filtered.bam
+outbw=${inbam%.bam}.bw
+
+cd {{jid}}
+
+ln -s ../${COL1} $inbam
+
+module load samtools/1.7
+
+samtools sort $inbam -o ${outbam}.sorted
+mv ${outbam}.sorted $outbam
+samtools index $outbam
+
+# bam Coverage
+
+module purge
+module load python/2.7.15-rhel7
+
+bamCoverage -b $outbam -o $outbw --effectiveGenomeSize {{effectiveGenomeSize}} --numberOfProcessors 4 {{bamCoverage_addon}}
+
+rm $inbam
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+mkdir bam_files
+
+mkdir bw_files
+
+mv *.bam bam_files
+mv *.bai bam_files
+mv *.bw bw_files
+
+mv ../{{jid}}.input log_files/
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

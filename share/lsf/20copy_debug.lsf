@@ -1,0 +1,45 @@
+#!shell
+
+=cut map 1
+
+ncore=1
+mem=20000
+
+inputFile=input
+
+module load bwa/0.7.16a samtools/1.7 bedtools
+
+bwa mem -t 8  /home/yli11/dirs/hgcOPT_insulator/Data/BWA_0716a_index/hg19_with_lenti_CL20i4r.fa ${COL1} |samtools view -bS - > {{jid}}/${COL2}.bam
+
+cd {{jid}}
+
+samtools sort -@ 8 -o ${COL2}.st.bam ${COL2}.bam
+
+samtools index ${COL2}.st.bam
+
+rm ${COL2}.bam
+
+samtools view -b ${COL2}.st.bam 20copy > ${COL2}.20copy.bam
+
+samtools index ${COL2}.20copy.bam
+
+samtools view ${COL2}.20copy.bam | wc -l > ${COL2}.20copy.read.count
+
+
+
+=cut count 1
+
+
+ncore=1
+mem=10000
+
+inputFile=input
+
+module load python/2.7.13
+
+mkdir -p {{jid}}/seq_counts
+
+fastq_count_seq.py ${COL1} /home/yli11/dirs/20copy_project/provirus_analysis/data/debug.seq.tsv > {{jid}}/seq_counts/${COL2}.tsv
+
+
+

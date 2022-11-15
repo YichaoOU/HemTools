@@ -160,8 +160,12 @@ getopt=function (spec=NULL,opt=commandArgs()) {
 #Geometric_mean function to identify background level for each bait
 
 Geometric_mean=function(table=table,cis_window=1500000) {
-	start=seq(0,cis_window-20000,by=20000)
-	end=seq(20000,cis_window,by=20000)
+	# start=seq(0,cis_window-20000,by=20000)
+	# end=seq(20000,cis_window,by=20000)
+	start=seq(0,cis_window-30000,by=30000)
+	end=seq(30000,cis_window,by=30000)
+	# start=seq(0,cis_window-10000,by=10000)
+	# end=seq(10000,cis_window,by=10000)
 	distance=GRanges(seqnames=Rle(table$chr_Bait[1]),ranges=IRanges(start,end),strand=rep("*",length(start)))
 	distance_d=as.data.frame(distance)
 	distance_d$RefBinMean=1
@@ -176,15 +180,18 @@ Geometric_mean=function(table=table,cis_window=1500000) {
 	for(j in 1:length(distance_d$start)){
 			
 		bins=table[abs(table$end_OE-table$start_Bait[1]) <= distance_d$end[j] & abs(table$end_OE-table$start_Bait[1]) > distance_d$start[j] ,]
+		# print (bins)
 		distance_d$RefBinMean[j]=geometric.mean(bins[,"N"])
 		if (is.na(distance_d$RefBinMean[j]) & length(distance_d$RefBinMean[j-1])!=0 ) {distance_d$RefBinMean[j]=distance_d$RefBinMean[j-1]}
 	}
   if(length(distance_d[distance_d$RefBinMean==0,]$RefBinMean)<=length(distance_d[distance_d$RefBinMean!=0,]$RefBinMean) & dim(distance_d)[1] >= 10){
+		
 	  function_distance <- glm.nb( distance_d$RefBinMean ~ distance_d$start,link="log") #Negative Binomial regression 
 	  distance_d$predicted=fitted(function_distance)
    } else {
      distance_d$predicted=distance_d$RefBinMean
    }
+	# print (distance_d)
 	return (distance_d)
 
 }
@@ -195,14 +202,17 @@ FindPeaks <- function(table=table,w=50,span=0.05,d=0,cis_window=1500000) {
 	x=table[,"start_OE"]
 	n <- length(y)
 	y.smooth <- loess(y ~ x, span=span)$fitted
+	# print (y.smooth)
 	y.max <- rollapply(zoo(y.smooth), 2*w+1,max,align="center")
 	delta <- y.max - y.smooth[-c(1:w, n+1-1:w)]
 	i.max <- which(delta <= d) + w
+	# print (i.max)
 	if (length(i.max)==0) {
 		return(NULL)
 	}
 	final=data.frame()
 	distance_d=Geometric_mean(table,cis_window)
+	# print (distance_d)
 	for (j in 1:length(i.max)){
 		peak=table[i.max[j],]	
 		dist=abs(peak$start_OE-peak$start_Bait[1])
@@ -212,7 +222,9 @@ FindPeaks <- function(table=table,w=50,span=0.05,d=0,cis_window=1500000) {
 			if ( peak[,"N"]  > value$predicted ) {
 				final[j,1]=peak$ID_Bait
 				final[j,2]=peak$ID_OE
-				final[j,3]=log2(peak$N/value$predicted)
+				# print (value$predicted)
+				# final[j,3]=log2(peak$N/value$predicted)
+				final[j,3]=peak$N/value$predicted
 				counter <<- counter+1
 			}
 			
@@ -220,12 +232,16 @@ FindPeaks <- function(table=table,w=50,span=0.05,d=0,cis_window=1500000) {
 		
 	}
  final=na.omit(final)
+	# print (final)
  if( dim(final)[1] !=0) {
    Final_coordinates=data.frame()
    for (i in 1:dim(final)[1]) {
    	Final_coordinates=rbind(Final_coordinates,table[table$ID_OE == final[i,2] & table$ID_Bait==final[i,1],])
     }
+			# print (final[,3])
+			# print (Final_coordinates)
    Final_coordinates$Enrichment = final[,3]
+			
    return(Final_coordinates)
   }
 }
@@ -335,7 +351,7 @@ cis_window=optArgs$`cis_window`
 ###################################################################################
 
 ibed=as.data.frame(fread(file,header=TRUE,fill=TRUE,check.names=TRUE),stringsAsFactors=FALSE)
-
+# ibed$N = as.integer(ibed$N)
 #Check presence of headers and appropriate ibed format
 if(dim(ibed)[2]!=11) {
 	stop("Wrong ibed format - ID_Bait, chr_Bait, start_Bait, end_Bait, Bait_name, ID_OE, chr_OE, start_OE, end_OE, OE_name, N\n")
@@ -347,7 +363,7 @@ if(colnames(ibed)[1] != "ID_Bait") {
 
 colnames(ibed)=c("ID_Bait","chr_Bait","start_Bait","end_Bait","Bait_name","ID_OE","chr_OE","start_OE","end_OE","OE_name","N")
 
-if (!is.numeric(ibed$ID_Bait) | !is.numeric(ibed$start_Bait) | !is.numeric(ibed$end_Bait) | !is.numeric(ibed$ID_OE) | !is.numeric(ibed$start_OE) | !is.numeric(ibed$end_OE) | !is.integer(ibed$N)) {
+if (!is.numeric(ibed$ID_Bait) | !is.numeric(ibed$start_Bait) | !is.numeric(ibed$end_Bait) | !is.numeric(ibed$ID_OE) | !is.numeric(ibed$start_OE) | !is.numeric(ibed$end_OE) | !is.numeric(ibed$N)) {
 	stop("Wrong ibed format - ID_Bait, chr_Bait, start_Bait, end_Bait, Bait_name, ID_OE, chr_OE, start_OE, end_OE, OE_name, N\n")
 }
 

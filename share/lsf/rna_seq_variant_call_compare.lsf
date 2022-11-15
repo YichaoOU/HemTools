@@ -23,7 +23,7 @@ inputFile=fastq_tsv
 ncore=2
 mem=4000
 
-trim_galore --dont_gzip --paired -j $ncore -o {{jid}} --basename ${COL3} --clip_R1 6 --clip_R2 6 ${COL1} ${COL2}
+/home/yli11/HemTools/bin/trim_galore --dont_gzip --paired -j $ncore -o {{jid}} --basename ${COL3} --clip_R1 6 --clip_R2 6 ${COL1} ${COL2}
 
 =cut STAR 2 trim[*]
 

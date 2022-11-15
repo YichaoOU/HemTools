@@ -70,6 +70,7 @@ def clean_bed(x,extend):
 def run_bigWigAverageOverBed(bed,bw):
 	addon_string = str(uuid.uuid4()).split("-")[-1]
 	out = bed+"-bwOverBed-%s-"%(addon_string)+bw.split("/")[-1]+".out"
+	# command = "bigWigAverageOverBed -minMax %s %s %s"%(bw,bed,out)
 	command = "bigWigAverageOverBed %s %s %s"%(bw,bed,out)
 	os.system(command)
 	df = parse_df(out)
@@ -131,7 +132,7 @@ def make_pairwise_boxplot(list1,list2,output,flag,log_flag,sns_style,l1="Positiv
 	myMin,myMax = plt.gca().get_ylim()
 	unit=(myMax-myMin)/50
 
-	
+	print (plot_df.groupby("variable").describe())
 	y=myMax+unit*1
 	h=unit*1.5
 	plt.plot([0, 0, 1, 1], [y, y+h, y+h, y], lw=1.5, c="black")

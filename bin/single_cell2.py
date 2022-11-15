@@ -25,6 +25,7 @@ def my_args():
 	mainParser.add_argument("--input_list",  help=argparse.SUPPRESS,default=None)
 
 	mainParser.add_argument("-f","--library_csv",  help="A list of group name (fastq file prefix).",required=True)
+	mainParser.add_argument("--scjupyter",  help="run scjupyter, please provide input.yaml file name",default="")
 	mainParser.add_argument("-a","--antibody_barcode",  help="antibody barcodes see: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/feature-bc-analysis",default=None)
 	mainParser.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm10.", default='hg38',type=str)
 	mainParser.add_argument('--genes',  help="Genes to inspect, use Ensembl ID, separated by ,.", default='ENSG00000213934,ENSG00000196565',type=str)
@@ -63,13 +64,16 @@ def make_input(args):
 	out = []
 	for s,d in df.groupby('sample'):
 		s = s.replace(" ","")
-		d['sample'] = d['fastqs'].apply(rename_sample)
+		# d['sample'] = d['fastqs'].apply(rename_sample) # this causes error when multiple sample in the same folder
 		d.to_csv("%s/%s.library.csv"%(args.jid,s),index=False)
 		out.append(s)
 	df = pd.DataFrame(out)
 	df.to_csv("%s.input"%(args.jid),sep="\t",header=False,index=False)
 	args.input_list = "%s.input"%(args.jid)
-
+	if args.scjupyter!="":
+		df[1] = df[0].apply(lambda x:"%s/outs/filtered_feature_bc_matrix"%(x))
+		df.to_csv("%s/sample.tsv"%(args.jid),sep="\t",header=False,index=False)
+		os.system("cp %s %s/input.yaml"%(args.scjupyter,args.jid))
 
 def main():
 

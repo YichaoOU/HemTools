@@ -1,0 +1,17 @@
+#!shell
+
+=cut motif 1
+
+inputFile=input
+
+ncore=1
+mem=65000
+q=priority
+
+module load java/10.0.2
+
+java -jar -Xmx64g /home/yli11/HemTools/share/script/jar/Catchitt-0.1.3.jar motif ${COL1} \
+g={{fasta}} \
+f={{faidx}} \
+b=50 outdir=${COL2} l=false threads=3
+

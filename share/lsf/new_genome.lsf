@@ -37,6 +37,8 @@ cd $outdir
 
 cat *_paternal.fa > $label.tmp.fasta
 
+module load python/2.7.13
+
 python /home/yli11/HemTools/share/misc/rename_chr.py $label.tmp.fasta $label.fasta
 
 rm $label.tmp.fasta

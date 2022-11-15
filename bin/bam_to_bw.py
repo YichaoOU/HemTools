@@ -24,6 +24,7 @@ def my_args():
 	mainParser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument("--bamCoverage_addon",  help="for PE data, you add --center to get sharper peaks", default="")
 	mainParser.add_argument('file', type=str, nargs='+')
+	mainParser.add_argument("--no_filter",  help="no_filter for input bam",action='store_true')
 	mainParser.add_argument('--input', help=argparse.SUPPRESS)
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update index file, black list, chrom size and effectiveGenomeSize, unless a user explicitly sets those options.", default='hg19',type=str)
@@ -58,8 +59,10 @@ def main():
 	os.system("mkdir %s"%(args.jid))
 	os.system("mkdir %s/log_files"%(args.jid))
 	pipeline_name = current_file_base_name
+	if args.no_filter:
+		pipeline_name+="_no_filter"
 	submit_pipeline_jobs(myPipelines[pipeline_name],args)
-
+	# bam_to_bw_no_filter
 	
 if __name__ == "__main__":
 	main()

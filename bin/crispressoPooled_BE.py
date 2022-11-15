@@ -29,6 +29,7 @@ def my_args():
 	mainParser.add_argument('-f','--fastq_tsv',  help="gRNA_bed required",required=True)
 	mainParser.add_argument('--ref',  help="reference base",default="A",type=str)
 	mainParser.add_argument('--alt',  help="alternative base",default="G",type=str)
+	mainParser.add_argument('--cas9',  help="not running in base editor mode",action='store_true')
 	mainParser.add_argument('--SNP',  help="3-col tsv file, gRNA seq, position, SNP",default="",type=str)
 	# mainParser.add_argument("--info_tsv", help=argparse.SUPPRESS)
 	mainParser.add_argument("--input_list", help=argparse.SUPPRESS)
@@ -58,6 +59,7 @@ def prepare_input(amp_bed,gRNA_bed,fasta,jid):
 	df2.index = df2[3].tolist()
 
 	df[5] = df[3].map(df2[5].to_dict())# key step to make sure amplicon is the same strand as gRNA
+	# print (df)
 	is_NaN = df.isnull()
 	row_has_NaN = is_NaN.any(axis=1)
 	rows_with_NaN = df[row_has_NaN]
@@ -79,6 +81,8 @@ def prepare_input(amp_bed,gRNA_bed,fasta,jid):
 	df4[2] = df3[1]
 	df4[1] = df4[1].str.upper()
 	df4[2] = df4[2].str.upper()
+	# df4[3] = "NA"
+	# df4[4] = "NA"
 	# print (df4.head())
 	# exit()
 	df4.to_csv("%s_info.tsv"%(jid),sep="\t",header=False)
@@ -115,6 +119,9 @@ def main():
 		os.system("cp %s %s/"%(args.SNP,args.jid))	
 	prepare_input(args.amplicon_bed,args.gRNA_bed,args.genome_fasta,args.jid)	
 	# exit()
+	if args.cas9:
+		submit_pipeline_jobs(myPipelines["crispressoPooled_cas9"],args)
+		exit()
 	submit_pipeline_jobs(myPipelines["crispressoPooled_BE"],args)
 
 

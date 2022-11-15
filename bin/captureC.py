@@ -68,6 +68,8 @@ def main():
 	args.digested_fragments = myData['%s_%s'%(args.genome,args.digested_enzyme)]
 	args.cut_site = enzyme_cut[args.digested_enzyme]
 	args.chrom_size = myData['%s_chrom_size'%(args.genome)]
+	args.genome_fa = myData['%s_fasta'%(args.genome)]
+	args.index_file = myData['%s_bowtie_CapC_index'%(args.genome)]
 	##------- guess input ------------------------------
 	if args.guess_input:
 		logging.info("preparing input files")

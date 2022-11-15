@@ -1,0 +1,206 @@
+#!shell
+
+=cut MCC 1
+
+inputFile=fastq_tsv
+
+ncore=1
+mem={{memory}}
+q={{queue}}
+ 
+
+
+module load python/2.7.13 fastqc
+module load flash
+module load blat
+
+src={{src}}
+
+mkdir ${COL3}_read_split
+
+bait_list=`cut -f 4 ${COL4}`
+
+perl $src/MCC_BLATfa.pl -f ${COL4} -g {{genome_fasta}} -o ${COL3}_${COL4}_split_800bp.fa
+
+mv ${COL3}_${COL4}_split_800bp.fa ${COL3}_read_split
+
+ln -s $(realpath $COL1) ${COL3}_read_split/
+ln -s $(realpath $COL2) ${COL3}_read_split/
+
+cd ${COL3}_read_split
+
+fastqc ${COL1}
+fastqc ${COL2}
+
+
+trim_galore --fastqc -q 10 --paired ${COL1} ${COL2} --basename ${COL3}
+
+flash -f 200 -M {{FLASH_max_overlap}} -m {{FLASH_min_overlap}} ${COL3}_val_1.fq.gz ${COL3}_val_2.fq.gz -o ${COL3} 2>&1 | tee ${COL3}_flash.log
+
+sed -n '1~4s/^@/>/p;2~4p' ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.fa
+
+# please don't change BLAT parameter here
+blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 ${COL3}_${COL4}_split_800bp.fa ${COL3}.extendedFrags.fa ${COL3}.read.psl
+
+
+
+# perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r ${COL3}_read_split -limit 0 -all
+perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r ./ -limit 0 -all
+
+# step 2
+
+module load bowtie2
+module load samtools/1.7
+module load macs2 bedtools
+module load ucsc/041619
+
+
+
+# mv ${COL3}_val_1.fq.gz ${COL3}_read_split
+# mv ${COL3}_val_2.fq.gz ${COL3}_read_split
+# mv ${COL3}_flash.log ${COL3}_read_split
+# mv  ${COL3}*.txt ${COL3}_read_split
+# mv  ${COL3}*fastqc* ${COL3}_read_split
+# mv  ${COL3}*notCombined* ${COL3}_read_split
+# mv  ${COL3}*hist* ${COL3}_read_split
+# mv ${COL3}.extendedFrags.fastq  ${COL3}_read_split
+# mv ${COL3}.extendedFrags.fa  ${COL3}_read_split
+# mv ${COL3}.read.psl  ${COL3}_read_split
+# mv ${COL3}*zip  ${COL3}_read_split
+# mv ${COL3}*html  ${COL3}_read_split
+
+
+
+
+# cd ${COL3}_read_split
+
+
+# fastqc ${COL3}.extendedFrags.fastq
+
+for bait in $bait_list
+do
+	bowtie2 -p 1 -X 1000 -x {{bowtie2_index}} ${bait}_${COL3}.extendedFrags.fastq -S ${bait}_${COL3}.sam 
+
+	samtools view -S -b -o ${bait}_${COL3}.bam ${bait}_${COL3}.sam
+
+	samtools sort ${bait}_${COL3}.bam  -o ${bait}_${COL3}.sorted.bam
+
+	samtools index ${bait}_${COL3}.sorted.bam
+
+	bedtools genomecov -ibam ${bait}_${COL3}.sorted.bam -bg > ${bait}_${COL3}.read_pileup.bdg
+	sort -k1,1 -k2,2n ${bait}_${COL3}.read_pileup.bdg > ${bait}_${COL3}.read_pileup.st.bdg
+	bedGraphToBigWig ${bait}_${COL3}.read_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.read_pileup.bw
+
+
+	samtools sort -n -o ${bait}_${COL3}_sort.sam ${bait}_${COL3}.sam 
+
+	mv ${bait}_${COL3}_sort.sam ${bait}_${COL3}.sam
+
+	# perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -genome {{genome}} -o ${COL3}_${COL4}_split_800bp.fa 
+
+	# input sam need to be sorted by name and filename need to have _
+	# perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf {{chrom_size}} -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+	perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf $chrom_size -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+
+	macs2 callpeak -t ${bait}_${COL3}.sorted.bam -f BAM --nomodel --extsize 100 -n ${bait}_${COL3}
+
+
+	samtools view -S -b -o ${bait}_${COL3}_junction.bam ${bait}_${COL3}_junction.sam
+
+	samtools sort ${bait}_${COL3}_junction.bam  -o ${bait}_${COL3}_junction.st.bam
+
+	samtools index ${bait}_${COL3}_junction.st.bam
+
+	bedtools genomecov -ibam ${bait}_${COL3}_junction.st.bam -bg > ${bait}_${COL3}.junction_pileup.bdg
+	sort -k1,1 -k2,2n ${bait}_${COL3}.junction_pileup.bdg > ${bait}_${COL3}.junction_pileup.st.bdg
+	bedGraphToBigWig ${bait}_${COL3}.junction_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.junction_pileup.bw
+done
+
+
+
+
+module load samtools/1.15.1
+module load python/2.7.13 fastqc
+module load flash
+module load blat
+module load bowtie2
+module load macs2 bedtools
+module load ucsc/041619
+
+label=${COL3}
+bait_bed=${COL4}
+chrom_size={{chrom_size}}
+
+samtools merge -o ${label}_merged.bam *${label}*sorted.bam
+samtools index ${label}_merged.bam
+mkdir merged_results
+cd merged_results
+samtools sort -n -o ${label}_merged.sam ../${label}_merged.bam 
+perl $src/MCC_analyser.pl -f ${label}_merged.sam -pf . -bf $chrom_size -genome hg19 -o ../${label}_${bait_bed}_split_800bp.fa
+
+f=${label}_merged
+samtools view -bS ${f}_junction.sam > ${f}_junction.bam
+samtools sort ${f}_junction.bam -o ${f}_junction.st.bam
+samtools index ${f}_junction.st.bam
+
+
+
+cd ..
+
+cd ..
+
+mv ${COL3}_read_split {{jid}}
+
+
+
+
+=cut email 3 all
+
+ncore=1
+mem={{memory}}
+q={{queue}}
+
+mv *fastqc.zip {{jid}}
+mv *fastqc.html {{jid}}
+mv *trimming_report.txt {{jid}}
+
+cd {{jid}}
+
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+module load texlive/20190410
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+src={{src}}
+cp $src/MicroC_report_summary.ipynb .
+# jupyter nbconvert --to notebook --execute MicroC_summary.ipynb --output MicroC_summary --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+# jupyter nbconvert MicroC_summary.ipynb --to html 
+
+jupyter nbconvert --to notebook --execute MicroC_report_summary.ipynb --output MicroC_report_summary --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+jupyter nbconvert MicroC_report_summary.ipynb --to html 
+
+
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+module load python/2.7.13
+
+
+
+send_email_v1.py -a multiqc_report.html,MicroC_summary.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

@@ -52,7 +52,8 @@ def clean_bed(x,extend):
 	if extend == 0:
 		command = """awk -F "\t" '{print $1"\t"$2"\t"$3"\t"$1":"$2"-"$3}' %s > %s"""%(x,output)
 	else:
-		command = """awk -F "\t" '{print $1"\t"$2-%s"\t"$3+%s"\t"$1":"$2"-"$3}' %s > %s"""%(extend,extend,x,output)
+		# command = """awk -F "\t" '{print $1"\t"$2-%s"\t"$3+%s"\t"$1":"$2"-"$3}' %s > %s"""%(extend,extend,x,output)
+		command = """awk -F "\t" '{print $1"\t"$2-%s"\t"$3+%s"\t"$4}' %s > %s"""%(extend,extend,x,output)
 	
 	os.system(command)
 	# os.system("head %s"%(output))
@@ -69,7 +70,8 @@ def clean_bed(x,extend):
 def run_bigWigAverageOverBed(bed,bw):
 	addon_string = str(uuid.uuid4()).split("-")[-1]
 	out = bed+"-bwOverBed-%s-"%(addon_string)+bw.split("/")[-1]+".out"
-	command = "bigWigAverageOverBed %s %s %s"%(bw,bed,out)
+	command = "bigWigAverageOverBed -minMax %s %s %s"%(bw,bed,out)
+	print (command)
 	os.system(command)
 	return out
 
@@ -109,11 +111,11 @@ def main():
 		for j in bw_files:
 			out = run_bigWigAverageOverBed(i,j)
 			output_files.append(out)
-		os.system("rm %s"%(i))
+		# os.system("rm %s"%(i))
 		### main ####
 		summary_output("%s%s.csv"%(i.replace(".bed4",""),args.output),output_files)
-		for x in output_files:
-			os.system("rm %s"%(x))
+		# for x in output_files:
+			# os.system("rm %s"%(x))
 
 if __name__ == "__main__":
 	main()

@@ -16,7 +16,7 @@ sort -k1,1 -k2,2n ${COL1} > {{jid}}/${myBaseName}.sorted
 cd {{jid}}
 module load ucsc/041619
 bedGraphToBigWig ${myBaseName}.sorted {{chrom_size}} ${myBaseName%.sorted}.bw
-
+# wigToBigWig -clip ${myBaseName}.sorted $bigwig_folder $filename.bw
 
 =cut email 4 all
 

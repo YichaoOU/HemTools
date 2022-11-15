@@ -25,6 +25,10 @@ def my_args():
 	mainParser.add_argument('-j',"--jid",  help="a folder name, used to upload tracks", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10.", default='hg19',type=str)
 	mainParser.add_argument('--current_dir',  help="Upload .bedpe .mango .bed .narrowPeak .broadPeak and .bw files",action='store_true' )
+	mainParser.add_argument('--bw_list',  help="bw_file list for display order",default=None )
+	mainParser.add_argument('--skip_login',  help="only for develooper to use",action='store_true')
+	# mainParser.add_argument('--my_json',default="" )
+	# mainParser.add_argument('--my_json',default="" )
 	# mainParser.add_argument('--interaction',  help="Upload .bedpe and .mango files",action='store_true' )
 	##------- add parameters above ---------------------
 	
@@ -37,7 +41,7 @@ def main():
 	
 	if args.current_dir:
 	
-		url = upload_bed_bw(args.jid+str(uuid.uuid4()).split("-")[-1],True,args.genome)
+		url = upload_bed_bw(args.jid+str(uuid.uuid4()).split("-")[-1],True,args.genome,args.bw_list,args.skip_login)
 		print "Please copy the following url to your genome browser. Note that protein paint genome browser is only accessible inside stjude network."
 		print url
 		exit()

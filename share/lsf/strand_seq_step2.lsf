@@ -1,0 +1,54 @@
+#!shell
+
+
+=cut step2 1
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+inputFile=input
+
+ncore=24
+# mem=110000
+mem=5000
+q=priority
+
+cd {{jid}}
+#Path to reference genome and Index files.
+# ref="/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.reordered.fa"
+ref="/home/yli11/Data/Human/hg19/fasta/hg19.fa"
+#Path to gatk bundle set files
+millsIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/Mills_and_1000G_gold_standard.indels.hg19.vcf"
+KGIndels="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/1000G_phase1.indels.hg19.vcf"
+dbSNP138="/datasets/public/genomes/hsapiens/hg19/SNPS/gatk_bundle/hg19_2.8/hg19/dbsnp_138.hg19.vcf"
+
+
+module load star/2.5.3a picard/2.9.4 gatk/4.1.8.0 samtools/1.7
+
+ls ${COL1}*.markdup.rg_added.st.bam > ${COL2}.list
+echo -e "["$(date)"]\tRunning HaplotypeCaller.."
+/usr/bin/time -v gatk --java-options "-Xmx100g" HaplotypeCaller  \
+   -R $ref \
+   -I ${COL2}.list \
+   -O ${COL2}.Haplo_joint.vcf.gz \
+   --read-filter NonChimericOriginalAlignmentReadFilter  \
+   --read-filter MateOnSameContigOrNoMappedMateReadFilter   \
+   --read-filter MappingQualityReadFilter   \
+   --read-filter OverclippedReadFilter   \
+   --minimum-mapping-quality 10 \
+   --filter-too-short 50 \
+   --native-pair-hmm-threads 24
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

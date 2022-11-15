@@ -10,7 +10,7 @@ mem=12000
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 ## columns are name, gRNA, amplicon_seq, R1, R2, rel_pos, ref, alt
 
@@ -32,7 +32,7 @@ mem=12000
 
 module load conda3
 
-source activate /home/yli11/.conda/envs/crispresso2_env/
+source activate /home/yli11/.conda/envs/cutadaptenv/
 
 ## columns are name, gRNA, amplicon_seq, R1, R2, rel_pos, ref, alt
 
