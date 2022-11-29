@@ -92,6 +92,17 @@ Once the job is finished, you will be notified by email.
 ``*.BSQR.vcf`` contains the called variants, which is inside the `{{jid}}/[sample_id]` folder
 
 
+Latest updates
+^^^^^^^^^^^^^^
+
+For hg38 only (because SNPdb is hg38), starting from PE fastq files. Output is vcf files and multiQC html file.
+
+::
+
+	run_lsf.py --guess_input
+
+	run_lsf.py -f fastq.tsv -g hg38 -p GATK_variant_call_bwa 
+
 Pipeline script
 ^^^^^^^^^^^^^^^
 

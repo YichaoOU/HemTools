@@ -3,33 +3,51 @@ RNA-seq: differential gene expression analysis
 
 ::
 
-	usage: diffGenes.py [-h] [-j JID] -f FASTQ_TSV -d DESIGN_MATRIX [-g GENOME]
-	                    [-i INDEX_FILE]
+	usage: diffGenes.py [-h] [-j JID] -f FASTQ_TSV -d DESIGN_MATRIX
+	                    [--strandness STRANDNESS] [--paired] [-g GENOME]
+	                    [--nfcore_genome NFCORE_GENOME] [-i INDEX_FILE]
+	                    [--gene_info GENE_INFO]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        diffGenes_yli11_2019-07-03)
+	                        diffGenes_yli11_2022-11-29)
 	  -f FASTQ_TSV, --fastq_tsv FASTQ_TSV
 	                        TSV file, 4 columns, read 1, read 2, UID, group ID
 	                        (default: None)
 	  -d DESIGN_MATRIX, --design_matrix DESIGN_MATRIX
 	                        TSV file, 3 columns, group ID, group ID, output_prefix
 	                        (default: None)
+	  --strandness STRANDNESS
+	                        fr: first read forward or rf: first read reverse
+	                        (default: None)
+	  --paired              if paired is used, then user should only have 2 groups
+	                        in the design matrix file and the paired info is
+	                        automatically extracted from fastq.tsv based on
+	                        ordered group sample list (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
 	                        genome version: hg19, hg38, mm9, mm10 (default: hg19)
+	  --nfcore_genome NFCORE_GENOME
+	                        genome version: hg19, hg38, mm9, mm10 (default: hg38)
 	  -i INDEX_FILE, --index_file INDEX_FILE
 	                        Kallisto index file (default:
 	                        /home/yli11/Data/Human/hg19/index/kallisto/hg19.idx)
+	  --gene_info GENE_INFO
+	                        gene info t2g file for sleuth (default: /home/yli11/Da
+	                        ta/Human/hg19/index/kallisto/hg19.ensembl_v75.t2g)
+
 
 
 Summary
 ^^^^^^^
 
 This pipeline is based on Kallisto - Sleuth.
+
+
+11/29/2022 Updates: added ``--paired`` for paired test
 
 
 Input
@@ -51,6 +69,11 @@ An example is shown below.
 	1000003_RFR004_S4_R2.fastq.gz	1000003_RFR004_S4_R1.fastq.gz	1000003_RFR004_S4	h2
 	1000005_RFR006_S6_R1.fastq.gz	1000005_RFR006_S6_R2.fastq.gz	1000005_RFR006_S6	h2
 	1000001_RFR002_S2_R1.fastq.gz	1000001_RFR002_S2_R2.fastq.gz	1000001_RFR002_S2	h2
+
+Paired test
+-----------
+
+If user added ``--piared``, then the paired info is assumed to be the sample list in ``fastq.tsv``. In the above example, ``1000004_RFR005_S5`` and ``1000003_RFR004_S4`` will be the same replicate (e.g., ``replicate0``) and ``1000002_RFR003_S3,1000005_RFR006_S6`` is ``replicate1``
 
 
 **2. design matrix**

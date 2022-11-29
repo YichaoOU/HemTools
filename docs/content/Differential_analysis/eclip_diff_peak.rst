@@ -38,7 +38,9 @@ Usage
 
 	module load conda3/202011
 
-	source activate /home/yli11/.conda/envs/cutadaptenv
+	source activate /home/yli11/.conda/envs/captureC
+
+	module load perl
 
 	eclip_diff_peak.py $wt $ko $input
 
