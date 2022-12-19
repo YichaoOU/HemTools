@@ -192,6 +192,11 @@ Not tested
 	diffReps
 
 
+pipeline testing dir
+^^^^^^
+
+/home/yli11/Pipelines/example_NGS_data/atac_seq/atac_seq_yli11_2021-02-13/bam_files/diffpeaks
+
 
 Video tutorial
 ^^^^^^^^^^^^^
