@@ -163,6 +163,25 @@ That means:
 Build costum Kallisto index for human or mouse
 ^^^^^^^^^^^^^^^^^^^
 
+Now, there is a much easier way to build index:
+
+::
+
+	(captureC) [yli11@noderome146 gencodev42]$ kb ref ~/Data/Human/hg38/fasta/hg38.main.fa gencode.v42.annotation.gtf.gz -i hg38.gencode42.idx -g hg38.gencode42.t2g -f1 hg38.gencode42.cDNA.fa
+	[2022-11-29 11:18:17,508]    INFO [ref] Preparing /home/yli11/Data/Human/hg38/fasta/hg38.main.fa, gencode.v42.annotation.gtf.gz
+	[2022-11-29 11:19:34,163]    INFO [ref] Splitting genome /home/yli11/Data/Human/hg38/fasta/hg38.main.fa into cDNA at /research/rgs01/home/clusterHome/yli11/Data/Human/hg38/index/kallisto/gencodev42/tmp/tmpxqkzsshb
+	[2022-11-29 11:20:20,737]    INFO [ref] Concatenating 1 cDNAs to hg38.gencode42.cDNA.fa
+	[2022-11-29 11:20:21,428]    INFO [ref] Creating transcript-to-gene mapping at hg38.gencode42.t2g
+	[2022-11-29 11:20:23,994]    INFO [ref] Indexing hg38.gencode42.cDNA.fa to hg38.gencode42.idx
+	(captureC) [yli11@noderome146 gencodev42]$ ll -rht
+	total 3.7G
+	-rwxr-x--- 1 yli11 chenggrp  48M Oct 19 07:39 gencode.v42.annotation.gtf.gz
+	-rwxr-x--- 1 yli11 chenggrp 450M Nov 29 11:20 hg38.gencode42.cDNA.fa
+	-rwxr-x--- 1 yli11 chenggrp  20M Nov 29 11:20 hg38.gencode42.t2g
+	-rwxr-x--- 1 yli11 chenggrp 3.2G Nov 29 11:28 hg38.gencode42.idx
+
+
+
 Input
 -----
 
