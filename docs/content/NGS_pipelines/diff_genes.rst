@@ -4,15 +4,15 @@ RNA-seq: differential gene expression analysis
 ::
 
 	usage: diffGenes.py [-h] [-j JID] -f FASTQ_TSV -d DESIGN_MATRIX
-	                    [--strandness STRANDNESS] [--paired] [-g GENOME]
-	                    [--nfcore_genome NFCORE_GENOME] [-i INDEX_FILE]
-	                    [--gene_info GENE_INFO]
+	                    [--strandness STRANDNESS] [--paired] [--single]
+	                    [-g GENOME] [--nfcore_genome NFCORE_GENOME]
+	                    [-i INDEX_FILE] [--gene_info GENE_INFO]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        diffGenes_yli11_2022-11-29)
+	                        diffGenes_yli11_2023-01-05)
 	  -f FASTQ_TSV, --fastq_tsv FASTQ_TSV
 	                        TSV file, 4 columns, read 1, read 2, UID, group ID
 	                        (default: None)
@@ -26,6 +26,7 @@ RNA-seq: differential gene expression analysis
 	                        in the design matrix file and the paired info is
 	                        automatically extracted from fastq.tsv based on
 	                        ordered group sample list (default: False)
+	  --single              for single-end RNA-seq (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -49,6 +50,8 @@ This pipeline is based on Kallisto - Sleuth.
 
 11/29/2022 Updates: added ``--paired`` for paired test
 
+1/5/2023 Updates: added ``--single`` for single-end rna-seq data.
+
 
 Input
 ^^^^^
@@ -69,6 +72,8 @@ An example is shown below.
 	1000003_RFR004_S4_R2.fastq.gz	1000003_RFR004_S4_R1.fastq.gz	1000003_RFR004_S4	h2
 	1000005_RFR006_S6_R1.fastq.gz	1000005_RFR006_S6_R2.fastq.gz	1000005_RFR006_S6	h2
 	1000001_RFR002_S2_R1.fastq.gz	1000001_RFR002_S2_R2.fastq.gz	1000001_RFR002_S2	h2
+
+.. note:: For single-end RNA-seq data, please keep the second column as empty and add the ``--single`` parameter.
 
 Paired test
 -----------
