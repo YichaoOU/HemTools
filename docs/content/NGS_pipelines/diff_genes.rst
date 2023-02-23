@@ -78,7 +78,7 @@ An example is shown below.
 Paired test
 -----------
 
-If user added ``--piared``, then the paired info is assumed to be the sample list in ``fastq.tsv``. In the above example, ``1000004_RFR005_S5`` and ``1000003_RFR004_S4`` will be the same replicate (e.g., ``replicate0``) and ``1000002_RFR003_S3,1000005_RFR006_S6`` is ``replicate1``
+If user added ``--paired``, then the paired info is assumed to be the sample list in ``fastq.tsv``. In the above example, ``1000004_RFR005_S5`` and ``1000003_RFR004_S4`` will be the same replicate (e.g., ``replicate0``) and ``1000002_RFR003_S3,1000005_RFR006_S6`` is ``replicate1``
 
 
 **2. design matrix**
