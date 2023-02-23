@@ -2,6 +2,12 @@ HemTools public data
 ====================
 
 
+bulk RNA-seq data
+-------
+
+::
+
+	/home/yli11/dirs/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/blood_rna_seq
 
 
 TSS data

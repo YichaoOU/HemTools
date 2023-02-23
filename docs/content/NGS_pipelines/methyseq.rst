@@ -29,10 +29,14 @@ bwa-meth mapping + MethylDackel calling
 See https://nf-co.re/methylseq/1.6.1/parameters
 
 
+
+
 Input
 ^^^^^
 
-Copy paired-end fastq files to a working dir
+Copy paired-end fastq files to a working dir.
+
+.. note:: Make sure your fastq files follow this patter: *_R{1,2}.fastq.gz. So ``ABC.R1.fastq.gz`` will fail, should be ``ABC_R1.fastq.gz``
 
 
 Usage
