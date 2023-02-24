@@ -15,6 +15,8 @@ I decided to use docker container and AWS ECS (a subset of EC2) to host my web a
 
 My deployment is finally succedded, according to this tutorial: https://acloudguru.com/blog/engineering/deploying-a-containerized-flask-application-with-aws-ecs-and-docker
 
+.. note:: The above link is old. AWS updated its UI, so those screenshot are misleading now. The steps are: Create Cluster X, create task definition, click Cluster X and select create task. Another important note, you have to update "Security Groups" for this task as: IP4, HTTP, TCP 80 0.0.0.0/0
+
 The key is to directly use port 80 in app.py
 
 ::
