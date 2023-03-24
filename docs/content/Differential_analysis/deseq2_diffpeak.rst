@@ -36,7 +36,7 @@ DESEQ2 for differential peak analysis
 Summary
 ^^^^^^^
 
-This program performs differential peak analysis by taking the union of input peaks (i.e., bedtools merge), counting number of reads (for pair-end, it is number of fragments), then running DESEQ2. At the last step, peaks will be divided into gain or loss, each of which will be used to perform motif discovery using homer. 
+This program performs differential peak analysis by taking the union of input peaks (i.e., bedtools merge), counting number of reads (for pair-end, it is number of fragments), then running DESEQ2. At the last step, peaks will be divided into gain or loss, each of which will be used to perform motif discovery using homer. The files ``*loss.bed`` and ``*gain.bed`` are not full list of differential peaks, these are just top 100 peaks used for motif discovery. Users can open ``*diffRegions.txt`` to extract their own diff peaks based on q-value and logFC.
 
 .. note:: By default, DESEQ2 normalization is performed on total reads in peaks. You can also do it on raw total reads (i.e., sequencing depth), by using ``--include_unmapped_reads``.
 
