@@ -68,7 +68,16 @@ In some sequencer, e.g., miniseq or Nextseq, users have to manually get revcomp 
 Wierd special char in your samplesheet.csv
 ^^^^^^^^^^^^^^^^^
 
+If you have this ``Could not parse the CSV stream`` error, then likely you have some wierd special strings in your SampleSheet.csv. 
+
+.. image:: ../../images/bcl2fastq_csv_error.png
+	:align: center
+
+
+I have seem 3 types of specical strings. You can use ``less`` or ``cat -et`` to reveal these hidden strings.
+
 <U+FEFF> character showing up in files. How to remove them?
+-------------------------------------
 
 https://gist.github.com/szydan/b225749445b3602083ed
 
@@ -85,6 +94,14 @@ https://gist.github.com/szydan/b225749445b3602083ed
 
 	:wq
 
+<EF BB BF> character showing up in files. How to remove them?
+-------------------------------------
+
+.. image:: ../../images/bcl2fastq_string2.png
+	:align: center
+
+
+Just do this ``sed -i '1s/^\xEF\xBB\xBF//' SampleSheet.csv``
 
 Mising bcl
 ^^^^^^^^^
