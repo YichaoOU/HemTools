@@ -178,6 +178,12 @@ Known Problem
 
 FASTQC has a memory upper limit that we can't set. Need to manually kill the process to let the pipeline continue
 
+Custom Genome
+^^^^^^^
+
+
+custom genome is supported, you have to use ``-g custom`` then give the absolute path to ``--bowtie2_index --genome_fasta --chrom_size``
+
 Ref
 ^^^^
 
