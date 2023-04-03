@@ -403,6 +403,41 @@ Custom enrichment
 	java -jar $chrHMM OverlapEnrichment Input_25_segments.bed other_bed myOut
 
 
+Example, adding R-loop info
+^^^^^^^^^^^^^^^^^
+
+::
+
+	# /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chromHMM
+
+	[yli11@noderome203 chromHMM]$ head -n 2 se.list
+	H3K27ac_H2_D0_R1.fastq.gz	H3K27ac_R1
+	H3K27me3_H2_D0_R2.fastq.gz	H3K27me3_R2
+	[yli11@noderome203 chromHMM]$ head -n 2 pe.list
+	1345651_Hudep2_ATAC_1_R1.fastq.gz	1345651_Hudep2_ATAC_1_R2.fastq.gz	ATAC_1
+	1345652_Hudep2_ATAC_2_R1.fastq.gz	1345652_Hudep2_ATAC_2_R2.fastq.gz	ATAC_2
+	[yli11@noderome203 chromHMM]$ head -n 2 d1.tsv
+	H3K27ac_R1	Input_R1	H3K27ac
+	H3K27me3_R2	Input_R1	H3K27me3
+	[yli11@noderome203 chromHMM]$ head -n 2 d2.tsv
+	ATAC_1	ATAC
+	ATAC_2	ATAC
+	[yli11@noderome203 chromHMM]$ chromHMM.py -se se.list -pe pe.list -d1 d1.tsv -d2 d2.tsv -n 25 -g hg19 -m 250000 -j with_DRIP_25
+	2023-03-31 15:08:18,934 - INFO - main - The job id is: with_DRIP_25
+	2023-03-31 15:08:18,934 - INFO - main - checking input files...
+	2023-03-31 15:08:18,934 - INFO - main - parsing se.list
+	2023-03-31 15:08:18,954 - INFO - main - parsing pe.list
+	2023-03-31 15:08:18,970 - INFO - main - All input files are found. Submitting jobs...
+	2023-03-31 15:08:18,988 - INFO - to_design_matrix - parsing d1.tsv
+	2023-03-31 15:08:19,014 - INFO - to_design_matrix - parsing d2.tsv
+	2023-03-31 15:08:19,773 - INFO - submit_pipeline_jobs - BWA_PE has been submitted; JobID: 186766487
+	2023-03-31 15:08:19,845 - INFO - submit_pipeline_jobs - BWA_TF_SE has been submitted; JobID: 186766488
+	2023-03-31 15:08:19,930 - INFO - submit_pipeline_jobs - BWA_SE has been submitted; JobID: 186766489
+	2023-03-31 15:08:20,148 - INFO - submit_pipeline_jobs - BWA_His_SE has been submitted; JobID: 186766490
+	2023-03-31 15:08:20,218 - INFO - submit_pipeline_jobs - bin_bam has been submitted; JobID: 186766491
+	2023-03-31 15:08:20,688 - INFO - submit_pipeline_jobs - learn_model has been submitted; JobID: 186766492
+	2023-03-31 15:08:20,759 - INFO - submit_pipeline_jobs - infer_CS has been submitted; JobID: 186766493
+	2023-03-31 15:08:20,831 - INFO - submit_pipeline_jobs - email has been submitted; JobID: 186766494
 
 
 Comments
