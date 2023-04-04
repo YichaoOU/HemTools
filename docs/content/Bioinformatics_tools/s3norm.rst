@@ -114,7 +114,7 @@ You shouldn't have this problem if your data looks similar to the example above 
 2. input bw or bdg
 -----
 
-not implemented. If you inputs are bigwig, use ``S3norm.py -f input.list -bw``, similarly, if inputs are bedgraph, use ``-bdg``
+``--bdg`` not implemented. If you inputs are bigwig, use ``S3norm.py -f input.list -bw``, similarly, if inputs are bedgraph, use ``-bdg``
 
 Comments
 ^^^^^^^^
