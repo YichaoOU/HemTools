@@ -9,21 +9,43 @@ Summary
 Input
 ^^^^^
 
-A 3-col tsv file containing R1 fastq, sample name, and gRNA sequence (no PAM sequence)
+``For SE data``, A 3-col tsv file containing R1 fastq, sample name, and gRNA sequence (no PAM sequence), the pipeline name is ``gRNA_sequencing_QC``
 
 ::
 
 	XXX_R1_001.fastq.gz	XXX	gRNA_sequence1
 	YYY_R1_001.fastq.gz	YYY	gRNA_sequence2
 
+``For PE data``, A 4-col tsv file containing R1 fastq, R2 fastq, sample name, and gRNA sequence (no PAM sequence), the pipeline name is ``gRNA_sequencing_QC_PE``
 
-9/2 update for PE data
+::
+
+	XXX_R1_001.fastq.gz	XXX_R2_001.fastq.gz	XXX	gRNA_sequence1
+	YYY_R1_001.fastq.gz	YYY_R2_001.fastq.gz	YYY	gRNA_sequence2
+
+``For PE data``, A 6-col tsv file containing R1 fastq, R2 fastq, sample name, and gRNA sequence (no PAM sequence), and the truncated scaffold sequence, and the primer, the pipeline name is ``gRNA_sequencing_QC_PE_trim``
+
+The reason to have ``truncated scaffold sequence`` is because a primer targeting one part of the scaffold is used, because polyA primer tends to have non-specific binding in the scaffold.
+
+::
+
+	XXX_R1_001.fastq.gz	XXX_R2_001.fastq.gz	XXX	gRNA_sequence1	scaffold_seq_1	primer1
+	YYY_R1_001.fastq.gz	YYY_R2_001.fastq.gz	YYY	gRNA_sequence2	scaffold_seq_2	primer2
+
+9/2/2022 update for PE data
 ^^^^^^^
 
 ::
 
 	run_lsf.py -f input.tsv -p gRNA_sequencing_QC_PE --min_length 30 -j read_length_30_filter_results
 
+
+4/12/2023 update for PE data, custom scaffold sequence
+^^^^^^^
+
+::
+
+	run_lsf.py -f fastq.tsv -p gRNA_sequencing_QC_PE_trim --min_length 30 -j read_length_30_filter_results_custom_scaffold_trim
 
 Usage
 ^^^^^
