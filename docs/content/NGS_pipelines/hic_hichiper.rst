@@ -118,9 +118,9 @@ In each result folder (named using the third column in your fastq.tsv), you will
 
 HiC analysis result: hicpro_results
 
-HiChIP anallysis (HiChipper): hichipper_results
+HiChIP anallysis (HiChipper): hichipper_results. See: https://hichipper.readthedocs.io/en/latest/content/Output.html?highlight=output for output description.
 
-HiChIP anallysis (MAPS): MAPS_output, feather_output
+HiChIP anallysis (MAPS): MAPS_output, feather_output. (not updated, very likely to be failed)
 
 QC report
 ^^^^^^^^^
