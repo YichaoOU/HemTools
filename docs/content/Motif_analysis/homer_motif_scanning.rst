@@ -60,5 +60,9 @@ Output
 
 The output is the same to homer motif discovery.
 
+Summary files
+-------------
 
+
+Please find ``nlogP.summary.csv`` for log P-value table and ``Target_percent.summary.csv`` for %Target.
 
