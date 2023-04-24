@@ -32,6 +32,11 @@ The reason to have ``truncated scaffold sequence`` is because a primer targeting
 	XXX_R1_001.fastq.gz	XXX_R2_001.fastq.gz	XXX	gRNA_sequence1	scaffold_seq_1	primer1
 	YYY_R1_001.fastq.gz	YYY_R2_001.fastq.gz	YYY	gRNA_sequence2	scaffold_seq_2	primer2
 
+
+.. image:: ../../images/gRNA_sequencing_design.png
+	:align: center
+
+
 9/2/2022 update for PE data
 ^^^^^^^
 
@@ -158,22 +163,23 @@ The complex plot contains 3 parts:
 
 
 
-7. Check contaminants
+7. user provided gRNA sequence to check contaminants
 -------------------
 
-For reads do not align to our gRNA, there are several possible reasons.
+To use this function, user need to provide a file, which named as ``gRNA_to_check.tsv`` (add ``--gRNA_to_check gRNA_to_check.tsv`` to your job submission command). Then the program will look for gRNA sequence exact match for the given sequences. The output is ``percent_reads_gRNA.csv``.
 
-1. no gRNAs at all, just scaffold sequence. Then our observed gRNA sequence (position 3 to position 23 in read) should partially match to the scaffold sequence.
+::
 
-2. gRNA contaminants.
 
-2a. gRNA matched to our library
+	abc	ACGTACGTACGT
+	asdasda	ACGTACGTACGT
+	babnanana	ACGTACGTACGT
 
-2b. gRNA matched to the genome. User need to run cas-offinder to confirm.
 
-``unaligned.stat.csv`` to check the stats for 1,2,3 mentioned above.
+8. find all potential contaminants 
+-------------------
 
-``unaligned.casOffinder_to_check.list`` to run cas-offinder to identify ``Percentage of perfectly matched contaminants``, specifically the command is like: ``cas_offinder.py -g hg38 --add_PAM --PAM_seq NGG -j find_contaminants -n 1 -f unaligned.casOffinder_to_check.list``
+The program will first match scaffold sequence to extract candidate gRNA sequence, then if the gRNA sequence is not the target sequence, it will be searched in the hg38 genome. If match found, then it is a contaminant. The result is provided in ``gRNA_contaminant_analysis.csv``
 
 
 
