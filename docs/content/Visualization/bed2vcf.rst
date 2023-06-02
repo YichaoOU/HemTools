@@ -89,9 +89,19 @@ In the example input file, we have 14 columns, the required columns for vcf file
 
 The output is ``TableS3.hg19.vcf.gz`` and ``TableS3.hg19.vcf.gz.tbi``
 
+Another example
+------------
 
+inputfile
 
+::
 
+	chr2	123	124	A	G	rs57
 
+	chr2	11	12	A	C	rs16
+
+.. code:: bash
+
+	bed2vcf.py -f input2.hg38_to_hg19.bed --required_cols 0,2,5,3,4 --info_cols RSID --info_types String --column_number 5 --output input2.hg38_to_hg19.vcf
 
 

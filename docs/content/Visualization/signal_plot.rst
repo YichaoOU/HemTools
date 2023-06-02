@@ -5,62 +5,79 @@ Average signal and heatmap over a bed file
 
 ::
 
-	usage: signal_plot.py [-h] [-j JID] [--pipeline_type PIPELINE_TYPE]
-	                      [--figure_type FIGURE_TYPE] [--bed BED]
-	                      [--computeMatrix_addon_parameters COMPUTEMATRIX_ADDON_PARAMETERS]
-	                      [--plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS]
-	                      [-u U] [-d D] [--commands_list COMMANDS_LIST]
-	                      [--bw_files BW_FILES]
-	                      [--samplesLabel_list SAMPLESLABEL_LIST]
-	                      [--input_list INPUT_LIST] [--max_value MAX_VALUE]
-	                      [--min_value MIN_VALUE] [--one_plot_per_bw]
-	                      (--multi_bw_to_one_bed MULTI_BW_TO_ONE_BED | --one_to_one ONE_TO_ONE)
+usage: signal_plot.py [-h] [-j JID] [--pipeline_type PIPELINE_TYPE]
+                      [--figure_type FIGURE_TYPE] [--bed BED]
+                      [--computeMatrix_addon_parameters COMPUTEMATRIX_ADDON_PARAMETERS]
+                      [--plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS]
+                      [-u U] [-d D] [-m MEMORY]
+                      [--commands_list COMMANDS_LIST] [--bw_files BW_FILES]
+                      [--bed_files BED_FILES]
+                      [--samplesLabel_list SAMPLESLABEL_LIST]
+                      [--regionsLabel_list REGIONSLABEL_LIST]
+                      [--input_list INPUT_LIST] [--max_value MAX_VALUE]
+                      [--min_value MIN_VALUE] [--one_plot_per_bw]
+                      (--multi_bw_to_one_bed MULTI_BW_TO_ONE_BED | --one_to_one ONE_TO_ONE | --multi_to_multi MULTI_TO_MULTI | --multi_bed_to_one_bw MULTI_BED_TO_ONE_BW)
 
-	plot bigwiggle signals and heatmaps given a list of bed files
+plot bigwiggle signals and heatmaps given a list of bed files
 
-	optional arguments:
-	  -h, --help            show this help message and exit
-	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
-	                        Every output will be moved into this folder. (default:
-	                        signal_plot_yli11_2019-07-30)
-	  --pipeline_type PIPELINE_TYPE
-	                        Not for end-user. (default: signal_plot)
-	  --figure_type FIGURE_TYPE
-	                        pdf or png (default: png)
-	  --bed BED             a list of bed files, any number of columns, the first
-	                        three columns have to be chr, start, end (default:
-	                        None)
-	  --computeMatrix_addon_parameters COMPUTEMATRIX_ADDON_PARAMETERS
-	                        add user-defined parameters to computeMatrix (default:
-	                        )
-	  --plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS
-	                        add user-defined parameters to plotHeatmap (default:
-	                        --regionsLabel ${COL2})
-	  -u U                  upstream flanking length (default: 5000)
-	  -d D                  downstream flanking length (default: 5000)
-	  --commands_list COMMANDS_LIST
-	                        not for end-user (default: None)
-	  --bw_files BW_FILES   not for end-user (default: None)
-	  --samplesLabel_list SAMPLESLABEL_LIST
-	                        not for end-user (default: None)
-	  --input_list INPUT_LIST
-	                        not for end-user (default: None)
-	  --max_value MAX_VALUE
-	                        generally it is not used, only if you want to scale
-	                        all plots into the same range (default: 9999)
-	  --min_value MIN_VALUE
-	                        generally it is not used, only if you want to scale
-	                        all plots into the same range (default: 9999)
-	  --one_plot_per_bw     Use this option when you want to edit the generated
-	                        pdf by yourself. (default: False)
-	  --multi_bw_to_one_bed MULTI_BW_TO_ONE_BED
-	                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
-	                        bw_file_label, output_name. Most common usage.
-	                        (default: None)
-	  --one_to_one ONE_TO_ONE
-	                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
-	                        bw_file_label, output_name. Most common usage.
-	                        (default: None)
+optional arguments:
+  -h, --help            show this help message and exit
+  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
+                        Every output will be moved into this folder. (default:
+                        signal_plot_yli11_1dbabf83202d_2023-06-02)
+  --pipeline_type PIPELINE_TYPE
+                        Not for end-user. (default: signal_plot)
+  --figure_type FIGURE_TYPE
+                        pdf or png (default: png)
+  --bed BED             a list of bed files, any number of columns, the first
+                        three columns have to be chr, start, end (default:
+                        None)
+  --computeMatrix_addon_parameters COMPUTEMATRIX_ADDON_PARAMETERS
+                        add user-defined parameters to computeMatrix (default:
+                        )
+  --plotHeatmap_addon_parameters PLOTHEATMAP_ADDON_PARAMETERS
+                        add user-defined parameters to plotHeatmap (default:
+                        --regionsLabel ${COL2})
+  -u U                  upstream flanking length (default: 5000)
+  -d D                  downstream flanking length (default: 5000)
+  -m MEMORY, --memory MEMORY
+                        memory limit, higher the limit, longer the wait time
+                        for your job to start (default: 10000)
+  --commands_list COMMANDS_LIST
+                        not for end-user (default: None)
+  --bw_files BW_FILES   not for end-user (default: None)
+  --bed_files BED_FILES
+                        not for end-user (default: None)
+  --samplesLabel_list SAMPLESLABEL_LIST
+                        not for end-user (default: None)
+  --regionsLabel_list REGIONSLABEL_LIST
+                        not for end-user (default: None)
+  --input_list INPUT_LIST
+                        not for end-user (default: None)
+  --max_value MAX_VALUE
+                        generally it is not used, only if you want to scale
+                        all plots into the same range (default: 9999)
+  --min_value MIN_VALUE
+                        generally it is not used, only if you want to scale
+                        all plots into the same range (default: 9999)
+  --one_plot_per_bw     Use this option when you want to edit the generated
+                        pdf by yourself. (default: False)
+  --multi_bw_to_one_bed MULTI_BW_TO_ONE_BED
+                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
+                        bw_file_label, output_name. Most common usage.
+                        (default: None)
+  --one_to_one ONE_TO_ONE
+                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
+                        bw_file_label, output_name. Most common usage.
+                        (default: None)
+  --multi_to_multi MULTI_TO_MULTI
+                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
+                        bw_file_label, output_name. Most common usage.
+                        (default: None)
+  --multi_bed_to_one_bw MULTI_BED_TO_ONE_BW
+                        5 columns tsv, path_to_bed, bed_label, path_to_bw,
+                        bw_file_label, output_name. Most common usage.
+                        (default: None)
 
 Summary
 ^^^^^^^
