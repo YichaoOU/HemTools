@@ -33,7 +33,7 @@ The goal is to filter out all variants that are 0/0 in your set of individuals.
 
 ::
 
-	plink2 --vcf $f --out test3 --freq
+	plink2 --vcf $f --out test3 --freq --set-missing-var-ids @_#_\$r_\$a --new-id-max-allele-len 94
 
 The output is ``test3.afreq``
 
@@ -56,9 +56,13 @@ subset by variant ID
 
 ::
 
-	plink2 --vcf $f --extract id.list --out test5 --export vcf
+	plink2 --vcf $f --extract significant.ID.list --out $f.sig --export vcf
 
+I once had an issue getting subset, because the binary plink file uses double id. What we need to do first is to check if this is the case by generating the pgen file. If so, the id.list need to have space seprated id for two columns.
 
+::
+
+	plink2 --bfile 1000G.allPops.GRCh38.allSamples.chrALL.recodeXrsid --make-pgen  --out test
 
 for the genetic variantion project, to get vcf files for the 95 donors
 ^^^^^^^^^^^^^^
@@ -70,3 +74,25 @@ for the genetic variantion project, to get vcf files for the 95 donors
 	run_lsf.py -f /home/yli11/HemTools/share/misc/1kg.filelist --sample_list donor.list -p subset_1kg_by_people
 
 	## once it is finished, the final.vcf is what you need
+
+
+
+Extract meta info
+^^^^^^^^^^^^
+
+::
+
+	bcftools query -f '%CHROM %POS %AN_EAS\n' chrAll.95samples.withinRegions.v2.03282023.vcf.gz
+
+	[yli11@noderome153 SNP152]$ bcftools query -f '%CHROM %POS %ID %REF %ALT %GENEINFO %FREQ %COMMON\n' GCF_000001405.38.bgz
+
+	#view header
+	bcftools view -h GCF_000001405.38.bgz
+
+
+Update SNP ID with RS ID
+^^^^^^^^^^^^^
+
+https://www.biostars.org/p/171557/
+
+bcftools query -f '%ID %AF_EAS %AF_AMR %AF_EUR %AF_AFR %AF_SAS %AF_EUR_unrel %AF_EAS_unrel %AF_AMR_unrel %AF_SAS_unrel %AF_AFR_unrel %MAF_EUR_unrel %MAF_EAS_unrel %MAF_AMR_unrel %MAF_SAS_unrel %MAF_AFR_unrel\n' ${COL1} > $label.AF.txt

@@ -7,7 +7,7 @@ Reference: `Homer NGS annotation <http://homer.ucsd.edu/homer/ngs/annotation.htm
 
 	hpcf_interactive -q standard -R "rusage[mem=20000]"
 
-	module load homer/4.9.1
+	module load homer/4.10
 
 
 
