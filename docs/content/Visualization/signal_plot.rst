@@ -223,6 +223,16 @@ Another cosmetic note: colorMaps like ``jet`` gives better visualization than co
 	:align: center
 	:scale: 30 %
 
+stacked signal plots
+^^^^^^^^^^^^^^
+
+::
+
+	signal_plot.py --multi_to_multi input.list --plotHeatmap_addon_parameters " --colorList white,red --legendLocation none"  --computeMatrix_addon_parameters " --missingDataAsZero --binSize 50" -u 10000 -d 10000 -j test_multi --figure_type pdf
+
+.. image:: ../../images/multi_multi_signal_plot.PNG
+	:align: center
+	:scale: 30 %
 
 
 A note on normalization
