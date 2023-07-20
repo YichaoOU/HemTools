@@ -74,7 +74,7 @@ Output
 
 5. For reads that can't be mapped to the amplicons, they are global aligned to the genome, the mapping rate is an indicator for mis-priming events. See ``multiqc_report.html``.
 
-
+6. SV frequency heatmap and circos plot are generated using ``heatmap_circos_plot.ipynb``
 
 
 UDITAS pipeline notes
