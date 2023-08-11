@@ -18,7 +18,7 @@ for s in sample_list:
 #     print (df[df.index.str.contains("chr11_525")].head())
     df_list.append(df)
 df = pd.concat(df_list,axis=1)
-df.columns  = sample_list
+df.columns  = [s.split("/")[-1] for s in sample_list]
 df = df.fillna(0)
 for c in df.columns:
     df[c] = df[c].astype(int)

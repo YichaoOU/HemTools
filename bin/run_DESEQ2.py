@@ -48,7 +48,7 @@ norm_count = counts(dds,normalized=TRUE)
 colnames(norm_count) = paste(colnames(norm_count),".norm",sep="")
 d <- data.frame(raw_count,norm_count, res)
 d <- d[order(d[,"pvalue"]),]
-write.table(d, file=paste(outfile, ".deseq2_result.tsv", sep=""), sep="\t", quote=FALSE, row.names=TRUE)
+write.table(d, file=paste(outfile, ".deseq2_result.tsv", sep=""), sep="\t", quote=FALSE, row.names=TRUE,col.names=NA)
 
 pdf(paste(outfile, ".plotMA.pdf", sep=""))
 threshold_OE <- d$pvalue < 0.01

@@ -55,9 +55,44 @@ seqtk seq step3.filtered.R2.fastq -A > step3.filtered.R2.fa
 
 module load blat
 
-bedtools getfasta -fi {{fasta}} -fo bait.fa -bed ${COL4}
+bedtools getfasta -fi {{fasta}} -fo bait.fa -bed ${COL4} -s
 
 blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 bait.fa step3.filtered.R2.fa step4.psl
+
+# split R2 into matched, unmatched part
+cp /home/yli11/HemTools/share/script/blat_split.py .
+source activate /home/yli11/.conda/envs/captureC/
+python blat_split.py
+# map R1, R2_matched, R2_unmatched
+
+label="R1"
+bwa mem -t 6 {{index_file}} step3.filtered.$label.fastq |samtools view -bS - > step4.$label.bam
+samtools sort -@ 6 -o step4.$label.st.bam step4.$label.bam
+samtools index step4.$label.st.bam
+
+
+label="R2_matched"
+bwa mem -t 6 {{index_file}} step3.filtered.$label.fastq |samtools view -bS - > step4.$label.bam
+samtools sort -@ 6 -o step4.$label.st.bam step4.$label.bam
+samtools index step4.$label.st.bam
+
+label="R2_unmatched"
+bwa mem -t 6 {{index_file}} step3.filtered.$label.fastq |samtools view -bS - > step4.$label.bam
+samtools sort -@ 6 -o step4.$label.st.bam step4.$label.bam
+samtools index step4.$label.st.bam
+
+label="R2_unmatched"
+bedtools bamtobed -i step4.$label.st.bam > step4.$label.bed
+label="R1"
+bedtools bamtobed -i step4.$label.st.bam > step4.$label.bed
+label="R2_matched"
+bedtools bamtobed -i step4.$label.st.bam > step4.$label.bed
+
+
+
+# identify break point
+
+# for each break point, collapse UMI
 
 # reformat read, add UMI to read name
 

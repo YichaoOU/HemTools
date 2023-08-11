@@ -19,7 +19,7 @@ rm {{jid}}/${COL3}.saf
 =cut scale_F 2 count
 
 ncore=1
-mem=20000
+mem=100000
 
 module load python/2.7.12
 module load python/2.7.15-rhel7

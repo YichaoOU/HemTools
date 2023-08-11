@@ -17,7 +17,7 @@ module load bedtools/2.30.0 samtools/1.7
 module load smrttools/10.1
 
 
-# bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+bam2fastq -o {{jid}}/${COL2} -u ${COL1}
 
 cd {{jid}}
 
@@ -30,8 +30,8 @@ module load conda3/202011
 
 source activate long_reads
 
-# genomeFasta=~/Data/Human/hg38/fasta/hg38.main.fa
-genomeFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/mix.fa
+genomeFasta=~/Data/Human/hg38/fasta/hg38.main.fa
+#genomeFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/mix.fa
 
 minimap2 -t 16 -ax map-hifi --MD --secondary=no \
 $genomeFasta \

@@ -69,7 +69,7 @@ module load bedtools
 
 starrpeaker --prefix ${COL3}_raw_results --chromsize {{chrom_size}} --blacklist {{blacklist}} --cov {{gc_cov}} {{map_cov}} {{conv_cov}} --input ${COL2}.st.bam --output ${COL1}.st.bam --threshold {{FDR_cutoff}} --min {{min_frag}} --max {{max_frag}} --length {{bin_size}} --step {{step_size}}  {{addon_parameters}}
 
-starrpeaker --prefix ${COL3}_dedup_results --chromsize {{chrom_size}} --blacklist {{blacklist}} --cov {{gc_cov}} {{map_cov}} {{conv_cov}} --input ${COL2}.st.bam --output ${COL1}.dedup.bam --threshold {{FDR_cutoff}} --min {{min_frag}} --max {{max_frag}} --length {{bin_size}} --step {{step_size}}  {{addon_parameters}}
+starrpeaker --prefix ${COL3}_dedup_results --chromsize {{chrom_size}} --blacklist {{blacklist}} --cov {{gc_cov}} {{map_cov}} {{conv_cov}} --input ${COL2}.dedup.bam --output ${COL1}.dedup.bam --threshold {{FDR_cutoff}} --min {{min_frag}} --max {{max_frag}} --length {{bin_size}} --step {{step_size}}  {{addon_parameters}}
 
 
 #starrpeaker --prefix test --chromsize /home/yli11/Data/Human/STARR_seq/hg19.chrom.sizes.simple.sorted --blacklist /home/yli11/Data/Human/hg19/annotations/hg19.blacklist.bed --cov /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_ucsc-gc-5bp.bw /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_gem-mappability-100mer.bw /home/yli11/Data/Human/STARR_seq/STARRPeaker_cov_hg19_linearfold-folding-energy-100bp.bw --input test.st.bam --output test.starr.out.bam --threshold 0.05 --min 200 --max 1000 --length 500 --step 100  

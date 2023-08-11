@@ -12,6 +12,9 @@ bed = sys.argv[1]
 df = pd.read_csv(bed,sep="\t",header=None)
 df[1] = df[1].astype(int)
 df[2] = df[2].astype(int)
+if df.shape[1]<5:
+	df[4]="."
+	df[5]="+"
 # lines = open(bed).readlines()
 outfile = "%s.bedjs"%(bed)
 out = open(outfile,"wt")

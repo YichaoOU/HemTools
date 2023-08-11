@@ -1,0 +1,17 @@
+zoom_bar_color_by: sig
+zoom_bar_title: "#sig per pos"
+zoom_width: 1200
+zoom_bar_x_col: pos
+zoom_bar_x_order: pos2,1
+zoom_bar_color_min_v: 0
+zoom_bar_color_max_v: 10
+tooltips: mutation,log2FoldChange,pvalue,padj
+heatmap_color_by: log2FoldChange
+heatmap_x_col: pos
+heatmap_x_order: pos2,1
+heatmap_y_col: mutant
+heatmap_y_order: mutant,1
+heatmap_color_min_v: -10
+heatmap_color_max_v: 10
+heatmap_star_annotation_col: BF
+heatmap_height: 250

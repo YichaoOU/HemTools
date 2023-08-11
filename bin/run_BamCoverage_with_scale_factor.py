@@ -7,15 +7,18 @@ from joblib import Parallel, delayed
 import argparse
 import os
 def run_bamCoverage(output_dir,bam_input,bw_output,effectiveGenomeSize,scaleFactor,paired_end_flag):
-	
+	# bam_input = bam_input.replace("/home/syi/",'~/dirs/')
+	# print (bam_input)
 	
 	if not os.path.isfile("%s.bai"%(bam_input)):
 		samtools_sort = "samtools sort -o %s.sorted %s"%(bam_input,bam_input)
+		print (samtools_sort)
 		os.system(samtools_sort)
 		# samtools_index = "samtools index -o %s.sorted"%(bam_input)
 		samtools_index = "samtools index %s.sorted"%(bam_input)
 		os.system(samtools_index)
 		bam_input = bam_input+".sorted"
+	
 	command = "bamCoverage -b %s -o %s/%s.scale.bw --smoothLength=200 --ignoreForNormalization chrX chrM   --effectiveGenomeSize %s --numberOfProcessors 4 --scaleFactor %s "%(bam_input,output_dir,bw_output,effectiveGenomeSize,scaleFactor)
 	if paired_end_flag:
 		command+= "--centerReads"
@@ -48,7 +51,8 @@ def main():
 	numbers = [parse_df(f) for f in files]
 	df['factor'] = [1/(x/numbers[-1]) for x in numbers]
 	print (df)
-	Parallel(n_jobs=df.shape[0])(delayed(run_bamCoverage)(args.output_dir,df.get_value(i,0),df.get_value(i,2),args.effectiveGenomeSize,df.get_value(i,'factor'),args.paired_end_flag) for i in df.index.tolist())
+	# Parallel(n_jobs=df.shape[0])(delayed(run_bamCoverage)(args.output_dir,df.get_value(i,0),df.get_value(i,2),args.effectiveGenomeSize,df.get_value(i,'factor'),args.paired_end_flag) for i in df.index.tolist())
+	Parallel(n_jobs=2)(delayed(run_bamCoverage)(args.output_dir,df.get_value(i,0),df.get_value(i,2),args.effectiveGenomeSize,df.get_value(i,'factor'),args.paired_end_flag) for i in df.index.tolist())
 	
 if __name__ == "__main__":
 	main()

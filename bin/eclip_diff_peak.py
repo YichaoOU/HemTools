@@ -38,11 +38,11 @@ samtools view -c $c.pri.bam > $c.readnum.txt
 perl $src/overlap_peakfi_with_bam.pl $t.pri.bam $c.pri.bam $t.merged.bed $t.readnum.txt $c.readnum.txt $t.enriched_peak.final.bed
 rm $t.pri.bam*
 rm $c.pri.bam*
-#rm $t.readnum.txt
-#rm $c.readnum.txt
+rm $t.readnum.txt
+rm $c.readnum.txt
 
 # rm $t.enriched_peak.final.bed.full
-rm $t.merged.bed
+# rm $t.merged.bed
 """
 
 def write_file(file_name,message):
@@ -50,12 +50,14 @@ def write_file(file_name,message):
 	out.write(message)
 	out.close()
 
+# perl /home/yli11/Programs/merge_peaks/bin/perl/overlap_peakfi_with_bam.pl MBNL1_IP_1_S36_R1_001.pri.bam IgG_Input_S34_R1_001.pri.bam MBNL1_IP_1_S36_R1_001*/MBNL1_IP_1_S36_R1_001.bed MBNL1_IP_1_S36_R1_001.readnum.txt IgG_Input_S34_R1_001.readnum.txt MBNL1_IP_1_S36_R1_001.vs.IgG_Input_S34_R1_001.bed
 
 # WT vs input
 step1 = step1.replace("$t",wt)
 step1 = step1.replace("$c",input)
 step1 = step1.replace("$src",src)
 write_file("tmp.sh",step1)
+# exit()
 os.system("module load R/3.5.1-rh7;bash tmp.sh")
 
 # filter peak

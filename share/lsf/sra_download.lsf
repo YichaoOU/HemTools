@@ -7,6 +7,12 @@ inputFile=data_list
 module load conda3
 source activate /home/yli11/.conda/envs/sra_download
 
+
+
+
+# init
+fasterq-dump
+
 cd {{jid}}
 
 fasterq-dump -e 1 ${COL1}

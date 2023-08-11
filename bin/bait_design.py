@@ -39,7 +39,7 @@ def my_args():
 
 def split_bed(df,bait_length=120):
 	out = []
-	step=50
+	step=25
 	for i,r in df.iterrows():
 		chr = r[0]
 		start = r[1]
@@ -93,24 +93,26 @@ def main():
 	
 	# run blat
 	out_psl = "%s/bait_design.psl"%(args.jid)
-	command = "module load blat;blat %s %s %s"%(args.genome_fasta,out_fasta,out_psl)
+	command = "module load blat;blat -minScore=20 -stepSize=2 %s %s %s"%(args.genome_fasta,out_fasta,out_psl)
+	# command = "module load blat;blat %s %s %s"%(args.genome_fasta,out_fasta,out_psl)
 	os.system(command)
 	
 	
 	# run QC
-	
+	qc_out = "out-filtered-params.txt"
+	os.system("rm %s"%(qc_out))
 	command = "module load conda3/202105;source activate /home/yli11/.conda/envs/gem;%s checkbaits -i %s -w"%(args.src,out_fasta)
 	os.system(command)
 	
 	# merge table
-	qc_out = "out-filtered-params.txt"
 	tmp = "out-filtered-baits.fa"
 	os.system("rm %s"%(tmp))
 	psl = pd.read_csv(out_psl,skiprows=5,sep="\t",header=None).groupby(9).size()
 	# print (psl)
 	qc = pd.read_csv(qc_out,sep="\t",index_col=0)
 	df2.index = df2[3].tolist()
-	
+	# print  (df2)
+	# print  (qc)
 	df2 = pd.concat([df2,qc],axis=1)
 	# print (df2)
 	df2['#Matches'] = df2[3].map(psl)

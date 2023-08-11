@@ -1,0 +1,122 @@
+#!shell
+=cut pacbio 1
+
+inputFile=input
+
+ncore=4
+
+mem=10000
+# q=priority
+
+
+
+# module load bbmap/38.86 gcc/9.1.0
+
+module load bedtools/2.30.0 samtools/1.15.1
+
+# module load smrttools/10.1
+
+
+# bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+
+# cd {{jid}}
+
+# mkdir ${COL2}
+
+# I don't think this is needed
+# reformat.sh in=${COL2}.fq.fastq out=${COL2}/fixed.fq qin=33 qout=64 maxcalledquality=41
+
+
+module load conda3/202011 
+
+source activate long_reads
+
+module load bedtools/2.30.0 samtools/1.15.1
+
+# genomeFasta=~/Data/Human/hg38/fasta/hg38.main.fa
+# genomeFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/mix.fa
+
+WTFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/chr11.fa
+
+MASKFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/chr11_5kb_mask.fa
+
+minimap2 -t 16 -ax map-hifi --MD -O 24,32 \
+$WTFasta \
+${COL2}.fastq \
+> ${COL2}/minimap.WT.sam
+
+minimap2 -t 16 -ax map-hifi --MD -O 24,32 \
+$MASKFasta \
+${COL2}.fastq \
+> ${COL2}/minimap.MASK.sam
+
+cd ${COL2}
+
+label=minimap.MASK
+samtools view -bS $label.sam > $label.bam
+samtools sort -@ 6 -o $label.st.bam $label.bam
+samtools index $label.st.bam
+samtools view -bs 0.01 $label.st.bam > $label.st.01.bam
+samtools index $label.st.01.bam
+
+label=minimap.WT
+samtools view -bS $label.sam > $label.bam
+samtools sort -@ 6 -o $label.st.bam $label.bam
+samtools index $label.st.bam
+samtools view -bs 0.01 $label.st.bam > $label.st.01.bam
+samtools index $label.st.01.bam
+
+
+
+
+# module load conda3/202105 # causing error, which python
+source activate uditas_env
+
+bamutils filter $label.st.bam $label.AS_filter.bam -gte AS:i 14000
+
+samtools index $label.AS_filter.bam
+
+module load bbmap/38.86 gcc/9.1.0
+
+reformat.sh in=$label.AS_filter.bam out=$label.AS_filter.reformat.bam qin=33 qout=64
+
+samtools index $label.AS_filter.reformat.bam
+
+module load bcftools/1.15.1
+
+module load picard/2.9.4 gatk/3.5 
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar AddOrReplaceReadGroups I=$label.AS_filter.reformat.bam O=$label.AS_filter.rg_added.bam SO=coordinate RGID=pacbio RGLB=pacbio RGPL=illumina RGPU=Hart_Center RGSM=pacbio
+
+samtools index $label.AS_filter.rg_added.bam
+
+genomeFasta=/home/yli11/dirs/pacbio_bam_yli11_2022-09-29/mc116-Edit/chr11.fa
+
+java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T HaplotypeCaller -R $genomeFasta -I $label.AS_filter.rg_added.bam  -o $label.AS_filter.vcf
+
+# module load conda3/202011 
+
+source activate captureC
+
+module load samtools/1.15.1
+
+pacbio_HBG_mapping_correction3.py minimap.WT.st.bam minimap.MASK.st.bam minimap.WT.AS_filter.vcf ${COL2}
+
+
+# java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T HaplotypeCaller -R $genomeFasta -I test.bam  -o test.vcf
+
+# bcftools +fill-tags -- $label.AS_filter.vcf -t VAF > $label.AS_filter.VAF.vcf
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

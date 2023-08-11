@@ -11,6 +11,13 @@ import argparse
 module load bedtools
 module load python/2.7.13
 module load cas-offinder
+
+OR
+
+module load conda3/202011
+source activate Cas_Offinder
+module load bedtools
+
 bsub -q priority -P Genomics -R 'rusage[mem=30000]' find_all_gRNA.py -f region.bed -e 30 -n 2
 """
 
@@ -21,7 +28,7 @@ def my_args():
 	group.add_argument('-f','--bed_file',  help="input regions to look for gRNAs")
 	group.add_argument('-fa','--fasta',  help="input fasta to look for gRNAs")
 	mainParser.add_argument('-e','--extend',  help="extend search area to left and right", default=100,type=int)
-	mainParser.add_argument('-l','--sgRNA_length',  help="sgRNA_length", default=20)
+	mainParser.add_argument('-l','--sgRNA_length',  help="sgRNA_length", default=20,type=int)
 	mainParser.add_argument('-g','--genome_fa',  help="genome fasta", default="/home/yli11/Data/Human/hg19/fasta/hg19.fa")
 	mainParser.add_argument('--chr_dir',  help="dir to individual chromosome files, seems to be faster than a single big one", default=None)
 	mainParser.add_argument('--PAM',  help="PAM sequence", default="NGG")
@@ -64,8 +71,8 @@ def run_casOFFinder(genome_fasta,PAM,your_seq_list,nMisMatch=0,chr_dir=None,incl
 	for i in your_seq_list:
 		config.append(i+PAM+" %s"%(nMisMatch))
 	write_file(cas_input,"\n".join(config))
-	# command = "cas-offinder %s C %s;rm %s"%(cas_input,cas_output,cas_input)	
-	command = "cas-offinder %s G %s;rm %s"%(cas_input,cas_output,cas_input)	
+	command = "cas-offinder %s C %s;rm %s"%(cas_input,cas_output,cas_input)	
+	# command = "cas-offinder %s G %s;rm %s"%(cas_input,cas_output,cas_input)	
 	# command = "cas-offinder %s G %s"%(cas_input,cas_output)	
 	# command = "cas-offinder %s C %s"%(cas_input,cas_output)	
 	os.system(command)
@@ -87,6 +94,7 @@ def get_GC(x):
 	return GC_count/float(len(x))
 
 def cas_to_bed(x,PAM,output,sgRNA_length):
+	print (x)
 	df = pd.read_csv(x,sep="\t",header=None)
 	df['start'] = df.apply(lambda r:row_apply(r,len(PAM)),axis=1)
 	df['end'] = df['start']+sgRNA_length
@@ -204,7 +212,12 @@ def main():
 	# get sequneces
 	df = pd.read_csv(cas_output,sep="\t",header=None)
 	df = df.dropna()
-	candidate_gRNAs = [x[:-len(args.PAM)] for x in df[3].tolist()]
+	
+	df['sgRNA_length'] = [len(x) for x in df[3]]
+	df = df[df.sgRNA_length==len(args.PAM)+args.sgRNA_length]
+	df["gRNA_seq"] = [x[:-len(args.PAM)] for x in df[3].tolist()]
+	df = df.drop_duplicates("gRNA_seq")
+	candidate_gRNAs = df.gRNA_seq.tolist()
 	print ("Total number of possible gRNA is: %s"%(len(candidate_gRNAs)))
 	# os.system("rm %s"%(cas_output))
 	# run 2 to get genomic coordinates

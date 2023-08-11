@@ -2,9 +2,9 @@
 
 =cut jupyter 1 
 
-ncore=1
+ncore=2
 mem={{memory}}
-q=priority
+# q=priority
 
 echo $PATH
 
@@ -38,3 +38,9 @@ yes | cp -rf /research/rgs01/home/clusterHome/yli11/.local/share/jupyter/kernels
 # jupyterlab.py {{jid}}/NGS101.ipynb
 jupyterlab.py {{jid}}/Introduction_6_21_2021_v2.ipynb
 
+# export XDG_RUNTIME_DIR=""
+
+# mkdir /scratch_space/yli11/79811
+# export JUPYTER_RUNTIME_DIR=/scratch_space/yli11/79811
+# export NUMEXPR_MAX_THREADS=64
+# jupyter lab --ip='*' --NotebookApp.token='' --NotebookApp.password='' --no-browser --port 8003

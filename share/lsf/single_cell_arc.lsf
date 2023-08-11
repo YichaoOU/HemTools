@@ -1,0 +1,37 @@
+#!shell
+
+=cut CR 1
+
+inputFile=input
+
+ncore=12
+mem=10000
+
+
+module load cellranger-arc/2.0.0
+
+# ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger/GRCh38-2020-A_build/arc/refdata-cellranger-arc-GRCh38-2020-A-2.0.0
+# ref=/home/yli11/dirs/pipelines/hg38/cellranger_arc/GRCh38
+ref=/home/yli11/dirs/pipelines/hg38/cellranger_arc/GRCh38_phil
+
+
+cellranger-arc count --reference=$ref --libraries=${COL1}.csv --id=${COL1} --localcores=12 
+
+=cut email 3 all
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+

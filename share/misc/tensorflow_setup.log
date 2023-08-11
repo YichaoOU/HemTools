@@ -1,0 +1,1000 @@
+   28  pwd
+   29  ll -rht
+   30  nano input.csv
+   31  module load nextflow/21.10.5 singularity
+   32  history | grep bsub
+   33  module list
+   34  bsub -q priority -P Genomics -R 'rusage[mem=100000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   35  bjobs
+   36  bpeek 163632237
+   37  ls /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/Siqi_data/RNAseq_data/MBNL1_cd34/work/70/2b2e06c3b0502ecc70f92a62690b1e
+   38  ll -rht
+   39  cd work/
+   40  ls
+   41  ls *
+   42  ls */*
+   43  ls */*/*
+   44  clear
+   45  ls */*/*/*
+   46  ls */*/*/
+   47  ls */*/*
+   48  clear
+   49  ls */*
+   50  cd ..
+   51  cat 2361445_M1-2-Batch1_S30_L002_R1_001.fastq.gz 2361445_M1-2-Batch1_S30_L001_R1_001.fastq.gz > 2361445_M1_2_Batch1_S30_1.merged.fastq.gz
+   52  ll -rht
+   53  rm 2361445_M1_2_Batch1_S30_1.merged.fastq.gz
+   54  nextflow run nf-/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   55  nextflow run nf-core/rnaseq -profile test,singularity --outdir test
+   56  kill %1
+   57  nextflow run nf-/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   58  module avail nextflow
+   59  pwd
+   60  ll -rht
+   61  bsub -q priority -P Genomics -R 'rusage[mem=100000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   62  bjobs
+   63  ll -rht
+   64  less .nextflow.log
+   65  bsub --help
+   66  bsub -h
+   67  bsub -n 5 -q priority -P Genomics -R 'rusage[mem=20000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   68  bjobs
+   69  bsub -n 20 -q priority -P Genomics -R 'rusage[mem=5000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   70  bjobs
+   71  ll -rht
+   72  bjobs
+   73  ls
+   74  less rna_seq_syi_2022-03-24/log_files/*lsf
+   75  less .nextflow.log
+   76  bsub -n 10 -q priority -P Genomics -R 'span[hosts=1] rusage[mem=12000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   77  bjobs
+   78  less .nextflow.log
+   79  bsub -n 20 -q priority -P Genomics -R 'span[hosts=1] rusage[mem=6000]' -J NGS nextflow run nf-core/rnaseq --save_merged_fastq --input input.csv --outdir nf_core_rnaseq --genome GRCh38 -profile singularity --aligner star_rsem --pseudo_aligner salmon --save_unaligned
+   80  bjobs
+   81  module list
+   82  cd /home/yli11/dirs/Sequencing_runs/IsoSeq_256066_RNA/second_run
+   83  ls
+   84  ll -rht
+   85  ls *
+   86  ls */HiFi_reads/*bam* 
+   87  mkdir analysis
+   88  cd analysis/
+   89  ln -s ../*/HiFi_reads/*bam*
+   90  ls
+   91  ls ../*/HiFi_reads/*bam*
+   92  ln -s ../*/HiFi_reads/*bam* .
+   93  ls
+   94  ll -rht
+   95  nano input.list
+   96  dos2unix input.list 
+   97  nano primer.fa
+   98  dos2unix primer.fa 
+   99  module list
+  100  run_lsf.py -f input.list --primer primer.fa -p iso_seq
+  101  cd /home/yli11/test
+  102  ll -rht
+  103  cas_offinder.py -g hg19 --add_PAM --PAM_seq NGG -f guideseq_pool_run1.csv -n 0 -j guideseq_pool_run1_casOffinder
+  104  bjobs
+  105  cd /research/rgs01/home/clusterHome/yli11/test/guideseq_pool_run1_casOffinder
+  106  ll -rht
+  107  less matches.bed.sorted 
+  108  less number_matches.tsv 
+  109  bjobs
+  110  ls
+  111  cd log_files/
+  112  ls
+  113  ll -rht
+  114  less cas_163882801_1.out 
+  115  cd
+  116  ll rht
+  117  ll -rht
+  118  cd R
+  119  ls
+  120  cd ..
+  121  ls
+  122  history | grep cas
+  123  cd test
+  124  cas_offinder.py -g hg19 --add_PAM --PAM_seq NGG -f guideseq_pool_run2.csv -n 0 guideseq_pool_run2_casOffinder
+  125  cas_offinder.py -g hg19 --add_PAM --PAM_seq NGG -f guideseq_pool_run2.csv -n 0 -j guideseq_pool_run2_casOffinder
+  126  less guideseq_pool_run2.csv
+  127  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/temp_data
+  128  ls
+  129  ll -rht
+  130  less Homo_sapiens.GRCh37.cdna.only_protein_coding_transcript.fa
+  131  less /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/rna_seq/new_reference/insertion_sequence.fa
+  132  cp /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/rna_seq/new_reference/insertion_sequence.fa .
+  133  nano insertion_sequence.fa 
+  134  ll -rht
+  135  cat insertion_sequence.fa Homo_sapiens.GRCh37.cdna.only_protein_coding_transcript.fa > hg19.protein_coding.wInsert.fa
+  136  ll -rht
+  137  less hg19.protein_coding.wInsert.fa
+  138  module avail kallisto
+  139  kallisto index -i hg19.protein_coding.wInsert.fa 
+  140  module load kallisto
+  141  kallisto index -i hg19.protein_coding.wInsert.fa 
+  142  kallisto index -i hg19.protein_coding.wInsert.idx hg19.protein_coding.wInsert.fa 
+  143  ll -rht
+  144  ls
+  145  pwd
+  146  ls
+  147  ll -rht
+  148  ls $PWD/hg19.protein_coding.wInsert.idx
+  149  cd
+  150  cd .conda
+  151  cd envs
+  152  cd captureC/
+  153  find . -iname "*Seurat*"
+  154  less ./conda-meta/r-seurat-4.0.2-r40h03ef668_0.json
+  155  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/IsoSeq_256066_RNA/second_run/analysis/iso_seq_yli11_2022-06-22
+  156  ll -rht
+  157  run_lsf.py -u rerun.lsf 
+  158  bjobs
+  159  less merge.lsf 
+  160  bjobs
+  161  bpeek 163913964[1]
+  162  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/RNA/sorted/fetal_adult_expression/example
+  163  ls
+  164  ll -rht
+  165  cd diffGenes_yli11_2022-04-14/
+  166  ls
+  167  ll -rht
+  168  less sleuth.lsf 
+  169  cd ..
+  170  find . -name "*compare*"
+  171  less compare.txt 
+  172  cd diffGenes_yli11_2022-04-14/
+  173  less /home/yli11/Data/Human/hg38/index/kallisto/hg38.ensembl_v67.t2g
+  174  less /home/yli11/Data/Human/hg38/index/kallisto/*
+  175  ls /home/yli11/Data/Human/hg38/index/kallisto/*
+  176  ls /home/yli11/Data/Human/hg38/index/kallisto
+  177  ls
+  178  ll -rht
+  179  cd SRR5890881_Adult_d14_group_Adult_d14
+  180  ;s
+  181  ls
+  182  cd ..
+  183  ls
+  184  ll -rht
+  185  cd d11_sleuth/
+  186  ls
+  187  cd ..
+  188  cd
+  189  cd Data/
+  190  cd Human/
+  191  cd hg19/
+  192  cd index/
+  193  cd kallisto/
+  194  ls
+  195  less hg19.ensembl_v75.t2g
+  196  less hg19.ensembl_v75.t
+  197  less hg19.ensembl_v75.txt 
+  198  less hg19.ensembl_v75.t2g
+  199  ls $PWD/hg19.ensembl_v75.t2g
+  200  less hg19.ensembl_v75.t2g
+  201  cd /home/yli11/dirs/kallisto_results
+  202  module list
+  203  module purge
+  204  module load python/2.7.13
+  205  run_lsf.py -f sleuth.input.tsv -u run.lsf 
+  206  bjobs
+  207  ll -rht
+  208  cd run_yli11_2022-06-24/
+  209  ls
+  210  ll -rht
+  211  cd log_files/
+  212  ls
+  213  tail *err
+  214  cd ..
+  215  ls
+  216  cd ..
+  217  ls
+  218  pwd
+  219  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/common/safe_harbor/rna_seq/kallisto_sleuth_diff_gene/kallisto_results
+  220  ls
+  221  ll -rht
+  222  ls $PWD/1678_vs_h2_siqi.tsv_results.gene.final.combined.tpm.csv
+  223  less 1678_vs_h2_siqi.tsv_results.gene.final.combined.tpm.csv
+  224  ls
+  225  cd log_files/
+  226  ls
+  227  less quant_163902859_*out
+  228  cd ..
+  229  ls
+  230  cd ..
+  231  ls
+  232  ll -rht
+  233  less input.list 
+  234  run_lsf.py -f input.list -p simple_kallisto -j kallisto_results_all_gene
+  235  bjobs
+  236  ls
+  237  cd kallisto_results
+  238  ls
+  239  cd ..
+  240  cd kallisto_results_all_gene/
+  241  ls
+  242  ll -rht
+  243  cp ../kallisto_results/*tsv .
+  244  ls
+  245  cp ../kallisto_results/sleuth.input.tsv .
+  246  less sleuth.input.tsv 
+  247  cp ../kallisto_results/run.lsf  .
+  248  ls
+  249  ll -rht
+  250  less run.lsf 
+  251  nano run.lsf 
+  252  less ../kallisto_results/run_yli11_2022-06-24/log_files/*out
+  253  nano run.lsf 
+  254  ll -rht
+  255  bjobs
+  256  ll -rht
+  257  bjobs
+  258  cd log_files/
+  259  ls
+  260  tail *err
+  261  less *out
+  262  grep -i Exit *out
+  263  bjobs
+  264  grep -i Exit *out
+  265  cd ..
+  266  ls
+  267  ll -rht
+  268  module list
+  269  run_lsf.py -f sleuth.input.tsv -u run.lsf 
+  270  bjobs
+  271  ls
+  272  ll -rht
+  273  cd run_yli11_2022-06-24/log_files/
+  274  ls
+  275  grep -i exit *out
+  276  less *out
+  277  cd ..
+  278  ls
+  279  cd ..
+  280  ls
+  281  pwd
+  282  less RP20_vs_h2_siqi.tsv_results.gene.final.combined.tpm.csv
+  283  bjobs
+  284  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/IsoSeq_256066_RNA/second_run/analysis/iso_seq_yli11_2022-06-22
+  285  ls
+  286  ll -rht
+  287  cd talon_
+  288  cd talon_abundance/
+  289  ls
+  290  ll -rht
+  291  pwd
+  292  ls $PWD/merged.final_talon_abundance.tsv
+  293  pwd
+  294  module list
+  295  cd ..
+  296  ls
+  297  cd ..
+  298  ls
+  299  cd ..
+  300  ls
+  301  cd ..
+  302  ls
+  303  mkdir first_second_merged_run
+  304  cd first_second_merged_run/
+  305  ls
+  306  pwd
+  307  ls
+  308  nano log.txt
+  309  ll -rht
+  310  cat config.csv config.csv > merged.config.csv
+  311  nano merged.config.csv 
+  312  ls control_R1.sam
+  313  ls KO_R1.sam
+  314  rm merged.config.csv 
+  315  nano merged.config.csv
+  316  less rerun.lsf 
+  317  DB=/home/yli11/Data/Human/hg38/annotations/gencode_v40/talon.db
+  318  cp $DB talon.db
+  319  ll -rht
+  320  run_lsf.py -u rerun.lsf 
+  321  bjobs
+  322  ll -rht
+  323  bpeek 164007977[1]
+  324  nano rerun.lsf 
+  325  grep config rerun.lsf 
+  326  bjobs
+  327  rm -r rerun_yli11_2022-06-27/
+  328  run_lsf.py -u rerun.lsf 
+  329  bjobs
+  330  bpeek 164007980[1]
+  331  ll -rht
+  332  less rerun.lsf 
+  333  mkdir talon_abundance
+  334  ll -rht
+  335  bjobs
+  336  bpeek 164007980[1]
+  337  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/Siqi_data/CLIP/RBM9_293t_test/RBM9_293t_test
+  338  ll -rht
+  339  getfattr -d eclip_se_syi_2022-06-24
+  340  run_lsf.py -f fastq.tsv -p eclip_se
+  341  cd
+  342  cd dirs
+  343  cd NFIX_megan/
+  344  ls
+  345  ll -rht
+  346  cd HPC7/
+  347  ls
+  348  find . -iname "*GATA1*"
+  349  find . -iname "*GATA2*"
+  350  find . -iname "*rna*"
+  351  cd ./PRJNA208890_hpc7/rna_seq_yli11_2020-09-20
+  352  ls
+  353  cd kallisto_files/
+  354  ls
+  355  grep GATA1 *
+  356  grep -i GATA1 *
+  357  pwd
+  358  module list
+  359  cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/UDiTAS/20220624_UDiTaS_600x_VK
+  360  ls
+  361  ll -rht
+  362  less Undetermined_S0_R1_001.fastq.gz 
+  363  mkdir liyc_analysis
+  364  cd liyc_analysis/
+  365  ls
+  366  ll -rht
+  367  ln -s /research/dept/hem/common/sequencing/220624_M04990_0161_000000000-JYH4C/fastq_files/*gz .
+  368  ls
+  369  ll -rht
+  370  cp ../sample_info.csv .
+  371  cp ../input.list .
+  372  ls
+  373  run_lsf.py -f input.list -p uditas_parallel
+  374  nano test.bed
+  375  pwd
+  376  ll -rht
+  377  ls */*
+  378  ll -rht */*
+  379  ls
+  380  cd uditas_parallel_yli11_2022-06-28/
+  381  ls
+  382  cd log_files/
+  383  ls
+  384  ll -rht
+  385  tail *err
+  386  tail *out
+  387  less Uditas_164088488_2.out
+  388  bjobs
+  389  bpeek 164088488[1]
+  390  seqtk seq
+  391  module load seqtk
+  392  seqtk seq
+  393  cd ..
+  394  cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+  395  module list
+  396  run_lsf.py -f input.list -p gRNA_sequencing_QC
+  397  ll -rht
+  398  cd grna_sequencing_qc_yli11_2022-06-28/
+  399  ls
+  400  ll -rht
+  401  cd log_files/
+  402  ls
+  403  less fq_check_164106820_*err
+  404  less trim_164106819_*err
+  405  ls /home/yli11/Tools/gRNA_sequencing/align_read.py
+  406  cd ..
+  407  ls
+  408  cd ..
+  409  run_lsf.py -f input.list -p gRNA_sequencing_QC
+  410  bjobs
+  411  bpeek 164187646[1]
+  412  ls
+  413  ll -rht
+  414  cd grna_sequencing_qc_yli11_2022-06-29
+  415  ls
+  416  ll -rht
+  417  less B2M_Bio_VK2087_S1.alignment.csv
+  418  pwd
+  419  bjobs
+  420  ll -rht
+  421  cd log_files/
+  422  ls
+  423  less trim_164187646_*err
+  424  grep finished trim_164187646_*err
+  425  less trim_164187646_*1.err
+  426  less trim_164187646_*_1.err
+  427  less trim_164187646*_1.err
+  428  less trim_164187646*_2.err
+  429  cd ..
+  430  bjobs
+  431  cd ..
+  432  ls
+  433  ll -rht
+  434  rm -r grna_sequencing_qc_yli11_2022-06-29
+  435  run_lsf.py -f input.list -p gRNA_sequencing_QC
+  436  ll -rht
+  437  bjobs
+  438  cd grna_sequencing_qc_yli11_2022-06-29
+  439  ls
+  440  ll -rht
+  441  bjobs
+  442  cd log_files/
+  443  ls
+  444  ll -rht
+  445  tail trim_164190196_*err
+  446  cd ..
+  447  ls
+  448  ll -rht
+  449  cd log_files/
+  450  tail trim_164190196_*err
+  451  pwd
+  452  cd
+  453  cd dirs
+  454  ln -s /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis/grna_sequencing_qc_yli11_2022-06-29
+  455  ll -rht
+  456  cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis/
+  457  ls
+  458  ll -rht
+  459  less input.list 
+  460  htop
+  461  module load htop
+  462  htop
+  463  htop --user yli11
+  464  ls
+  465  ll -rht
+  466  cd grna_sequencing_qc_yli11_2022-06-29/
+  467  ls
+  468  rm test.csv 
+  469  htop --user yli11
+  470  module load bwa
+  471  bwa mem
+  472  ls *fa
+  473  bwa mem ~/Data/Human/hg38/bwa_16a_index/hg38.fa PDCD_IDT_VK2094_S8.alignment.csv.unaligned.fa > test.sam
+  474  less test.sam
+  475  samtools view
+  476  samtools view -F 4 test.sam
+  477  samtools view -f 4 test.sam | head
+  478  samtools view -f 4 test.sam 
+  479  samtools view -H test.sam 
+  480  samtools view -h test.sam 
+  481  samtools view
+  482  samtools view -S -H test.sam 
+  483  samtools view -S -F 4 test.sam 
+  484  samtools view -S -f 4 test.sam 
+  485  samtools view
+  486  less test.sam
+  487  samtools view -H test.sam
+  488  samtools view
+  489  samtools
+  490  samtools view
+  491  samtools view -f 4 test.sam | head
+  492  samtools view -F 4 test.sam | head
+  493  samtools view -H test.sam | head
+  494  less test.sam
+  495  samtools view -F 4 test.sam | head
+  496  samtools view -f 4 test.sam | head
+  497  samtools view -f 1 test.sam | head
+  498  samtools view -F 1 test.sam | head
+  499  samtools view -bS test.sam > test.bam
+  500  ll -rht
+  501  samtools index test.bam
+  502  bwa mem
+  503  ls *fa
+  504  mv PDCD_IDT_VK2094_S8.alignment.csv.unaligned.fa test.fa
+  505  nano test.fa
+  506  bwa mem ~/Data/Human/hg38/bwa_16a_index/hg38.fa test.fa > test.sam
+  507  more test.fa
+  508  grep M04990:162:000000000-GCHR8:1:1101:16288:1342 test.sam
+  509  bwa mem -k 10 ~/Data/Human/hg38/bwa_16a_index/hg38.fa test.fa > test.sam
+  510  grep M04990:162:000000000-GCHR8:1:1101:16288:1342 test.sam
+  511  grep ACCGGAGTCGATGCTTT *csv
+  512  grep CGTAGAGAGTCGGTGCTTT *csv
+  513  htop --user yli11
+  514  cd /home/yli11/dirs/grna_sequencing_qc_yli11_2022-06-29
+  515  ls
+  516  ll -rht
+  517  cas_offinder.py -g hg38 --add_PAM --PAM_seq NGG -j find_contaminants -n 1 -f unaligned.casOffinder_to_check.list 
+  518  ll -rht
+  519  bjobs
+  520  bpeek 164229497[1]
+  521  bjobs -l 164229497[1]
+  522  bjobs
+  523  bkill 164229497
+  524  bjobs
+  525  rm -r find_contaminants/
+  526  cas_offinder.py -g hg38 --add_PAM --PAM_seq NGG -j find_contaminants -n 1 -f unaligned.casOffinder_to_check.list 
+  527  bjobs
+  528  pwd
+  529  bjobs
+  530  bpeek 164229582[1]
+  531  bjobs
+  532  cd find_contaminants/
+  533  ls
+  534  ll -rht
+  535  less matches.bed 
+  536  htop
+  537  bjobs
+  538  cd /home/yli11/dirs/grna_sequencing_qc_yli11_2022-06-29
+  539  module load conda3/202011
+  540  source activate captureC
+  541  python ~/Tools/gRNA_sequencing/gRNA_summarize.py
+  542  kill %1
+  543  python ~/Tools/gRNA_sequencing/gRNA_summarize.py
+  544  python
+  545  ll -rht
+  546  less test.csv
+  547  python ~/Tools/gRNA_sequencing/gRNA_summarize.py
+  548  less test.csv
+  549  python
+  550  ll -rht
+  551  pwd
+  552  ll -rht
+  553  grep TTTTTTTTTTTATTTTTTTT *csv
+  554  which pip
+  555  pip install simplesam
+  556  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/IsoSeq_256066_RNA/first_second_merged_run
+  557  ls
+  558  python annot.py KO_R1.sam test.sam
+  559  which python
+  560  less KO_R1.sam
+  561  python annot.py KO_R1.sam test.sam
+  562  grep m64304e_220525_180752/73007843/ccs KO_R1.sam 
+  563  grep m64304e_220525_180752/73007843/ccs talon_abundance/merged.final_talon_read_annot.tsv 
+  564  less talon_abundance/merged.final_talon_read_annot.tsv
+  565  grep chr7_KI270806v1_alt talon_abundance/merged.final_talon_read_annot.tsv
+  566  python annot.py KO_R1.sam test.sam
+  567  pip install khmer
+  568  cd
+  569  cd test
+  570  nano test.fa
+  571  load-into-counting.py -k 6 out test.fa
+  572  less out
+  573  less out.info 
+  574  cd
+  575  cd HemTools/bin/
+  576  cd
+  577  cd Programs/
+  578  wget https://github.com/refresh-bio/KMC/releases/download/v3.2.1/KMC3.2.1.linux.tar.gz
+  579  tar zxvf KMC3.2.1.linux.tar.gz 
+  580  cd bin/
+  581  ls
+  582  ./kmc
+  583  mv ./kmc ~/HemTools/bin/
+  584  cd
+  585  cd test
+  586  kmc -k6 test.fa test.out .
+  587  kmc
+  588  kmc -k6 -fa test.fa -ci0 test.out .
+  589  rm test.out
+  590  kmc -k6 -fa -ci0 test.fa test.out .
+  591  less test.out
+  592  kmc -k6 -fa -ci0 test.fa test.out .
+  593  less test.out
+  594  git clone https://github.com/lh3/kmer-cnt
+  595  cd kmer-cnt
+  596  module avail gcc
+  597  make
+  598  module load gcc/9.1.0
+  599  make
+  600  module avail c
+  601  module avail zlib
+  602  module load zlib/1.2.11
+  603  make
+  604  cd ..
+  605  ls
+  606  ll -rht
+  607  less test.out.kmc_pre 
+  608  less out
+  609  kmc_dump 
+  610  kmc_tools transform test.out dump test.txt
+  611  less text.txt
+  612  ll -rht
+  613  less test.txt 
+  614  kmc_tools 
+  615  kmc 
+  616  cd
+  617  cd dirs
+  618  ll -rht
+  619  module load htop
+  620  htop
+  621  htop --user yli11
+  622  cd
+  623  cd dirs
+  624  cd grna_sequencing_qc_yli11_2022-06-29/
+  625  ls
+  626  less PDCD_IDT_VK2094_S8.fastq.gz 
+  627  cd ..
+  628  ll -rht
+  629  cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis/
+  630  ls PDCD_IDT_VK2094_S8
+  631  ls PDCD_IDT_VK2094_S8*
+  632  f=PDCD_IDT_VK2094_S8_R1_001.fastq.gz
+  633  zcat $f| grep -A 3 @M04990:162:000000000-GCHR8:1:1101:15420:1384
+  634  cd grna_sequencing_qc_yli11_2022-06-2
+  635  cd grna_sequencing_qc_yli11_2022-06-29/
+  636  zcat PDCD_IDT_VK2094_S8.fastq.gz| grep -A 3 @M04990:162:000000000-GCHR8:1:1101:15420:1384
+  637  cd ..
+  638  nano test.fastq
+  639  module load fastp
+  640  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout 
+  641  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q
+  642  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0
+  643  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0 -A
+  644  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0 -A -G
+  645  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0 -G
+  646  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0 -G -u 0
+  647  fastp -i test.fastq --trim_poly_a --stdout -Q 
+  648  fastp -i test.fastq --trim_poly_x --stdout -Q 
+  649  fastp -i test.fastq --trim_poly_x A --stdout -Q 
+  650  fastp -i test.fastq --adapter_sequence AAAAAAAAAA --stdout -Q -q 0 -G -u 0
+  651  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0
+  652  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0 -t 1
+  653  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0 -t 0
+  654  cutadapt -m 15 -a AAAAAAAAAA test.fastq > out.fastq
+  655  which cutadapt
+  656  which python
+  657  ll -rht /home/yli11/.conda/envs/CaptureC/bin
+  658  ll -rht /home/yli11/.conda/envs/CaptureC/bin/cutadapt
+  659  /home/yli11/.conda/envs/CaptureC/bin/cutadapt
+  660  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA test.fastq > out.fastq
+  661  nano test.fastq
+  662  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA test.fastq > out.fastq
+  663  less out.fastq 
+  664  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA PDCD_Bio_VK2091_S5_R1_001.fastq.gz > out.fastq
+  665  less out.fastq 
+  666  module avail fastp
+  667  conda install -c bioconda fastp
+  668  which fastp
+  669  module remove fastp
+  670  which fastp
+  671  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0 -t 0
+  672  more test.fastq
+  673  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0 -t 0
+  674  fastp -i test.fastq --adapter_sequence=GTCGGTGCTT --stdout -Q -q 0 -G -u 0 -t 0
+  675  fastp -i test.fastq --adapter_sequence=TTCGGTGCTT --stdout -Q -q 0 -G -u 0 -t 0
+  676  fastp
+  677  fastp -i test.fastq --adapter_sequence=AAAAAAAAAA --stdout -Q -q 0 -G -u 0 -t 0
+  678  less out.fastq 
+  679  ll -rht
+  680  cutadapt
+  681  /home/yli11/.conda/envs/CaptureC/bin/cutadapt
+  682  /home/yli11/.conda/envs/CaptureC/bin/cutadapt --help
+  683  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA test.fastq > out.fastq
+  684  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA test.fastq --report test.report> out.fastq
+  685  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA test.fastq > out.fastq 2>report
+  686  less report
+  687  ls
+  688  module load fastqc
+  689  fastqc *fastq
+  690  ls
+  691  ll -rht
+  692  ls *
+  693  ll -rht
+  694  cd grna_sequencing_qc_yli11_2022-06-29
+  695  ls
+  696  ll -rht *gz
+  697  cd ..
+  698  ll -rht
+  699  history | grep cutadapt
+  700  /home/yli11/.conda/envs/CaptureC/bin/cutadapt -m 15 -a AAAAAAAAAA PDCD_Bio_VK2091_S5_R1_001.fastq.gz > out.fastq
+  701  more input.list 
+  702  g=CACCTACCTAAGAACCATCC
+  703  python ~/Tools/gRNA_sequencing/align_reads2.py out.fastq $g
+  704  ll -rht
+  705  less out.alignment.csv 
+  706  pwd
+  707  COL2=PDCD_Bio_VK2091_S5
+  708  src=/home/yli11/Tools/gRNA_sequencing
+  709  ll -rht
+  710  cd grna_sequencing_qc_yli11_2022-07-05/
+  711  ll -rht
+  712  python $src/align_reads2.py ${COL2}.fastq test
+  713  echo $COL2
+  714  wc -l PDCD_Bio_VK2091_S5.fastq 
+  715  python 
+  716  python $src/align_reads2.py ${COL2}.fastq test
+  717  python $src/align_reads2.py ${COL2}.fastq CACCTACCTAAGAACCATCC
+  718  ll -rht
+  719  less PDCD_Bio_VK2091_S5.alignment.csv
+  720  ll -rht
+  721  cd ..
+  722  ls
+  723  ll -rht
+  724  cd grna_sequencing_qc_yli11_2022-07-05/
+  725  ls
+  726  ll -rht
+  727  bjobs
+  728  pwd
+  729  pip install panel
+  730  cd
+  731  cd HemTools/bin/
+  732  wget https://github.com/rcedgar/muscle/releases/download/v5.1/muscle5.1.linux_intel64 .
+  733  mv muscle5.1.linux_intel64 muscle
+  734  ./muscle 
+  735  cd
+  736  cd dirs
+  737  cd grna_sequencing_qc_yli11_2022-07-05/
+  738  ls
+  739  ll -rht
+  740  less test.fa
+  741  muscle
+  742  muscle -align test.fa -out test.out.txt
+  743  muscle -align test.fa -output test.out.txt
+  744  less test.out.txt
+  745  muscle -align test.fa -output test.out.txt
+  746  less test.out.txt
+  747  muscle
+  748  less test.out.txt
+  749  pip install selenium
+  750  conda install firefox -c conda-forge
+  751  conda install -c conda-forge geckodriver
+  752  nano test.fa
+  753  muscle -align test.fa -output test.out.txt
+  754  less test.out.txt
+  755  more test.fa
+  756  more test.out.txt 
+  757  nano test.fa
+  758  muscle -align test.fa -output test.out.txt
+  759  more test.out.txt 
+  760  less test.fa
+  761  muscle -align test.fa -output test.out.txt
+  762  muscle
+  763  less test.fa
+  764  muscle -align test.fa -output test.out.txt
+  765  kill %1
+  766  muscle -align test.fa -output test.out.txt -super5
+  767  muscle -super5 test.fa -output test.out.txt 
+  768  ll -rht
+  769  less test.out.txt 
+  770  muscle
+  771  less test.fa
+  772  muscle -align test.fa -output test.out.txt 
+  773  less test.out.txt 
+  774  ll -rht
+  775  less test.fa
+  776  muscle
+  777  MUSCLE-fast
+  778  module avail clust
+  779  muscle -super5 test.fa -output test.out.txt 
+  780  less test.out.txt 
+  781  ls
+  782  ll -rht
+  783  echo $src
+  784  python $src/gRNA_summarize2.py 
+  785  ll -rht *out
+  786  python $src/gRNA_summarize2.py 
+  787  ll -rht
+  788  less PDCD_IDT_VK2094_S8.top10.fa
+  789  ll -rht
+  790  less PDCD_IDT_VK2094_S8.top10.fa
+  791  python $src/gRNA_summarize2.py 
+  792  ll rht
+  793  ll -rht
+  794  less PDCD_IDT_VK2094_S8.top10.out
+  795  python $src/gRNA_summarize2.py 
+  796  ll -rht
+  797  python $src/gRNA_summarize2.py 
+  798  which python
+  799  pwd
+  800  cd Projects/
+  801  cd gRNA_
+  802  cd gRNA_sequencing/
+  803  ls
+  804  ll -rht
+  805  cd data2/
+  806  ls
+  807  ll -rht
+  808  cd trim_yli11_2022-06-10/
+  809  ls
+  810  ll -rht
+  811  less VK2049_S3_R1_001.fastq.gz
+  812  less fastq.tsv 
+  813  module load python/2.7.13
+  814  run_lsf.py -f fastq.tsv -p bwa_mem_single
+  815  cd
+  816  cd Projects/
+  817  mkdir DREAM_promoter
+  818  cd DREAM_promoter/
+  819  ls
+  820  pwd
+  821  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/IsoSeq_256066_RNA/second_run/analysis/iso_seq_yli11_2022-06-22
+  822  ls
+  823  ll -rht
+  824  pwd
+  825  cd ..
+  826  ls
+  827  ll -rht
+  828  cd ..
+  829  ls
+  830  cd ..
+  831  ls
+  832  cd first_second_merged_run/
+  833  ls
+  834  cd talon_
+  835  ls
+  836  cd talon_abundance/
+  837  ls
+  838  ll -rht
+  839  cd ..
+  840  ls
+  841  ll -rht
+  842  ls *sam 
+  843  nano input2.list
+  844  module list
+  845  run_lsf.py -f input2.list -p sam2bam
+  846  ls *
+  847  cd talon_abundance/
+  848  ls
+  849  ll -rht
+  850  less merged.final_talon_read_annot.tsv
+  851  ls $PWD/merged.final_talon_read_annot.tsv
+  852  ls
+  853  cd ..
+  854  ls
+  855  ll -rht
+  856  less KO_R1.annot.sam 
+  857  grep m64304e_220525_180752/97782554/ccs KO_R1*sam
+  858  nano annot.py
+  859  nano run_annot.lsf
+  860  module list
+  861  run_lsf.py -f input2.list -u run_annot.lsf 
+  862  ll -rht
+  863  less KO_R1.annot.sam
+  864  ls *annot.sam
+  865  rm *annot.sam
+  866  rm -r run_annot_yli11_2022-06-29
+  867  module list
+  868  run_lsf.py -f input2.list -u run_annot.lsf 
+  869  ls
+  870  ll -rht
+  871  cd run_annot_yli11_2022-06-30/
+  872  ls
+  873  ll -rht
+  874  less log_files/sam_164262953_*err
+  875  cd ..
+  876  ll -rht
+  877  pwd
+  878  ll -rht
+  879  rm -r run_annot_yli11_2022-06-30/
+  880  run_lsf.py -f input2.list -u run_annot.lsf 
+  881  bjobs
+  882  ll -rht
+  883  less test.sam 
+  884  ll -rht
+  885  cd run_annot_yli11_2022-06-30/
+  886  ls
+  887  ll -rht
+  888  dir=/home/yli11/dirs/genome_browser/yli11/iso_seq/annot_bam
+  889  cp *st.bam* $dir
+  890  cd ..
+  891  ll -rht
+  892  less config.csv 
+  893  less config.csv
+  894  less rerun.lsf 
+  895  find . -name *csv
+  896  ls talon_abundance/
+  897  less talon_abundance/merged.config.csv 
+  898  htop
+  899  module load htop
+  900  htop --user yli11
+  901  module load conda3/202011
+  902  source activate captureC
+  903  cd /home/yli11/dirs/grna_sequencing_qc_yli11_2022-07-05
+  904  src=/home/yli11/Tools/gRNA_sequencing
+  905  python $src/gRNA_summarize2.py
+  906  conda install -c conda-forge firefox geckodriver
+  907  python $src/gRNA_summarize2.py
+  908  geckodriver
+  909  firefox
+  910  which firefox
+  911  which geckodriver
+  912  python $src/gRNA_summarize2.py
+  913  python
+  914  python $src/gRNA_summarize2.py
+  915  bjobs
+  916  pwd
+  917  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/hgcOPT_insulator/Data/ChIP/chenggrp_270279
+  918  module load python/2.7.13
+  919  run_lsf.py --guess_input --single
+  920  run_lsf.py -f fastq.tsv -p 20copy_debug
+  921  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/IsoSeq_256066_RNA/
+  922  ls
+  923  cd second_run/
+  924  ls
+  925  cd ..
+  926  cd first_second_merged_run/
+  927  ls
+  928  cd ..
+  929  ls
+  930  cd Reads_by_sample/
+  931  cd full_run/
+  932  ls
+  933  ll -rht
+  934  ls *lsf
+  935  getfattr -d sam2bam_yli11_2022-06-13
+  936  ls
+  937  ll -rht
+  938  ls *log*
+  939  tail *log*
+  940  find . -name "*log*"
+  941  ls *sh
+  942  ll -rht
+  943  getfattr -d sam2bam_yli11_2022-06-13
+  944  lss input2.list 
+  945  less input2.list 
+  946  ll -rht
+  947  less input2.list 
+  948  getfattr -d sam2bam_yli11_2022-06-13
+  949  cd
+  950  cd dirs
+  951  ll -rht
+  952  cd genome_browser/
+  953  cd yli11/
+  954  cd iso_seq/
+  955  ls
+  956  ll -rht
+  957  cp tracks.json bam.json
+  958  mkdir annot_bam
+  959  cd annot_bam/
+  960  pwd
+  961  cd ..
+  962  ls
+  963  ll -rht
+  964  cd annot_bam/
+  965  ls
+  966  ll -rht
+  967  cd ..
+  968  ls
+  969  ll -rht
+  970  cd
+  971  cd Programs/
+  972  cd SPR
+  973  cd SPROUT/
+  974  ls
+  975  ll -rht
+  976  less SPROUT_predict_batch.py
+  977  less david_liu.ngRNA.list
+  978  less guide_batch.txt
+  979  less out
+  980  grep CCAGCAATACCTTTTTCTGCGGG *
+  981  ls *py
+  982  less SPROUT_predict_batch.py 
+  983  less SPROUT_predict.py
+  984  cd /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/hgcOPT_insulator/Data/RNAseq/exon_level_comparison/hg19_analysis/
+  985  ls
+  986  ll -rht
+  987  cd dCTCF_genomes/
+  988  ls
+  989  ll -rht
+  990  more *sh
+  991  head *sh
+  992  cd ..
+  993  ls
+  994  pwd
+  995  ll -rht
+  996  cd dCTCF_genomes/
+  997  ls
+  998  head *sh
+  999  bjobs
+ 1000  bhosts
+ 1001  module load conda3/202011
+ 1002  conda create -n keras
+ 1003  source activate keras
+ 1004  module load cuda11/toolkit/11.3
+ 1005  module load cudnn/8.2.0.53
+ 1006  nvidia-smi 
+ 1007  echo $CONDA_PREFIX
+ 1008  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/
+ 1009  python3 -m pip install tensorflow
+ 1010  conda install python=3.9
+ 1011  mkdir -p $CONDA_PREFIX/etc/conda/activate.d
+ 1012  echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/' > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+ 1013  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/
+ 1014  which pip
+ 1015  pip install tensorflow
+ 1016  python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+ 1017  python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+ 1018  cd HemTools/
+ 1019  ll -rht
+ 1020  cd test
+ 1021  ls
+ 1022  cd ..
+ 1023  cd share/
+ 1024  ls
+ 1025  cd misc/
+ 1026  ls
+ 1027  history > tensorflow_setup.log

@@ -1,0 +1,83 @@
+#!shell
+=cut Uditas 1
+
+inputFile=input
+
+ncore=8
+mem=4000
+
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/uditas_env
+
+export BOWTIE2_INDEXES=/home/yli11/Data/Human/hg38/bowtie2/
+
+export GENOMES_2BIT=/home/yli11/Data/Human/hg38/
+
+module load bowtie2/2.2.9
+
+module load java/1.8.0_181 samtools/1.12
+
+# uditas $PWD -process_amplicon ${COL1} -ncpu 8 -skip_demultiplexing 1 -skip_trimming 1 -skip_genome_local_alignment 1 -skip_amplicon_global_alignment 1 -skip_plasmid_alignment 1
+# uditas $PWD -process_amplicon 23 -ncpu 8 -skip_demultiplexing 1 -skip_trimming 1 -skip_genome_local_alignment 1 -skip_amplicon_global_alignment 1 -skip_plasmid_alignment 1 -skip_genome_global_alignment 1
+uditas $PWD -process_amplicon ${COL1} -ncpu 8
+# for testing
+# python ~/Tools/uditas_opt/uditas/uditas.py $PWD -skip_demultiplexing 1 -skip_trimming 1 -ncpu 60
+=cut summary 2 Uditas
+
+ncore=1
+mem=16000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/uditas_env
+
+export BOWTIE2_INDEXES=/home/yli11/Data/Human/hg38/bowtie2/
+
+export GENOMES_2BIT=/home/yli11/Data/Human/hg38/
+
+module load bowtie2/2.2.9
+
+module load java/1.8.0_181 samtools/1.12
+
+uditas $PWD -only_summarize 1
+
+
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+
+
+=cut email 3 all
+
+ncore=1
+mem=16000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+module load texlive/20190410
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+src=/home/yli11/Tools/uditas_opt 
+
+cp $src/heatmap_circos_plot.ipynb .
+
+jupyter nbconvert --to notebook --execute heatmap_circos_plot.ipynb --output heatmap_circos_plot --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+jupyter nbconvert heatmap_circos_plot.ipynb --to html 
+
+
+module load python/2.7.13
+
+send_email_v1.py -a all_results/results_summary_pivot.xlsx,UDITAS_amplicon_read_percent_heatmap.pdf -m "uditas OPT pipeline is finished! Please see results_summary_pivot.xlsx" -j {{jid}}  --common
+
+

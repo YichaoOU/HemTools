@@ -133,7 +133,7 @@ def main():
 	else:
 		args.juicer_genome_size = args.chrom_size
 		args.digested_fragments = args.digested_enzyme
-		args.genome = args.ref_genome # seems not used?
+		# args.genome = args.ref_genome # seems not used?
 	if "hybrid" in args.genome:
 		args.ref_genome = args.genome
 		

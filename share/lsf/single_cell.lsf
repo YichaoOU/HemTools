@@ -6,8 +6,8 @@
 # module load cellranger/5.0.1
 module load cellranger/7.0.0
 
-ncore=4
-mem=30000
+ncore=10
+mem=12000
 
 inputFile=input_list
 

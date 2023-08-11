@@ -28,7 +28,7 @@ def my_args():
 	addon_string = str(uuid.uuid4()).split("-")[-1]
 	mainParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,description="plot heatmap given dataframe.")
 	mainParser.add_argument('-f',"--input",  help="data table input",required=True)
-	mainParser.add_argument("--sort_by",  help="usually this column should be logFC",required=True)
+	mainParser.add_argument("--sort_by",  help="usually this column should be logFC",default=None)
 	mainParser.add_argument('-c1',"--value_cutoff_max",  help="subset genes by filtering out values above the cutoff, usually it should be p-value, input should be: column_name,value",default=None)
 	mainParser.add_argument('-c2',"--value_cutoff_min",  help="subset genes by filtering out values below the cutoff, usually it should be log p-value, input should be: column_name,value",default=None)
 	mainParser.add_argument("--index_by",  help="if the first column is not the correct index, which one?",default=None)
@@ -87,20 +87,21 @@ def main():
 	"""
 
 	df = pd.read_csv(args.input,sep=guess_sep(args.input),index_col=0)
-	if args.value_cutoff_max != None:
+	if args.value_cutoff_max:
 		name,value = args.value_cutoff_max.split(",")
 		value = float(value)
 		df = df[df[name]<=value]
 		df = df.drop([name],axis=1)
-	if args.value_cutoff_min != None:
+	if args.value_cutoff_min:
 		name,value = args.value_cutoff_min.split(",")
 		value = float(value)
 		df = df[df[name]>=value]
 		df = df.drop([name],axis=1)
-	if args.index_by != None:
+	if args.index_by:
 		df = df.set_index(args.index_by)
-	df = df.sort_values(args.sort_by)
-	df = df.drop([args.sort_by],axis=1)
+	if args.args.sort_by:
+		df = df.sort_values(args.sort_by)
+		df = df.drop([args.sort_by],axis=1)
 	#-------------- pre-processing ----------------------
 	remove_cols = str(args.remove_cols).split(",")
 	try:

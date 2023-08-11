@@ -1,0 +1,82 @@
+#!shell
+
+
+=cut GATK 1
+
+inputFile=input
+
+ncore=4
+mem=10000
+
+
+
+module load samtools/1.9
+module load bwa/0.7.16a
+
+module load fastqc/0.11.5
+
+ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/GATK/resources_broad_hg38_v0_Homo_sapiens_assembly38.fasta
+known_SNP=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/GATK/resources_broad_hg38_v0_Homo_sapiens_assembly38.dbsnp138.vcf
+index_file=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/GATK/resources_broad_hg38_v0_Homo_sapiens_assembly38.fasta.64
+
+
+fastqc ${COL1} -o {{jid}}
+
+fastqc ${COL2} -o {{jid}}
+
+bwa mem -t 6 $index_file ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
+cd {{jid}}
+samtools sort -@ 6 -o ${COL3}.st.bam ${COL3}.bam
+samtools index ${COL3}.st.bam
+
+samtools flagstat ${COL3}.st.bam > ${COL3}.flagstat
+samtools stats ${COL3}.st.bam > ${COL3}.stats
+samtools idxstats ${COL3}.st.bam > ${COL3}.idxstats
+
+module load picard/2.9.4
+
+module load gatk/4.1.8.0
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar AddOrReplaceReadGroups I= ${COL3}.st.bam O= ${COL3}.st.ag.bam RGID=${COL3} RGLB=${COL3} RGPL=illumina RGPU=Hart_Center RGSM=${COL3}
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar ReorderSam I= ${COL3}.st.ag.bam O= ${COL3}.sorted.bam R= $ref CREATE_INDEX=TRUE
+
+#Perform BQSR
+echo -e "["$(date)"]\tPerforming BQSR.."
+# java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T BaseRecalibrator -I $COL3.sorted.bam -R $ref -knownSites $known_SNP -o $COL3.Base.Recal.table
+gatk BaseRecalibrator -I $COL3.sorted.bam -R $ref --known-sites $known_SNP  -O $COL3.Base.Recal.table
+
+
+#Print recalibrated reads
+echo -e "["$(date)"]\tPrinting recalibrated reads.."
+# java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T PrintReads -R $ref -I $COL3.sorted.bam --bqsr-recal-file $COL3.Base.Recal.table -o $COL3.BQSR.bam 
+gatk ApplyBQSR  -R $ref -I $COL3.sorted.bam --bqsr-recal-file $COL3.Base.Recal.table -O $COL3.BQSR.bam 
+
+
+#Run HaplotypeCaller
+echo -e "["$(date)"]\tRunning HaplotypeCaller.."
+# java -jar /hpcf/apps/gatk/install/3.5/GenomeAnalysisTK.jar -T HaplotypeCaller -R $ref -I $COL3.BQSR.bam  -o $COL3.BQSR.vcf 
+
+gatk HaplotypeCaller -R $ref -I $COL3.BQSR.bam -O $COL3.BQSR.vcf  --max-reads-per-alignment-start 0
+
+
+=cut email 4 all
+
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+

@@ -1,0 +1,72 @@
+#!shell
+
+=cut peak 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+
+
+mkdir {{jid}}/${COL2}
+
+# ATAC-seq peak calling
+module load macs2/2.1.1
+# in case of replicates merged bam file, those are not PCR duplicates
+macs2 callpeak --keep-dup all --nomodel --shift -100 --extsize 200 -t ${COL1} --outdir {{jid}}/${COL2} -n ${COL2} -g hs
+
+=cut union 2 all
+
+ncore=1
+mem=10000
+
+module load python/2.7.13
+
+merge_bed.py {{jid}}/*/*narrowPeak -o {{jid}}/union_peak.bed
+
+
+=cut FT 3 union
+
+inputFile=input
+
+ncore=6
+mem=10000
+
+module load conda3/202210
+
+source activate tobias_ft
+
+  # -b <bam>, --bam <bam>            A .bam-file containing reads to be corrected
+  # -g <fasta>, --genome <fasta>     A .fasta-file containing whole genomic sequence
+  # -p <bed>, --peaks <bed>          A .bed-file containing ATAC peak regions
+  # --regions-out <bed>              Output regions (default: peaks.bed)
+  # --blacklist <bed>                Blacklisted regions in .bed-format (default: None)
+  # --extend <int>                   Extend output regions with basepairs
+                                   # upstream/downstream (default: 100)
+# TOBIAS footprint
+TOBIAS ATACorrect --bam ${COL1} --genome {{fasta}} --peaks {{jid}}/${COL2}/${COL2}_peaks.narrowPeak --cores 10 --outdir {{jid}}/${COL2}/ --prefix ${COL2} --regions-out {{jid}}/union_peak.bed --blacklist {{black_list}} --extend 1000
+
+cd {{jid}}/${COL2}
+
+TOBIAS ScoreBigwig --signal ${COL2}_corrected.bw --regions ../union_peak.bed --cores 10 --output ${COL2}_footprint.bw
+
+mkdir motifs
+
+TOBIAS BINDetect --motifs /home/yli11/Data/Motif_database/Human/human.meme --genome {{fasta}} --peaks ../union_peak.bed --cores 10 --outdir motifs/ --signals ${COL2}_footprint.bw 
+
+cat motifs/*/beds/*_bound.bed > all_bound.bed
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

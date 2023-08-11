@@ -1,0 +1,38 @@
+#!shell
+
+=cut CR 1
+
+module load cellranger-atac/2.1.0
+
+ncore=10
+mem=12000
+
+inputFile=input_list
+
+mkdir ${COL1}_results
+
+cd ${COL1}_results
+
+ln -s ../${COL1}*.gz .
+
+cellranger-atac count --id=${COL1} --fastqs=. --reference={{cellranger_atac_refdata}} --localcores 12 
+
+
+=cut email 3 all
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+

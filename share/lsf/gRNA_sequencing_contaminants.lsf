@@ -1,0 +1,17 @@
+=cut cont 1
+
+inputFile=input
+ncore=8
+mem=8000
+
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+
+module load calitas/1.0
+/home/yli11/.conda/envs/captureC/bin/python $src/find_contaminants.py ${COL1} ${COL2}
+
+
+

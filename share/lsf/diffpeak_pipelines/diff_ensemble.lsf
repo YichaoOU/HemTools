@@ -1,4 +1,4 @@
-
+#!shell
 
 =cut manorm 1
 
@@ -7,7 +7,7 @@
 inputFile=design_matrix
 
 ncore=1
-mem=12000
+mem=50000
 
 module load bedtools
 
@@ -17,6 +17,8 @@ uid=`openssl rand -hex 12`
 
 cd {{jid}}
 
+# a=`ls ${COL1}*.bed ${COL1}*Peak |  grep -v merge | cat`
+# b=`ls ${COL2}*.bed ${COL2}*Peak |  grep -v merge | cat`
 a=`ls ${COL1}*.bed |  grep -v merge | cat`
 b=`ls ${COL2}*.bed |  grep -v merge | cat`
 
@@ -60,7 +62,7 @@ source activate /home/yli11/.conda/envs/diffPeaks
 
 manorm --p1 $uid.${COL1}.manorm.merged.bed --p2 $uid.${COL2}.manorm.merged.bed --r1 $uid.${COL1}.merge.bam --r2 $uid.${COL2}.merge.bam --n1 ${COL1}.$uid --n2 ${COL2}.$uid -o MAnorm_results/${COL3} --rf bam {{MAnorm_PE_flag}}
 
-rm *${uid}*
+mv *${uid}* MAnorm_results
 
 
 =cut THOR 1
@@ -70,7 +72,7 @@ rm *${uid}*
 inputFile=design_matrix
 
 ncore=1
-mem=20000
+mem=50000
 
 
 chrom_size={{genome_chrom_size}}
@@ -104,7 +106,7 @@ mv ${COL3}.thor THOR_results
 inputFile=input_tsv
 
 ncore=1
-mem=16000
+mem=20000
 
 # module load homer/4.9.1
 module load homer/4.10
@@ -112,16 +114,20 @@ module load homer/4.10
 
 module load ucsc
 # module load ucsc/041619
+module load bedtools/2.29.2
 
 ## -format sam, interesting homer use sam for bam
 
 cd {{jid}}
 
 makeTagDirectory ${COL3}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL3}.bam
-
+removeOutOfBoundsReads.pl ${COL3}_tag {{genome}} -chromSizes {{genome_chrom_size}}
 # makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100> log_files/${COL3}-bigWig.trackInfo.txt
-makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
-
+# makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+makeUCSCfile  ${COL3}_tag -o ${COL3}.bedgraph -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+bedtools intersect -a ${COL3}.bedgraph.gz -b {{chrom_size_bed}} -u -f 1 > ${COL3}.clean.bedgraph
+bedGraphToBigWig ${COL3}.clean.bedgraph {{genome_chrom_size}} ${COL3}.bw
+rm ${COL3}.bedgraph.gz
 
 
 =cut homer_deseq2 2 homer_norm
@@ -137,7 +143,19 @@ mem=50000
 module load bedtools
 
 
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
+module load bedtools
+
 cd {{jid}}
+
+# a=`ls ${COL1}*.bed ${COL1}*Peak | grep -v merge | cat`
+# b=`ls ${COL2}*.bed ${COL2}*Peak | grep -v merge | cat`
 
 a=`ls ${COL1}*.bed | grep -v merge | cat`
 b=`ls ${COL2}*.bed | grep -v merge | cat`
@@ -150,7 +168,7 @@ bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i ${COL3}.homer_deseq2.
 
 module load homer/4.10
 
-module load R/3.4.0
+module load R/3.6.1
 
 mkdir -p homer_deseq2_results
 
@@ -158,18 +176,20 @@ a=`ls -d ${COL1}*_tag/ | cat`
 b=`ls -d ${COL2}*_tag/ | cat`
 
 
-getDifferentialPeaksReplicates.pl -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $a -b $b > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.gain.tsv
+# getDifferentialPeaksReplicates.pl -genome {{genome}} -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $a -b $b > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.gain.tsv
+getDifferentialPeaksReplicates.pl -genome {{genome}} -f 0.0001 -q 1 -p ${COL3}.homer_deseq2.merged.bed -t $a -b $b > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.tsv
 
-getDifferentialPeaksReplicates.pl -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $b -b $a > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.loss.tsv
+# getDifferentialPeaksReplicates.pl -genome {{genome}} -f 0.1 -q 0.9 -p ${COL3}.homer_deseq2.merged.bed -t $b -b $a > homer_deseq2_results/${COL3}_homer_deseq2.user_peak.loss.tsv
+
 
 module load python/2.7.13
 
 cd homer_deseq2_results
 
-homer_deseq2_result_merge.py ${COL3}_homer_deseq2.user_peak.gain.tsv ${COL3}_homer_deseq2.user_peak.loss.tsv ${COL3}_homer_deseq2
+# homer_deseq2_result_merge.py ${COL3}_homer_deseq2.user_peak.gain.tsv ${COL3}_homer_deseq2.user_peak.loss.tsv ${COL3}_homer_deseq2
 
 
-mv ${COL3}.homer_deseq2.user_peak* ../log_files/
+# mv ${COL3}.homer_deseq2.user_peak* ../log_files/
 
 
 
@@ -184,11 +204,20 @@ mem=50000
 ## merge peak for each comparison
 
 
+echo $PATH
+
+
+PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
+
+echo $PATH
+
 cd {{jid}}
 
 module load homer/4.10
 
-module load R/3.4.0
+module load bedtools
+
+module load R/3.6.1
 
 mkdir -p homer_deseq2_results
 
@@ -197,7 +226,8 @@ mkdir -p homer_deseq2_results/denovo
 a=`ls -d ${COL1}*_tag/ | cat`
 b=`ls -d ${COL2}*_tag/ | cat`
 
-getDifferentialPeaksReplicates.pl -f 1 -q 0.5 -t $a -b $b > homer_deseq2_results/denovo/${COL3}_homer_deseq2.homer_denovo_peak.txt
+# getDifferentialPeaksReplicates.pl -genome {{genome}} -f 1 -q 0.5 -t $a -b $b > homer_deseq2_results/denovo/${COL3}_homer_deseq2.homer_denovo_peak.txt
+getDifferentialPeaksReplicates.pl -genome {{genome}} -f 0.0001 -q 1 -t $a -b $b > homer_deseq2_results/denovo/${COL3}_homer_deseq2.homer_denovo_peak.txt
 
 
 =cut homer_diff 1
@@ -221,8 +251,10 @@ uid=`openssl rand -hex 12`
 
 cd {{jid}}
 
-a=`ls ${COL1}*.bed |  grep -v merge | cat`
-b=`ls ${COL2}*.bed |  grep -v merge | cat`
+# a=`ls ${COL1}*.bed ${COL1}*Peak|  grep -v merge | cat`
+# b=`ls ${COL2}*.bed ${COL2}*Peak|  grep -v merge | cat`
+a=`ls ${COL1}*.bed|  grep -v merge | cat`
+b=`ls ${COL2}*.bed|  grep -v merge | cat`
 
 
 cat $a > $uid.${COL1}.homer.merged.bed
@@ -265,7 +297,8 @@ module load ucsc
 
 makeTagDirectory $uid.${COL1}.merge.tag -keepAll -format sam -genome {{genome}} -checkGC $uid.${COL1}.merge.bam
 makeTagDirectory $uid.${COL2}.merge.tag -keepAll -format sam -genome {{genome}} -checkGC $uid.${COL2}.merge.bam
-
+removeOutOfBoundsReads.pl $uid.${COL1}.merge.tag {{genome}} -chromSizes {{genome_chrom_size}}
+removeOutOfBoundsReads.pl $uid.${COL2}.merge.tag {{genome}} -chromSizes {{genome_chrom_size}}
 makeUCSCfile  $uid.${COL1}.merge.tag -o ${COL1}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
 makeUCSCfile  $uid.${COL2}.merge.tag -o ${COL2}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
 
@@ -274,13 +307,13 @@ makeUCSCfile  $uid.${COL2}.merge.tag -o ${COL2}.merge.bw -bigWig {{genome_chrom_
 ## homer diff peak
 
 
-module load R/3.4.0
+module load R/3.6.1
 
 mkdir -p homer_diff_results
 
-getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL1}.merge.tag/ $uid.${COL2}.merge.tag/ -F 0 -P 1 > homer_diff_results/${COL3}.gain.peak
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL1}.merge.tag/ $uid.${COL2}.merge.tag/ -F 0.0001 -P 1 > homer_diff_results/${COL3}.gain.peak
 
-getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL2}.merge.tag/ $uid.${COL1}.merge.tag/ -F 0 -P 1 > homer_diff_results/${COL3}.loss.peak
+getDifferentialPeaks ${COL3}.homer_diff.merged.bed $uid.${COL2}.merge.tag/ $uid.${COL1}.merge.tag/ -F 0.0001 -P 1 > homer_diff_results/${COL3}.loss.peak
 
 
 rm ${COL3}.homer_diff*

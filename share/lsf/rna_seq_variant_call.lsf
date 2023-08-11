@@ -100,11 +100,11 @@ echo -e "["$(date)"]\tDONE!"
 
 module load samtools/1.9
 
-module load bcftools
+module load bcftools/1.15.1
 
 vcfutils.pl varFilter -d {{depth_filter}} -p ${bam}_filtered.vcf > ${bam}_bcftools_filtered.vcf
 
-bcftools +fill-tags ${bam}_bcftools_filtered.vcf  -- -t AF > ${bam}.GTAK.bcftools.final.vcf
+bcftools +fill-tags ${bam}_bcftools_filtered.vcf  -- -t VAF > ${bam}.GTAK.bcftools.final.vcf
 
 =cut sam 3 STAR[*]
 
@@ -116,7 +116,7 @@ mem=20000
 
 module load samtools/1.9
 
-module load bcftools
+module load bcftools/1.15.1
 
 #samtools mpileup -f /home/yli11/Data/Human/hg19/fasta/samtools/hg19.fa --VCF --skip-indels --uncompressed --output-tags AD ${COL1} > ${COL2}.vcf
 
