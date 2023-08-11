@@ -43,11 +43,11 @@ bwa mem -5SP -T0 -t $ncore $bwa_index $R1 $R2 | pairtools parse --min-mapq $mapq
 module load htslib bedtools/2.30.0
 
 # step 2 QC
-python $src/get_qc.py -p ${out_label}.stats.txt -o ${out_label}.get_qc.out.csv > ${out_label}.get_qc.out
+/home/yli11/.conda/envs/HiChIP/bin/python $src/get_qc.py -p ${out_label}.stats.txt -o ${out_label}.get_qc.out.csv > ${out_label}.get_qc.out
 
 $src/enrichment_stats.sh -g $chrom_size -b ${out_label}.mapped.PT.bam -p $peak_bed -t $ncore -x ${out_label}
 
-python $src/plot_chip_enrichment.py -bam ${out_label}.mapped.PT.bam -peaks $peak_bed -output ${out_label}.enrichment.png
+/home/yli11/.conda/envs/HiChIP/bin/python $src/plot_chip_enrichment.py -bam ${out_label}.mapped.PT.bam -peaks $peak_bed -output ${out_label}.enrichment.png
 
 module load juicer_tools
 

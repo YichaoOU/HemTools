@@ -1,0 +1,54 @@
+#!shell
+
+
+=cut PL 1
+
+inputFile=input
+
+ncore=1
+mem=8000
+
+module load plink/2.0
+
+label=`basename ${COL1}`
+
+
+# subset by individual list
+
+plink2 --vcf ${COL1} --keep {{sample_list}} --out {{jid}}/$label --export vcf --allow-extra-chr
+
+# create allele frequency report
+
+cd {{jid}}
+
+plink2 --vcf $label.vcf --out $label --freq --allow-extra-chr
+
+sed -i '1d' $label.afreq
+
+# filter out all variants that are 0/0
+
+awk -F"\t" '$5 > 0 { print $2 }' $label.afreq > $label.variant.list
+
+# subset by variant ID
+
+plink2 --vcf $label.vcf --extract $label.variant.list --out $label.clean --export vcf --allow-extra-chr
+
+# merge
+
+=cut MERGE 2 all
+
+ncore=1
+mem=20000
+
+cd {{jid}}
+
+module load bcftools/1.9
+
+bcftools concat -o final.vcf *.clean.vcf
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

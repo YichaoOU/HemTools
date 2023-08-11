@@ -39,6 +39,7 @@ def my_args():
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update index file, black list, chrom size and effectiveGenomeSize, unless a user explicitly sets those options.", default='hg19',type=str)
 	genome.add_argument('-s','--chrom_size',  help="chrome size", default=myData['hg19_chrom_size_sorted'])
+	genome.add_argument('-sb','--chrom_size_bed',  help="chrome size bed file", default=myData['hg19_chrom_size_bed'])
 	genome.add_argument('-b','--black_list',  help="Blacklist file", default=myData['hg19_black_list'])
 
 
@@ -90,6 +91,7 @@ def main():
 
 	args = my_args()
 	args.chrom_size = myData['%s_chrom_size_sorted'%(args.genome)]
+	args.chrom_size_bed = myData['%s_chrom_size_bed'%(args.genome)]
 	args.black_list = myData['%s_black_list'%(args.genome)]
 	
 	# if args.peak_dir:

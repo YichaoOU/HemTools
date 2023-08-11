@@ -1,0 +1,96 @@
+#!shell
+
+=cut seq 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+# q=priority
+
+module load seqtk 
+
+
+# seqtk sample [-2] [-s seed=11] <in.fa> <frac>|<number>
+
+
+frac="0.05"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+
+frac="0.1"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.2"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.3"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.4"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.5"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.6"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.7"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.8"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.9"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+frac="0.95"
+mkdir -p {{jid}}/$frac
+seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+cp {{input}} {{jid}}/$frac/
+
+
+
+

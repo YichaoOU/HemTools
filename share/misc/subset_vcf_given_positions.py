@@ -13,6 +13,7 @@ def get_AF_DP(x,pos):
 
 def parse_vcf(f):
 	df = pd.read_csv(f,sep="\t",header=None,comment="#")
+	df = df[df[6]!="SnpCluster"]
 	print (df.shape)
 	AD_position = df.iat[0,8].split(":").index("AD")
 	output_columns = ['AF',"DP"]

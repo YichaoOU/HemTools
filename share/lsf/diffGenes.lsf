@@ -3,7 +3,7 @@
 =cut rnaseq 1
 
 ncore=16
-mem=1500
+mem=12000
 
 module load nextflow/21.10.5 singularity
 
@@ -22,7 +22,7 @@ inputFile=fastq_tsv
 ncore=4
 mem=2000
 
-kallisto quant {{strandness}} -i {{index_file}} --threads=$ncore --bootstrap-samples=100 --output-dir={{jid}}/${COL3}_group_${COL4} ${COL1} ${COL2}
+kallisto quant {{strandness}} {{single}} -i {{index_file}} --threads=$ncore --bootstrap-samples=100 --output-dir={{jid}}/${COL3}_group_${COL4} ${COL1} ${COL2}
 
 =cut sleuth 2 kallisto
 

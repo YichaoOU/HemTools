@@ -102,7 +102,7 @@ def main():
 		o2.write(r2[1]+"\n")
 		o2.write(r2[2]+"\n")
 		o2.write(r2[3]+"\n")
-
+	logging.info("Done merged fastq")
 
 if __name__ == "__main__":
 	main()

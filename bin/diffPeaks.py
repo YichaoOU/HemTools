@@ -54,6 +54,10 @@ def create_soft_links(f,jid):
 			print ("Can't find the .bai file for ",tmp)
 			# print (os.path.islink(tmp))
 			exit()
+		if not os.path.isfile(peak):
+			print ("Can't find the peak file for ",peak)
+			# print (os.path.islink(tmp))
+			exit()
 		if not name.startswith(group):
 			print (name,"not start with",group)
 			print ("Please update input file. Exit...")

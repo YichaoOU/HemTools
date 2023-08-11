@@ -55,6 +55,19 @@ cd ../..
 
 /home/yli11/.conda/envs/cutadaptenv/bin/python /home/yli11/HemTools/share/script/v3.py --bed {{gRNA_bed}} --ref /home/yli11/Data/Human/hg38/fasta/hg38.fa --bam {{jid}}/${COL3}_results/${COL3}.bam --out {{jid}}/${COL3}_results/${COL3}.counts.tsv --setting cas9
 
+
+cd {{jid}}/${COL3}_results
+
+cat *indel_spectrum.raw.csv > indel.csv
+
+cut -d , -f 1 indel.csv > indel.read.list
+
+module load picard
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=${COL3}.bam O=${COL3}.indel.filter.bam READ_LIST_FILE=indel.read.list FILTER=includeReadList
+
+samtools index ${COL3}.indel.filter.bam
+
 =cut email 3 all
 
 q={{queue}}

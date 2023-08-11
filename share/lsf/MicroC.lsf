@@ -42,6 +42,7 @@ sed -n '1~4s/^@/>/p;2~4p' ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.fa
 # please don't change BLAT parameter here
 blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 ${COL3}_${COL4}_split_800bp.fa ${COL3}.extendedFrags.fa ${COL3}.read.psl
 
+module load ucsc/041619
 
 
 # perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r ${COL3}_read_split -limit 0 -all
@@ -52,7 +53,6 @@ perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r 
 module load bowtie2
 module load samtools/1.7
 module load macs2 bedtools
-module load ucsc/041619
 
 
 
@@ -87,9 +87,9 @@ do
 
 	samtools index ${bait}_${COL3}.sorted.bam
 
-	bedtools genomecov -ibam ${bait}_${COL3}.sorted.bam -bg > ${bait}_${COL3}.read_pileup.bdg
-	sort -k1,1 -k2,2n ${bait}_${COL3}.read_pileup.bdg > ${bait}_${COL3}.read_pileup.st.bdg
-	bedGraphToBigWig ${bait}_${COL3}.read_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.read_pileup.bw
+	# bedtools genomecov -ibam ${bait}_${COL3}.sorted.bam -bg > ${bait}_${COL3}.read_pileup.bdg
+	# sort -k1,1 -k2,2n ${bait}_${COL3}.read_pileup.bdg > ${bait}_${COL3}.read_pileup.st.bdg
+	# bedGraphToBigWig ${bait}_${COL3}.read_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.read_pileup.bw
 
 
 	samtools sort -n -o ${bait}_${COL3}_sort.sam ${bait}_${COL3}.sam 
@@ -99,8 +99,8 @@ do
 	# perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -genome {{genome}} -o ${COL3}_${COL4}_split_800bp.fa 
 
 	# input sam need to be sorted by name and filename need to have _
-	# perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf {{chrom_size}} -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
-	perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf $chrom_size -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+	perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf {{chrom_size}} -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
+	# perl $src/MCC_analyser.pl -f ${bait}_${COL3}.sam -pf . -bf $chrom_size -genome hg19 -o ${COL3}_${COL4}_split_800bp.fa
 
 	macs2 callpeak -t ${bait}_${COL3}.sorted.bam -f BAM --nomodel --extsize 100 -n ${bait}_${COL3}
 
@@ -111,9 +111,9 @@ do
 
 	samtools index ${bait}_${COL3}_junction.st.bam
 
-	bedtools genomecov -ibam ${bait}_${COL3}_junction.st.bam -bg > ${bait}_${COL3}.junction_pileup.bdg
-	sort -k1,1 -k2,2n ${bait}_${COL3}.junction_pileup.bdg > ${bait}_${COL3}.junction_pileup.st.bdg
-	bedGraphToBigWig ${bait}_${COL3}.junction_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.junction_pileup.bw
+	# bedtools genomecov -ibam ${bait}_${COL3}_junction.st.bam -bg > ${bait}_${COL3}.junction_pileup.bdg
+	# sort -k1,1 -k2,2n ${bait}_${COL3}.junction_pileup.bdg > ${bait}_${COL3}.junction_pileup.st.bdg
+	# bedGraphToBigWig ${bait}_${COL3}.junction_pileup.st.bdg {{chrom_size}} ${bait}_${COL3}.junction_pileup.bw
 done
 
 
@@ -133,6 +133,8 @@ chrom_size={{chrom_size}}
 
 samtools merge -o ${label}_merged.bam *${label}*sorted.bam
 samtools index ${label}_merged.bam
+macs2 callpeak -t ${label}_merged.bam -f BAM --nomodel --extsize 100 -n ${label}_merged
+
 mkdir merged_results
 cd merged_results
 samtools sort -n -o ${label}_merged.sam ../${label}_merged.bam 

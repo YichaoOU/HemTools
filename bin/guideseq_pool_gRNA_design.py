@@ -26,13 +26,16 @@ def my_args():
 	mainParser.add_argument("--sample",  help="random sampling input file to set different seed gRNA",type=int,default=10)
 	mainParser.add_argument("--init_gRNA_per_gene",  help="",type=int,default=5)
 	mainParser.add_argument('-e',"--edit_distance_cutoff",  help="",type=int,default=7)
+	mainParser.add_argument('-n','--min_N_gRNA',  help="Minimal number of gRNAs in the set",type=int,default=5000)
 	mainParser.add_argument('-p',"--position_distance_cutoff",  help="we check gRNA start position diff, so the actual distance should be minus gRNA length",type=int,default=50)
 	mainParser.add_argument('-r',"--repeat_mask_threshold",  help="",type=int,default=10)
+	mainParser.add_argument("--firstG",  help="Require the first letter to be G for gRNA sequence",action='store_true')
+	mainParser.add_argument("--no_firstG",  help="Require the first letter to be G for gRNA sequence",action='store_true')
 	mainParser.add_argument('-c',"--cut_pos",  help="gRNA cut position",type=int,default=-3)
 	mainParser.add_argument("--PAM",  help="gRNA cut position",type=str,default="NGG")
 	mainParser.add_argument('-l',"--gRNA_length",  help="gRNA length",type=int,default=20)
 	mainParser.add_argument("--flank_length",  help="fixed",type=int,default=20)
-	mainParser.add_argument('-v',"--verbosity",  help="print more info for debug",type=int,default=20)
+	mainParser.add_argument('-v',"--verbosity",  help="print more info for debug",type=int,default=0)
 
 	##------- add parameters above ---------------------
 	args = mainParser.parse_args()	
@@ -74,6 +77,7 @@ def find_gRNA(chr,start,end,exon_number,gene_name,target_fa,gRNA_dict,number_gen
 
 	"""
 	if number_gene_used[gene_name]>=init_gRNA_per_gene:
+		# print (gene_name,"has more than",init_gRNA_per_gene,"gRNAs")
 		return gRNA_dict,number_gene_used
 	upper_case_seq = target_fa.upper()
 	if verbosity>0:
@@ -119,6 +123,7 @@ def find_gRNA(chr,start,end,exon_number,gene_name,target_fa,gRNA_dict,number_gen
 				gRNA_dict[gRNA_seq] = current_gRNA_info
 				number_gene_used[gene_name]+=1
 				if number_gene_used[gene_name]>=init_gRNA_per_gene:
+					# print ("FWD",gene_name,"has more than",init_gRNA_per_gene,"gRNAs")
 					return gRNA_dict,number_gene_used
 	# find gRNA in reverse strand
 	rev_seq = revcomp(upper_case_seq)			
@@ -168,6 +173,7 @@ def find_gRNA(chr,start,end,exon_number,gene_name,target_fa,gRNA_dict,number_gen
 				gRNA_dict[gRNA_seq] = current_gRNA_info
 				number_gene_used[gene_name]+=1
 				if number_gene_used[gene_name]>=init_gRNA_per_gene:
+					# print ("REV",gene_name,"has more than",init_gRNA_per_gene,"gRNAs")
 					return gRNA_dict,number_gene_used
 
 	return gRNA_dict,number_gene_used
@@ -212,23 +218,39 @@ def main():
 	parameters = vars(args)
 	# print (parameters)
 	df = pd.read_csv(args.input,sep="\t",header=None)
-	df = df.sample(n=args.sample)
+	# df = df.sample(n=args.sample)
 	df.columns = ['chr','start','end','gene','exon_number',"sequence"]
 	number_gene_used=dict.fromkeys(df.gene.unique(),0)
 	count = 0
 	gRNA_dict={}
-	for i,r in df.iterrows():
-		count+=1
-		if count %1000 == 0:
-			now = datetime.now()
-			current_time = now.strftime("%H:%M:%S")
-			print("Current Time =", current_time,count)
-		# gRNA_dict,number_gene_used = find_gRNA(r[4],gRNA_dict,number_gene_used,r[3],seq="NNNNNNNNNNNNNNNNNNNN",PAM="NGG",position_distance=30,init_gRNA_per_gene=args.init_gRNA_per_gene,distance_cutoff=args.distance_cutoff)
-		gRNA_dict,number_gene_used = find_gRNA(r.chr,r.start,r.end,r.exon_number,r.gene,r.sequence,
-												gRNA_dict,number_gene_used,
-												seq="N"*args.gRNA_length,**parameters)
-	g = pd.DataFrame.from_dict(gRNA_dict,orient="index").reset_index()
-	g.to_csv(args.output,header=False,index=False)
+	while len(gRNA_dict) <args.min_N_gRNA:
+		for i,r in df.iterrows():
+			count+=1
+			if len(gRNA_dict)>=args.min_N_gRNA:
+				break
+			if count %1000 == 0:
+				now = datetime.now()
+				current_time = now.strftime("%H:%M:%S")
+				print("Current Time =", current_time,len(gRNA_dict),file=sys.stderr)
+			# gRNA_dict,number_gene_used = find_gRNA(r[4],gRNA_dict,number_gene_used,r[3],seq="NNNNNNNNNNNNNNNNNNNN",PAM="NGG",position_distance=30,init_gRNA_per_gene=args.init_gRNA_per_gene,distance_cutoff=args.distance_cutoff)
+			if args.firstG:
+				gRNA_dict,number_gene_used = find_gRNA(r.chr,r.start,r.end,r.exon_number,r.gene,r.sequence,
+													gRNA_dict,number_gene_used,
+													seq="G"+"N"*(args.gRNA_length-1),**parameters)
+			elif args.no_firstG:
+				gRNA_dict,number_gene_used = find_gRNA(r.chr,r.start,r.end,r.exon_number,r.gene,r.sequence,
+													gRNA_dict,number_gene_used,
+													seq="H"+"N"*(args.gRNA_length-1),**parameters)
+			else:
+				gRNA_dict,number_gene_used = find_gRNA(r.chr,r.start,r.end,r.exon_number,r.gene,r.sequence,
+													gRNA_dict,number_gene_used,
+													seq="N"*args.gRNA_length,**parameters)
+		parameters['edit_distance_cutoff'] -=1
+		print ("updating edit_distance_cutoff to",parameters['edit_distance_cutoff'])
+	# g = pd.DataFrame.from_dict(gRNA_dict,orient="index").reset_index()
+	g = pd.DataFrame.from_dict(gRNA_dict,orient="index")
+	g.columns = ['chr','start','end','gene','gRNA','strand','exon_number']
+	g.to_csv(args.output,header=True,index=False)
 	print (g)
 	command = "cas_offinder.py -g hg19 --add_PAM --PAM_seq NGG -f %s -n 0 -j %s_casOffinder"%(args.output,args.output)
 	# os.system(command)

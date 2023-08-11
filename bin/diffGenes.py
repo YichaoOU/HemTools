@@ -28,7 +28,8 @@ def my_args():
 	mainParser.add_argument('-f',"--fastq_tsv",  help="TSV file, 4 columns, read 1, read 2, UID, group ID",required=True)
 	mainParser.add_argument('-d',"--design_matrix",  help="TSV file, 3 columns, group ID, group ID, output_prefix",required=True)
 	mainParser.add_argument("--strandness",  help="fr: first read forward or rf: first read reverse",default=None)
-
+	mainParser.add_argument('--paired',  help="if paired is used, then user should only have 2 groups in the design matrix file and the paired info is automatically extracted from fastq.tsv based on ordered group sample list", action='store_true')
+	mainParser.add_argument('--single',  help="for single-end RNA-seq", action='store_true')
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10", default='hg19',type=str)
 	genome.add_argument('--nfcore_genome',  help="genome version: hg19, hg38, mm9, mm10", default='hg38',type=str)
@@ -54,9 +55,16 @@ def to_nfcore_sample_csv(fastq_tsv,strandness,jid):
 	df['strandedness'] = strand
 	df[['sample','fastq_1','fastq_2','strandedness']].to_csv("%s.sample.csv"%(jid),index=False)
 
-def reformat_design_tsv(fastq_tsv,design_tsv):
+def reformat_design_tsv(fastq_tsv,design_tsv,paired,jid):
 	df = pd.read_csv(fastq_tsv,sep="\t",header=None)
 	df2 = pd.read_csv(design_tsv,sep="\t",header=None)
+	if paired:
+		group1=df[df[3]==df2.at[0,0]][2].reset_index()
+		group2=df[df[3]==df2.at[0,1]][2].reset_index()
+		group1[3]=["rep%s"%(x) for x in group1.index]
+		group2[3]=["rep%s"%(x) for x in group2.index]
+		df3 = pd.concat([group1[[2,3]],group2[[2,3]]])
+		df3.to_csv("%s/paired.info"%(jid),sep="\t",header=False,index=False)
 	# print (df)
 	# print (df2)
 	out = []
@@ -84,7 +92,10 @@ def main():
 	
 	else:
 		args.strandness = ""
-
+	if args.single:
+		args.single = "--single -l 200 -s 20"
+	else:
+		args.single = ""
 		
 	##------- check if jid exist  ----------------------
 	if isdir(args.jid):
@@ -109,9 +120,11 @@ def main():
 		args.index_file = myData['%s_kallisto_index'%(args.genome)]
 		args.gene_info = myData['%s_t2g'%(args.genome)]
 		# args.nfcore_genome = args.genome
+	if args.paired:
+		args.gene_info += " --paired"
 	os.system("mkdir %s"%(args.jid))
 	os.system("mkdir %s/log_files"%(args.jid))
-	reformat_design_tsv(args.fastq_tsv,args.design_matrix)
+	reformat_design_tsv(args.fastq_tsv,args.design_matrix,args.paired,args.jid)
 	pipeline_name = current_file_base_name
 	submit_pipeline_jobs(myPipelines[pipeline_name],args)
 

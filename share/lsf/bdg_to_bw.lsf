@@ -14,7 +14,9 @@ myBaseName=$(basename -- ${COL1})
 {{remove_first_line}}
 sort -k1,1 -k2,2n ${COL1} > {{jid}}/${myBaseName}.sorted
 cd {{jid}}
-module load ucsc/041619
+module load ucsc/041619 bedtools
+bedtools intersect -a ${myBaseName}.sorted -b {{chrom_size_bed}} -u > ${myBaseName}.sorted.tmp
+mv ${myBaseName}.sorted.tmp ${myBaseName}.sorted
 bedGraphToBigWig ${myBaseName}.sorted {{chrom_size}} ${myBaseName%.sorted}.bw
 # wigToBigWig -clip ${myBaseName}.sorted $bigwig_folder $filename.bw
 

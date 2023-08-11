@@ -5,20 +5,28 @@
 inputFile=input
 
 ncore=1
-mem=4000
+mem=10000
 
 module load fastqc/0.11.5
 
-fastqc ${COL1} -o {{jid}}
+fastqc -q ${COL1} 
+# fastqc ${COL2} 
+
+# module load flash
+
+# flash ${COL1} ${COL2} --max-overlap=120 --output-prefix=${COL3}
+
 
 =cut email 2 all
 
-cd {{jid}}
 
 module load conda3
 source activate /home/yli11/.conda/envs/multiQC/
 export LC_ALL=en_US.utf-8
 export LANG=en_US.utf-8
+
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
 
 multiqc .
 

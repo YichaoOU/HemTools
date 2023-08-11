@@ -76,6 +76,8 @@ module load python/2.7.13
 
 mv multiqc_report.html count_indel_report.html
 
+cat */*counts.tsv > summary.tsv
+
 send_email_v1.py -a count_indel_report.html -m "{{jid}} is finished" -j {{jid}} --common
 
 

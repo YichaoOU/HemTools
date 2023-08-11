@@ -24,6 +24,7 @@ def my_args():
 	mainParser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument('-f',"--bdg_files",  help="bdg file list", required=True)
 	mainParser.add_argument("--remove_first_line",  help="bdg file list", default=None)
+	mainParser.add_argument("--binSize",  help="bdg file list", default=None,type=int)
 	mainParser.add_argument("--data_frame",  help="The input is a table, not bdg file list, index and header are required in this data frame", action='store_true' )
 	
 	mainParser.add_argument('--interactive',  help="run pipeline interatively", action='store_true')
@@ -31,27 +32,42 @@ def my_args():
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update index file, black list, chrom size and effectiveGenomeSize, unless a user explicitly sets those options.", default='hg19',type=str)
 	genome.add_argument('-s','--chrom_size',  help="chrome size", default=myData['hg19_chrom_size'])
+	genome.add_argument('-sb','--chrom_size_bed',  help="chrome size", default=myData['hg19_chrom_size_bed'])
 
 
 	##------- add parameters above ---------------------
 	args = mainParser.parse_args()	
 	return args
 	
-def parse_dataframe(x):
+def parse_dataframe(x,binSize=None):
 	df = pd.read_csv(x,sep=guess_sep(x),index_col=0)
 	myCols = df.columns.tolist()
 	df['myChr'] = [re.split('_|-|\.|:',i)[0] for i in df.index.tolist()]
 	df['myStart'] = [re.split('_|-|\.|:',i)[1] for i in df.index.tolist()]
+	def check_is_valid(x):
+		try:
+			x = int(x)
+			return True
+		except:
+			return False
+		
+	df['is_valid'] = df.myStart.apply(check_is_valid)
+	print (df.head())
+	df = df[df.is_valid==True]
+	df['myStart'] = df['myStart'].astype(int)
 	# print df.head()
-	df['myEnd'] = [re.split('_|-|\.|:',i)[2] for i in df.index.tolist()]
+	df['myEnd'] = [int(re.split('_|-|\.|:',i)[2]) for i in df.index.tolist()]
+	if binSize:
+		df['myEnd'] = df['myStart']+binSize
 	myBed = ['myChr','myStart','myEnd']
 	for c in df.columns:
 		if c in ['pvalue','padj']:
 			df[c] = [-np.log10(x) for x in df[c]]
+			df[c] = df[c].fillna(0)
 	return df,myBed,myCols
 	
 def dataframe_to_bed(args):
-	df,myBed,myCols = parse_dataframe(args.bdg_files)
+	df,myBed,myCols = parse_dataframe(args.bdg_files,args.binSize)
 	myList = []
 	for c in myCols:
 		output = "%s/%s.bdg"%(args.jid,c)
@@ -65,6 +81,7 @@ def main():
 	args = my_args()
 	if args.genome != "custom":
 		args.chrom_size = myData['%s_chrom_size'%(args.genome)]
+		args.chrom_size_bed = myData['%s_chrom_size_bed'%(args.genome)]
 
 		
 	##------- check if jid exist  ----------------------

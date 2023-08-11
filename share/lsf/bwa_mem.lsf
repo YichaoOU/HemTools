@@ -7,15 +7,15 @@ module load samtools/1.7
 
 inputFile=input
 
-ncore=1
-mem=150000
+ncore=6
+mem=10000
 q=priority
 
 module load fastqc/0.11.5
 
-fastqc ${COL1} -o {{jid}}
+# fastqc ${COL1} -o {{jid}}
 
-fastqc ${COL2} -o {{jid}}
+# fastqc ${COL2} -o {{jid}}
 
 bwa mem -t 6 {{index_file}} ${COL1} ${COL2}  |samtools view -bS - > {{jid}}/${COL3}.bam
 cd {{jid}}
@@ -24,13 +24,15 @@ samtools index ${COL3}.st.bam
 # samtools markdup -@ $ncore {{jid}}/${COL3}.fixmate.st.bam {{jid}}/${COL3}.markdup.bam
 # samtools markdup -@ 6 ${COL3}.st.bam ${COL3}.markdup.st.bam
 # samtools index ${COL3}.markdup.st.bam
-samtools flagstat ${COL3}.bam > ${COL3}.flagstat
-samtools stats ${COL3}.bam > ${COL3}.stats
-samtools idxstats ${COL3}.bam > ${COL3}.idxstats
+samtools flagstat ${COL3}.st.bam > ${COL3}.flagstat
+samtools stats ${COL3}.st.bam > ${COL3}.stats
+samtools idxstats ${COL3}.st.bam > ${COL3}.idxstats
 
 module load picard/2.9.4 gatk/4.1.8.0 R/3.5.1
 
 java -jar /hpcf/apps/picard/install/2.9.4/picard.jar MarkDuplicates I=${COL3}.st.bam O=${COL3}.markdup.st.bam CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=${COL3}.picard.metrics.txt
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar MarkDuplicates I=${COL3}.st.bam O=${COL3}.rmdup.st.bam CREATE_INDEX=true REMOVE_DUPLICATES=true 
 
 
 # java -jar /hpcf/apps/picard/install/2.9.4/picard.jar CollectInsertSizeMetrics I=${COL3}.st.bam O=${COL3}.insert_size_metrics.txt H=${COL3}.insert_size_histogram.pdf 
@@ -40,7 +42,8 @@ java -jar /hpcf/apps/picard/install/2.9.4/picard.jar CollectInsertSizeMetrics I=
 
 module load python/2.7.15-rhel7
 
-bamCoverage -b ${COL3}.markdup.st.bam -o ${COL3}.bw --numberOfProcessors 4 
+bamCoverage -b ${COL3}.markdup.st.bam -o ${COL3}.markdup.CPM.bw -p 6 -bs 10000 --normalizeUsing CPM 
+bamCoverage -b ${COL3}.rmdup.st.bam -o ${COL3}.rmdup.CPM.bw -p 6 -bs 10000 --normalizeUsing CPM 
 
 
 

@@ -13,12 +13,14 @@ jid={{jid}}
 computeMatrix reference-point --referencePoint center -R {{bed_files}} -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/matrixC.gz --skipZeros --sortUsingSamples 1 -p 8 {{computeMatrix_addon_parameters}}
 computeMatrix reference-point --sortRegions keep --referencePoint center -R {{bed_files}} -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/matrixC.keep.gz --skipZeros -p 8 {{computeMatrix_addon_parameters}}
 
-plotHeatmap --heatmapHeight 4 -m {{jid}}/matrixC.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/centerPlot.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
-plotHeatmap --perGroup --heatmapHeight 4 -m {{jid}}/matrixC.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/centerPlot.perBw.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+plotHeatmap --heatmapHeight 10 -m {{jid}}/matrixC.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/centerPlot.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+
+plotHeatmap --perGroup --heatmapHeight 20 -m {{jid}}/matrixC.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/centerPlot.perGroup.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 
 
-plotHeatmap --heatmapHeight 4 -m {{jid}}/matrixC.keep.gz --samplesLabel {{samplesLabel_list}} --sortRegions no -out {{jid}}/centerPlot.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
-plotHeatmap --perGroup --heatmapHeight 4 -m {{jid}}/matrixC.keep.gz --samplesLabel {{samplesLabel_list}} --sortRegions no -out {{jid}}/centerPlot.perBw.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+plotHeatmap --heatmapHeight 10 -m {{jid}}/matrixC.keep.gz --samplesLabel {{samplesLabel_list}} --sortRegions no -out {{jid}}/centerPlot.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+
+plotHeatmap --perGroup --heatmapHeight 20 -m {{jid}}/matrixC.keep.gz --samplesLabel {{samplesLabel_list}} --sortRegions no -out {{jid}}/centerPlot.perGroup.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 
 
 
@@ -34,8 +36,9 @@ jid={{jid}}
 
 computeMatrix scale-regions -R {{bed_files}} -S {{bw_files}} -b {{u}} -a {{d}} -o {{jid}}/matrixR.gz --skipZeros --sortUsingSamples 1 -p 8 {{computeMatrix_addon_parameters}}
 
-plotHeatmap --heatmapHeight 4 -m {{jid}}/matrixR.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/regionPlot.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
-plotHeatmap --perGroup --heatmapHeight 4 -m {{jid}}/matrixR.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/regionPlot.perBw.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+plotHeatmap --heatmapHeight 10 -m {{jid}}/matrixR.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/regionPlot.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
+
+plotHeatmap --perGroup --heatmapHeight 20 -m {{jid}}/matrixR.gz --samplesLabel {{samplesLabel_list}} --sortUsingSamples 1 -out {{jid}}/regionPlot.perBw.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 
 
 

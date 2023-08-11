@@ -43,11 +43,11 @@ cd hic_results/matrix/${COL1}
 
 module load python/2.7.13
 
-hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20000_abs.bed -s iced/20000/GSM3489137_20000_iced.matrix.biases
+# hicpro2fithic.py -i raw/20000/GSM3489137_20000.matrix -b raw/20000/GSM3489137_20000_abs.bed -s iced/20000/GSM3489137_20000_iced.matrix.biases
 
-source activate /home/yli11/.conda/envs/fithic/
+# source activate /home/yli11/.conda/envs/fithic/
 
-fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1
+# fithic -f fithic.fragmentMappability.gz -i fithic.interactionCounts.gz -o fithic_result -r 20000 -t fithic.biases.gz -p 1
 
 cd ../../../
 

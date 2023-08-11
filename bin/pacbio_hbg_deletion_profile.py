@@ -119,14 +119,14 @@ def main():
 	df4.to_csv(f"{args.output_label}.deletion_stats.csv",index=False)
 	print (args.output_label,total_reads,N_valid,percent_valid_read,total_indel_frequency)
 	# get_read_list
-	for i in df4.head(n=5).Deletion.tolist():
-		read_list = f"{args.output_label}D{i}.list"
-		try:
-			df[df.Deletion==i].sample(n=100)[['read']].to_csv(read_list,header=False,index=False)
-		except:
-			df[df.Deletion==i][['read']].to_csv(read_list,header=False,index=False)
-		command = f"module load samtools/1.15.1;samtools view -b -N {read_list} {args.input} > {args.output_label}D{i}.example.bam;samtools index {args.output_label}D{i}.example.bam"
-		os.system(command)
+	# for i in df4.head(n=5).Deletion.tolist():
+		# read_list = f"{args.output_label}D{i}.list"
+		# try:
+			# df[df.Deletion==i].sample(n=100)[['read']].to_csv(read_list,header=False,index=False)
+		# except:
+			# df[df.Deletion==i][['read']].to_csv(read_list,header=False,index=False)
+		# command = f"module load samtools/1.15.1;samtools view -b -N {read_list} {args.input} > {args.output_label}D{i}.example.bam;samtools index {args.output_label}D{i}.example.bam"
+		# os.system(command)
 
 if __name__ == "__main__":
 	main()

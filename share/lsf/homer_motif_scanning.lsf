@@ -34,6 +34,8 @@ module load python/2.7.13
 
 cd {{jid}}
 
+homer_known_motif_summary.py
+
 rm -r tmp_*
 
 send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

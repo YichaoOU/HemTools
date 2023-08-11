@@ -6,7 +6,7 @@ ncore=1
 mem={{memory}}
 q=priority
 
-src_to_scJupyter=/home/yli11/Tools/scJupyter/scJupyter_v4.ipynb
+src_to_scJupyter=/home/yli11/Tools/scJupyter/scJupyter_v5.ipynb
 myFile=`basename $src_to_scJupyter`
 echo $PATH
 

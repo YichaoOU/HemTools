@@ -163,6 +163,8 @@ hicConvertFormat --matrices ./iced/20000/{{sample_id}}_20000_iced.matrix --outFi
 
 hicConvertFormat --matrices ./iced/10000/{{sample_id}}_10000_iced.matrix --outFileName {{sample_id}}.hicexplorer_10kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/10000/{{sample_id}}_10000_abs.bed 
 
+# hicConvertFormat --matrices ./iced/5000/Hudep2_WT_10000_iced.matrix --outFileName {{sample_id}}.hicexplorer_5kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/5000/{{sample_id}}_5000_abs.bed 
+
 hicConvertFormat --matrices ./iced/100000/{{sample_id}}_100000_iced.matrix --outFileName {{sample_id}}.hicexplorer_100kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/100000/{{sample_id}}_100000_abs.bed 
 
 # hicConvertFormat --matrices ./iced/5000/{{sample_id}}_5000_iced.matrix --outFileName {{sample_id}}.hicexplorer_5kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/5000/{{sample_id}}_5000_abs.bed 

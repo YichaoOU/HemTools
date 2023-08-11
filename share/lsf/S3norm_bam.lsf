@@ -16,7 +16,7 @@ mem=40000
 q=priority
 
 bamCoverage -b ${COL1} -o ${COL2} -of bedgraph --ignoreForNormalization chrX chrM   --numberOfProcessors 10 -bs {{binSize}} --smoothLength {{smoothLength}} --blackListFileName {{black_list}}
-
+# GM12878output1.s3norm.bdg.s3norm.bedgraph
 module load bedtools
 
 if [ -z "{{peak_dir}}"]; then

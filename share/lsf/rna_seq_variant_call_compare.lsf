@@ -133,7 +133,7 @@ vcfutils.pl varFilter -d {{depth_filter}} -p ${COL3}.samtools.vcf > ${COL3}.samt
 bcftools +fill-tags ${COL3}.samtools.filter.vcf  -- -t AF > ${COL3}.samtools.final.vcf
 
 
-=cut WT 4 STAR
+=cut WT 4 all
 
 
 ncore=1
@@ -145,23 +145,25 @@ ref="/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_a
 
 cd {{jid}}
 
-bam-readcount -f {{WT}}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.BQSR.bam -w 1 > {{WT}}.bam.count
+bam-readcount -f $ref {{WT}}Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.BQSR.bam -w 1 > {{WT}}.bam.count
+# bam-readcount -f $ref 2490700_DOE14_ABE0005_S61Aligned.sortedByCoord.rg_added.dedupped.split.IndelRealigner.BQSR.bam -w 1 > 2490700_DOE14_ABE0005_S61.bam.count
 
 module load python/2.7.13
 
 cp /home/yli11/HemTools/share/misc/parse_count.py .
 
 python parse_count.py {{WT}}.bam.count > {{WT}}.bam.count.AF99
+# python parse_count.py $WT.bam.count > $WT.bam.count.AF99
 
 mkdir compare_result
 
 
-=cut compare 4 WT
+=cut compare 5 all
 
 inputFile=fastq_tsv
 
 ncore=1
-mem=10000
+mem=100000
 
 module load python/2.7.13
 

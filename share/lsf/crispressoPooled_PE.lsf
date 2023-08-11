@@ -22,7 +22,9 @@ module load bowtie2/2.2.9
 
 # CRISPRessoPooled -r1 ${COL1} -r2 ${COL2} --name ${COL3} -o {{jid}}/${COL3}_results -f ${COL4} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --conversion_nuc_from {{ref}} --conversion_nuc_to {{alt}} --min_reads_to_use_region 3
 
-CRISPRessoPooled -r1 ${COL1} --name ${COL2} -o {{jid}}/${COL2}_results -f ${COL3} --quantification_window_size 1 --quantification_window_center -3 --base_editor_output --min_reads_to_use_region 3 --keep_intermediate --dump --limit_open_files_for_demux --plot_window_size 20
+# CRISPRessoPooled -r1 ${COL1} --name ${COL2} -o {{jid}}/${COL2}_results -f ${COL3} --quantification_window_size 1 --quantification_window_center -3 --base_editor_output --min_reads_to_use_region 3 --keep_intermediate --dump --limit_open_files_for_demux --plot_window_size 20
+# specifically for revision
+CRISPRessoPooled -r1 ${COL1} --name ${COL2} -o {{jid}}/${COL2}_results -f ${COL3} --quantification_window_size 8 --quantification_window_center 4 --base_editor_output --min_reads_to_use_region 3 --keep_intermediate --dump --limit_open_files_for_demux --plot_window_size 20
 
 
 =cut email 2 all
@@ -41,10 +43,11 @@ export PATH=$PATH:"/home/yli11/HemTools/bin"
 
 module load conda3/202011
 
-source acitvate /home/yli11/.conda/envs/captureC/
+source activate /home/yli11/.conda/envs/captureC/
 
 
 crispressoPooled_PE_edit_frequency.py -f ../{{jid}}.input -i ../{{jid}}_info.tsv -rtt {{RTT}} -o {{jid}}.stats.csv
+# crispressoPooled_PE_edit_frequency.py -f ../crispressoPooled_PE_yli11_2022-12-07.input -i ../crispressoPooled_PE_yli11_2022-12-07_info.tsv -rtt CTGAAGAGAAGTCT -o crispressoPooled_PE_yli11_2022-12-07.stats.csv
 
 send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}
 

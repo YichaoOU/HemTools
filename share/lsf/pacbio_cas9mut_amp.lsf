@@ -1,0 +1,89 @@
+#!shell
+=cut cas9 1
+
+inputFile=input
+
+ncore=10
+
+mem=12000
+
+
+
+module load bbmap/38.86 gcc/9.1.0
+
+module load bedtools/2.30.0 samtools/1.9
+
+module load smrttools/10.1
+
+
+bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+
+# cd {{jid}}
+
+
+
+module load conda3/202011 
+
+source activate long_reads
+
+genomeFasta=${COL3}
+#genomeFasta=/research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/sequencing/PacBio/220907_SRM279463_amplicon_tsaigrp/Q80_demultiplex/masked_chr11/mix.fa
+
+mkdir {{jid}}/${COL2}
+
+minimap2 -t 16 -ax map-hifi --MD --secondary=no \
+$genomeFasta \
+{{jid}}/${COL2}.fastq \
+> {{jid}}/${COL2}/minimap.sam
+
+cd {{jid}}
+
+cd ${COL2}
+
+samtools view -bS minimap.sam > minimap.bam
+samtools sort -@ 6 -o minimap.st.bam minimap.bam
+samtools index minimap.st.bam
+
+samtools view -bs 0.01 minimap.st.bam > minimap.st.1.bam
+
+samtools index minimap.st.1.bam
+
+
+
+src=/home/yli11/Tools/Cas9Variants/Mammalian_system/PacBio_amplicon_sequencing
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+/home/yli11/.conda/envs/captureC/bin/python $src/cas9mut_pacbio.py minimap.st.bam ${COL2} ${COL3}
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+cp $src/cas9_mut_pacbio_get_dictionary.ipynb ${COL2}.ipynb 
+
+sed -i "s:test.read_stat.csv:${COL2}.read_stat.csv:g" ${COL2}.ipynb 
+
+/home/yli11/.conda/envs/captureC/bin/jupyter nbconvert --to notebook --execute ${COL2}.ipynb  --output ${COL2}.QC --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+jupyter nbconvert ${COL2}.QC.ipynb --to html
+
+
+
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+

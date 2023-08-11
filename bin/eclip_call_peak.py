@@ -48,7 +48,7 @@ os.system("module load R/3.5.1-rh7;bash tmp.sh")
 
 # filter peak
 df = pd.read_csv(f"{wt}.vs.{wt_input}.bed",sep="\t",header=None)
-df = df[(df[3]>=2)&(df[4]>2)]
+df = df[(df[3]>=2)&(df[4]>=1)]
 print (df.shape)
 df.to_csv(f"{wt}.enriched_peak.bed",sep="\t",header=False,index=False)
 
@@ -62,7 +62,7 @@ os.system("module load R/3.5.1-rh7;bash tmp.sh")
 
 # filter peak
 df = pd.read_csv(f"{ko}.vs.{ko_input}.bed",sep="\t",header=None)
-df = df[(df[3]>=2)&(df[4]>2)]
+df = df[(df[3]>=2)&(df[4]>=1)]
 print (df.shape)
 df.to_csv(f"{ko}.enriched_peak.bed",sep="\t",header=False,index=False)
 

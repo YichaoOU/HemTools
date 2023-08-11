@@ -23,9 +23,11 @@ def my_args():
 	mainParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,description="perform 10X single-cell RNA-seq analysis")
 	mainParser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument("-f","--input_list",  help="A list of group name (fastq file prefix).",required=True)
+	mainParser.add_argument('--atac',  help="run atac pipeline", action='store_true')
 	mainParser.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm10.", default='hg38',type=str)
 	mainParser.add_argument('--genes',  help="Genes to inspect, use Ensembl ID, separated by ,.", default='ENSG00000213934,ENSG00000196565',type=str)
 	mainParser.add_argument('--cellranger_refdata',  help="Not for end-user", default=myData['hg38_cellranger'],type=str)
+	mainParser.add_argument('--cellranger_atac_refdata',  help="Not for end-user", default=myData['hg38_cellranger_atac'],type=str)
 
 
 	##------- add parameters above ---------------------
@@ -36,7 +38,8 @@ def my_args():
 def main():
 
 	args = my_args()
-	args.cellranger_refdata = myData['%s_cellranger'%(args.genome)]
+	if not args.genome=="custom":
+		args.cellranger_refdata = myData['%s_cellranger'%(args.genome)]
 
 		
 	##------- check if jid exist  ----------------------
@@ -56,6 +59,9 @@ def main():
 	dos2unix(args.input_list)
 
 	pipeline_name = current_file_base_name
+	if args.atac:
+		pipeline_name+="_atac"
+	
 	submit_pipeline_jobs(myPipelines[pipeline_name],args)
 
 

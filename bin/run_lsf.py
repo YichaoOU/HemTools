@@ -25,6 +25,7 @@ def my_args():
 	# mainParser.add_argument("--single",  help="Let the program generate the input files for you.",action='store_true')
 	mainParser.add_argument('-f',"--input",  help="tab delimited any number of columns (tsv file), the last column is output prefix. For example, a paired-end fastq input could be: Read 1 fastq, Read 2 fastq, sample ID")
 	mainParser.add_argument('-q',"--queue",  help="submit queue",default="standard")
+	mainParser.add_argument('-d',"--design_tsv",  help="for pairwise comparison, eg, diff analysis",default="")
 	mainParser.add_argument('-mem',"--memory",  help="request memory",default=20000, type=int)
 	mainParser.add_argument("--FLASH_min_overlap",  help="FLASH_min_overlap",default=10, type=int)
 	mainParser.add_argument("--username",  help="username",default=username)
@@ -43,6 +44,7 @@ def my_args():
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10. By default, specifying a genome version will automatically update index file, black list, chrom size and effectiveGenomeSize, unless a user explicitly sets those options.", default='hg19',type=str)
 	genome.add_argument('-i','--index_file',  help="BWA index file", default=myData['hg19_BWA_index'])
 	genome.add_argument('--BSgenome',  help="R BS genome 2bit file", default=myData['hg38_BSgenome'])
+	genome.add_argument('--bowtie2_index',  help="bowtie2_index", default=myData['hg19_bowtie2_index'])
 	genome.add_argument('--faidx',  help="fasta index", default=myData['mm9_faidx'])
 	genome.add_argument('--chromap_index',  help="fasta index", default=myData['mm9_faidx'])
 	genome.add_argument('--fasta',  help="fasta ", default=myData['mm9_fasta'])
@@ -103,6 +105,7 @@ def main():
 		args.chrom_size = get_value(myData,'%s_chrom_size'%(args.genome))
 		args.index_file = get_value(myData,'%s_BWA_index'%(args.genome))
 		args.black_list = get_value(myData,'%s_black_list'%(args.genome))
+		args.bowtie2_index = get_value(myData,'%s_bowtie2_index'%(args.genome))
 		# args.black_list = myData['%s_black_list'%(args.genome)]	
 		# args.effectiveGenomeSize = myData['%s_effectiveGenomeSize'%(args.genome)]	
 	##------- guess input ------------------------------
