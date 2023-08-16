@@ -75,6 +75,16 @@ Usage
 	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome hs -g hg19
 
 
+For strand separated results, run:
+
+.. code:: bash
+
+	run_lsf.py -f fastq.tsv -p atac_starr_seq_forward --MAPQ 0 --macs_genome hs -g hg19
+
+	run_lsf.py -f fastq.tsv -p atac_starr_seq_reverse --MAPQ 0 --macs_genome hs -g hg19
+
+
+
 Output
 ^^^^^^
 
