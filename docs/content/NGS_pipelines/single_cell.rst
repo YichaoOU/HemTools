@@ -108,6 +108,9 @@ Usage
 
     single_cell.py -f input.list
 
+    # for quantify HBG1/HBG2
+    single_cell.py -f input.list -g custom --cellranger_refdata /research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/hg38_rmHBGnoise
+
 
 For single-cell ATAC data, add ``--atac``, only available in hg38:
 

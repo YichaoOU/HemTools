@@ -76,6 +76,7 @@ Usage
 
 
 For strand separated results, run:
+----------------------------------
 
 .. code:: bash
 
@@ -83,6 +84,12 @@ For strand separated results, run:
 
 	run_lsf.py -f fastq.tsv -p atac_starr_seq_reverse --MAPQ 0 --macs_genome hs -g hg19
 
+When using DNA reads without UMI, run:
+-------------------------------
+
+.. code:: bash
+
+	run_lsf.py -f fastq.tsv -p atac_starr_seq_nodnaumi --MAPQ 0 --macs_genome hs -g hg19
 
 
 Output
