@@ -39,7 +39,7 @@ I used to use PatScan, but it can miss some matches (for many years, I thought i
 Update 9/15/2023
 ^^^^^
 
-Added ``--user_bed`` option when users want to check the motif overlaping with their bed file. The bed file needs to have 4 columns. The motif overlapping information is added as the 5th column. Only overlapped peak is outputed.
+Added ``--user_bed`` option when users want to check the motif overlaping with their bed file. The bed file needs to have 4 columns. The motif overlapping information is added as the 5th column. Only overlapped peak is outputed. Output file is ``user_bed.motif_occurrences.tsv``
 
 ::
 
