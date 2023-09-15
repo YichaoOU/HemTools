@@ -224,3 +224,20 @@ pseudo time inference
 https://www.nature.com/articles/s41587-019-0071-9
 
 this review paper suggests ``slingshot``
+
+Differential gene activity
+^^^^^^^^^^^^^^^
+
+
+
+
+
+
+
+
+
+
+
+
+
+
