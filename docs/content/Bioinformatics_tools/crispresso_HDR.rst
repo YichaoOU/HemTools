@@ -19,6 +19,10 @@ A 6-column tsv file: R1.fastq, R2.fastq, output_name, gRNA_seq, unedited amplico
 	xxx_R1_001.fastq.gz	xxx_R2_001.fastq.gz	test1		cttgaccaatagccttgaca		Amplicon_seq1		Amplicon_seq2
 
 
+.. image:: ../../images/HDR_example_input.PNG
+	:align: center
+
+
 
 Usage
 ^^^^^
@@ -29,7 +33,11 @@ Usage
 
 	module load python/2.7.13
 
-	run_lsf.py -f input.list -p crispresso_PE_HDR
+	run_lsf.py -f input.tsv -p crispresso_PE_HDR
+
+	## specific parameter for Azusa
+
+	run_lsf.py -f input.tsv -p crispresso_PE_HDR --HDR_parameters " --exclude_bp_from_left 1 --exclude_bp_from_right 1 --quantification_window_coordinates 20-128"
 
 
 Output
