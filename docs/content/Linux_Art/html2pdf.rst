@@ -24,3 +24,11 @@ Usage
     
 
 
+Merge pdf
+^^^^^^^^^^
+
+::
+
+	module load poppler
+
+	pdfunite GUIDE_seq_decreased.* GUIDE_seq_decreased.merged.pdf

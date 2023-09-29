@@ -1,7 +1,7 @@
 Analysis of Hi-C or HiChIP data
 ==========================
 
-This pipeline is out-dated, please use ``hicpro_batch.py`` instead.
+This pipeline is out-dated for HiC analysis, please use ``hicpro_batch.py`` instead.
 
 
 ::
