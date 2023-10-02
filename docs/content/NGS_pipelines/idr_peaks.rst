@@ -73,6 +73,13 @@ ref:
 
 Update code for atac-seq idr peaks for multiple samples. Note that for chip-seq samples, the old code doesn't support multiple samples submission.
 
+**10/2/2023**
+
+Fixed a "bug". 
+
+.. image:: ../../images/IDR_peak_bug.png
+	:align: center
+
 
 
 Flowchart
