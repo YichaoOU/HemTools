@@ -34,11 +34,29 @@ Commonly used python libraries
 .. code:: bash
 
 	import pandas as pd
+	import numpy as np
+	import scipy.stats as sts
+	import gzip as gz
+	import pysam
+	import pandas as pd
 	import seaborn as sns
 	import matplotlib.pyplot as plt
 	import numpy as np
 	import scipy
 	import glob
+	from joblib import Parallel, delayed
+	import sys
+	import argparse
+	import plotly.express as px
+	import plotly.io as pio
+	import os
+	from Bio.Seq import Seq
+	from Bio import SeqIO
+	import swifter
+	import sys
+	import plotly.express as px
+	from Levenshtein import distance
+
 
 Ignore python warning
 
