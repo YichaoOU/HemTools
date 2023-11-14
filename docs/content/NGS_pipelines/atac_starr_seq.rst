@@ -144,10 +144,32 @@ fold change bw files
 DESEQ outputs can also be viewed as bw files. Please go to the ``bdg_to_bw*`` folder inside the ``Differential_analysis``.
 
 
+Active and Silent peaks
+----------------
+
+.. code:: R
+
+	#get counts
+	ChrAcc='../Merged_peaks.rmblck.narrowPeak'
+
+	#print number of chracc peaks
+	system(paste0("wc -l ",ChrAcc),intern = TRUE)
+	#intersect peaks with active regions and print line number
+	system(paste0("bedtools intersect -u -a ",ChrAcc," -b active_regions.bed > active.peak.bed"),intern = TRUE)
+	#intersect peaks with silent regions and print line number
+
+	system(paste0("bedtools intersect -u -a ",ChrAcc," -b silent_regions.bed > silent.peak.bed"),intern = TRUE)
+	#intersect peaks with overlapping active and silent regions and print line number
+
+	system(paste0("bedtools intersect -u -a ",ChrAcc," -b active_regions.bed | bedtools intersect -u -a - -b silent_regions.bed > both.peak.bed"),intern = TRUE)
+	#report peaks that do not intersect active or silent regions and print line number
+
+	system(paste0("bedtools intersect -v -a ",ChrAcc," -b active_regions.bed | bedtools intersect -v -a - -b silent_regions.bed > neutral.peak.bed"),intern = TRUE)
 
 
+``active.peak.bed`` is any peaks overlapped with active.
 
+``silent.peak.bed`` is any peaks overlapped with silent.
 
-
-
+``active.peak.bed`` may overlap with ``both.peak.bed``, ``silent.peak.bed`` may overlap with ``both.peak.bed``
 

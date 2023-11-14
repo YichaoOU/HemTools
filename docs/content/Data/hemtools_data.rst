@@ -10,6 +10,10 @@ bulk RNA-seq data
 	/home/yli11/dirs/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/blood_rna_seq
 
 
+``Blood_gene_expression.2.21.2023.csv`` bulk RNA-seq data is based on gencode v39.
+
+``gene_info.v39.tsv`` contains ENST, ENSG and gene name.
+
 TSS data
 ----
 
