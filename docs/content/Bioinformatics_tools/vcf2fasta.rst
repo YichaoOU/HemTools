@@ -106,6 +106,39 @@ BWA index is also generated for this fasta
 black list for the new genome is also generated.
 
 
+11/30/2023 updates, best vcf2fasta tool so far
+^^^^^^^^^^
+
+This tool (https://www.castelli-lab.net/vcfx.html) is the best I found. Fast and easy.
+
+``start`` and ``end`` are 1-index positions. ``chr`` option is not working correctly. So you have to provide individual chromosome fasta. The output is a list of sequences, two for each individual.
+
+::
+
+	module load gcc/9.1.0
+
+	vcfx fasta input=donor95.1115.flank100.final.vcf reference=/home/yli11/dirs/blood_regulome/chenggrp/Data_resource/Genome/Human/hg38/fasta/each_chr/chr8.fa output=test.fa start=1944100 end=1944200
+
+You also need to make sure start or end positions cover large indels nearby. For example, in my case, there is a large deletion at 1944109. So if I use ``start=1944110``, then you can't see this large deletion!
+
+::
+
+	>NA06985_h1
+	C
+	>NA06985_h2
+	CTGTGTCGCCTCCCCCAGGATCCCAGCCTCCC
+	>NA06986_h1
+	CTGTGTCGCCTCCCCCGGGATCCCAGCCTCCC
+	>NA06986_h2
+	C
+	>NA06991_h1
+	CTGTGTCGCCTCCCCCGGGATCCCAGCCTCCC
+	>NA06991_h2
+	C
+	>NA06994_h1
+	C
+	>NA06994_h2
+	CTGTGTCGCCTCCCCCAGGATCCCAGCCTCCC
 
 
 Old notes

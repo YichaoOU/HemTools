@@ -57,3 +57,18 @@ How should I deal with “package 'xxx' is not available (for R version x.y.z)�
 	setRepositories()
 
 select 1 2 3 4 5 6 
+
+
+R package dependency errors
+^^^^^^^^^^^^^^^^
+
+::
+
+	DESeq2’: objects ‘rowSums’, ‘colSums’, ‘rowMeans’, ‘colMeans’ are not exported by 'namespace:biocgenerics
+
+Today when I try to load DESeq2, I got the above error and took me a while to fix it.
+
+Reason: This is caused by package dependency. I remember I tried installing signac and then I manually installed a lot of latest other packages, including S4vectors, Biocgenerics, and GenomeInfoDB, etc, which are incompatible with my R base version. 
+
+The Fix: I manually fixed the package version to all my R base version using Biocmanager. My previous signac is 1.9, now I downgraded to 1.5. I probably need to create another conda env for the latest single cell analysis.
+
