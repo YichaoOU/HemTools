@@ -35,6 +35,38 @@ The coordinates for gRNA need to include the PAM sequence.
 gRNA_bed_file should be 6 columns: chr, start, end, name, value (can be anything), strand
 
 
+
+12/6/2023 updates
+-----------------
+
+To generate a summary table for Prism to create Manhattan plot, you first need a user label tsv file, ``user_label.tsv``
+
+The second column is the sample ID used in your fastq file. The first column is a user label, such as donor informatin.
+
+::
+
+	xxx_Control	VK2379
+	xxx_Edit	VK2380
+	yyy_Control	VK2381
+	yyy_Edit	VK2382
+	yyy_Control	VK2383
+	yyy_Edit	VK2384
+
+Then run:
+
+::
+
+	# first, login to a compute node
+
+	module load python/2.7.13
+
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+	## Inside the count_integration jobID folder
+
+	countIntegration_summary_table.py
+
+
 8/5/2021 updates
 -----------------
 
