@@ -1,7 +1,21 @@
 Linux text file operations
 ==========================
 
+awk multiple separator
+^^^^^^^^^^^^
 
+::
+
+	cut -f 2 -d "," fithichip_5k.csv | head | sed "1d" | awk -F ':|-' -v OFS="\t" '{print $1,$2,$3}'
+
+	cut -f 2 -d "," hichipper.csv | sed "1d" | awk -F ':|-' -v OFS="\t" '{print $1,$2,$3}' > hichipper.bed
+
+multiple line to space separated one line
+^^^^^^^^^^^^^^^^^^^
+
+::
+
+	head hichipper.bed | tr '\n' ' '
 
 Remove the first line from a file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -96,3 +96,13 @@ Update SNP ID with RS ID
 https://www.biostars.org/p/171557/
 
 bcftools query -f '%ID %AF_EAS %AF_AMR %AF_EUR %AF_AFR %AF_SAS %AF_EUR_unrel %AF_EAS_unrel %AF_AMR_unrel %AF_SAS_unrel %AF_AFR_unrel %MAF_EUR_unrel %MAF_EAS_unrel %MAF_AMR_unrel %MAF_SAS_unrel %MAF_AFR_unrel\n' ${COL1} > $label.AF.txt
+
+
+intersect bed file
+^^^^^^^^^^^^^^^
+
+PLINK only work for vcf file with genotypes, for gnomad vcf file, use vcftools for region extraction:
+
+::
+
+	vcftools --gzvcf gnomad.genomes.v4.0.sites.chrY.vcf.bgz --bed 1115_OT_flank100.bed --out output_prefix --recode --keep-INFO-all
