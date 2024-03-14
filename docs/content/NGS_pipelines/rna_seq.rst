@@ -29,13 +29,10 @@ Then, do
 
     module load samtools/1.7;samtools view Your_label.transcript.bam | grep Your_transcript_ID | cut -f 1 > read.list
 
-    # the bam file should be in your bam_files folder
+    # the bam file should be in your bam_files folder, use markdup.uq.bam file
+    # Please note that transcript.bam is different than markdup.uq.bam
 
-    module laod picard/2.9.4;java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=YOUR_bam_file O=subset.bam READ_LIST_FILE=read.list FILTER=includeReadList;samtools index subset.bam
-
-
-
-
+    module laod picard/2.9.4;java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=YOUR_bam_file.markdup.uq.bam O=subset.bam READ_LIST_FILE=read.list FILTER=includeReadList;samtools index subset.bam
 
 
 
