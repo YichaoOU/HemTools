@@ -13,6 +13,32 @@ Summary
 
 This pipeline quantifies transcript-level abundance using kallisto and generates bam, bw files using STAR. The output file ``kallisto_files/{jid}_transcript.tpm.csv`` contains both transcript ID and gene name, which users can look for specific genes. For differential gene/transcript expression analysis, see :doc:`diff_genes <diff_genes>`. For volcano plot of differential genes, see :doc:`volcano <../Visualization/volcano_plot>`. For RNA-seq variant calling, see :doc:`rna_seq_variant_call <rna_seq_variant_call>`
 
+3/14/2024 Update
+^^^^^^^^^^^^
+
+Isoform quantification using ``STAR`` is added. The transcript count table is ``*.isoforms.results``.
+
+To visualize read assigned to a transcript
+------------------------------
+
+First, get the transcript ID from the transcript count table.
+
+Then, do
+
+.. code:: bash
+
+    module load samtools/1.7;samtools view Your_label.transcript.bam | grep Your_transcript_ID | cut -f 1 > read.list
+
+    # the bam file should be in your bam_files folder
+
+    module laod picard/2.9.4;java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=YOUR_bam_file O=subset.bam READ_LIST_FILE=read.list FILTER=includeReadList;samtools index subset.bam
+
+
+
+
+
+
+
 
 Usage
 ^^^^^
@@ -29,7 +55,7 @@ Go to your data directory and type the following.
 
 .. code:: bash
 
-    $ HemTools rna_seq --guess_input
+    $ HemTools_dev rna_seq --guess_input
 
 	Input fastq files preparation complete! ALL GOOD!
 	Please check if you like the computer-generated labels in : fastq.tsv

@@ -118,8 +118,7 @@ Usage
 Default genome
 ^^^^^^^^^^^^^^
 
-The HBG1 promoter is masked in the default hg38 genome because ATAC-seq pipeline removes multi-mapped reads:
+``GRCh38_HBG1_mask``
 
-.. image:: ../../images/HBG_promoter_mask.PNG
-	:align: center
+The HBG1 gene body and 400bp promoter is masked in the default hg38 genome because ATAC-seq pipeline removes multi-mapped reads
 

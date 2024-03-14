@@ -75,7 +75,42 @@ Example stats files are:
 .. image:: ../../images/enrichR.PNG
 	:align: center
 
+single-cell DEG table
+^^^^^^^
 
+Input
+----
+
+::
+
+	"p_val","avg_log2FC","pct.1","pct.2","p_val_adj","cluster","gene"
+	"Rps19",0.000968816245772386,-1.45422771177555,0.7,0.952,1,"Thymus-2d","Rps19"
+	"Rpl17",0.0015811263316563,-1.78520875573569,0.6,0.905,1,"Thymus-2d","Rpl17"
+	"Atp6v1e1",0.00161070110378718,1.79984655363141,0.8,0.19,1,"Thymus-2d","Atp6v1e1"
+	"Ms4a4b",0.00238694967180809,-2.0626041044794,0.2,0.714,1,"Thymus-2d","Ms4a4b"
+	"Fabp5",0.00261501850517121,3.62025552117883,0.4,0,1,"Thymus-2d","Fabp5"
+	"Rgl2",0.00261501850517121,0.55335218387991,0.4,0,1,"Thymus-2d","Rgl2"
+	"Slc39a14",0.00261501850517121,0.545149565178368,0.4,0,1,"Thymus-2d","Slc39a14"
+
+Usage
+-----
+
+.. code:: bash
+
+	hpcf_interactive.sh
+
+	module load conda3/202011
+
+	source activate /home/yli11/.conda/envs/captureC
+
+	run_GSEA_mouse.py Treg.time.DEG.csv outputFolder
+
+	run_GSEA_human.py Treg.time.DEG.csv outputFolder
+
+Output
+-------
+
+Output files are in ``${outputFolder}_GSEA_(mouse/human)``
 
 Comments
 ^^^^^^^^
