@@ -46,7 +46,7 @@ Input
 
 Put all fastq files in the same working dir.
 
-10X Genomics single-cell RNA-seq data contains ``R1`` and ``R2`` reads. ``R1`` is the barcode information. ``R2`` is the actual 3-end mRNA sequencing result.
+10X Genomics single-cell RNA-seq data contains ``R1`` and ``R2`` reads. ``R1`` is the barcode information. ``R2`` is the actual 3-end mRNA sequencing result, 90bp.
 
 Your working directory should contain all input fastq files. For example:
 
@@ -108,8 +108,11 @@ Usage
 
     single_cell.py -f input.list
 
-    # for quantify HBG1/HBG2
+    # for quantify HBG1/HBG2 (100% accurate is not possible)
     single_cell.py -f input.list -g custom --cellranger_refdata /research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/hg38_rmHBGnoise
+
+    # HBG1 mask
+    single_cell.py -f input.list -g custom --cellranger_refdata /research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/GRCh38_HBG1_mask
 
 
 For single-cell ATAC data, add ``--atac``, only available in hg38:
