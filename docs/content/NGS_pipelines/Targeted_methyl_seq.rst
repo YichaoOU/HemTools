@@ -29,9 +29,9 @@ Converted amplicon sequence
 
 Four requirements:
 
-1. The amplicon sequence is the sequence from forward primer to reverse primer. 
+1. The amplicon sequence is the sequence from forward primer to reverse primer (yellow sequence below). 
 
-2. All C should be coverted to T except for CpG. 
+2. All C should be coverted to T except for CpG (dark green). 
 
 3. The amplicon should be the forward-strand sequence. Otherwise the resulted bw file maybe incorrect.
 
@@ -62,6 +62,23 @@ Usage
 	module load python/2.7.13
 
 	methyl_amplicon.py -f fastq.tsv -a amp.fa --read_length 250 --genomic_chr chr11 --genomic_start 5271011
+
+HBG1 amplicon run
+------
+
+First, go to your working dir: ``cd /research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/Amplicon_BS/weissgrp_820508_Tagged_Amplicon-1``
+
+Everytime you run the same amplicon, you can safely copy and paste the following.
+
+::
+
+	hpcf_interactive # login to compute node
+
+	module load python/2.7.13
+
+	run_lsf.py --guess_input 
+
+	methyl_amplicon.py -f fastq.tsv -a /home/yli11/HemTools/share/misc/HBG1_methy.fa --read_length 250 --genomic_chr chr11 --genomic_start 5271011
 
 
 
