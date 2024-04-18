@@ -24,20 +24,19 @@ You will need to create a ``input.csv`` file with information about the samples 
 	igg_ctrl,1,READ1_FASTQ.gz,READ2_FASTQ.gz,
 	igg_ctrl,2,READ1_FASTQ.gz,READ2_FASTQ.gz,
 
-
-+-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+--+--+--+--+
-| Column    | Description                                                                                                  |  |  |  |  |  |  |  |  |
-+===========+==============================================================================================================+==+==+==+==+==+==+==+==+
-| group     | Group identifier for sample. This will be identical for replicate samples from the same experimental group.  |  |  |  |  |  |  |  |  |
-| replicate | Integer representing replicate number.                                                                       |  |  |  |  |  |  |  |  |
-| fastq_1   | Full path to FastQ file for read 1. File has to be zipped and have the extension ".fastq.gz" or ".fq.gz".    |  |  |  |  |  |  |  |  |
-| fastq_2   | Full path to FastQ file for read 2. File has to be zipped and have the extension ".fastq.gz" or ".fq.gz".    |  |  |  |  |  |  |  |  |
-| control   | String representing the control group in the `group` column to which this replicate is assigned to.          |  |  |  |  |  |  |  |  |
-|           |                                                                                                              |  |  |  |  |  |  |  |  |
-|           |                                                                                                              |  |  |  |  |  |  |  |  |
-|           |                                                                                                              |  |  |  |  |  |  |  |  |
-|           |                                                                                                              |  |  |  |  |  |  |  |  |
-+-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+--+--+--+--+
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
+| Column    | Description                                                                                                  |  |  |  |  |
++===========+==============================================================================================================+==+==+==+==+
+| group     | Group identifier for sample. This will be identical for replicate samples from the same experimental group.  |  |  |  |  |
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
+| replicate | Integer representing replicate number.                                                                       |  |  |  |  |
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
+| fastq_1   | Full path to FastQ file for read 1. File has to be zipped and have the extension ".fastq.gz" or ".fq.gz".    |  |  |  |  |
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
+| fastq_2   | Full path to FastQ file for read 2. File has to be zipped and have the extension ".fastq.gz" or ".fq.gz".    |  |  |  |  |
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
+| control   | String representing the control group in the `group` column to which this replicate is assigned to.          |  |  |  |  |
++-----------+--------------------------------------------------------------------------------------------------------------+--+--+--+--+
 
 Usage
 ^^^^^
