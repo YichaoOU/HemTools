@@ -47,7 +47,7 @@ Usage
 
 	module load python/2.7.13
 
-	run_lsf.py -f input.csv -p cun_run_nfcore -g hg19 --addon_parameters " --peakcaller macs2 --normalisation_mode Spikein -resume"
+	run_lsf.py -f input.csv -p cut_run_nfcore -g hg19 --addon_parameters "  --max_cpus 5 --max_memory 50GB --peakcaller macs2 --normalisation_mode Spikein -resume"
 
 Output
 ^^^^^^
