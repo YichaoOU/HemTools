@@ -101,6 +101,21 @@ Create a working directory ``rep2_data_analysis``.
 	cellranger_create_library.py $RNA $DNA label.tsv
 
 
+HBG1 HBG2 quantification
+^^^^^^^^^^^^^^^
+
+Most RNA-seq pipeline discards multi-mapped reads, same in cellranger.
+
+Accurate quatification of HBG1 and HBG2 using 90bp-length reads is impossible. Only about 50% of the reads can be uniquely assigned to HBG1 or HBG2. This number is based on a simple raw reads string match to HBG1/HBG2 cDNA. Interestingly, I found cellranger can still assign multi-mapped reads to either HBG1 or HBG2, suggesting these reads are uniquely mapped but in fact they are not (talked to their technical support, no clear answers). 
+
+For our department usage, I suggest we mapped to both ``hg38_rmHBGnoise`` and ``GRCh38_HBG1_HBA1_mask`` reference. 
+
+- ``hg38_rmHBGnoise``: removed 2 transcripts overlapped with HBG2 from the original cellranger index, causing multi-assigned reads to be discarded and thus, HBG2 expression dropped. This index should give you an ``accurate relative differences between HBG1 and HBG2`` (not sure about HBA1 and HBA2). But the sum ``HBG`` expression is not accurate because of discard of multi-mapped reads.
+
+- ``GRCh38_HBG1_HBA1_mask``: masked HBG1 and HBG2 gene body (including 5- and 3-UTR), in order to re-use multi-mapped reads. But still a small amount of reads can be mapped to HBG1 or HBG2 (cellranger still assign nearby intergenic reads to HBG1 or HBA1). To get ``accurate quantificaiton of HBG and HBA expression``, analysis needs to add up HBG1 and HBG2, HBA1 and HBA2 read counts.
+
+This pipeline automatically mapped data to the above two references, output folder contains the reference information.
+
 Usage
 ^^^^^
 
