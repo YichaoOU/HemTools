@@ -56,7 +56,8 @@ Commonly used python libraries
 	import sys
 	import plotly.express as px
 	from Levenshtein import distance
-
+	pd.options.display.max_columns = 100
+	pd.options.display.max_rows = 100
 
 Ignore python warning
 
