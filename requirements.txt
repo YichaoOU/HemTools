@@ -1,5 +1,5 @@
 sphinx<7
-docutils<0.18
+docutils
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
 pandas
