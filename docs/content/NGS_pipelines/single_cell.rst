@@ -112,6 +112,12 @@ For our department usage, I suggest we mapped to both ``hg38_rmHBGnoise`` and ``
 - ``GRCh38_HBG1_HBA1_mask``: masked HBG1 and HBG2 gene body (including 5- and 3-UTR), in order to re-use multi-mapped reads. But still a small amount of reads can be mapped to HBG1 or HBG2 (cellranger still assign nearby intergenic reads to HBG1 or HBA1). To get ``accurate quantificaiton of HBG and HBA expression``, analysis needs to add up HBG1 and HBG2, HBA1 and HBA2 read counts.
 
 
+Cell Type Annotation
+^^^^^^^^^^^
+
+``BoneMarrowMap`` is an accurate auto-mapper, also very fast. Verified using Varun's data where I manually labeled Early and Late PolyE and OrthoE using markers from this paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7293633/
+
+
 Usage
 ^^^^^
 
@@ -145,6 +151,21 @@ Report bug
 .. code:: bash
 
     $ HemTools report_bug
+
+
+
+Analysis Note
+^^^^^^^^^^^^
+
+1. merge samples
+-------------
+
+
+::
+
+	merge_scRNA_data_HBG_correction.R sample_info.HBG1_HBA1_mask.tsv 0 0
+	merge_scRNA_data_HBG_correction.R sample_info.rmHBGnoise.tsv 0 0
+
 
 
 
