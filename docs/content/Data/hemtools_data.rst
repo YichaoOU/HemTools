@@ -56,21 +56,56 @@ TF histone peaks
 ::
 
 
-	H1 GATA1 Day0 IDR peak: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-05-16_13c13bb9aad9/idr_peaks.rmblck.merged_peaks.bed
+	H1 GATA1 Day0 IDR peak: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-05-16_13c13bb9aad9/H1_GATA1.idr_peaks.rmblck.merged_peaks.bed
 
-	H2 GATA1 Day0 IDR peak: /home/yli11/dirs/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-06-04/idr_peaks.rmblck.merged_peaks.bed
-	
-	blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/unknown/ATAC_seq/atac_seq_yli11_2020-06-12/peak_files/H2_ATAC_peak.union.bed
+	H2 GATA1 Day0 IDR peak: /research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Projects/fetal_vs_adult/data/GATA1_new/pair_end/PE-chip-seq_qqi_2019-03-21/IDR_peak/idr_peaks_qqi_2020-06-04/H2_GATA1.idr_peaks.rmblck.merged_peaks.bed
+
+	# ATAC
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/unknown/ATAC_seq/atac_seq_yli11_2020-06-12/peak_files/H2_ATAC_peak.union.bed
+
+	# BCL11A
+	/research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/BCL11A_Cut_Run/HBG_merged_cut_run/cut_run_yli11_2019-11-20/peak_files/upload/1819030_A16_2_LRF_CHIP.vs.1819034_Input_A16.rmdup_peaks.rmblck.narrowPeak
+	/research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/BCL11A_Cut_Run/HBG_merged_cut_run/cut_run_yli11_2019-11-20/peak_files/upload/1819031_A17_4_LRF_CHIP.vs.1819033_Input_A17_C7.rmdup_peaks.rmblck.narrowPeak
+	/research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/BCL11A_Cut_Run/HBG_merged_cut_run/cut_run_yli11_2019-11-20/peak_files/upload/HUDEP2_G_WT_ZBTB7A_merged.vs.HUDEP2__G__WT_ZBTB7A_ChIPminusseq_merged_Input_peaks.narrowPeak
+	/research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/BCL11A_Cut_Run/HBG_merged_cut_run/cut_run_yli11_2019-11-20/peak_files/upload/H2_BCL11A_ruopeng.vs.Hudep2_IgG_rbt_S7.rmdup_peaks.rmblck.narrowPeak
+
 
 	blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/
 
-	CD34/ChIP_seq/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_CD34.merged.bed
+	# H3K27ac
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_CD34.merged.bed
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep1/ChIP_seq/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H1.merged.bed
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/unknown/Histone_chip_seq_single/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H2_D0.merged.bed
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/Sequencing_runs/Li_data/raw_data_ABE_CRM/ChIP_seq/histone/chip_seq_single_yli11_2020-08-21/peak_files/H3K27ac_H2_D3.merged.bed
 
-	Hudep1/ChIP_seq/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H1.merged.bed
+	#cd34 peaks 
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1111612_CD34_D0_CTCF.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1111613_CD34_D8_CTCF.vs.1111619_CD34_D8_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1111614_CD34_D12_CTCF.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1151782_CD34_D0_CTCF_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1151783_CD34_D0_CTCF_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1151784_CD34_D12_CTCF_Rep1.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1151785_CD34_D12_CTCF_Rep2.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227497_CD34_D0_GATA2_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227498_CD34_D0_GATA2_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227499_CD34_D12_GATA1_Rep1.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227500_CD34_D12_GATA1_Rep2.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227503_CD34_D12_Rad21_Rep1.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1227504_CD34_D12_LDB1_Roland_Rep1.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248569_CD34_D0_ChIP_GATA1_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248570_CD34_D0_ChIP_GATA2_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248571_CD34_D0_ChIP_LDB1_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248572_CD34_D0_ChIP_Rad21_Rep1.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248573_CD34_D0_ChIP_GATA1_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248574_CD34_D0_ChIP_GATA2_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248575_CD34_D0_ChIP_LDB1_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248576_CD34_D0_ChIP_Rad21_Rep2.vs.1111618_CD34_D0_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248577_CD34_D13_ChIP_LDB1_Rep1.vs.1628555_CD34_D13_INPUT.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248578_CD34_D13_ChIP_Rad21_Rep2.vs.1628555_CD34_D13_INPUT.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248582_CD34_D13_ChIP_H3K9AC_Rep2.vs.1628555_CD34_D13_INPUT.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248583_CD34_D12_ChIP_TAL1_Rep2.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/CD34/ChIP_seq/TF/chip_seq_pair_yli11_2024-05-15/peak_files/1248584_CD34_D12_ChIP_TAL1_Rep1.vs.1111620_CD34_D12_input.rmdup.uq.rmchrM_peaks.rmblck.narrowPeak
 
-	./Hudep2/unknown/Histone_chip_seq_single/chip_seq_single_yli11_2021-01-28/peak_files/H3K27ac_H2_D0.merged.bed
-
-	Sequencing_runs/Li_data/raw_data_ABE_CRM/ChIP_seq/histone/chip_seq_single_yli11_2020-08-21/peak_files/H3K27ac_H2_D3.merged.bed
 
 	Jurkat CTCF merged peak: blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Jurkat/ChIP_seq/CTCF/Jurkat_CTCF.merged.bed
 

@@ -1,5 +1,6 @@
 sphinx<7
 docutils
+sphinx-rtd-theme
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
 pandas
@@ -7,7 +8,7 @@ nbconvert!=5.4
 ipykernel
 matplotlib
 git+https://github.com/spatialaudio/nbsphinx.git@master
-sphinx-gitstamp==0.3.1
+sphinx-gitstamp
 pygments>=2.4.1
 git+https://github.com/sphinx-contrib/video.git
 pandoc
