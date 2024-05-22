@@ -1,6 +1,7 @@
 sphinx<7
 docutils
 sphinx-rtd-theme
+sphinxcontrib-jquery==3.0.0
 sphinx-argparse
 git+https://github.com/rmk135/sphinxcontrib-disqus
 pandas
