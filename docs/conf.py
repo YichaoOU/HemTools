@@ -60,6 +60,7 @@ extensions += ['sphinx.ext.mathjax']
 extensions += ['sphinxcontrib.excel']
 extensions += ['sphinxcontrib.disqus']
 extensions += ['sphinx.ext.intersphinx']
+extensions += ["sphinxcontrib.jquery"]
 extensions.append('sphinx.ext.imgmath')
 extensions.append('sphinx.ext.todo')
 todo_include_todos=True
