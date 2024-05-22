@@ -1,6 +1,24 @@
 (Notes) single-cell RNA-seq analysis
 ============================
 
+Data to explore 5/17/2024
+^^^^^^^^^^^^^^
+
+pathway/ differential pathway/ regulon score/ hub gene score
+--------------------------
+
+https://jackbibby1.github.io/SCPA/
+
+https://github.com/satijalab/seurat/issues/7492
+
+https://bookdown.org/ytliu13207/SingleCellMultiOmicsDataAnalysis/scenic-differential-regulons.html
+
+https://github.com/aertslab/SCENIC
+
+https://htmlpreview.github.io/?https://github.com/aertslab/SCENIC/blob/master/inst/doc/SCENIC_Running.html
+
+https://morris-lab.github.io/CellOracle.documentation/tutorials/index.html
+https://morris-lab.github.io/CellOracle.documentation/installation/index.html
 
 
 Intron reads are used by default in cellranger v7
