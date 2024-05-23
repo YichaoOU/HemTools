@@ -105,7 +105,9 @@ variant design code: /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/
 
 pipeline code: https://github.com/tsailabSJ/PARADIGM_code
 
+R code to calculate different crisprscores
 
+cutadapt used to extract variable sequence given two flanking sequences
 
 Genetic variation
 ^^^^^^^^^^
