@@ -157,3 +157,28 @@ In the ``upload`` folder, users can find:
 Users can run ``create_tracks.py --current_dir -g $genome`` to upload these files to protein paint.
 
 .. image:: ../../images/hichip.example.PNG
+
+
+Redo interaction calling
+^^^^^^^^^^^^^^
+
+Modify parameters in ``hichip.config.txt`` and rerun ``Fit-hichip``
+
+First, load dependencies:
+
+::
+
+	module load conda3/202011
+	source activate /home/yli11/.conda/envs/HiChIP
+	module load bwa/0.7.16a
+	module load samtools/1.9
+	module load htslib bedtools/2.30.0
+	module load hic-pro/2.11.1
+	source activate /home/yli11/.conda/envs/captureC
+
+Then submit job:
+
+::
+
+	bsub -q priority -P Genomics -R 'rusage[mem=60000]' -J FIT /home/yli11/Programs/FitHiChIP/FitHiChIP_HiCPro.sh -C hichip.config.txt
+	
