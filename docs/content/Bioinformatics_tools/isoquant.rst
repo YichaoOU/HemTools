@@ -1,12 +1,13 @@
-long-read RNA-seq quantification
+long-read RNA-seq quantification using isoQuant
 ===============================
 
 
 Summary
 ^^^^^^^
 
-long-read RNA-seq quantification using isoQuant
+long-read RNA-seq quantification using isoQuant 3.5.0
 
+https://github.com/ablab/IsoQuant
 
 Input
 ^^^^^
