@@ -74,6 +74,16 @@ Usage
 
 	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome hs -g hg19
 
+For custom genome
+----------------
+
+.. code:: bash
+
+	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome hs -g custom --bowtie2_index YOUR_PATH
+
+Applies to any ``-p`` pipelines below.
+
+
 
 For strand separated results, run:
 ----------------------------------
