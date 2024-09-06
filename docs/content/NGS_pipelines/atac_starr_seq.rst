@@ -81,6 +81,8 @@ For custom genome
 
 	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome ESTIMATED_NUM_BP -g custom --bowtie2_index YOUR_PATH 
 
+	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome 1554000 -g custom --bowtie2_index /home/yli11/Share/Jingjing/GATA1.starr 
+
 Applies to any ``-p`` pipelines below.
 
 
