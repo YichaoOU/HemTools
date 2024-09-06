@@ -79,7 +79,7 @@ For custom genome
 
 .. code:: bash
 
-	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome hs -g custom --bowtie2_index YOUR_PATH
+	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome ESTIMATED_NUM_BP -g custom --bowtie2_index YOUR_PATH 
 
 Applies to any ``-p`` pipelines below.
 
