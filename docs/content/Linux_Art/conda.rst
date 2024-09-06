@@ -33,9 +33,6 @@ Commonly used python libraries
 
 .. code:: bash
 
-	import matplotlib
-	matplotlib.rcParams['pdf.fonttype'] = 42
-	matplotlib.rcParams['ps.fonttype'] = 42
 	import pandas as pd
 	import numpy as np
 	import scipy.stats as sts
@@ -61,6 +58,12 @@ Commonly used python libraries
 	from Levenshtein import distance
 	pd.options.display.max_columns = 100
 	pd.options.display.max_rows = 100
+	import matplotlib
+	matplotlib.rcParams['pdf.fonttype'] = 42
+	matplotlib.rcParams['ps.fonttype'] = 42
+	import warnings
+	warnings.filterwarnings("ignore")
+
 
 Ignore python warning
 
