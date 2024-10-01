@@ -10,6 +10,29 @@ Only work for hg19 right now, by 6/6/2022.
 
 Pipeline has been tested using the ENCODE data from K562: blood_regulome/chenggrp/Projects/Siqi_data/CLIP/RBM9_Public/RBM9_K562
 
+
+10/1/2024 update
+^^^^^
+
+Now, the pipeline supports PE data in all human or mouse.
+
+.. code:: bash
+
+	hpcf_interactive
+
+	module load python/2.7.13
+
+	run_lsf.py --guess_input
+
+	# for paired-end data
+	run_lsf.py -f fastq.tsv -p eclip -g hg19
+	run_lsf.py -f fastq.tsv -p eclip -g mm10
+
+
+
+
+
+
 Input
 ^^^^^
 
