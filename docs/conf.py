@@ -16,6 +16,11 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import os
+
+# Define the canonical URL if you are using a custom domain on Read the Docs
+html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
+
 
 # -- Project information -----------------------------------------------------
 
@@ -130,6 +135,11 @@ html_context = {
   'github_repo': 'continuous-sphinx',
   'github_version': 'master/source/'
 }
+# Tell Jinja2 templates the build is running on Read the Docs
+if os.environ.get("READTHEDOCS", "") == "True":
+    if "html_context" not in globals():
+        html_context = {}
+    html_context["READTHEDOCS"] = True
 
 html_js_files = ['https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js']
 html_css_files = ['https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css']
