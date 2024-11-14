@@ -83,6 +83,8 @@ For custom genome
 
 	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome 1554000 -g custom --bowtie2_index /home/yli11/Share/Jingjing/GATA1.starr 
 
+	run_lsf.py -f fastq.tsv -p atac_starr_seq --MAPQ 0 --macs_genome 1130680 -g custom --bowtie2_index /home/yli11/Share/Lanying/unique_combine_lib_final
+
 Applies to any ``-p`` pipelines below.
 
 
