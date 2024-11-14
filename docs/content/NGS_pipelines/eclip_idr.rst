@@ -58,7 +58,7 @@ Please check your email for link.
 
 idr_peaks.rmblck.homer.annotated.tsv
 
-3. annotation pie char
+3. annotation pie chart
 ---------------
 
 A simplified pie chart where priority is Exon,Promoter,5UTR,3UTR,Intron,Intergenic
@@ -69,3 +69,15 @@ A simplified pie chart where priority is Exon,Promoter,5UTR,3UTR,Intron,Intergen
 1. default parameter output: ``homer_motifs_result``
 
 2. short motif output: ``homer_motifs_result_short``
+
+
+
+TODO
+----
+
+
+https://github.com/YeoLab/rbp-maps
+https://github.com/Xinglab/rmats-turbo/blob/v4.3.0/README.md
+https://rnaseq-mats.sourceforge.io/
+
+create a figure similar to fig 5: https://www.nature.com/articles/s41586-020-2077-3#MOESM1

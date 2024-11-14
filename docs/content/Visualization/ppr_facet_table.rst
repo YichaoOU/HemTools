@@ -52,4 +52,7 @@ Usage
 
 	create_ppr_facet_table.py -f ppr.facet_table.tsv -d path_to_genomebrowser_HPC --name PRPF19_tracks
 
+	# if file_path in tsv not genome_browser path, then use --copy
+	create_ppr_facet_table.py -f chris2.tsv -d /home/yli11/dirs/genome_browser/yli11/Chris/ppr_table2 --name hub_table --copy
+
 
