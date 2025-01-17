@@ -64,7 +64,7 @@ The amplicon sequence can be downloaded from IDT. ``Assay.bed``
 2. gRNA bed file
 ----------------
 
-Header starting with "#" is acceptable.
+Header starting with "#" is acceptable. gRNA bed file should only be spacer sequence, not including the PAM. 
 
 ::
 
