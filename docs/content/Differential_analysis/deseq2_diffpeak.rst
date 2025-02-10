@@ -41,6 +41,15 @@ This program performs differential peak analysis by taking the union of input pe
 .. note:: By default, DESEQ2 normalization is performed on total reads in peaks. You can also do it on raw total reads (i.e., sequencing depth), by using ``--include_unmapped_reads``.
 
 
+2/10/2025 added Batch correction
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To perform batch correction, the program is ``diffPeak_BC.py``, every other things keep the same. The batch is assumed to match the sample order in your input ``design_matrix``. For example, control batch 1 and batch 2 is ``A`` and ``B``, Mutant batch 1 and batch 2 is ``C`` and ``D``. Then the input design matrix should be
+
+::
+
+	control:path_to/A,path_to/B
+	Mutant:path_to/C,path_to/D
 
 
 Flowchart
@@ -75,6 +84,39 @@ Input
 ^^^^^
 
 Sample input examples are shown here: https://benchling.com/s/etr-FHkOZSXjFTUTDROQ2xu2
+
+
+::
+
+	[yli11@noderome333 DiffPeaks]$ head bam.list 
+	2659981_20copy_atac_1_S13_L007.rmdup.uq.rmchrM.bam
+	2659982_20copy_atac_2_S14_L007.rmdup.uq.rmchrM.bam
+	2659983_hgcOPT_s4_atac_1_S15_L007.rmdup.uq.rmchrM.bam
+	2659984_hgcOPT_s4_atac_2_S16_L007.rmdup.uq.rmchrM.bam
+	2659985_hgcOPT_s5_atac_1_S17_L007.rmdup.uq.rmchrM.bam
+	2659986_hgcOPT_s5_atac_2_S18_L007.rmdup.uq.rmchrM.bam
+	2659987_hgcOPT_s22_atac_1_S19_L007.rmdup.uq.rmchrM.bam
+	2659988_hgcOPT_s22_atac_2_S20_L007.rmdup.uq.rmchrM.bam
+	2659989_dCTCF_s3_atac_1_S21_L007.rmdup.uq.rmchrM.bam
+	2659990_dCTCF_s3_atac_2_S22_L007.rmdup.uq.rmchrM.bam
+
+::
+
+	[yli11@noderome333 DiffPeaks]$ head design.tsv 
+	control:2659995_Jurkat_atac_1_S59_L008.rmdup.uq.rmchrM.bam,2659996_Jurkat_atac_2_S60_L008.rmdup.uq.rmchrM.bam
+	20copy:2659981_20copy_atac_1_S13_L007.rmdup.uq.rmchrM.bam,2659982_20copy_atac_2_S14_L007.rmdup.uq.rmchrM.bam
+	hgcOPT_s4:2659983_hgcOPT_s4_atac_1_S15_L007.rmdup.uq.rmchrM.bam,2659984_hgcOPT_s4_atac_2_S16_L007.rmdup.uq.rmchrM.bam
+	hgcOPT_s5:2659985_hgcOPT_s5_atac_1_S17_L007.rmdup.uq.rmchrM.bam,2659986_hgcOPT_s5_atac_2_S18_L007.rmdup.uq.rmchrM.bam
+	hgcOPT_s22:2659987_hgcOPT_s22_atac_1_S19_L007.rmdup.uq.rmchrM.bam,2659988_hgcOPT_s22_atac_2_S20_L007.rmdup.uq.rmchrM.bam
+	dCTCF_s3:2659989_dCTCF_s3_atac_1_S21_L007.rmdup.uq.rmchrM.bam,2659990_dCTCF_s3_atac_2_S22_L007.rmdup.uq.rmchrM.bam
+	dCTCF_s4:2659991_dCTCF_s4_atac_1_S55_L008.rmdup.uq.rmchrM.bam,2659992_dCTCF_s4_atac_2_S56_L008.rmdup.uq.rmchrM.bam
+	dCTCF_s13:2659993_dCTCF_s13_atac_1_S57_L008.rmdup.uq.rmchrM.bam,2659994_dCTCF_s13_atac_2_S58_L008.rmdup.uq.rmchrM.bam
+
+::
+
+	[yli11@noderome333 DiffPeaks]$ head peak.list 
+	union_peak.bed
+
 
 Input file syntax:
 
