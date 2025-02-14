@@ -64,21 +64,23 @@ You can use ``run_lsf.py --guess_input`` to generate the first 3 columns and the
 
 An example is shown below.
 
+``Note: please name sure sample name start with letters``
+
 ::
 
-	1000004_RFR005_S5_R1.fastq.gz	1000004_RFR005_S5_R2.fastq.gz	1000004_RFR005_S5	h1
-	1000002_RFR003_S3_R2.fastq.gz	1000002_RFR003_S3_R1.fastq.gz	1000002_RFR003_S3	h1
-	1000000_RFR001_S1_R2.fastq.gz	1000000_RFR001_S1_R1.fastq.gz	1000000_RFR001_S1	h1
-	1000003_RFR004_S4_R2.fastq.gz	1000003_RFR004_S4_R1.fastq.gz	1000003_RFR004_S4	h2
-	1000005_RFR006_S6_R1.fastq.gz	1000005_RFR006_S6_R2.fastq.gz	1000005_RFR006_S6	h2
-	1000001_RFR002_S2_R1.fastq.gz	1000001_RFR002_S2_R2.fastq.gz	1000001_RFR002_S2	h2
+	1000004_RFR005_S5_R1.fastq.gz	1000004_RFR005_S5_R2.fastq.gz	RFR005_S5	h1
+	1000002_RFR003_S3_R2.fastq.gz	1000002_RFR003_S3_R1.fastq.gz	RFR003_S3	h1
+	1000000_RFR001_S1_R2.fastq.gz	1000000_RFR001_S1_R1.fastq.gz	RFR001_S1	h1
+	1000003_RFR004_S4_R2.fastq.gz	1000003_RFR004_S4_R1.fastq.gz	RFR004_S4	h2
+	1000005_RFR006_S6_R1.fastq.gz	1000005_RFR006_S6_R2.fastq.gz	RFR006_S6	h2
+	1000001_RFR002_S2_R1.fastq.gz	1000001_RFR002_S2_R2.fastq.gz	RFR002_S2	h2
 
 .. note:: For single-end RNA-seq data, please keep the second column as empty and add the ``--single`` parameter.
 
 Paired test
 -----------
 
-If user added ``--paired``, then the paired info is assumed to be the sample list in ``fastq.tsv``. In the above example, ``1000004_RFR005_S5`` and ``1000003_RFR004_S4`` will be the same replicate (e.g., ``replicate0``) and ``1000002_RFR003_S3,1000005_RFR006_S6`` is ``replicate1``
+If user added ``--paired``, then the paired info is assumed to be the sample list in ``fastq.tsv``. In the above example, ``RFR005_S5`` and ``RFR004_S4`` will be the same replicate (e.g., ``replicate0``) and ``RFR003_S3,RFR006_S6`` is ``replicate1``
 
 
 **2. design matrix**
@@ -125,7 +127,7 @@ For volcano plot of differential genes, see :doc:`volcano <../Visualization/volc
 
 For replicate correlation, see ``replicate_correlation`` folder. Pairwise replicate scatter plots based on log2TPM is provided as the pdf files. PCA plot can be found in the html file.
 
-For GO enrichment, pathway analysis, go to ``GO_pathway_analysis`` folder. Enrichment analysis is based on |logFC|>=1 and fdr<=0.05. 
+For GO enrichment, pathway analysis, go to ``GO_pathway_analysis`` folder. Enrichment analysis is based on |logFC|>=1 and fdr<=0.05. ``If len(DEG) <10, the cutoffs are relaxed by 2 times``. GESA is using all genes with |logFC|>=0.5.
 
 A known problem
 ^^^^^^^^^^^^^^^

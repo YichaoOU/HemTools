@@ -52,6 +52,10 @@ HiC-Pro configuration file can be found at: "https://github.com/YichaoOU/HemTool
 
 Actual code for this pipeline can be found at: "https://github.com/YichaoOU/HemTools/blob/master/share/lsf/hicpro_split.lsf"
 
+Input
+^^^^^
+
+fastq.tsv. fastq name should be ``*R1.fastq.gz``, NOT ``*R1_L001.fastq.gz``
 
 Usage
 ^^^^^
