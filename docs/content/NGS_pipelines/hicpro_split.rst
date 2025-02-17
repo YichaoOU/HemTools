@@ -55,7 +55,7 @@ Actual code for this pipeline can be found at: "https://github.com/YichaoOU/HemT
 Input
 ^^^^^
 
-fastq.tsv. fastq name should be ``*R1.fastq.gz``, NOT ``*R1_L001.fastq.gz``
+fastq.tsv. fastq name should be ``*R1.fastq.gz``, NOT ``*R1_L001.fastq.gz``, also fastq file name should ``NOT`` start with numbers.
 
 Usage
 ^^^^^
