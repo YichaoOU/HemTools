@@ -48,6 +48,19 @@ Code is designed to analyze Hybrid-Capture assay based on ``crispressoWGS``, but
 
 Hybrid-Capture is a cost-effective assay comparing to ``rhAmp-seq`` if you have >500 regions. In our data, >90% region have at least 1000 UMI-deduplicated reads.
 
+Updates for Cas9 samples, 2/24/2025
+^^^^^
+
+For cas9 samples, we still use the same pipeline, but we can ignore the ref to alt base conversion stats, and just focus on indel freqeuncy. Some key parameters need to be changed. 
+
+First, the input region file, instead of extending +/- 2bp. Users need to add more bases to the PAM side, for example, 2bp to 5end but 10bp added to the 3end. 
+
+Seconding, quantification window and window size, we will change to cas9 setting. See below.
+
+::
+
+	crispressoWGS_BE.py -r gRNA.bed -f bam.tsv -g hg38 --ref A --alt G --w_size 1 --center "-3" --addon_parameters " --exclude_bp_from_right 0 --exclude_bp_from_left 0 --plot_window_size 12" --queue priority
+
 
 Input
 ^^^^^
@@ -67,7 +80,7 @@ Target region bed file
 
 gRNA spacer length can only be 18nt to 22nt. Adjust your gRNA if not in this range.
 
-We also require ``start`` and ``end`` to be 2bp flanking the spacer sequence. ``crispressoWGS`` uses ``samtools faidx hg38.fa chr1:55555559-55555561`` to extract fasta, all start and end are 1-index. 
+Note, ``crispressoWGS`` requires bam read to cover the entire given region, so your input region file better not too big. We recommand ``start`` and ``end`` to be 2bp flanking the spacer sequence. ``crispressoWGS`` uses ``samtools faidx hg38.fa chr1:55555559-55555561`` to extract fasta, all start and end are 1-index. 
 
 Also ``crispressoWGS`` has a "bug" when extract fasta sequence, the ``end-1`` position is used, instead of ``end``.
 

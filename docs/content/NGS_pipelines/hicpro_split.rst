@@ -52,6 +52,8 @@ HiC-Pro configuration file can be found at: "https://github.com/YichaoOU/HemTool
 
 Actual code for this pipeline can be found at: "https://github.com/YichaoOU/HemTools/blob/master/share/lsf/hicpro_split.lsf"
 
+
+
 Input
 ^^^^^
 
@@ -204,6 +206,55 @@ visualization hicpro result
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 
+2-25-2025 Usage for merging biological replicates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Analysis should start with ``.allValidPairs`` because these are PCR deduplicated pairs. Then we need to merge ``.allValidPairs`` for all biological replicates. You can prepare a group of files, each file contains the path to the ``.allValidPairs`` file, for each replicate. See below.
+
+::
+
+	==> 2B10.pairs <==
+	./hicpro_batch_yli11_2025-02-17_HiC_2B10_Rep2_S6/hicpro_results/hic_results/data/HiC_2B10_Rep2_S6/HiC_2B10_Rep2_S6.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_2B10_Rep3_S7/hicpro_results/hic_results/data/HiC_2B10_Rep3_S7/HiC_2B10_Rep3_S7.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_2B10_Rep1_S5/hicpro_results/hic_results/data/HiC_2B10_Rep1_S5/HiC_2B10_Rep1_S5.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_2B10_Rep4_S8/hicpro_results/hic_results/data/HiC_2B10_Rep4_S8/HiC_2B10_Rep4_S8.allValidPairs
+
+
+	==> 3D11.pairs <==
+	./hicpro_batch_yli11_2025-02-17_HiC_3D11_Rep2_S10/hicpro_results/hic_results/data/HiC_3D11_Rep2_S10/HiC_3D11_Rep2_S10.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_3D11_Rep3_S11/hicpro_results/hic_results/data/HiC_3D11_Rep3_S11/HiC_3D11_Rep3_S11.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_3D11_Rep4_S12/hicpro_results/hic_results/data/HiC_3D11_Rep4_S12/HiC_3D11_Rep4_S12.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_3D11_Rep1_S9/hicpro_results/hic_results/data/HiC_3D11_Rep1_S9/HiC_3D11_Rep1_S9.allValidPairs
+
+
+	==> CMY.pairs <==
+	./hicpro_batch_yli11_2025-02-17_HiC_CMY_Rep2_S2/hicpro_results/hic_results/data/HiC_CMY_Rep2_S2/HiC_CMY_Rep2_S2.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_CMY_Rep1_S1/hicpro_results/hic_results/data/HiC_CMY_Rep1_S1/HiC_CMY_Rep1_S1.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_CMY_Rep4_S4/hicpro_results/hic_results/data/HiC_CMY_Rep4_S4/HiC_CMY_Rep4_S4.allValidPairs
+	./hicpro_batch_yli11_2025-02-17_HiC_CMY_Rep3_S3/hicpro_results/hic_results/data/HiC_CMY_Rep3_S3/HiC_CMY_Rep3_S3.allValidPairs
+
+Then merge these files
+
+::
+
+	cat $(cat 2B10.pairs) > 2B10.allValidPairs
+	cat $(cat 3D11.pairs) > 3D11.allValidPairs
+	cat $(cat CMY.pairs) > CMY.allValidPairs
+
+Prepair input.list
+
+::
+
+	(hicexplorer) [yli11@noderome146 HiC_data]$ more input.list 
+	2B10
+	3D11
+	CMY
+
+Then submit the job
+
+::
+
+	run_lsf.py -f input.list -p hicpro_from_pairs
 
 
 FAQ
