@@ -4,6 +4,12 @@ All errors and how it was solved
 
 
 
+Faster way to grep
+^^^^^^^^^^^^
+
+::
+
+	grep -R --include='*log' TERM_MEMLIMIT . > mem.issue
 
 
 
