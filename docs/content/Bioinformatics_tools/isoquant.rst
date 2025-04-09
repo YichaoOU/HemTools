@@ -29,7 +29,15 @@ Copy the ``*fastq*`` files into the working dir.
 
 	# cd to your working dir
 
+	# use gencode v47 canonical gtf, one transcript per gene, for novel transcript identification, see tequial_seq_all folder
 	run_lsf.py -p isoQuant
+
+	# only this run below is for nanopore, others are for Pacbio data. use gencode v47 canonical gtf
+	run_lsf.py -p isoQuant_nanopore
+
+	# copy all the bam files (minimap aligned) to a working dir and start from bam, this pipeline uses ISO_Tequila_JJ_all.gtf based on v47
+	run_lsf.py -p isoQuant_bam
+
 
 Output
 ^^^^^
