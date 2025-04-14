@@ -43,6 +43,10 @@ Undetermined fastq file
 
 This program only works for single-end data. Usually for sgRNA deep sequencing, you will use the R1 read.
 
+Typical R1 read format: ``@NB551526:91:HC27NAFX2:1:11101:17620:1055 1:N:0:CTGCCTAA``
+
+The code recognizes the last part. Not used for demultiplex barcode within R1 read.
+
 Output
 ^^^^^
 
