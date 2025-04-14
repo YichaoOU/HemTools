@@ -35,6 +35,19 @@ The coordinates for gRNA need to include the PAM sequence.
 gRNA_bed_file should be 6 columns: chr, start, end, name, value (can be anything), strand
 
 
+4/14/2025 updates
+-----------------
+
+
+User can input a custom dsODN sequence via:  ``--addon_parameters " --dsODN AAAAAAAAAAAAA"``. Please notice there is a space before "--dsODN". ``" --dsODN``. 
+
+Note: if custom dsODN sequence length is around 34bp, then default sequence alignment parameter should be OK. If length is too different, we may need to adjust the parameters.
+
+Example:
+
+::
+
+	run_lsf.py -p count_integration -f fastq.tsv --addon_parameters " --dsODN AAAAAAAAAAAAA"
 
 12/6/2023 updates
 -----------------
