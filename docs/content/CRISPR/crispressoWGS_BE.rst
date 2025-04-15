@@ -124,28 +124,38 @@ Chi-square test
 1. Prepare a design tsv
 -------------
 
-sample label, gRNA, replicates
+sample label, group label, replicates
 
-If you have 3 replicates for gRNA, you better have 3 replicates of control, otherwise you have to modify my code.
+each design.tsv file corresponse to the same control file, if you have two groups using two different control, then create two design.tsv, because ``Control`` is a keywork in design.tsv
 
 ::
 
-	VK2447	B2M	1
-	VK2448	CBLB	1
-	VK2449	CD7	1
-	VK2450	CIITA	1
-	VK2451	PDCD1	1
-	VK2452	Control	1
-	VK2455	B2M	2
-	VK2456	CBLB	2
-	VK2457	CD7	2
+	==> D2.design.tsv <==
+	GM_VK484_S1	Control	1
+	GM_VK485_S2	P27_D2	1
+	GM_VK486_S3	P26_D2	1
+	GM_VK487_S4	Control	2
+	GM_VK488_S5	P27_D2	2
+	GM_VK489_S6	P26_D2	2
+	GM_VK490_S7	P27_D2	3
+	GM_VK491_S8	P26_D2	3
 
-Save as ``design_label``.info.tsv
+	==> D3.design.tsv <==
+	GM_VK492_S9	Control	1
+	GM_VK493_S10	P27_D3	1
+	GM_VK494_S11	P26_D3	1
+	GM_VK495_S12	Control	2
+	GM_VK496_S13	P27_D3	2
+	GM_VK497_S14	P26_D3	2
+	GM_VK498_S15	P27_D3	3
+	GM_VK499_S16	P26_D3	3
+
 
 2. Run the code
 -------------
 
 In the crispresso jid folder, where you have allele_edit.tsv and eff_edit.tsv
 
-``hybrid_capture_chi_square.py design_label``
+``hybrid_capture_chi_square.py design.tsv`` default is 3 samples per gRNA group, 2 samples per control. Code is for ABE.
 
+Output is ``Your_group_label.hybrid_capture.pivot_tabe.add_chi_square_stats.csv``
