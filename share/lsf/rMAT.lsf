@@ -1,0 +1,27 @@
+#!shell
+
+=cut STAR 1 
+
+inputFile=input
+
+ncore=10
+mem=10000
+
+
+module load rmats/4.3.0 
+conda activate /hpcf/authorized_apps/rhel8_apps/rmats/install/4.3.0/conda_envs/rmats/
+
+module load star/2.5.3a
+
+
+python /hpcf/authorized_apps/rhel8_apps/rmats/install/4.3.0/rmats.py --s1 ${COL1} --s2 $COL2 --gtf /home/yli11/Data/Human/hg19/annotations/gencode45/gencode.v45lift37.basic.annotation.gtf --bi /home/yli11/dirs/pipelines/hg19/hg19_star_253a_index -t paired --readLength 151 --nthread $ncore --od ${COL3}_rMAT --tmp ${COL3}_tmp_out
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+

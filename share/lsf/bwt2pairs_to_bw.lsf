@@ -18,7 +18,7 @@ cd {{jid}}
 
 bedtools genomecov -ibam ${COL2}.bam -bg -split > ${COL2}.bdg
 
-module load ucsc/041619
+module load ucsc/051223
 
 bedGraphToBigWig  ${COL2}.bdg {{chrom_size}}  ${COL2}.bw
 

@@ -23,6 +23,7 @@ def my_args():
 	mainParser.add_argument('-o',"--output", help="output file",required=True)
 
 	mainParser.add_argument('-i',"--input",  help="exon bed file",required=True)
+	mainParser.add_argument('-u',"--user_gRNA",  help="gRNA bed file",default=None)
 	mainParser.add_argument("--sample",  help="random sampling input file to set different seed gRNA",type=int,default=10)
 	mainParser.add_argument("--init_gRNA_per_gene",  help="",type=int,default=5)
 	mainParser.add_argument('-e',"--edit_distance_cutoff",  help="",type=int,default=7)
@@ -218,11 +219,18 @@ def main():
 	parameters = vars(args)
 	# print (parameters)
 	df = pd.read_csv(args.input,sep="\t",header=None)
-	# df = df.sample(n=args.sample)
+	df = df.sample(n=args.sample)
 	df.columns = ['chr','start','end','gene','exon_number',"sequence"]
 	number_gene_used=dict.fromkeys(df.gene.unique(),0)
 	count = 0
 	gRNA_dict={}
+	# gRNA_dict: <dict>, gRNA_seq:[chr,start,end,gene_name,gRNA_seq,strand,exon_number]
+	if args.user_gRNA:
+		tmp = pd.read_csv(args.user_gRNA,sep="\t",header=None)
+		for i,r in tmp.iterrows():
+			gRNA_dict[r[4]] = r.tolist()
+	# print (gRNA_dict)
+	counter=0
 	while len(gRNA_dict) <args.min_N_gRNA:
 		for i,r in df.iterrows():
 			count+=1
@@ -246,15 +254,27 @@ def main():
 													gRNA_dict,number_gene_used,
 													seq="N"*args.gRNA_length,**parameters)
 		parameters['edit_distance_cutoff'] -=1
+		# parameters['init_gRNA_per_gene'] +=2
+		# break
+		# counter+=1
+		# if counter>2:
+		if parameters['edit_distance_cutoff']==6:
+			save(gRNA_dict,args.output+".min7.bed")
+			# break
 		print ("updating edit_distance_cutoff to",parameters['edit_distance_cutoff'])
 	# g = pd.DataFrame.from_dict(gRNA_dict,orient="index").reset_index()
-	g = pd.DataFrame.from_dict(gRNA_dict,orient="index")
-	g.columns = ['chr','start','end','gene','gRNA','strand','exon_number']
-	g.to_csv(args.output,header=True,index=False)
-	print (g)
+	# g = pd.DataFrame.from_dict(gRNA_dict,orient="index")
+	# g.columns = ['chr','start','end','gene','gRNA','strand','exon_number']
+	# g.to_csv(args.output,header=True,index=False)
+	# print (g)
+	save(gRNA_dict,args.output)
 	command = "cas_offinder.py -g hg19 --add_PAM --PAM_seq NGG -f %s -n 0 -j %s_casOffinder"%(args.output,args.output)
 	# os.system(command)
-
+def save(gRNA_dict,output):
+	g = pd.DataFrame.from_dict(gRNA_dict,orient="index")
+	g.columns = ['chr','start','end','gene','gRNA','strand','exon_number']
+	g.to_csv(output,header=True,index=False,sep="\t")
+	print (g)
 if __name__ == "__main__":
 	main()
 

@@ -1,0 +1,15 @@
+=cut bw 1
+
+inputFile=input
+ncore=10
+mem=4000
+
+inbam=$(basename ${COL1})
+
+
+outbw=${inbam%.bam}.bw
+
+module load deeptools/3.5.4
+
+bamCoverage --bam $COL1 -o {{jid}}/$outbw --binSize 1 --normalizeUsing RPGC -p $ncore --MNase --minFragmentLength 120 --maxFragmentLength 200 --effectiveGenomeSize {{effectiveGenomeSize}}
+

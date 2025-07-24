@@ -5,7 +5,7 @@
 
 inputFile=input
 ncore=1
-mem=150000
+mem=20000
 q=priority
 
 delly call -g {{fasta}} -o ${COL2}.bcf -x {{excl}} ${COL1}
@@ -15,7 +15,7 @@ delly call -g {{fasta}} -o ${COL2}.bcf -x {{excl}} ${COL1}
 =cut merge1 2 germline1
 
 ncore=1
-mem=150000
+mem=100000
 q=priority
 
 delly merge -o merged_germline.bcf *bcf
@@ -25,7 +25,7 @@ delly merge -o merged_germline.bcf *bcf
 
 inputFile=input
 ncore=1
-mem=150000
+mem=20000
 q=priority
 
 delly call -d ${COL2}.sv_support.gz -g {{fasta}} -v merged_germline.bcf -o ${COL2}.geno.bcf -x {{excl}} ${COL1}

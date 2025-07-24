@@ -1,0 +1,49 @@
+#!shell
+
+=cut align 1
+
+inputFile=input
+
+ncore=10
+mem=15000
+
+R1=$COL1
+R2=$COL2
+label=$COL3
+jid={{jid}}
+
+module load bwa samtools/1.9 bedtools/2.30.0 cutadapt/4.4
+
+
+# trim primer, max 4 errors
+cutadapt -G rev=^GTTTAATTGAGTTGTCATATGTTAATAACGGTAT -G fwd=^ATACCGTTATTAACATATGACAACTCAATTAAAC -e 0.12 --rename '{r2.match_sequence}_{r2.adapter_name}_{id}' --cores $ncore -O 30 -o $jid/$label.R1.fastq --untrimmed-output $jid/$label.R1.untrimmed.fastq -p $jid/$label.R2.fastq --untrimmed-paired-output $jid/$label.R2.untrimmed.fastq $R1 $R2
+
+# cutadapt -G rev=^GTTTAATTGAGTTGTCATATGTTAATAACGGTAT -G fwd=^ATACCGTTATTAACATATGACAACTCAATTAAAC -e 0.15 --rename '{id} {match_sequence} {adapter_name}' --cores $ncore -O 30 --info-file $jid/$label.trim_info.tsv -o $jid/$label.R1.fastq --untrimmed-output $jid/$label.R1.untrimmed.fastq -p $jid/$label.R2.fastq --untrimmed-paired-output $jid/$label.R2.untrimmed.fastq $R1 $R2
+
+
+cd $jid
+
+bwa mem -t $ncore {{index_file}} $label.R1.fastq $label.R2.fastq |samtools view -@ $ncore -bS - > $label.bam
+
+samtools sort -@ $ncore -o $label.st.bam $label.bam
+samtools index $label.st.bam 
+
+# both reads should be mapped, remove secondary or supplemental alignment
+samtools view -b -F 2316 -f 1 $label.st.bam > $label.filter.bam
+samtools index $label.filter.bam
+module load conda3/202011
+source activate /home/yli11/.conda/envs/cutadaptenv
+umi_tools dedup --stdin=$label.filter.bam --log=$label.dedup.log --paired > $label.dedup.bam
+samtools index $label.dedup.bam
+samtools view $label.dedup.bam > $label.dedup.sam
+
+bedtools bamtobed -i $label.dedup.bam | grep "/2" > $label.dedup.R2.bed
+source activate /home/yli11/.conda/envs/captureC
+
+
+guideseq_R2_start_bdg.sh $label
+module load ucsc/051223
+bedGraphToBigWig $label.dedup.R2.rev.plus.bdg /home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes $label.dedup.R2.rev.plus.bw
+bedGraphToBigWig $label.dedup.R2.rev.minus.bdg /home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes $label.dedup.R2.rev.minus.bw
+bedGraphToBigWig $label.dedup.R2.fwd.plus.bdg /home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes $label.dedup.R2.fwd.plus.bw
+bedGraphToBigWig $label.dedup.R2.fwd.minus.bdg /home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes $label.dedup.R2.fwd.minus.bw

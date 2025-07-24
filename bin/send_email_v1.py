@@ -37,6 +37,10 @@ def send_email_with_message(attachments,message,subject):
 	for item in attachments:
 		if os.path.isfile(item):
 			real_attachments.append(item)
+		else:
+			item = glob.glob("%s"%item)[0]
+			if os.path.isfile(item):
+				real_attachments.append(item)
 	attachments_string = map(lambda x: '-a "'+x+'" ',real_attachments)
 	command = command.replace("{{attachments}}","".join(attachments_string))
 	os.system(command)

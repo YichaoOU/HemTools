@@ -10,9 +10,9 @@ ncore=1
 mem=16000
 
 
-module load conda3/5.1.0
+module load conda3/202402
 source activate /home/yli11/.conda/envs/cutruntools/
-module load R/3.5.1
+module load R/4.1.0
 module load trimmomatic/0.36
 module load java/1.8.0_60
 module load meme/4.11.2

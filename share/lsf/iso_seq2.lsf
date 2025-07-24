@@ -1,0 +1,209 @@
+#!shell
+
+=cut mini 1 
+
+ncore=6
+mem=10000
+
+inputFile=input
+
+module load bedtools/2.30.0 samtools/1.15.1
+module load smrttools/10.1
+# convert bam to fastq
+
+# pbindex ${COL1}
+
+# bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+
+samtools fastq ${COL1} > {{jid}}/${COL2}.fastq
+
+# map fastq
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+cd {{jid}}
+
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+# specific for pacbio reads
+/home/yli11/.conda/envs/captureC/bin/minimap2 -t 6 -ax splice:hq -uf --MD \
+$genomeFasta \
+${COL2}.fastq \
+> ${COL2}.Aligned.out.sam
+
+samtools=/hpcf/authorized_apps/rhel7_apps/samtools/vendor/1.15.1/build/bin/samtools
+
+label=${COL2}.Aligned.out
+samtools view -bS $label.sam > $label.bam
+samtools sort -@ 6 -o $label.st.bam $label.bam
+samtools index $label.st.bam
+samtools flagstat $label.st.bam > $label.report
+samtools view -bs 0.01 $label.st.bam > $label.st.01.bam
+samtools index $label.st.01.bam
+
+
+=cut Talon 2 mini
+
+ncore=20
+mem=10000
+
+inputFile=input
+module load bedtools/2.30.0 samtools/1.15.1
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+samtools=/hpcf/authorized_apps/rhel7_apps/samtools/vendor/1.15.1/build/bin/samtools
+
+# Talon results
+TCsrc=/home/yli11/Programs/TranscriptClean
+# all hg38 format
+SJ=/home/yli11/Programs/TranscriptClean/gencode_v40_SJs.tsv
+SNP=/home/yli11/Data/Human/hg38/SNP150_iso_seq/00-common_all.vcf.gz
+DB=/home/yli11/Data/Human/hg38/annotations/gencode_v40/talon.db
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+
+cd {{jid}}
+
+label=$COL2
+mkdir ${label}_Talon_results
+
+cd ${label}_Talon_results
+
+python $TCsrc/TranscriptClean.py \
+--sam ../$label.Aligned.out.sam \
+--genome $genomeFasta \
+--spliceJns $SJ \
+--correctMismatches true \
+--correctIndels true \
+--variants $SNP \
+--maxLenIndel 5 \
+--maxSJOffset 5 \
+--threads 16 \
+--canonOnly \
+--outprefix $label.libraryID
+
+
+talon_label_reads --f $label.libraryID_clean.sam \
+--g $genomeFasta \
+--t 20 \
+--ar 20 \
+--o $label
+
+# out: test_labeled.sam, test_read_labels.tsv
+echo "$label,cellLine,PacBio,${label}_labeled.sam" > config.csv
+
+cp $DB talon.db
+
+talon --f config.csv \
+--db talon.db \
+--build hg38 \
+--cov 0.9 \
+--identity 0.8 \
+--o merged.final \
+-t 20
+
+
+talon_abundance \
+--db talon.db \
+-a gencode_v40 \
+--build hg38 \
+--o merged.final
+
+talon_filter_transcripts \
+--db talon.db \
+-a gencode_v40 \
+--maxFracA 0.5 \
+--minCount 5 \
+--minDatasets 1 \
+--o merged.whitelist.csv
+
+talon_create_GTF \
+--db talon.db \
+-a gencode_v40 \
+-b hg38 \
+--whitelist merged.whitelist.csv \
+--o merged
+
+mkdir talon_abundance
+
+mv merged* talon_abundance
+
+cd talon_abundance
+
+module load ucsc/051223
+gtfToGenePred merged_talon.gtf merged_talon.genePred
+genePredToBed merged_talon.genePred merged_talon.bed12
+module load bedtools
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed merged_talon.bed12 -s -split -name -fo merged_talon.fa
+module load kallisto
+kallisto index --index=merged_talon merged_talon.fa
+cpat.py -x /home/yli11/Data/Human/cpat/dat/Human_Hexamer.tsv --antisense -d /home/yli11/Data/Human/cpat/dat/Human_logitModel.RData --top-orf=5 -g merged_talon.fa -o cpat.predict
+
+cd ..
+
+talon_sam_annot.py ${COL2}_labeled.sam ${COL2}.annot.sam talon_abundance/merged.final_talon_read_annot.tsv
+
+samtools view -bS ${COL2}.annot.sam > ${COL2}.annot.bam
+samtools sort -@ 6 -o ${COL2}.annot.st.bam ${COL2}.annot.bam
+samtools index ${COL2}.annot.st.bam
+
+
+=cut EXP 3 mini
+
+ncore=20
+mem=10000
+
+inputFile=input
+module load bedtools/2.30.0 samtools/1.15.1
+
+# expresso results
+
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+
+# gtf=/home/yli11/Data/Human/hg38/annotations/gencode_v40/gencode.v40.annotation.gtf
+gtf=/home/yli11/Data/Human/hg38/annotations/GCF_000001405.40.refseqNCBI.gtf
+
+
+module load hmmer/3.3.2 perl/5.28.1  blast/2.9.0  samtools/1.9 ucsc
+
+cd {{jid}}
+
+echo $PWD/${COL2}.Aligned.out.st.bam$'\t'$COL2 > ${COL2}.sample.tsv
+
+src=/home/yli11/Programs/espresso_v_1_4_0/src
+
+perl $src/ESPRESSO_S.pl -A $gtf -L ${COL2}.sample.tsv -F $genomeFasta -O ${COL2}_espresso_result -T 20
+
+perl $src/ESPRESSO_C.pl -I ${COL2}_espresso_result -F $genomeFasta -X 0 -T 20
+
+perl $src/ESPRESSO_Q.pl -T 20 -A $gtf -L ${COL2}_espresso_result/${COL2}.sample.tsv.updated -V ${COL2}_espresso_result/${COL2}_isoform.tsv
+
+
+cd ${COL2}_espresso_result/
+
+# cp /home/yli11/HemTools/share/misc/gtf2bedj.js .
+# sed '1d' sample_N2_R0_updated.gtf > ${COL2}.gtf
+# node gtf2bedj.js ${COL2}.gtf > ${COL2}.bedjs
+
+
+# python $src/visualize.py --genome-fasta $genomeFasta --updated-gtf ${COL2}_espresso_result/sample_N2_R0_updated.gtf --abundance-esp ${COL2}_espresso_result/sample_N2_R0_abundance.esp --target-gene SIRV2 --minimum-count 1 --descriptive-name SIRV --output-dir ${COL2}_espresso_result/visualization
+python $src/visualize.py --genome-fasta $genomeFasta --updated-gtf ${COL2}_espresso_result/sample_N2_R0_updated.gtf --abundance-esp ${COL2}_espresso_result/sample_N2_R0_abundance.esp --target-gene BCL11A --minimum-count 1 --descriptive-name BCL11A --output-dir ${COL2}_espresso_result/visualization
+
+cd ${COL2}_espresso_result/visualization
+
+module load bedtools
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed sample_N2_R0_updated.bed -s -split -name -fo ${COL2}.fa
+
+=cut email 4 all
+
+cd {{jid}}
+
+module load python/2.7.13
+
+send_email_v1.py  -m "{{jid}} is finished" -j {{jid}} 
+
+
+
+

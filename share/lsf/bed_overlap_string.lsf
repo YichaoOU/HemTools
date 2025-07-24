@@ -1,0 +1,34 @@
+#!shell
+
+=cut cas 1
+
+ncore=1
+mem=20000
+
+module load conda3
+source activate /home/yli11/.conda/envs/Cas_Offinder/
+
+cp {{user_bed}} {{jid}}/input.bed
+
+cd {{jid}}
+
+cas-offinder input.list C matches.bed
+
+module load python/2.7.13
+
+cas_offinder_output_to_bed.py matches.bed {{motif_length}} ABCsd934hdsfsd
+
+# cas_offinder_output_to_bed.py matches.bed 8 ABCsd934hdsfsd
+
+sort -k1,1 -k2,2n matches.bed.bed > matches.bed.sorted
+
+module load bedtools
+
+
+rm matches.bed.bed
+
+module load bedtools
+
+bedtools intersect -a input.bed -b matches.bed.sorted -wa | uniq -c | awk '{$1=$1};1' | awk '{print $2"\t"$3"\t"$4"\t"$5"\t"$1}' > user_bed.motif_occurrences.tsv
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

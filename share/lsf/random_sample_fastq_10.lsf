@@ -14,11 +14,11 @@ module load seqtk
 # seqtk sample [-2] [-s seed=11] <in.fa> <frac>|<number>
 
 
-frac="0.05"
-mkdir -p {{jid}}/$frac
-seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
-seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
-cp {{input}} {{jid}}/$frac/
+# frac="0.05"
+# mkdir -p {{jid}}/$frac
+# seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+# seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+# cp {{input}} {{jid}}/$frac/
 
 
 
@@ -85,11 +85,18 @@ seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
 cp {{input}} {{jid}}/$frac/
 
 
-frac="0.95"
-mkdir -p {{jid}}/$frac
-seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
-seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
-cp {{input}} {{jid}}/$frac/
+# frac="0.95"
+# mkdir -p {{jid}}/$frac
+# seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+# seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+# cp {{input}} {{jid}}/$frac/
+
+
+# frac="1.0"
+# mkdir -p {{jid}}/$frac
+# seqtk sample -s100 ${COL1} $frac > {{jid}}/$frac/${COL1}
+# seqtk sample -s100 ${COL2} $frac > {{jid}}/$frac/${COL2}
+# cp {{input}} {{jid}}/$frac/
 
 
 

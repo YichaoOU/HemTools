@@ -16,7 +16,7 @@ mem=20000
 
 
 module load bedops/2.4.35
-module load ucsc
+module load ucsc/051223
 
 # bigwigCompare -b1 ${COL1} -b2 ${COL1} --operation first -o ${COL2} -of bedgraph --numberOfProcessors 10 -bs {{binSize}} --blackListFileName {{black_list}}
 
@@ -38,10 +38,13 @@ module load conda3
 
 source activate /home/yli11/.conda/envs/S3norm
 
-module load R/3.5.1
+module load R/4.2.0
+
+alias python='/home/yli11/.conda/envs/S3norm/bin/python'
+unset PYTHONPATH
 
 ncore=1
-mem=100000
+mem=200000
 q=priority
 
 S3norm_src=/home/yli11/HemTools/share/script/S3norm
@@ -59,7 +62,7 @@ ncore=1
 mem=30000
 q=priority
 
-module load ucsc/041619 bedtools
+module load ucsc/051223/051223 bedtools
 
 cd S3norm_NBP_bedgraph
 

@@ -180,6 +180,7 @@ def main():
 		
 	# exit()
 	args.input_list = "%s/hicpro_results/inputfiles_hicpro.txt"%(args.jid)
+
 	
 	
 	#-------------- run jobs ----------------------

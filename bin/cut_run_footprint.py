@@ -72,7 +72,6 @@ def main():
 	args.genome_fasta = myData['%s_fasta'%(args.genome)]
 	args.black_list = myData['%s_black_list'%(args.genome)]
 	args.chrom_size = myData['%s_chrom_size'%(args.genome)]
-
 	pipeline_name = current_file_base_name
 	if args.only_cut_sites_bw:
 		submit_pipeline_jobs(myPipelines["cut_run_get_cutsite_bw"],args)

@@ -104,7 +104,10 @@ def pie_chart(char_list,value_list,output,args):
 	plt.savefig("%s.pdf"%(output),bbox_inches='tight')
 
 def get_homer_category(x):
-	return x.split()[0]
+	try:
+		return x.split()[0]
+	except:
+		return "NaN"
 	if "3' UTR" in x:
 		return "3' UTR"
 	if "5' UTR" in x:

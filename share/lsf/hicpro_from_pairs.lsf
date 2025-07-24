@@ -1,0 +1,124 @@
+#!shell
+
+=cut ice 1
+
+inputFile=input
+ncore=4
+mem=30000
+q={{queue}}
+
+module load hic-pro/2.11.1 R/3.5.1
+
+mkdir ${COL1}_merged_HiC_results
+
+cd ${COL1}_merged_HiC_results
+
+mkdir hicpro_results
+
+cd hicpro_results
+
+cp ../../hicpro.config.txt .
+
+mkdir hic_results
+mkdir hic_results/data
+
+cd hic_results/data
+
+mkdir $COL1
+
+cd $COL1
+
+ln -s ../../../../../$COL1.allValidPairs .
+
+cd ../../../
+
+HiC-Pro -c hicpro.config.txt -s build_contact_maps -i hic_results/data/ -o .
+HiC-Pro -c hicpro.config.txt -s ice_norm -i hic_results/matrix/ -o .
+
+cd hic_results/matrix/$COL1/
+
+hicpro_to_bedpe.py 20000
+
+hicpro_to_bedpe.py 10000
+
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/hicexplorer
+
+hicConvertFormat --matrices ./iced/20000/${COL1}_20000_iced.matrix --outFileName ${COL1}.hicexplorer_20kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/20000/${COL1}_20000_abs.bed 
+
+hicConvertFormat --matrices ./iced/10000/${COL1}_10000_iced.matrix --outFileName ${COL1}.hicexplorer_10kb --inputFormat hicpro --outputFormat h5 --bedFileHicpro ./raw/10000/${COL1}_10000_abs.bed 
+
+hicFindTADs --matrix ${COL1}.hicexplorer_20kb.h5 --correctForMultipleTesting fdr --outPrefix ${COL1}.hicexplorer_20kb.tad -p 4
+
+hicPCA -m ${COL1}.hicexplorer_20kb.h5 -o ${COL1}_20kb_PC1.bw ${COL1}_20kb_PC2.bw
+
+hicTransform -m ${COL1}.hicexplorer_20kb.h5 --outFileName ${COL1}.hicTransform_20kb.h5 --method pearson
+
+hicPlotMatrix -m pearson_${COL1}.hicTransform_20kb.h5 --outFileName ${COL1}_20kb_PC1.png --perChr --bigwig ${COL1}_20kb_PC1.bw
+
+
+hicFindTADs --matrix ${COL1}.hicexplorer_10kb.h5 --correctForMultipleTesting fdr --outPrefix ${COL1}.hicexplorer_10kb.tad -p 4 
+
+hicPCA -m ${COL1}.hicexplorer_10kb.h5 -o ${COL1}_10kb_PC1.bw ${COL1}_10kb_PC2.bw
+
+hicTransform -m ${COL1}.hicexplorer_10kb.h5 --outFileName ${COL1}.hicTransform_10kb.h5 --method pearson
+
+hicPlotMatrix -m pearson_${COL1}.hicTransform_10kb.h5 --outFileName ${COL1}_10kb_PC1.png --perChr --bigwig ${COL1}_10kb_PC1.bw
+
+
+=cut juicer 1
+
+inputFile=input
+ncore=6
+mem=35000
+
+q={{queue}}
+
+genome=hg38
+
+module load homer/4.10
+
+
+# we are not using this juicer tool version, but just use the java version (it is compiled with jcuda)
+
+module load juicer_tools
+
+
+cd ${COL1}_merged_HiC_results/hicpro_results/hic_results/data/${COL1}/
+
+cut -f 1-7 ${COL1}.allValidPairs > ${COL1}.allValidPairs.homer
+
+makeTagDirectory ${COL1}_homer_tag -format HiCsummary ${COL1}.allValidPairs.homer
+
+module load R/4.1.0-rhel8
+
+## add homer AB compartment
+# runHiCpca.pl ${COL1}_homer_PCA ${COL1}_homer_tag -cpu 8 -genome {{genome}}
+# when to add -genome {{genome}}, I forgot
+runHiCpca.pl ${COL1}_homer_PCA ${COL1}_homer_tag -cpu $ncore
+
+tagDir2hicFile.pl ${COL1}_homer_tag/ -juicer auto -genome $genome -p $ncore -juicerExe "java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar"
+
+s=${COL1}_homer_tag/${COL1}_homer_tag.hic
+java -Xmx180g -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar arrowhead --ignore-sparsity -k KR $s ${COL1}.TAD
+# java -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.21.01.jar arrowhead --ignore-sparsity -k KR ${COL1}.allValidPairs.hic ${COL1}.TAD
+
+
+java -jar /home/yli11/HemTools/share/script/jar/juicer_tools_1.13.01.jar hiccups --cpu -c X $s ${s}_results -r 10000,25000,50000 -k KR -f .2,.2,.2  -p 4,2,1 -i 7,5,3 -t 0.02,1.5,1.75,2 -d 20000,20000,50000 
+
+
+
+=cut email 6 all
+
+q={{queue}}
+
+module load python/2.7.13
+
+cd {{jid}}/hicpro_results
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+
+

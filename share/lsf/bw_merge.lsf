@@ -6,7 +6,7 @@
 ncore=1
 mem=32000
 
-module load ucsc/041619
+module load ucsc/051223
 
 bigWigMerge {{input}} {{jid}}/{{output}}.bdg
 

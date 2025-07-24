@@ -1,0 +1,140 @@
+#!shell
+
+=cut label 1 
+
+ncore=2
+mem=20000
+
+inputFile=input
+
+
+bam=$COL1
+label=$COL2
+
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+TCsrc=/home/yli11/Programs/TranscriptClean
+# all hg38 format
+SJ=/home/yli11/Programs/TranscriptClean/gencode_v40_SJs.tsv
+SNP=/home/yli11/Data/Human/hg38/SNP150_iso_seq/00-common_all.vcf.gz
+DB=/home/yli11/Data/Human/hg38/annotations/gencode_v47/ISO_Tequila_JJ_all.db
+
+module load samtools/1.7
+
+samtools view $bam > {{jid}}/$label.sam
+cd {{jid}}
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/captureC
+
+python $TCsrc/TranscriptClean.py \
+--sam $label.sam \
+--genome $genomeFasta \
+--spliceJns $SJ \
+--correctMismatches true \
+--correctIndels true \
+--variants $SNP \
+--maxLenIndel 5 \
+--maxSJOffset 5 \
+--threads $ncore \
+--tmpDir $label.tmp \
+--canonOnly \
+--deleteTmp \
+--outprefix $label.TranscriptClean
+
+source activate /home/yli11/.conda/envs/guideseq_test
+
+
+talon_label_reads --f $label.TranscriptClean_clean.sam \
+--g $genomeFasta \
+--t $ncore \
+--ar 20 \
+--o $label
+
+echo "$label,cellLine,PacBio,${label}_labeled.sam" > $label.config.csv
+
+
+
+=cut merge 2 label
+
+ncore=10
+mem=20000
+
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/guideseq_test
+
+jid={{jid}}
+DB=/home/yli11/Data/Human/hg38/annotations/gencode_v47/ISO_Tequila_JJ_all.db
+
+cd $jid
+
+cat */*config.csv > config.csv
+
+ln -s */*_labeled.sam .
+
+cp $DB talon.db
+
+talon --f config.csv \
+--db talon.db \
+--build hg38 \
+--cov 0.9 \
+--identity 0.8 \
+--o merged.final \
+-t $ncore
+
+
+talon_abundance \
+--db talon.db \
+-a gencode_v47 \
+--build hg38 \
+--o merged.final2
+
+talon_filter_transcripts \
+--db talon.db \
+-a gencode_v47 \
+--maxFracA 0.5 \
+--minCount 5 \
+--minDatasets 2 \
+--o merged.whitelist.csv
+
+talon_create_GTF \
+--db talon.db \
+-a gencode_v47 \
+-b hg38 \
+--whitelist merged.whitelist.csv \
+--o merged
+
+
+talon_abundance \
+--db talon.db \
+--whitelist filtered_transcripts.csv \
+-a gencode_v47 \
+--build hg38 \
+--o merged.final3
+
+
+mkdir talon_abundance
+
+mv merged* talon_abundance
+
+cd talon_abundance
+
+module load ucsc/051223
+gtfToGenePred merged_talon.gtf merged_talon.genePred
+genePredToBed merged_talon.genePred merged_talon.bed12
+module load bedtools
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed merged_talon.bed12 -s -split -name -fo merged_talon.fa
+module load kallisto
+kallisto index --index=merged_talon merged_talon.fa
+source activate /home/yli11/.conda/envs/captureC
+cpat.py -x /home/yli11/Data/Human/cpat/dat/Human_Hexamer.tsv --antisense -d /home/yli11/Data/Human/cpat/dat/Human_logitModel.RData --top-orf=5 -g merged_talon.fa -o cpat.predict
+
+=cut email 4 all
+
+cd {{jid}}
+
+module load python/2.7.13
+
+send_email_v1.py  -m "{{jid}} is finished" -j {{jid}} 
+
+

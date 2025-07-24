@@ -120,7 +120,8 @@ def parse_df2(f,gRNA,ref,alt,snp):
 	
 def parse_indel(f):
 	df = pd.read_csv(f,sep="\t",index_col=0)
-	df['total_indel'] = df[['Deletions','Insertions']].sum(axis=1)
+	cols=["Only Insertions","Only Deletions","Insertions and Deletions","Insertions and Substitutions","Deletions and Substitutions","Insertions Deletions and Substitutions"]
+	df['total_indel'] = df[cols].sum(axis=1)
 	df['indel_frequency'] = df['total_indel']/(df['Reads_total'])
 	df = df.fillna(-1)
 	return df
@@ -141,17 +142,23 @@ except:
 
 for s in sample_id_list:
 	outfile = {}
+	outfile[18] = "%s.18.edit_eff.tsv"%(s)
 	outfile[19] = "%s.19.edit_eff.tsv"%(s)
 	outfile[20] = "%s.20.edit_eff.tsv"%(s)
 	outfile[21] = "%s.21.edit_eff.tsv"%(s)
+	outfile[22] = "%s.22.edit_eff.tsv"%(s)
 	out = {}
+	out[18] = []
 	out[19] = []
 	out[20] = []
 	out[21] = []
+	out[22] = []
 	index_list = {}
+	index_list[18] = []
 	index_list[19] = []
 	index_list[20] = []
 	index_list[21] = []
+	index_list[22] = []
 	count = 0
 	for name,_,gRNA in df.values:
 		# file = "{0}_results/CRISPRessoPooled_on_{0}/CRISPResso_on_{1}/Quantification_window_nucleotide_percentage_table.txt".format(s,name)

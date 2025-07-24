@@ -12,7 +12,7 @@ myBaseName=$(basename -- ${COL1})
 
 sort -k1,1 -k2,2n ${COL1} > {{jid}}/${myBaseName}.sorted
 cd {{jid}}
-module load ucsc/041619
+module load ucsc/051223
 bedGraphToBigWig ${myBaseName}.sorted {{chrom_size}} ${myBaseName%.sorted}.bw
 
 """
@@ -45,6 +45,7 @@ def my_args():
 def to_bed(df,output):
 	df['name'] = df[0]+df[1].astype(str)+df[2].astype(str)
 	df = df.sort_values(4)
+	dup_df = df[df[1].duplicated(keep=False)]
 	shape0 = df.shape[0]
 	df1 = df.drop_duplicates('name')
 	mean_value = pd.DataFrame(df.groupby('name')[4].mean())
@@ -54,6 +55,7 @@ def to_bed(df,output):
 		print ("duplicated positions were removed, average values were used")
 		print ("There are %s duplicated positions"%(shape0-shape1))
 	df1[[0,1,2,4]].to_csv(output,sep="\t",header=False,index=False)
+	dup_df[[0,1,2,3,4,5]].sort_values([0,1]).to_csv(output+".dup.tsv",sep="\t",header=False,index=False)
 
 def main():
 
@@ -81,7 +83,7 @@ def main():
 			if gRNA.at[i,5]=="+":
 				gRNA.at[i,2] -= 3
 			if gRNA.at[i,5]=="-":
-				gRNA.at[i,2] = gRNA.at[i,1]+4
+				gRNA.at[i,2] = gRNA.at[i,1]+3
 		gRNA[1] = gRNA[2]-1		
 	else:
 		print ("not implemented")

@@ -180,7 +180,7 @@ cd ${COL3}/${COL3}_barcode_demultiplexing
 
 $src/step4_calculate_collision_rate.py --table ${COL3}.total_number_reads.tsv --human human/${COL3}.R1.bed --mouse mouse/${COL3}.R1.bed
 
-module load R/3.5.1
+module load R/4.1.0-rhel8
 
 Rscript $src/draw_collision_figure.R for_collision_plot.tsv ${COL3}_collision.pdf
 

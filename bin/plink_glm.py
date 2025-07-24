@@ -37,6 +37,8 @@ def run_plink(vcf,pheno,pheno_name,out_dir,parameters):
 	## pheno_name is chr_start_end, and start-100 end+100 is tmp_bed
 	rand_str = str(uuid.uuid4()).split("-")[-1]
 	chr,start,end = pheno_name.split("_")
+	# if pheno_name!="chr9_121888844_121888867":
+		# return 0
 	start = int(start)-100
 	end = int(end)+100
 	tmp_bed = pd.DataFrame([chr,start,end]).T
@@ -45,6 +47,7 @@ def run_plink(vcf,pheno,pheno_name,out_dir,parameters):
 	# faster if you load plink2, 13min to 1 min
 	# command = f"module load plink2;plink2 --vcf {vcf} --extract bed0 {tmp_bed_file} --pheno {pheno} --pheno-name {pheno_name} --glm --output-chr 26 --freq counts --out {out_dir}/{pheno_name} {parameters}"
 	command = f"plink2 --vcf {vcf} --extract bed0 {tmp_bed_file} --pheno {pheno} --pheno-name {pheno_name} --glm --output-chr 26 --freq counts --out {out_dir}/{pheno_name} {parameters}"
+	# print (command)
 	os.system(command)
 	os.system('rm '+tmp_bed_file)
 def main():

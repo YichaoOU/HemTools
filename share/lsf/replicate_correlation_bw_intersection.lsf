@@ -14,7 +14,7 @@ module load bedtools
 
 bedtools intersect -a ${COL3} -b ${COL4} -u | awk -F "\t" '{print $1"\t"$2"\t"$3"\t"NR}' - > {{jid}}/$id.intersect.bed
 
-module load ucsc/041619
+module load ucsc/051223
 
 bigWigAverageOverBed ${COL1}  {{jid}}/$id.intersect.bed {{jid}}/$id.rep1.tsv  
 

@@ -1,0 +1,68 @@
+#!shell
+
+# Call SV for each sample
+=cut germline1 1
+
+inputFile=input
+ncore=1
+mem=20000
+q=priority
+
+delly call -g {{fasta}} -o ${COL1}.bcf -x {{excl}} ${COL1}
+
+
+# Merge SV
+=cut merge1 2 germline1
+
+ncore=1
+mem=100000
+q=priority
+
+delly merge -o merged_germline.bcf *bcf
+
+# Genotyping SV for each sample
+=cut germline2 3 merge1
+
+inputFile=input
+ncore=1
+mem=20000
+q=priority
+
+delly call -d ${COL1}.sv_support.gz -g {{fasta}} -v merged_germline.bcf -o ${COL1}.geno.bcf -x {{excl}} ${COL1}
+
+# https://github.com/dellytools/delly/issues/273
+
+# samtools view -b -N file_with_read_names input.bam > sv.bam
+
+# merge genotypes
+=cut merge2 4 germline2
+
+ncore=1
+mem=150000
+q=priority
+
+module load bcftools
+
+bcftools merge -m id -O b -o merged_final_germline.bcf *.geno.bcf
+
+bcftools convert -O v -o merged_final_germline.vcf merged_final_germline.bcf
+
+# users can do filtering later
+
+=cut email 4 all
+
+module load python/2.7.13
+
+delly call -d ALL_sv_support.gz -g {{fasta}} -v merged_final_germline.bcf -t BND -o SV_genotying.bcf -x {{excl}} *bam
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+

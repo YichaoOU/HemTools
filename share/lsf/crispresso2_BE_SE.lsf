@@ -6,7 +6,7 @@
 inputFile=input_list
 
 ncore=1
-mem=8000
+mem=20000
 
 module load conda3
 

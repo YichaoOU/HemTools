@@ -8,7 +8,7 @@ inputFile=bw_list
 ncore=1
 mem=16000
 
-module load ucsc/041619
+module load ucsc/051223
 
 inputBW=${COL1}
 outputBED=$(basename $inputBW .bw)

@@ -78,6 +78,8 @@ def make_pairwise_boxplot(list1,list2,output,flag,log_flag,sns_style):
 		plt.text(0.5, y+h+unit, "Mann-Whitney rank test: %.2E" % pvalue, ha='center', va='bottom', color="black")
 	if flag=="wilcoxon":
 		plt.text(0.5, y+h+unit, "Wilcoxon signed rank test: %.2E" % scipy.stats.wilcoxon(list1,list2).pvalue, ha='center', va='bottom', color="black")
+	if flag=="t-test":
+		plt.text(0.5, y+h+unit, "Welch T-test: %.2E" % scipy.stats.ttest_ind(list1,list2,equal_var=False).pvalue, ha='center', va='bottom', color="black")
 	
 	plt.ylim(myMin-unit*5,myMax+unit*5)
 	if log_flag:

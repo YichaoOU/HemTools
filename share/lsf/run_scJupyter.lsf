@@ -32,11 +32,11 @@ export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
 # export JUPYTER_RUNTIME_DIR="/home/{{username}}"
 
 cp $src_to_scJupyter .
-jupyter nbconvert --to notebook --execute $myFile  --template toc2 --output scJupyter_result --ExecutePreprocessor.timeout=-1 --allow-errors 
+jupyter nbconvert --to notebook --execute $myFile --output scJupyter_result --ExecutePreprocessor.timeout=-1 --allow-errors 
 
 rm $myFile
 
-jupyter nbconvert scJupyter_result.ipynb --to html --template toc2
+jupyter nbconvert scJupyter_result.ipynb --to html
 
 =cut email 3 all
 

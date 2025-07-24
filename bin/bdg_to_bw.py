@@ -61,7 +61,8 @@ def parse_dataframe(x,binSize=None):
 		df['myEnd'] = df['myStart']+binSize
 	myBed = ['myChr','myStart','myEnd']
 	for c in df.columns:
-		if c in ['pvalue','padj']:
+		# if c in ['pvalue','padj']:
+		if "pval" in c or "padj" in c:
 			df[c] = [-np.log10(x) for x in df[c]]
 			df[c] = df[c].fillna(0)
 	return df,myBed,myCols

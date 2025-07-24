@@ -1,0 +1,24 @@
+#!shell
+
+=cut iso 1 
+
+ncore=10
+mem=5000
+
+
+inputFile=input
+
+module load smrttools/13.1
+
+bam=$COL1
+label={{jid}}/$COL2
+
+cp /home/yli11/HemTools/share/misc/isoseq_primer.fa .
+
+lima -j $ncore $bam isoseq_primer.fa $label.fl.bam --isoseq --peek-guess
+
+isoseq refine -j $ncore $label.fl.Clontech_5p--NEB_Clontech_3p.bam isoseq_primer.fa $label.flnc.bam
+
+isoseq cluster2 -j $ncore $label.flnc.bam $label.cluster.bam
+
+

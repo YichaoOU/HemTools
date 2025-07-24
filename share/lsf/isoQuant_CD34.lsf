@@ -1,0 +1,103 @@
+#!shell
+
+=cut PB 1
+
+ncore=30
+mem=10000
+
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/isoquant/
+
+output="{{jid}}_stringent_median_loose"
+#gtf=/home/yli11/Data/Human/hg38/annotations/GCF_000001405.40.refseqNCBI.gtf
+gtf=/home/yli11/Data/Human/hg38/annotations/gencode_v47/gencode.v47.canonical.CD34.gtf
+# gtf=/home/yli11/Data/Human/hg38/annotations/gencode_v47/gencode.v47.canonical.add_BCL11A_all.gtf
+
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+isoquant.py -d pacbio_ccs \
+  --fastq *fastq* \
+  --data_type pacbio_ccs \
+  --clean_start \
+  --reference $genomeFasta \
+  --genedb $gtf \
+  --complete_genedb \
+  --high_memory  \
+  --no_model_construction \
+  --no_gtf_check  \
+  --no_gzip  \
+  --splice_correction_strategy default_pacbio \
+  --model_construction_strategy default_pacbio \
+  --polya_requirement auto \
+  --transcript_quantification unique_only \
+  --gene_quantification unique_only \
+  --matching_strategy precise \
+  --output $output \
+  --threads  $ncore
+		
+cd $output
+
+cd OUT
+
+
+
+
+
+cd aux
+
+output="isoQuant_tequila_all"
+isoquant.py -d pacbio_ccs \
+  --bam *bam \
+  --reference $genomeFasta \
+  --genedb $gtf \
+  --complete_genedb \
+  --high_memory  \
+  --no_gzip  \
+  --splice_correction_strategy default_pacbio  \
+  --model_construction_strategy all    \
+  --polya_requirement auto \
+  --matching_strategy exact  \
+  --output $output \
+  --threads  $ncore
+
+output="isoQuant_isoseq_default_pacbio"
+isoquant.py -d pacbio_ccs \
+  --bam *bam \
+  --reference $genomeFasta \
+  --genedb $gtf \
+  --complete_genedb \
+  --high_memory  \
+  --no_gzip  \
+  --splice_correction_strategy default_pacbio  \
+  --model_construction_strategy default_pacbio    \
+  --polya_requirement auto \
+  --matching_strategy exact  \
+  --output $output \
+  --threads  $ncore
+
+
+
+source activate /home/yli11/.conda/envs/captureC/
+module load ucsc/051223 bedtools
+
+
+
+cd isoQuant_tequila_all/OUT
+
+
+gtfToGenePred OUT.extended_annotation.gtf OUT.extended_annotation.genePred
+genePredToBed OUT.extended_annotation.genePred OUT.extended_annotation.bed12
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed OUT.extended_annotation.bed12 -s -split -name -fo OUT.extended_annotation.fa
+cpat.py -x /home/yli11/Data/Human/cpat/dat/Human_Hexamer.tsv --antisense -d /home/yli11/Data/Human/cpat/dat/Human_logitModel.RData --top-orf=5 -g OUT.extended_annotation.fa -o cpat.predict
+get_BCL11A_novel_transcript_ID.py
+
+
+cd ../..
+cd isoQuant_isoseq_default_pacbio/OUT
+
+
+gtfToGenePred OUT.extended_annotation.gtf OUT.extended_annotation.genePred
+genePredToBed OUT.extended_annotation.genePred OUT.extended_annotation.bed12
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed OUT.extended_annotation.bed12 -s -split -name -fo OUT.extended_annotation.fa
+cpat.py -x /home/yli11/Data/Human/cpat/dat/Human_Hexamer.tsv --antisense -d /home/yli11/Data/Human/cpat/dat/Human_logitModel.RData --top-orf=5 -g OUT.extended_annotation.fa-o cpat.predict
+get_BCL11A_novel_transcript_ID.py

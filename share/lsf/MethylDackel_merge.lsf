@@ -1,29 +1,32 @@
-
+#!shell
 
 =cut M_merge 1
 
 inputFile=input
 
 ncore=1
-mem=30000
+mem=10000
 
 module load conda3/202011
 
 source activate /home/yli11/.conda/envs/long_reads
 
+
+refFasta=/research/dept/hem/common/sequencing/chenggrp/UHRF1_Yong_Weiss_collaboration/HUDEP2_data/Amplicon_BS/weissgrp_820508_Tagged_Amplicon-1/HBG_methy.fa
+# refFasta=/home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa
 # /home/yli11/.conda/envs/long_reads/bin/MethylDackel mergeContext ${COL1}/results/reference_genome/genome.fa ${COL1}/results/MethylDackel/${COL1}.sorted.markDups_CpG.bedGraph -o ${COL1}.bdg
-/home/yli11/.conda/envs/long_reads/bin/MethylDackel mergeContext /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa ${COL1}/results/MethylDackel/${COL1}.sorted.markDups_CpG.bedGraph -o ${COL1}.bdg
+/home/yli11/.conda/envs/long_reads/bin/MethylDackel mergeContext $refFasta ${COL1}/results/MethylDackel/${COL1}.sorted.markDups_CpG.bedGraph -o ${COL1}.bdg
 
 sed -i "1d" ${COL1}.bdg
 
 cut -f 1-4 ${COL1}.bdg > ${COL1}.tmp
 
-module load ucsc
+module load ucsc/051223
 
 bedSort ${COL1}.tmp ${COL1}.st.bdg
 
 #bedGraphToBigWig ${COL1}.st.bdg ${COL1}/results/reference_genome/genome.fa.fai ${COL1}.bw
-bedGraphToBigWig ${COL1}.st.bdg /home/yli11/Data/Human/hg19/mask_genome/hg19.hbg_mask.fa.fai ${COL1}.bw
+bedGraphToBigWig ${COL1}.st.bdg $refFasta.fai ${COL1}.bw
 
 # rm ${COL1}.bdg
 

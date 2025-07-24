@@ -32,7 +32,7 @@ def my_args():
 	mainParser.add_argument('--single',  help="for single-end RNA-seq", action='store_true')
 	genome=mainParser.add_argument_group(title='Genome Info')
 	genome.add_argument('-g','--genome',  help="genome version: hg19, hg38, mm9, mm10", default='hg19',type=str)
-	genome.add_argument('--nfcore_genome',  help="genome version: hg19, hg38, mm9, mm10", default='hg38',type=str)
+	genome.add_argument('--nfcore_genome',  help=argparse.SUPPRESS, default='hg38',type=str)
 	genome.add_argument('-i','--index_file',  help="Kallisto index file", default=myData['hg19_kallisto_index'])
 	genome.add_argument('--gene_info',  help="gene info t2g file for sleuth", default=myData['hg19_t2g'])
 
@@ -72,9 +72,10 @@ def reformat_design_tsv(fastq_tsv,design_tsv,paired,jid):
 		g1 = r[0]
 		g2 = r[1]
 		name = r[2]
-		# print (df[df[3]==g1][2])
+		print (g1,g2)
 		g1_samples = df[df[3]==g1][2].tolist()
 		g2_samples = df[df[3]==g2][2].tolist()
+		# print (g1_samples,g2_samples)
 		col4 = ",".join(g1_samples+g2_samples)
 		col5 = "-x %s -y %s"%(g1_samples[0],g1_samples[1])
 		col6 = "-x %s -y %s"%(g2_samples[0],g2_samples[1])
@@ -119,7 +120,7 @@ def main():
 	if not args.genome == "custom":
 		args.index_file = myData['%s_kallisto_index'%(args.genome)]
 		args.gene_info = myData['%s_t2g'%(args.genome)]
-		# args.nfcore_genome = args.genome
+		args.nfcore_genome = args.genome
 	if args.paired:
 		args.gene_info += " --paired"
 	os.system("mkdir %s"%(args.jid))

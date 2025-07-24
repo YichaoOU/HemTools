@@ -90,9 +90,10 @@ def redefine_blacklist(peak_dir,chrom_size,blacklist,jid):
 def main():
 
 	args = my_args()
-	args.chrom_size = myData['%s_chrom_size_sorted'%(args.genome)]
-	args.chrom_size_bed = myData['%s_chrom_size_bed'%(args.genome)]
-	args.black_list = myData['%s_black_list'%(args.genome)]
+	if not args.genome=="custom":
+		args.chrom_size = myData['%s_chrom_size_sorted'%(args.genome)]
+		args.chrom_size_bed = myData['%s_chrom_size_bed'%(args.genome)]
+		args.black_list = myData['%s_black_list'%(args.genome)]
 	
 	# if args.peak_dir:
 		# redefine_blacklist(args.peak_dir,args.chrom_size,args.black_list,args.jid)

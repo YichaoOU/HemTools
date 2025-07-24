@@ -59,7 +59,7 @@ if filter_G != None:
 	df = df[df['first_base']=="G"]
 	df = df.drop(['first_base'],axis=1)
 # df[[1,2,'end','seq',5,4]].to_csv("%s.bed"%(sys.argv[1]),sep="\t",header=False,index=False)
-df[[1,'start','end','seq',5,4]].to_csv("%s.bed"%(sys.argv[1]),sep="\t",header=False,index=False)
+df[[1,'start','end','seq',5,4,0]].to_csv("%s.bed"%(sys.argv[1]),sep="\t",header=False,index=False)
 
 ## ABE
 def is_ABE(x):

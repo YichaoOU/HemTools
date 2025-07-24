@@ -42,7 +42,7 @@ sed -n '1~4s/^@/>/p;2~4p' ${COL3}.extendedFrags.fastq > ${COL3}.extendedFrags.fa
 # please don't change BLAT parameter here
 blat -minScore=20 -minIdentity=5 -maxIntron=10000 -tileSize=11 ${COL3}_${COL4}_split_800bp.fa ${COL3}.extendedFrags.fa ${COL3}.read.psl
 
-module load ucsc/041619
+module load ucsc/051223
 
 
 # perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r ${COL3}_read_split -limit 0 -all
@@ -125,7 +125,7 @@ module load flash
 module load blat
 module load bowtie2
 module load macs2 bedtools
-module load ucsc/041619
+module load ucsc/051223
 
 label=${COL3}
 bait_bed=${COL4}
@@ -196,7 +196,7 @@ export LANG=en_US.utf-8
 
 cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
 
-multiqc .
+multiqc -s .
 
 module load python/2.7.13
 

@@ -7,8 +7,8 @@ module load samtools/1.7
 
 inputFile=input
 
-ncore=1
-mem=150000
+ncore=15
+mem=10000
 q=priority
 
 module load fastqc/0.11.5
@@ -16,9 +16,9 @@ module load fastqc/0.11.5
 fastqc ${COL1} -o {{jid}}
 
 
-bwa mem -t 6 {{index_file}} ${COL1} |samtools view -bS - > {{jid}}/${COL2}.bam
+bwa mem -t 15 {{index_file}} ${COL1} |samtools view -bS - > {{jid}}/${COL2}.bam
 cd {{jid}}
-samtools sort -@ 6 -o ${COL2}.st.bam ${COL2}.bam
+samtools sort -@ 15 -o ${COL2}.st.bam ${COL2}.bam
 samtools index ${COL2}.st.bam
 # samtools markdup -@ $ncore {{jid}}/${COL2}.fixmate.st.bam {{jid}}/${COL2}.markdup.bam
 # samtools markdup -@ 6 ${COL2}.st.bam ${COL2}.markdup.st.bam

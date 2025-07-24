@@ -24,7 +24,6 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 from sklearn.ensemble import RandomForestRegressor,GradientBoostingRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics.scorer import make_scorer
 from sklearn.model_selection import train_test_split
 from sklearn.base import TransformerMixin
 from sklearn.datasets import make_regression

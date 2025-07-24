@@ -18,7 +18,7 @@ def run_enrichR(diff_list,gene_sets,out_file):
 	# plt.savefig(,bbox_inches='tight')
 def run_GSEA(rnk,gene_sets,out_file):
 	out_dir=os.getcwd()
-	pre_res = gp.prerank(rnk=rnk, gene_sets=gene_sets,processes=8,permutation_num=100,no_plot =True,max_size =1000)
+	pre_res = gp.prerank(rnk=rnk, gene_sets=gene_sets,processes=8,permutation_num=500,no_plot =True,max_size =1000)
 	res = pre_res.res2d
 	os.system(f"mkdir -p {out_dir}/GSEA_plots_FDR_0.01")
 	fdr = 0.01
@@ -43,7 +43,7 @@ out_file=sys.argv[2]
 
 
 genesets=["GO_Biological_Process_2021","GO_Cellular_Component_2021","GO_Molecular_Function_2021","KEGG_2021_Human","KEGG_2016","Reactome_2016"]
-msigdb=["/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c2.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c5.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c7.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c8.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/h.all.v2023.1.Hs.symbols.gmt"]
+msigdb=["/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/KEGG_2021_Human.txt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c2.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c5.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c7.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c8.all.v2023.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/h.all.v2023.1.Hs.symbols.gmt"]
 
 
 
@@ -58,19 +58,21 @@ for cluster in dff.cluster.unique():
 
 	run_enrichR(df.gene.tolist(),genesets,out_file)
 	rnk = df[['avg_log2FC']].reset_index()
-	try:
-		for g in genesets:
+	print (rnk)
+	for g in genesets:
+		try:
 			print ("Running GSEA",g)
 			tmp = rnk.copy()
 			tmp['index'] = [x.upper() for x in tmp['index']]
 			run_GSEA(tmp,g,out_file)
-	except:
-		print (genesets,"failed")
+		except:
+			print (genesets,"failed")
 	for g in msigdb:
 		try:
 			print ("Running GSEA",g)
 			run_GSEA(rnk,g,out_file)
-		except:
+		except Exception as e:
+			print (e)
 			print ("Running GSEA",g,'failed')
 	os.system(f"mv {out_file}.enrichR* Enrichr")
 	os.system(f"mv {out_file}.GSEA* GSEA_Prerank")

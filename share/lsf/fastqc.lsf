@@ -9,7 +9,9 @@ mem=10000
 
 module load fastqc/0.11.5
 
-fastqc -q ${COL1} 
+# fastqc -q ${COL1} 
+fastqc ${COL1} -o {{jid}}
+
 # fastqc ${COL2} 
 
 # module load flash
@@ -19,6 +21,7 @@ fastqc -q ${COL1}
 
 =cut email 2 all
 
+cd {{jid}}
 
 module load conda3
 source activate /home/yli11/.conda/envs/multiQC/

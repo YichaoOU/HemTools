@@ -30,7 +30,7 @@ mkdir {{jid}}/${COL3}_results
 fastqc ${COL1} -o {{jid}}/log_files/
 fastqc ${COL2} -o {{jid}}/log_files/
 
-trimmomatic PE ${COL1} ${COL2} -threads 4 -baseout {{jid}}/${COL3}_results/${COL3} ILLUMINACLIP:/hpcf/apps/trimmomatic/install/0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3
+trimmomatic PE ${COL1} ${COL2} -threads 4 -baseout {{jid}}/${COL3}_results/${COL3} ILLUMINACLIP:/hpcf/apps/trimmomatic/install/0.36/adapters/TruSeq3-PE.fa:2:30:10:2:True LEADING:3
 
 
 # Run flash to combine reads 

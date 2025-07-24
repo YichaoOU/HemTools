@@ -31,7 +31,7 @@ cd  ${COL3}_trinity_out
 
 genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.main.fa
 
-minimap2 -t 20 -ax splice -uf --MD $genomeFasta Trinity.fasta > Trinity.sam
+/home/yli11/.conda/envs/captureC/bin/minimap2 -t 20 -ax splice:hq -uf --MD $genomeFasta Trinity.fasta > Trinity.sam
 
 samtools view -bS Trinity.sam > ${COL3}.bam
 samtools sort -@ 20 -o ${COL3}.st.bam ${COL3}.bam
@@ -39,6 +39,7 @@ samtools index ${COL3}.st.bam
 
 rm ${COL3}.bam
 rm Trinity.sam
+samtools view ${COL3}.st.bam chr2:60398545-60606441 | awk '{print $1}' > ${COL3}.BCL11A.readlist
 
 # cd ${COL3}_abundance
 

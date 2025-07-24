@@ -1,0 +1,26 @@
+
+=cut merge 1
+
+inputFile=input
+mem=20000
+
+module load samtools/1.9 macs2/2.1.1 bedtools/2.25.0
+
+
+jid={{jid}}
+
+samtools merge $jid/$COL2.bam $COL1
+
+cd $jid
+
+samtools sort -o $COL2.st.bam $COL2.bam
+
+samtools index $COL2.st.bam
+
+
+macs2 callpeak --keep-dup all -p 0.01 --nomodel --shift -100 --extsize 200 -t $COL2.st.bam -n ${COL2}
+
+bedtools slop -i /home/yli11/Data/Blacklist/lists/hg38-blacklist.v2.bed.gz -g /home/yli11/Data/Human/hg38/annotations/hg38.chrom.sizes -b 1200 > $COL2.bl.bed
+
+bedtools intersect -v -a ${COL2}_peaks.narrowPeak -b $COL2.bl.bed > ${COL2}.rmblck.peak.bed
+

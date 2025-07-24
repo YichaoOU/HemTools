@@ -11,11 +11,29 @@ mem=10000
 module load cellranger-arc/2.0.0
 
 # ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger/GRCh38-2020-A_build/arc/refdata-cellranger-arc-GRCh38-2020-A-2.0.0
-# ref=/home/yli11/dirs/pipelines/hg38/cellranger_arc/GRCh38
-ref=/home/yli11/dirs/pipelines/hg38/cellranger_arc/GRCh38_phil
+ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/hg38_rmHBGnoise_arc
+# ref=/research_jude/rgs01_jude/dept/HEM/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/GRCh38_HBG1_HBA1_mask
 
 
-cellranger-arc count --reference=$ref --libraries=${COL1}.csv --id=${COL1} --localcores=12 
+cellranger-arc count --reference=$ref --libraries=${COL1}.csv --id=${COL1}hg38_rmHBGnoise_arc --localcores=12 
+
+
+=cut CR2 2
+
+inputFile=input
+
+ncore=12
+mem=10000
+
+
+module load cellranger-arc/2.0.0
+
+# ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger/GRCh38-2020-A_build/arc/refdata-cellranger-arc-GRCh38-2020-A-2.0.0
+# ref=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/hg38_rmHBGnoise
+ref=/research_jude/rgs01_jude/dept/HEM/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/GRCh38_HBG1_HBA1_mask
+
+
+cellranger-arc count --reference=$ref --libraries=${COL1}.csv --id=${COL1}_GRCh38_HBG1_HBA1_mask --localcores=12 
 
 =cut email 3 all
 

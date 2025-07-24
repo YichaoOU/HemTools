@@ -10,7 +10,7 @@ mem=16000
 module load trimgalore flash cutadapt/1.1 perl
 # module load trimgalore flash perl
 module load bowtie/1.2.2
-module load ucsc/041619
+module load ucsc/051223
 
 script_path=/home/yli11/Programs/CaptureC
 
@@ -87,7 +87,7 @@ cd ..
 
 cd ../CC_vis
 
-module load ucsc/041619
+module load ucsc/051223
 
 
 bigWigMerge res-1k/*C[0-9].bw output.bdg

@@ -1,0 +1,157 @@
+#!shell
+
+=cut FQ 1
+
+inputFile=input
+
+ncore=4
+mem=30000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv
+
+# module load trimgalore/0.6.6 
+# this program is inside hemtools, 0.6.4_dev
+
+mkdir {{jid}}/${COL3}
+
+# trim
+trim_galore --gzip --fastqc --paired ${COL1} ${COL2} --basename ${COL3} --output_dir {{jid}}/${COL3}
+
+module load bowtie2
+
+#mapping
+bowtie2 -p 4 -X 500 --sensitive --no-discordant --no-mixed -x {{bowtie2_index}} -1 {{jid}}/${COL3}/${COL3}_val_1.fq.gz -2 {{jid}}/${COL3}/${COL3}_val_2.fq.gz -S {{jid}}/${COL3}/${COL3}.sam
+
+module load samtools/1.9
+# Filter and UMI dedup
+cd  {{jid}}/${COL3}
+samtools view -b ${COL3}.sam > ${COL3}.bam
+samtools flagstat ${COL3}.bam > ${COL3}_raw.flagstat
+
+samtools view -b -f 2 -q {{MAPQ}} ${COL3}.bam > ${COL3}.filter.bam
+samtools sort -@ 6 -o ${COL3}.st.bam ${COL3}.filter.bam
+samtools index ${COL3}.st.bam
+samtools stats ${COL3}.st.bam > ${COL3}.st.stats
+samtools flagstat ${COL3}.st.bam > ${COL3}_filtered.flagstat
+rm ${COL3}.filter.bam
+
+umi_tools dedup --stdin=${COL3}.st.bam --log=${COL3}.dedup.log --paired > ${COL3}.group.${COL4}.dedup.all.bam
+# umi_tools dedup --stdin=${COL3}.st.bam --log=${COL3}.dedup.log --paired > ${COL3}.dedup.bam
+
+samtools index ${COL3}.group.${COL4}.dedup.all.bam
+
+
+samtools view -b -f 144 ${COL3}.group.${COL4}.dedup.all.bam > ${COL3}.group.${COL4}.dedup.all.rev1.bam
+samtools view -b -f 64 -F 16 ${COL3}.group.${COL4}.dedup.all.bam > ${COL3}.group.${COL4}.dedup.all.rev2.bam
+samtools merge -f ${COL3}.group.${COL4}.dedup.bam ${COL3}.group.${COL4}.dedup.all.rev1.bam ${COL3}.group.${COL4}.dedup.all.rev2.bam
+samtools index ${COL3}.group.${COL4}.dedup.bam
+
+
+samtools flagstat ${COL3}.group.${COL4}.dedup.bam > ${COL3}_dedup.flagstat
+
+# preseq 
+
+module load preseq/2.0.3
+
+preseq lc_extrap -pe -verbose -o ${COL3}.preseq.txt -bam ${COL3}.st.bam
+
+# picard insertion size
+module load picard/2.9.4
+module load R/4.1.0-rhel8
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar CollectInsertSizeMetrics  I=${COL3}.st.bam O=${COL3}.picard-CISM.txt H=${COL3}_histogram.pdf
+
+
+
+=cut CT 2 all
+
+
+ncore=1
+mem=100000
+
+src=/home/yli11/Tools/ATAC_STARR_seq_analysis
+
+# call peak
+
+module load macs2/2.1.1
+module load bedtools
+
+cd {{jid}}
+
+macs2 callpeak --nomodel --shift -100 --extsize 200 -p 0.01 -t */*dedup.bam -g {{macs_genome}} -n Merged
+
+bedtools intersect -a Merged_peaks.narrowPeak -b {{black_list}} -v -wa > Merged_peaks.rmblck.narrowPeak
+
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/captureC
+
+module load texlive/20190410
+
+mkdir Differential_analysis
+
+echo `which python`
+
+module load subread/2.0.5  
+
+/home/yli11/.conda/envs/captureC/bin/python $src/call_ATAC-STARR_regulatory-regions.py -i Merged_peaks.rmblck.narrowPeak -o Differential_analysis/ -q 0.1 -d */*group.DNA.dedup.bam -r */*group.RNA.dedup.bam
+
+cd Differential_analysis
+
+# run jupyter notebook
+
+yes | cp -rf /research/rgs01/home/clusterHome/yli11/.local/share/jupyter/kernels/ ~/.local/share/jupyter/
+
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+cp $src/ChrAcc_and_Activity_Region-Calling_liyc.ipynb .
+jupyter nbconvert --to notebook --execute ChrAcc_and_Activity_Region-Calling_liyc.ipynb  --output diff_analysis_plots --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+rm ChrAcc_and_Activity_Region-Calling_liyc.ipynb
+
+jupyter nbconvert diff_analysis_plots.ipynb --to html
+
+# create bw files, TODO
+
+
+
+
+=cut email 4 all
+
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+cd Differential_analysis
+
+bdg_to_bw.py --data_frame -f DESEQ2_results.csv --binSize 10
+
+
+send_email_v1.py -a multiqc_report.html,Differential_analysis/diff_analysis_plots.html -m "{{jid}} is finished. The bw files are generating and will notify you when they are done." -j {{jid}} --common
+
+
+
+
+
+
+
+
+
+
+
+

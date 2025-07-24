@@ -1079,59 +1079,6 @@ def prep_alleles_table(df_alleles,reference_seq,MAX_N_ROWS,MIN_FREQUENCY):
 
 	return X,annot,y_labels,insertion_dict,per_element_annot_kws,is_reference
 
-def prep_alleles_table_compare(df_alleles,sample_name_1,sample_name_2,MAX_N_ROWS,MIN_FREQUENCY):
-	"""
-	Prepares a df of alleles for Plotting
-	takes a merged allele table, and sets labels to read percents and counts from each sample
-	input:
-	-df_alleles: merged pandas dataframe of alleles to plot
-	-sample_name_1: sample name 1
-	-sample_name_2: sample name 2
-	--- y_labels will be determined using the columns named like: '#Reads_s1' (where s1 is the sample 1 name)
-	-MAX_N_ROWS: max number of rows to plot
-	-MIN_FREQUENCY: min frequency for a row to be plotted
-	returns:
-	-X: list of numbers representing nucleotides of the allele
-	-annot: list of nucleotides (letters) of the allele
-	-y_labels: list of labels for each row/allele
-	-insertion_dict: locations of insertions -- red squares will be drawn around these
-	-per_element_annot_kws: annotations for each cell (e.g. bold for substitutions, etc.)
-	"""
-	dna_to_numbers={'-':0,'A':1,'T':2,'C':3,'G':4,'N':5}
-	seq_to_numbers= lambda seq: [dna_to_numbers[x] for x in seq]
-
-	X=[]
-	annot=[]
-	y_labels=[]
-	insertion_dict=defaultdict(list)
-	per_element_annot_kws=[]
-
-	re_find_indels=re.compile("(-*-)")
-	idx_row=0
-	for idx,row in df_alleles.ix[df_alleles['%Reads_'+sample_name_1] + df_alleles['%Reads_'+sample_name_2]>=MIN_FREQUENCY][:MAX_N_ROWS].iterrows():
-		X.append(seq_to_numbers(str.upper(idx)))
-		annot.append(list(idx))
-		y_labels.append('%.2f%% (%d reads) %.2f%% (%d reads) ' % (row['%Reads_'+sample_name_1],row['#Reads_'+sample_name_1],
-													row['%Reads_'+sample_name_2],row['#Reads_'+sample_name_2]))
-
-
-		for p in re_find_indels.finditer(row['Reference_Sequence']):
-			insertion_dict[idx_row].append((p.start(),p.end()))
-
-		idx_row+=1
-
-
-		idxs_sub= [i_sub for i_sub in range(len(idx)) if \
-				   (row['Reference_Sequence'][i_sub]!=idx[i_sub]) and \
-				   (row['Reference_Sequence'][i_sub]!='-') and\
-				   (idx[i_sub]!='-')]
-		to_append=np.array([{}]*len(idx),dtype=np.object)
-		to_append[ idxs_sub]={'weight':'bold', 'color':'black','size':16}
-		per_element_annot_kws.append(to_append)
-
-	return X,annot,y_labels,insertion_dict,per_element_annot_kws
-
-
 def plot_alleles_heatmap_hist(reference_seq,fig_filename_root,X,annot,y_labels,insertion_dict,per_element_annot_kws,count_values,SAVE_ALSO_PNG=False,plot_cut_point=True,sgRNA_intervals=None,sgRNA_names=None,sgRNA_mismatches=None,custom_colors=None):
 	"""
 	Plots alleles in a heatmap (nucleotides color-coded for easy visualization)
@@ -1585,7 +1532,7 @@ def plot_alleles_heatmap2(reference_seq,fig_filename_root,X,annot,y_labels,inser
 	seq_to_numbers= lambda seq: [dna_to_numbers[x] for x in seq]
 
 	cmap = colors_mpl.ListedColormap([INDEL_color, A_color,T_color,C_color,G_color,INDEL_color])
-
+	print (per_element_annot_kws)
 	if len(per_element_annot_kws) > 1:
 		per_element_annot_kws=np.vstack(per_element_annot_kws[::-1])
 	else:
@@ -1726,10 +1673,16 @@ def main():
 	if args.ref_name:
 		Reference_name = args.ref_name
 	out_label = args.output
-	df_alleles = pd.read_table(args.MSA_table)
-	df_alleles = df_alleles.reset_index().set_index('Aligned_Sequence')
-
+	df_alleles = pd.read_table(args.MSA_table,index_col=0)
+	
+	# df_alleles = pd.read_csv(args.MSA_table,sep="\t")
+	# df_alleles = df_alleles.reset_index().set_index('Aligned_Sequence')
+	# print (df_alleles)
 	X,annot,y_labels,insertion_dict,per_element_annot_kws,is_reference = prep_alleles_table(df_alleles,reference_seq,None,args.min_freq)
+	# print (X)
+	# print (annot)
+	# print (y_labels)
+	print (per_element_annot_kws.shape)
 
 	plot_alleles_heatmap2(reference_seq,out_label,X,annot,y_labels,insertion_dict,per_element_annot_kws,sgRNA_intervals=sgRNA_intervals,sgRNA_names=sgRNA_names,Reference_name=Reference_name)
 

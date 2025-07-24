@@ -7,7 +7,58 @@ library(org.Hs.eg.db)
 library(ggplot2)
 library(gridExtra)
 library(grid)
+library(ggrepel)
+RankView = 
+function (rankdata, genelist = NULL, top = 10, bottom = 10, cutoff = NULL, 
+													 
+  main = NULL, filename = NULL, width = 5, height = 4, ...) 
+{
+  requireNamespace("ggrepel", quietly = TRUE) || stop("need ggrepel package")
+  if (length(cutoff) == 0) 
+    cutoff = CutoffCalling(rankdata, 2)
+  if (length(cutoff) == 1) 
+    cutoff = sort(c(-cutoff, cutoff))
+  data = data.frame(Gene = names(rankdata), diff = rankdata, 
+    stringsAsFactors = FALSE)
+  data$Rank = rank(data$diff)
+  data$group = "no"
+  data$group[data$diff > cutoff[2]] = "up"
+  data$group[data$diff < cutoff[1]] = "down"
 
+  idx = (data$Rank <= bottom) | (data$Rank > (max(data$Rank) - 
+    top)) | (data$Gene %in% genelist)
+  mycolour = c(no = "gray80", up = "#e41a1c", down = "#377eb8")
+  p = ggplot(data)
+  p = p + geom_jitter(aes_string(x = "diff", y = "Rank", color = "group"), 
+    size = 0.5)
+  if (!all(cutoff == 0)) 
+    p = p + geom_vline(xintercept = cutoff, linetype = "dotted")
+  if (sum(idx) > 0) 
+    p = p + geom_label_repel(aes_string(x = "diff", y = "Rank", 
+      fill = "group", label = "Gene"), data = data[idx, 
+      ], fontface = "bold", color = "white", size = 2.5, 
+      box.padding = unit(0.4, "lines"), segment.color = "grey50", 
+      point.padding = unit(0.3, "lines"), segment.size = 0.3,max.overlaps=100,force_pull=10,force=10, xlim = c(-Inf, Inf), ylim = c(-Inf, Inf))
+  p = p + scale_color_manual(values = mycolour)
+  p = p + scale_fill_manual(values = mycolour)+coord_cartesian(clip = "off")
+  p = p + theme(panel.background = element_rect(fill = "white", 
+    colour = "black"))
+  p = p + theme(text = element_text(colour = "black", size = 14, 
+    family = "Helvetica"), plot.title = element_text(hjust = 0.5, 
+    size = 18), axis.text = element_text(colour = "gray10"))
+  p = p + theme(axis.line = element_line(size = 0.5, colour = "black"), 
+    panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+    panel.border = element_blank(), panel.background = element_blank(), plot.margin = margin(50, 50, 50, 50))
+  p = p + labs(x = "Score", y = "Rank", 
+    title = main)
+  p = p + theme(legend.position = "none")
+
+  if (!is.null(filename)) {
+    ggsave(plot = p, filename = filename, units = "in", width = width, 
+      height = height, ...)
+  }
+  return(p)
+}
 
 # fix no output error for ncRNA
 FluteRRA <- function(gene_summary,
@@ -108,7 +159,7 @@ FluteRRA <- function(gene_summary,
                            auto_cut_x = TRUE, y_cut = cutoff,
                            auto_cut_diag = TRUE, top = top,
                            display_cut = TRUE) + ylab("Customized")
-    ggsave(file.path(outdir, "RRA/SquareView_Customized_Depmap.png"),
+    ggsave(file.path(outdir, "RRA/SquareView_Customized_Depmap.pdf"),
            p.square, width = 5, height = 4)
     write.table(dd, file.path(outdir, paste0("RRA/", proj, "_incorporate_depmap.txt")),
                 sep = "\t", row.names = FALSE, quote = FALSE)
@@ -140,25 +191,29 @@ FluteRRA <- function(gene_summary,
   p1 = ScatterView(dd, x = "Score", y = "LogFDR", label = "Symbol",
                    x_cut = cutoff, model = "volcano", top = top,
                    toplabels = toplabels, display_cut = TRUE)
-  ggsave(file.path(outdir,"RRA/VolcanoView_RRA.png"), p1,
+  ggsave(file.path(outdir,"RRA/VolcanoView_RRA.pdf"), p1,
          units = "in", width = 5, height = 4)
 		# message("failed gene level volcano")
 		}
 		)
 
 
-  # geneList = dd$Score
-  # names(geneList) = dd$Symbol
-  # dd$Rank = rank(dd$Score)
-  # p2 = ScatterView(dd, x = "Rank", y = "Score", label = "Symbol",
-  #                  y_cut = cutoff, groups = c("top", "bottom"),
-  #                  top = top, toplabels = toplabels,
-  #                  display_cut = TRUE)
-  # ggsave(file.path(outdir,"RRA/RankView_Gene.png"), p2,
-  #        units = "in", width = 3, height = 5)
-		# print (dd.sgrna)
+  geneList = dd$Score
+  names(geneList) = dd$Symbol
+  dd$Rank = rank(dd$Score)
+  p21 = ScatterView(dd, x = "Rank", y = "Score", label = "Symbol",
+                   y_cut = cutoff, groups = c("top", "bottom"),
+                   top = top, toplabels = toplabels,
+                   display_cut = TRUE)
+
+  ggsave(file.path(outdir,"RRA/ScatterView_Gene.pdf"), p21,
+         units = "in", width = 5, height = 3)
+		p7 = RankView(geneList, top = 10, bottom = 10)
+		ggsave(file.path(outdir,"RRA/RankView_Gene.pdf"), p7,
+         units = "in", width = 5, height = 3)
+		print (dd.sgrna)
   p2 = sgRankView(dd.sgrna, top = top, bottom = top)
-  ggsave(file.path(outdir,"RRA/RankView_sgRNA.png"), p2, units = "in", width = 6.5, height = 5)
+  ggsave(file.path(outdir,"RRA/RankView_sgRNA.pdf"), p2, units = "in", width = 6.5, height = 5)
 		# message("#####################################ddd")
 		# tryCatch({
 		# message("#####################################p3")
@@ -167,22 +222,22 @@ FluteRRA <- function(gene_summary,
 		# print (head(dd[dd$Score<0, ]))
   p3 = ScatterView(dd[dd$Score>0, ], x = "RandomIndex", y = "Score", label = "Symbol",
                    y_cut = cutoff, groups = "top", top = top)
-  ggsave(file.path(outdir, "RRA/ScatterView_Positive.png"), p2, width = 5, height = 4)
+  ggsave(file.path(outdir, "RRA/ScatterView_Positive.pdf"), p3, width = 5, height = 4)
   p4 = ScatterView(dd[dd$Score<0, ], x = "RandomIndex", y = "Score", label = "Symbol",
                    auto_cut_y = TRUE, groups = "bottom", top = top)
-  ggsave(file.path(outdir, "RRA/ScatterView_Negative.png"), p2, width = 5, height = 4)
+  ggsave(file.path(outdir, "RRA/ScatterView_Negative.pdf"), p4, width = 5, height = 4)
 dd$Rank = rank(dd$Score,ties.method="first")
 # print (head(dd))
 p5 = ScatterView(dd, x = "Rank", y = "Score", label = "id", 
                  top = top, auto_cut_y = TRUE, ylab = "Log2FC", 
                  groups = c("top", "bottom"))
-ggsave(file.path(outdir, "RRA/ScatterView_rankFC.png"), p5, width = 5, height = 5)
+ggsave(file.path(outdir, "RRA/ScatterView_rankFC.pdf"), p5, width = 5, height = 5)
 dd$Rank = rank(-dd$LogFDR,ties.method="first")
 # print (head(dd))
 save(dd,file="test.RData")
 p6 = ScatterView(dd, x = "Rank", y = "LogFDR", label = "id", model ="rank",
                  top = top,x_cut=top,ylab = "LogFDR",label.top=T,max.overlaps=100)
-ggsave(file.path(outdir, "RRA/ScatterView_rank_logFDR.png"), p6, width = 5, height = 5)
+ggsave(file.path(outdir, "RRA/ScatterView_rank_logFDR.pdf"), p6, width = 5, height = 5)
 		# }
 		# ,
 		# error=function(cond){}
@@ -194,10 +249,10 @@ ggsave(file.path(outdir, "RRA/ScatterView_rank_logFDR.png"), p6, width = 5, heig
 		# finally={
   # p3 = ScatterView(dd[dd$Score>0, ], x = "RandomIndex", y = "Score", label = "Gene",
                    # y_cut = cutoff, groups = "top", top = top)
-  # ggsave(file.path(outdir, "RRA/ScatterView_Positive.png"), p2, width = 5, height = 4)
+  # ggsave(file.path(outdir, "RRA/ScatterView_Positive.pdf"), p2, width = 5, height = 4)
   # p4 = ScatterView(dd[dd$Score<0, ], x = "RandomIndex", y = "Score", label = "Gene",
                    # auto_cut_y = TRUE, groups = "bottom", top = top)
-  # ggsave(file.path(outdir, "RRA/ScatterView_Negative.png"), p2, width = 5, height = 4)
+  # ggsave(file.path(outdir, "RRA/ScatterView_Negative.pdf"), p2, width = 5, height = 4)
 
 		# }
 		# )
@@ -206,7 +261,7 @@ ggsave(file.path(outdir, "RRA/ScatterView_rank_logFDR.png"), p6, width = 5, heig
 
 
 
-  grid.arrange(p1, p2, p3, p4, p5,p6, ncol = 2)
+  grid.arrange(p1, p7,p2, p21,p3, p4, p5,p6, ncol = 2)
 		
   ## Enrichment analysis ##
   # dd = dd[!(is.na(dd$HumanGene)|duplicated(dd$HumanGene)), ]
@@ -264,37 +319,37 @@ ggsave(file.path(outdir, "RRA/ScatterView_rank_logFDR.png"), p6, width = 5, heig
   if(!is.null(kegg.pos) && nrow(kegg.pos@result)>0){
     write.table(keggA$enrichRes, file.path(outdir, "RRA/Positive_kegg.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE, quote=FALSE)
-    ggsave(keggA$gridPlot, filename=file.path(outdir, "RRA/Positive_kegg.png"),
+    ggsave(keggA$gridPlot, filename=file.path(outdir, "RRA/Positive_kegg.pdf"),
            units = "in", width=6.5, height=4)
     write.table(reactomeA$enrichRes, file.path(outdir, "RRA/Positive_reactome.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(reactomeA$gridPlot, filename=file.path(outdir, "RRA/Positive_reactome.png"),
+    ggsave(reactomeA$gridPlot, filename=file.path(outdir, "RRA/Positive_reactome.pdf"),
            units = "in", width=6.5, height=4)
     write.table(gobpA$enrichRes, file.path(outdir, "RRA/Positive_gobp.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(gobpA$gridPlot, filename=file.path(outdir, "RRA/Positive_gobp.png"),
+    ggsave(gobpA$gridPlot, filename=file.path(outdir, "RRA/Positive_gobp.pdf"),
            units = "in", width=6.5, height=4)
     write.table(complexA$enrichRes, file.path(outdir, "RRA/Positive_complex.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(complexA$gridPlot, filename=file.path(outdir, "RRA/Positive_complex.png"),
+    ggsave(complexA$gridPlot, filename=file.path(outdir, "RRA/Positive_complex.pdf"),
            units = "in", width=6.5, height=4)
   }
   if(!is.null(kegg.neg) && nrow(kegg.neg@result)>0){
     write.table(keggB$enrichRes, file.path(outdir, "RRA/Negative_kegg.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE, quote=FALSE)
-    ggsave(keggB$gridPlot, filename=file.path(outdir, "RRA/Negative_kegg.png"),
+    ggsave(keggB$gridPlot, filename=file.path(outdir, "RRA/Negative_kegg.pdf"),
            units = "in", width=6.5, height=4)
     write.table(reactomeB$enrichRes, file.path(outdir, "RRA/Negative_reactome.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(reactomeB$gridPlot, filename=file.path(outdir, "RRA/Negative_reactome.png"),
+    ggsave(reactomeB$gridPlot, filename=file.path(outdir, "RRA/Negative_reactome.pdf"),
            units = "in", width=6.5, height=4)
     write.table(gobpB$enrichRes, file.path(outdir, "RRA/Negative_gobp.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(gobpB$gridPlot, filename=file.path(outdir, "RRA/Negative_gobp.png"),
+    ggsave(gobpB$gridPlot, filename=file.path(outdir, "RRA/Negative_gobp.pdf"),
            units = "in", width=6.5, height=4)
     write.table(complexB$enrichRes, file.path(outdir, "RRA/Negative_complex.txt"),
                 sep="\t", row.names = FALSE, col.names = TRUE,quote=FALSE)
-    ggsave(complexB$gridPlot, filename=file.path(outdir, "RRA/Negative_complex.png"),
+    ggsave(complexB$gridPlot, filename=file.path(outdir, "RRA/Negative_complex.pdf"),
            units = "in", width=6.5, height=4)
   }
   if(incorporateDepmap){
@@ -374,6 +429,7 @@ dev.off()
 pdf(paste("MAGeCKFlute_",outFile,"/EnrichedView.pdf",sep=""))
 EnrichedView(slot(enrich, "result"))
 dev.off()
+save.image(file=file.path(outdir, "main.RData")) 
 
 # pdf(paste("MAGeCKFlute_",outFile,"/GSEA_plot_1.pdf",sep=""))
 # gseaplot(enrich, geneSetID = 1, title = enrich$Description[1])
@@ -410,11 +466,11 @@ write.table(kk, file=paste("MAGeCKFlute_",outFile,"/enrichReactome.tsv",sep=""),
 
 for(n in 1:min(nrow(kk),20)) {
 # pdf(paste("MAGeCKFlute_",outFile,"/",kk[n,1],".pdf",sep=""))
-# png(paste("MAGeCKFlute_",outFile,"/",kk[n,1],".png",sep=""))
+# pdf(paste("MAGeCKFlute_",outFile,"/",kk[n,1],".pdf",sep=""))
 viewPathway(kk[n,2], 
             readable = TRUE, 
             foldChange = geneList_LFC)
-ggsave(paste("MAGeCKFlute_",outFile,"/",kk[n,1],".png",sep=""))
+ggsave(paste("MAGeCKFlute_",outFile,"/",kk[n,1],".pdf",sep=""))
 }
 
 

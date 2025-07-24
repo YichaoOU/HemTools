@@ -1,0 +1,62 @@
+#!shell
+
+
+=cut count 1
+
+inputFile=input
+ncore=1
+mem=40000
+q=rhel8_gpu
+
+
+module load cuda11.2/blas/11.2.2
+module load cuda11.2/fft/11.2.2
+module load cuda11.2/toolkit/11.2.2
+module load cudnn/8.2.0.53
+
+
+module load conda3/202303
+conda activate chrombpnet
+module load bedtools
+bam=$COL1
+peak=$COL2
+label=$COL3
+fasta={{genome_fasta}}
+chromsize={{main_nochrM_chrom_size}}
+blacklist={{blacklist}}
+# bed10={{bed10}}
+bed10=peak # for fast processing
+jid={{jid}}/$label
+
+mkdir $jid
+
+awk -v OFS="\t" '{print $1,0,$2}' $chromsize | bedtools intersect -a $peak -b - -u > $peak.tmp
+
+peak=$COL2.tmp
+
+
+# preprocess, you might need to try different fold
+chrombpnet prep splits -c $chromsize -tcr chr5 chr9 chr10 chr11 -vcr chr12 chr13 -op $jid/fold_0
+chrombpnet prep nonpeaks -g $fasta -p $peak -c  $chromsize -fl $jid/fold_0.json -br $blacklist -o $jid/fold_0
+
+# Bias model training
+chrombpnet bias pipeline -ibam $bam -d "ATAC" -g $fasta -c $chromsize -p $peak -n $jid/fold_0_negatives.bed -fl $jid/fold_0.json -b 0.5 -o $jid/bias_model/ -fp $label --tmpdir $jid
+
+# ChromBPNet training
+mkdir $jid/chrombpnet_model
+chrombpnet pipeline -ibam $bam -d "ATAC" -g $fasta -c $chromsize -p $peak -n $jid/fold_0_negatives.bed -fl $jid/fold_0.json -b $jid/bias_model/models/${label}_bias.h5 -o $jid/chrombpnet_model/ --tmpdir $jid --filters 1024 --n-dilation-layers 128
+
+mkdir $jid/pred_bw/
+# need a lot of memory
+# Generate prediction bigwigs
+# chrombpnet pred_bw [-h] -bm BIAS_MODEL -cm CHROMBPNET_MODEL -cmb CHROMBPNET_MODEL_NB -r REGIONS -g GENOME -c CHROM_SIZES -op OUT_PREFIX [-b BATCH_SIZE] [-t TQDM]  [-d DEBUG_CHR [DEBUG_CHR ...]]
+chrombpnet pred_bw -bm $jid/bias_model/models/${label}_bias.h5 -cm $jid/chrombpnet_model/models/chrombpnet.h5 -cmb $jid/chrombpnet_model/models/chrombpnet_nobias.h5 -r $bed10 -g $fasta -c $chromsize -op $jid/pred_bw/${label}_pred
+# chrombpnet pred_bw -bm $jid/bias_model/models/Hudep2_bias.h5 -cm $jid/chrombpnet_model2/models/chrombpnet.h5 -cmb $jid/chrombpnet_model2/models/chrombpnet_nobias.h5 -r hg19_main.chrombpnet.bed10 -g hg19.main.rmM.fa -c hg19.main.size -op $jid/pred_bw/Hudep2_pred
+
+
+mkdir $jid/contribs_bw/
+# Generate contribution score bigwigs
+# chrombpnet contribs_bw -m $jid/chrombpnet_model2/models/chrombpnet_nobias.h5 -r chr1.chrombpnet.bed10 -g hg19.main.rmM.fa -c hg19.main.size -op $jid/contribs_bw/Hudep2_contribs  
+# chr1 needs 25G, takes 10 hours
+chrombpnet contribs_bw -m $jid/chrombpnet_model/models/chrombpnet_nobias.h5 -r $bed10 -g $fasta -c $chromsize -op $jid/contribs_bw/${label}_contribs  
+

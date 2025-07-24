@@ -34,12 +34,12 @@ mem={{memory}}
 module load python/2.7.15-rhel7
 jid={{jid}}
 
-computeMatrix scale-regions --referencePoint center -R {{bed_files}} -S ${COL1} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixR.gz --skipZeros --sortUsingSamples 1 -p 8 {{computeMatrix_addon_parameters}}
+computeMatrix scale-regions -R {{bed_files}} -S ${COL1} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixR.gz --skipZeros --sortUsingSamples 1 -p 8 {{computeMatrix_addon_parameters}}
 
 plotHeatmap --heatmapHeight 10 -m {{jid}}/${COL2}_matrixR.gz --samplesLabel ${COL2} --sortUsingSamples 1 -out {{jid}}/${COL2}.regionPlot.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 plotHeatmap --perGroup --heatmapHeight 10 -m {{jid}}/${COL2}_matrixR.gz --samplesLabel ${COL2} --sortUsingSamples 1 -out {{jid}}/${COL2}.regionPlot.perBw.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 
-computeMatrix scale-regions --sortRegions keep --referencePoint center -R {{bed_files}} -S ${COL1} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixR.keep.gz --skipZeros -p 8 {{computeMatrix_addon_parameters}}
+computeMatrix scale-regions --sortRegions keep -R {{bed_files}} -S ${COL1} -b {{u}} -a {{d}} -o {{jid}}/${COL2}_matrixR.keep.gz --skipZeros -p 8 {{computeMatrix_addon_parameters}}
 
 plotHeatmap --heatmapHeight 10 -m {{jid}}/${COL2}_matrixR.keep.gz --samplesLabel ${COL2} --sortRegions no -out {{jid}}/${COL2}.regionPlot.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}
 plotHeatmap --perGroup --heatmapHeight 10 -m {{jid}}/${COL2}_matrixR.keep.gz --samplesLabel ${COL2} --sortRegions no -out {{jid}}/${COL2}.regionPlot.perBw.keep.{{figure_type}} -z {{regionsLabel_list}} {{plotHeatmap_addon_parameters}}

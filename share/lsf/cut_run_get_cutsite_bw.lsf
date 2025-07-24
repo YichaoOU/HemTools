@@ -13,7 +13,7 @@ mem=16000
 
 module load conda3/5.1.0
 source activate /home/yli11/.conda/envs/cutruntools/
-module load R/3.5.1
+module load R/4.1.0
 module load trimmomatic/0.36
 module load java/1.8.0_60
 module load meme/4.11.2
@@ -77,7 +77,7 @@ mem=16000
 
 module load conda3/5.1.0
 source activate /home/yli11/.conda/envs/cutruntools/
-module load R/3.5.1
+module load R/4.1.0
 module load trimmomatic/0.36
 module load java/1.8.0_60
 module load meme/4.11.2
@@ -128,7 +128,7 @@ chrom_size={{chrom_size}}
 bam_file=../bam_file/filtered.bam
 alignmentSieve --minMappingQuality {{minMappingQuality}} -b $bam_file -o  $outbam --filterMetrics metrics.txt --maxFragmentLength {{maxFragmentLength}} --shift 0 0
 bedtools genomecov -ibam $outbam -g $chrom_size -bga -5 > $outbdg
-module load ucsc/041619
+module load ucsc/051223
 sort -k1,1 -k2,2n $outbdg > $outbdg.sorted
 bedGraphToBigWig $outbdg.sorted $chrom_size $outbw
 # rm $outbam

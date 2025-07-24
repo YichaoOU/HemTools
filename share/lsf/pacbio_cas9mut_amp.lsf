@@ -16,7 +16,21 @@ module load bedtools/2.30.0 samtools/1.9
 module load smrttools/10.1
 
 
+# bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+# this time, the bam is not a pacbio format bam
+# bamToFastq -i ${COL1} -fq {{jid}}/${COL2}.fastq
+
+
+# Run bam2fastq
 bam2fastq -o {{jid}}/${COL2} -u ${COL1}
+
+# Check if bam2fastq succeeded
+if [ $? -ne 0 ]; then
+    echo "bam2fastq failed, not pbam format, running bamToFastq from bedtools"
+    bamToFastq -i ${COL1} -fq {{jid}}/${COL2}.fastq
+else
+    echo "bam2fastq succeeded"
+fi
 
 # cd {{jid}}
 

@@ -7,7 +7,7 @@ inputFile=input_list
 ## columns are gRNA, P1, P2, R1, R2, name
 
 ncore=1
-mem=12000
+mem=20000
 
 module load bwa/0.7.16a
 module load samtools/1.7

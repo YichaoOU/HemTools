@@ -1,0 +1,134 @@
+#!shell
+
+
+=cut align 1
+
+inputFile=input
+
+ncore=8
+mem=8000
+
+module load fastqc/0.11.5
+
+module load seqtk
+
+module load flash
+
+cp ${COL1} {{jid}}/
+
+cd {{jid}}
+
+fastqc ${COL1} 
+
+# cutadapt
+module load conda3/202011
+
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+source activate /home/yli11/.conda/envs/captureC
+
+
+echo `which python`
+
+# COL5 is scaffold sequence, Varun used internal primer so the sacffold sequence can be truncated, users need to input the sequence
+# fastq, gRNA, scaffold
+
+/home/yli11/.conda/envs/captureC/bin/python $src/align_reads4.py ${COL1} ${COL4} ${COL5} 
+
+mv ${COL3}*zip log_files
+
+mv ${COL3}*html log_files
+
+module load bowtie2 seqtk
+
+seqtk seq ${COL1} -A > ${COL3}.FQ2FA.fa
+
+
+bowtie2-build ${COL3}.FQ2FA.fa ${COL3}_index
+
+# echo $'>expected_sequence\n${COL4}${COL5}' > ${COL3}.fa
+
+echo $'>expected_sequence'>${COL3}.fa
+echo $COL4$COL5 >>${COL3}.fa
+
+bowtie2 --very-sensitive -p 10 -x ${COL3}_index -f -U ${COL3}.fa -S ${COL3}.sam -a
+
+module load samtools/1.7
+
+samtools view ${COL3}.sam | cut -f 1-6 > ${COL3}.sam.tsv
+
+
+
+
+module load calitas/1.0
+/home/yli11/.conda/envs/captureC/bin/python $src/find_contaminants.py ${COL3}*.alignment.csv  ${COL3}
+
+
+
+
+=cut email 2 all
+
+ncore=8
+mem=2000
+# cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
+
+cd {{jid}}
+
+src=/home/yli11/Tools/gRNA_sequencing
+
+module load conda3/202011
+source activate /home/yli11/.conda/envs/captureC
+
+/home/yli11/.conda/envs/captureC/bin/python $src/gRNA_summarize2.py
+
+
+
+export XDG_RUNTIME_DIR=""
+mkdir /scratch_space/{{username}}/$$
+export JUPYTER_RUNTIME_DIR=/scratch_space/{{username}}/$$
+
+cp $src/gRNA_contaminant_finding.ipynb gRNA_contaminant_finding_tmp.ipynb
+
+cp $src/user_gRNA_percent.ipynb user_gRNA_percent_tmp.ipynb
+
+jupyter nbconvert --to notebook --execute gRNA_contaminant_finding_tmp.ipynb  --output gRNA_contaminant_finding --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+rm gRNA_contaminant_finding_tmp.ipynb
+
+jupyter nbconvert gRNA_contaminant_finding.ipynb --to html
+
+jupyter nbconvert --to notebook --execute user_gRNA_percent_tmp.ipynb  --output user_gRNA_percent --ExecutePreprocessor.timeout=-1 --allow-errors 
+
+rm user_gRNA_percent_tmp.ipynb
+
+jupyter nbconvert user_gRNA_percent.ipynb --to html
+
+# organize
+
+mkdir -p fastq_vis
+
+mv *trimfq.png  fastq_vis
+
+rm *trimfq*
+
+rm *1k*
+
+
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

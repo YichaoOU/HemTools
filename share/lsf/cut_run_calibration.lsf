@@ -87,7 +87,7 @@ cat {{jid}}/bam_files/${COL3}.uq.st.bed | awk -v min=$min_len -v max=$max_len '{
 
 
 module load bedtools/2.29.2
-module load ucsc/041619
+module load ucsc/051223
 
 inputFile=fastq_tsv
 

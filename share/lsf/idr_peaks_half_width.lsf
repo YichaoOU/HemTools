@@ -55,14 +55,17 @@ inputFile=merged_input
 
 
 
-macs2 callpeak -p 0.2 -t ${COL1} ${COL3} -c ${COL2} ${COL4} -g {{macs_genome}} -n {{jid}}/merged {{macs2_addon_parameters}}
+macs2 callpeak -p 0.2 -t ${COL1} ${COL3} -c ${COL2} ${COL4} -g {{macs_genome}} -n {{jid}}/merged --call-summits {{macs2_addon_parameters}}
 
 cd {{jid}}
-NPEAKS=500000
+# NPEAKS=500000
 # sort -k 8gr,8gr merged_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ; print $0}' | head -n ${NPEAKS} > merged.top500k.narrowPeak
-# sort -k 8gr,8gr merged_summits.bed | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$6=".";$7=".";$8=$5; $2=$2-{{half_width}};$3=$3+{{half_width}}; print $0}' | head -n ${NPEAKS} > merged_summit_half_width.top500k.narrowPeak
+# sort -k 5gr,5gr merged_summits.bed | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR;print $0}' | head -n ${NPEAKS} > merged_summit_half_width.top500k.summits.bed
+# sort -k 5gr,5gr merged_summits.bed | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR;$2=$2-200;$3=$3+200;print $0}' | head -n ${NPEAKS} > merged_summit_half_width.top500k.peak.bed
+sort -k 5gr,5gr merged_summits.bed | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR;print $0}'  > merged_summit_half_width.summits.bed
+sort -k 5gr,5gr merged_summits.bed | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR;$2=$2-200;$3=$3+200;print $0}' > merged_summit_half_width.peak.bed
 
-sort -k 8gr,8gr merged_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$2=$2+$10-{{half_width}};$3=$2+{{half_width}}*2; print $0}' | head -n ${NPEAKS} > merged_summit_half_width.top500k.narrowPeak
+# sort -k 8gr,8gr merged_peaks.narrowPeak | awk 'BEGIN{OFS="\t"}{$4="Peak_"NR ;$2=$2+$10-{{half_width}};$3=$2+{{half_width}}*2; print $0}' | head -n ${NPEAKS} > merged_summit_half_width.top500k.narrowPeak
 
 
 =cut idr 2 all
@@ -77,14 +80,18 @@ mem=8000
 
 cd {{jid}}
 
-idr --samples R1_summit_half_width.top500k.narrowPeak R2_summit_half_width.top500k.narrowPeak --peak-list merged_summit_half_width.top500k.narrowPeak --idr-threshold {{idr_threshold}} --plot -o idr_peaks.bed
+# idr --samples R1_summit_half_width.top500k.narrowPeak R2_summit_half_width.top500k.narrowPeak --peak-list merged_summit_half_width.top500k.narrowPeak --idr-threshold {{idr_threshold}} --plot -o idr_peaks.bed
+idr --samples R1_summit_half_width.top500k.narrowPeak R2_summit_half_width.top500k.narrowPeak --peak-list merged_peaks.narrowPeak --idr-threshold {{idr_threshold}} --plot -o idr_peaks.bed
 
 
 
-bedtools intersect -a idr_peaks.bed -b {{black_list}} -v -wa > idr_peaks.rmblck.bed
+bedtools intersect -a idr_peaks.bed -b {{black_list}} -v > idr_peaks.rmblck.bed
 
 
-bedtools intersect -a merged_summit_half_width.top500k.narrowPeak -b idr_peaks.rmblck.bed -wa > idr_peaks.rmblck.merged_peaks.bed
+bedtools intersect -a merged_peaks.narrowPeak -b idr_peaks.rmblck.bed -u > idr_peaks.rmblck.merged_peaks.bed
+
+
+bedtools intersect -a merged_summit_half_width.peak.bed -b idr_peaks.rmblck.merged_peaks.bed -u > idr_peaks.rmblck.merged_peaks.final.bed
 
 
 =cut pyGREAT 3 idr

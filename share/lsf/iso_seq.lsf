@@ -222,7 +222,7 @@ mv merged* talon_abundance
 
 cd talon_abundance
 
-module load ucsc
+module load ucsc/051223
 gtfToGenePred merged_talon.gtf merged_talon.genePred
 genePredToBed merged_talon.genePred merged_talon.bed12
 module load bedtools

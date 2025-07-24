@@ -61,7 +61,7 @@ liftover.py -g custom --chain_file paternal.chain --bed {{black_list}} -o $label
 
 ### swap chain
 
-module load ucsc
+module load ucsc/051223
 
 chainSwap paternal.chain paternal.swap.chain
 

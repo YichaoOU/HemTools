@@ -3,17 +3,40 @@
 
 =cut BaseE 1
 
-inputFile=hdr_list
+inputFile=input
 
-## columns are amplicon, expected, r1, r2, name, sgRNA
-
+# R1.fastq, R2.fastq, output_name, gRNA_seq, unedited amplicon, edited amplicon
 ncore=1
 mem=12000
-q=priority
+# q=priority
 
 module load conda3
 
 source activate /home/yli11/.conda/envs/cutadaptenv/
 
-CRISPResso -r1 ${COL3} -r2 ${COL4} -a ${COL1} -e ${COL2} --guide_seq ${COL6} -o {{jid}}/${COL5} --discard_indel_reads
+CRISPResso -r1 ${COL1} -r2 ${COL2} -a ${COL5} -e ${COL6} --guide_seq ${COL4} -o {{jid}}/${COL3} {{HDR_parameters}}
+
+
+cd {{jid}}
+
+unzip -p $COL3/*/Alleles_frequency_table.zip > $COL3.allele.txt
+
+
+=cut email 4 all
+
+
+ncore=1
+mem=4000
+
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+dataframe_merge.py */*/CRISPResso_quantification_of_editing_frequency.txt --rename_index_by_folder 0 --by_row -o merged_HDR.eff.tsv
+
+
+
+send_email_v1.py -a merged_HDR.eff.tsv -m "{{jid}} is finished" -j {{jid}} --common
 

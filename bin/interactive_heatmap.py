@@ -118,6 +118,7 @@ def DMS_heatmaps(data,tooltips,heatmap_color_by,heatmap_x_col,heatmap_x_order,he
 			   .encode(color=alt.Color(heatmap_color_by,
 									   type='quantitative', 
 									   scale=alt.Scale(range=["#0505ff",'#afecfa', "#fafafa","#fff6c2", "#fc0303"],
+									   # scale=alt.Scale(range=["#0505ff","#fafafa" ,"#fc0303"],
 													   type="linear",
 													   exponent=4,
 													   domain=[color_min_v,
@@ -180,6 +181,17 @@ def parse_file_kasey(f):
     df.sig = df.pos.map(df.groupby("pos")['sig'].sum().to_dict())
     return df
 
+def parse_file_liyc(f):
+    df = pd.read_csv(f,index_col=0)
+    df['pos'] = [x[:-1] for  x in df.AA]
+    df['pos2'] = [int(x[1:-1]) for  x in df.AA]
+    df['mutant'] = [x[-1] for x in df.AA]
+    df['sig'] = df.apply(lambda r:abs(r.log2FoldChange)>1 and r.padj<=0.01,axis=1)
+    df['BF'] = df['padj']<=0.01
+    df['BF'] = df.BF.map({True:"*",False:""})
+    df.sig = df.pos.map(df.groupby("pos")['sig'].sum().to_dict())
+    return df
+
 def get_plot_parameters(f):
 	if not os.path.isfile(f):
 		print (f"{f} not exist")
@@ -190,6 +202,9 @@ args = my_args()
 if args.reformat_config == "kasey":
     df = parse_file_kasey(args.input)
     args.reformat_config = "/home/yli11/HemTools/share/misc/interactive_heatmap.kasey.yaml"
+elif args.reformat_config == "liyc":
+    df = parse_file_liyc(args.input)
+    args.reformat_config = "/home/yli11/HemTools/share/misc/interactive_heatmap.liyc.yaml"
 else:
     df = generic_df_reader(args)
 

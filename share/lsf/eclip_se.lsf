@@ -1,4 +1,4 @@
-
+#!shell
 =cut CLIP 1
 
 ncore=8
@@ -6,8 +6,8 @@ mem=15000
 
 inputFile=input
 
-# bash /home/yli11/Tools/ENCODE_eclip_seq/run_SE_siqi_data.sh ${COL1} ${COL2} {{jid}}/${COL2}_results
-bash /home/yli11/Tools/ENCODE_eclip_seq/run_SE_siqi_data_hg38.sh ${COL1} ${COL2} {{jid}}/${COL2}_results
+bash /home/yli11/Tools/ENCODE_eclip_seq/run_SE_siqi_data.sh ${COL1} ${COL2} {{jid}}/${COL2}_results
+# bash /home/yli11/Tools/ENCODE_eclip_seq/run_SE_siqi_data_hg38.sh ${COL1} ${COL2} {{jid}}/${COL2}_results
 
 =cut email 3 all
 

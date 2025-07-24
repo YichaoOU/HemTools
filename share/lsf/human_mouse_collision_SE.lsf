@@ -51,7 +51,7 @@ src=/home/yli11/Programs/Sci-L3-seq/src
 
 $src/step4_calculate_collision_rate_hybrid.py --relax --table ${COL3}.total_number_reads.tsv --reads human_mouse_mapping/${COL3}.bed
 
-module load R/3.5.1
+module load R/4.1.0-rhel8
 
 Rscript $src/draw_collision_figure.R for_collision_plot.tsv ${COL3}_collision.pdf
 

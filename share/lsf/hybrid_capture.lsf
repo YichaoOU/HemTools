@@ -1,0 +1,94 @@
+#!shell
+
+
+=cut HC 1
+
+inputFile=input
+
+ncore=25
+mem=4000
+q={{queue}}
+
+jid={{jid}}
+mkdir -p $jid/$COL3
+
+
+# cutadapt
+module load conda3/202402
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+cutadapt -j $ncore -m 20 -O 5 -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o $jid/$COL3/$COL3.R1.fastq -p $jid/$COL3/$COL3.R2.fastq ${COL1} ${COL2}
+
+# split reads
+module load gcc/9.1.0
+number_reads=1000000
+cd $jid/$COL3
+mkdir split_reads_R1
+mkdir split_reads_R2
+splitFastq -n $number_reads -i $COL3.R1.fastq -o split_reads_R1/$COL3
+splitFastq -n $number_reads -i $COL3.R2.fastq -o split_reads_R2/$COL3
+
+# extract umi
+for file in split_reads_R1/*.fastq; do
+    base=$(basename "$file")
+    echo "add_umitag.py -r1 split_reads_R1/$base -r2 split_reads_R2/$base -o1 split_reads_R1/$base.umi -o2 split_reads_R2/$base.umi" >> $COL3.sh
+done
+
+source activate /home/yli11/.conda/envs/captureC/
+
+run_in_parallel.py $COL3.sh
+
+# merge
+module load flash
+cat split_reads_R1/*umi > $COL3.R1.umitagged.fastq
+cat split_reads_R2/*umi > $COL3.R2.umitagged.fastq
+
+
+flash -t $ncore $COL3.R1.umitagged.fastq $COL3.R2.umitagged.fastq --max-overlap=140 --min-overlap=10 --output-prefix=${COL3}
+
+
+echo "consolidate.py ${COL3}.extendedFrags.fastq ${COL3}.extendedFrags.consolidated.fastq 10 0.49" > $COL3.sh
+echo "consolidate.py ${COL3}.notCombined_1.fastq ${COL3}.notCombined_1.consolidated.fastq 10 0.49" >> $COL3.sh
+echo "consolidate.py ${COL3}.notCombined_2.fastq ${COL3}.notCombined_2.consolidated.fastq 10 0.49" >> $COL3.sh
+
+run_in_parallel.py $COL3.sh
+
+cat ${COL3}.extendedFrags.consolidated.fastq ${COL3}.notCombined_1.consolidated.fastq ${COL3}.notCombined_2.consolidated.fastq > ${COL3}.merged.consolidated.fastq
+
+
+module load bwa/0.7.16a
+module load samtools/1.7
+
+bwa mem -t $ncore {{index_file}} ${COL3}.merged.consolidated.fastq > ${COL3}.sam
+samtools sort -o ${COL3}.bam ${COL3}.sam
+samtools index ${COL3}.bam
+samtools flagstat ${COL3}.bam > ${COL3}.flagstat
+samtools stats ${COL3}.bam > ${COL3}.stats
+
+module load python/2.7.15-rhel7
+
+bamCoverage -b ${COL3}.bam -o ${COL3}.CPM.bw -p $ncore -bs 50 --normalizeUsing CPM 
+
+=cut email 3 all
+
+mem=10000
+q={{queue}}
+
+cd {{jid}}
+
+module load conda3
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+
+send_email_v1.py -a multiqc_report.html -m "{{jid}} is finished" -j {{jid}} --common
+
+

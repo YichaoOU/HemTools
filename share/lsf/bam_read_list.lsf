@@ -1,0 +1,29 @@
+#!shell
+=cut sbam 1
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load samtools/1.7 picard/2.9.4 
+module load java/1.8.0_302
+
+readList={{read_list}}
+inbam=$(basename ${COL1})
+outbam={{jid}}/${inbam%.bam}.readlist.bam
+
+
+
+java -jar /hpcf/apps/picard/install/2.9.4/picard.jar FilterSamReads I=$inbam O=$outbam READ_LIST_FILE=$readList FILTER=includeReadList;samtools index $outbam
+
+
+
+
+
+
+
+
+
+
+

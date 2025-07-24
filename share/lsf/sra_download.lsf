@@ -3,7 +3,7 @@
 =cut sra 1
 
 inputFile=data_list
-
+q=priority
 module load conda3
 source activate /home/yli11/.conda/envs/sra_download
 

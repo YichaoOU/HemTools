@@ -54,7 +54,7 @@ samtools index ${COL3}.dedup.bam
 inputFile=design_matrix
 
 ncore=1
-mem=30000
+mem=100000
 
 cd {{jid}}
 

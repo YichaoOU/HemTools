@@ -9,14 +9,14 @@ mem=50000
 
 
 module load star/2.5.3a
-module load ucsc
+module load ucsc/051223
 
 chrom_sizes={{chrom_size}}
 
 
 # STAR --runMode inputAlignmentsFromBAM --inputBAMfile ${COL1} --outWigType bedGraph --outWigStrand Stranded --outFileNamePrefix ./test/ 
 
-region="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr17 chr18 chr19 chr20 chr22 chrX"
+region="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY"
 
 module load samtools/1.7
 
@@ -28,7 +28,7 @@ samtools sort -o ${COL2}.tmp.st.bam ${COL2}.tmp.bam
 
 samtools index ${COL2}.tmp.st.bam
 
-STAR --runMode inputAlignmentsFromBAM --inputBAMfile ${COL2}.tmp.st.bam --outWigType bedGraph --outWigStrand Stranded --outFileNamePrefix ${COL2} 
+STAR --runMode inputAlignmentsFromBAM --inputBAMfile ${COL2}.tmp.st.bam --outWigType bedGraph --outWigStrand Stranded --outFileNamePrefix ${COL2}
 
 bedGraphToBigWig ${COL2}Signal.UniqueMultiple.str1.out.bg $chrom_sizes ${COL2}_minusAll.bw
 bedGraphToBigWig ${COL2}Signal.Unique.str1.out.bg         $chrom_sizes ${COL2}_minusUniq.bw
@@ -40,6 +40,21 @@ STAR --runMode inputAlignmentsFromBAM --inputBAMfile ${COL2}.tmp.st.bam --outWig
 
 bedGraphToBigWig ${COL2}Signal.UniqueMultiple.str1.out.bg $chrom_sizes ${COL2}_all.bw
 bedGraphToBigWig ${COL2}Signal.Unique.str1.out.bg         $chrom_sizes ${COL2}_uniq.bw
+
+
+
+# bedClip ${COL2}Signal.UniqueMultiple.str1.out.bg $chrom_sizes ${COL2}Signal.UniqueMultiple.str1.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.UniqueMultiple.str1.out.bg.clip $chrom_sizes ${COL2}_minusAll.bw
+# bedClip ${COL2}Signal.Unique.str1.out.bg $chrom_sizes ${COL2}Signal.Unique.str1.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.Unique.str1.out.bg.clip $chrom_sizes ${COL2}_minusUniq.bw
+# bedClip ${COL2}Signal.UniqueMultiple.str2.out.bg $chrom_sizes ${COL2}Signal.UniqueMultiple.str2.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.UniqueMultiple.str2.out.bg.clip $chrom_sizes ${COL2}_plusAll.bw
+# bedClip ${COL2}Signal.Unique.str2.out.bg $chrom_sizes ${COL2}Signal.Unique.str2.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.Unique.str2.out.bg.clip $chrom_sizes ${COL2}_plusUniq.bw
+# bedClip ${COL2}Signal.UniqueMultiple.str1.out.bg $chrom_sizes ${COL2}Signal.UniqueMultiple.str1.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.UniqueMultiple.str1.out.bg.clip $chrom_sizes ${COL2}_all.bw
+# bedClip ${COL2}Signal.Unique.str1.out.bg $chrom_sizes ${COL2}Signal.Unique.str1.out.bg.clip 
+# bedGraphToBigWig ${COL2}Signal.Unique.str1.out.bg.clip $chrom_sizes ${COL2}_uniq.bw
 
 rm ${COL2}.tmp.bam
 

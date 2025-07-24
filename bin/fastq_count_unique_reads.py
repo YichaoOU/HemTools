@@ -37,5 +37,6 @@ for r in read:
 		myDict[seq]=1
 df = pd.DataFrame.from_dict(myDict,orient="index")
 df = df.sort_values(0,ascending=False)
+print ("Input File has N unique reads: %s %s"%(input,df.shape[0]))
 print (df)
 df.to_csv(input+".unique_read_count.csv",header=False)

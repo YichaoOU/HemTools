@@ -5,8 +5,8 @@
 
 inputFile=input
 
-ncore=8
-mem=8000
+ncore=20
+mem=4000
 
 module load fastqc/0.11.5
 # cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
@@ -27,6 +27,7 @@ fastqc ${COL3}.merged.extendedFrags.fastq
 
 # cutadapt
 module load conda3/202011
+
 source activate /home/yli11/.conda/envs/cutadaptenv
 
 /home/yli11/.conda/envs/cutadaptenv/bin/cutadapt -j 8 -m {{min_length}} -e 0.15 -O 6 -a ${COL6} -o ${COL3}.merged.trimed.fastq ${COL3}.merged.extendedFrags.fastq
@@ -41,7 +42,7 @@ source activate /home/yli11/.conda/envs/captureC
 echo `which python`
 
 # COL5 is scaffold sequence, Varun used internal primer so the sacffold sequence can be truncated, users need to input the sequence
-
+module load gcc/13.1.0
 /home/yli11/.conda/envs/captureC/bin/python $src/align_reads4.py ${COL3}.merged.trimed.fastq ${COL4} ${COL5} 
 
 mv ${COL3}*zip log_files
@@ -66,10 +67,11 @@ module load samtools/1.7
 
 samtools view ${COL3}.sam | cut -f 1-6 > ${COL3}.sam.tsv
 
-
+python $src/indel_frequency.py ${COL3}.sam.tsv
 
 
 module load calitas/1.0
+module load gcc/13.1.0
 /home/yli11/.conda/envs/captureC/bin/python $src/find_contaminants.py ${COL3}.merged.trimed.alignment.csv  ${COL3}
 
 
@@ -77,17 +79,21 @@ module load calitas/1.0
 
 =cut email 2 all
 
-ncore=8
+ncore=20
 mem=2000
 # cd /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/projects/targeted_sequencing/06282022_gRNAseq_VK/analysis
 
+cp {{gRNA_to_check}} {{jid}}/
+
 cd {{jid}}
+
+
 
 src=/home/yli11/Tools/gRNA_sequencing
 
 module load conda3/202011
 source activate /home/yli11/.conda/envs/captureC
-
+module load gcc/13.1.0
 /home/yli11/.conda/envs/captureC/bin/python $src/gRNA_summarize2.py
 
 

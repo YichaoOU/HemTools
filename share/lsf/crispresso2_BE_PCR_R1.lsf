@@ -8,7 +8,7 @@ inputFile=input_list
 ## columns are gRNA, P1, P2, R1, R2, name
 
 ncore=1
-mem=12000
+mem=20000
 q={{queue}}
 
 in_silico_PCR.pl -s {{genome_fasta}} -a ${COL2} -b ${COL3} > {{jid}}/${COL6}_results.txt 2> {{jid}}/${COL6}_amplicons.fasta
@@ -33,7 +33,7 @@ module load python/2.7.13
 
 cd {{jid}}
 
-crispresso2_BE_get_eff.py ../{{tsv}} {{ref}} {{alt}}
+crispresso2_BE_get_eff.py ../{{tsv}} 0 5 {{ref}} {{alt}}
 
 
 zip -r ${COL6}.zip ${COL6}

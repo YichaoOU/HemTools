@@ -121,7 +121,7 @@ def check_header(input_gRNA,table_header_list):
         gRNA_rev = revcomp(input_gRNA)
         
         if not gRNA_rev in table_header:
-            print (gRNA_rev,"something is wrong, Exist!")
+            print (input_gRNA,gRNA_rev,"something is wrong, Exist!")
             exit()
         return table_header.index(gRNA_rev),"-"
     return table_header.index(input_gRNA),"+"
@@ -130,6 +130,7 @@ def parse_df(f,gRNA,ref,alt):
 
     df = pd.read_csv(f,sep="\t",index_col=0)
     my_freq = []
+    # print (f)
     gRNA_pos,strand = check_header(gRNA,df.columns.tolist())
     out = []
     if strand == "+":

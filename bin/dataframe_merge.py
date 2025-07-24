@@ -150,10 +150,10 @@ def main():
 			df[c] = df[c].fillna(0)
 	if args.sep=="\\t":
 		args.sep="\t"
-	if args.index_col == -1:
-		df.to_csv(args.output,sep=args.sep,index=False)
-	else:
-		df.to_csv(args.output,sep=args.sep)
+	# if args.index_col == -1:
+		# df.to_csv(args.output,sep=args.sep,index=False)
+	# else:
+	df.to_csv(args.output,sep=args.sep)
 	print ("Output to table: %s"%(args.output))
 if __name__ == "__main__":
 	main()

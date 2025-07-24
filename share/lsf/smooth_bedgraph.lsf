@@ -20,7 +20,7 @@ cd {{jid}}
 # bedops -w $window_size --stagger $step_size --range $window_size $$.temp.ref | bedmap --skip-unmapped --faster --echo --mean --delim "\t" --bases-uniq-f - $$.temp.ref | awk -F "\t" '{print ($1"\t"$2"\t"$2+{{step_size}}"\t"$4*$5)}' > $(basename ${COL1}).smooth.bdg
 bedops -w $window_size --stagger $step_size --range $window_size $$.temp.ref | bedmap --skip-unmapped --faster --echo --mean --delim "\t" --bases-uniq-f - $$.temp.ref | awk -F "\t" '{print ($1"\t"$2+{{half_window_size}}"\t"$2+{{half_window_size}}+{{step_size}}"\t"$4*$5)}' | awk -F "\t" '$4>={{min_value}} {print $0}' > $(basename ${COL1}).smooth.bdg
 
-module load ucsc/041619
+module load ucsc/051223
 
 bedGraphToBigWig $(basename ${COL1}).smooth.bdg {{chrom_size}} $(basename ${COL1}).smooth.bw
 

@@ -58,16 +58,16 @@ def my_args():
 def main():
 
 	args = my_args()
-	command = "module load kallisto bedops;kallisto index -i myKallistoIndex %s"%(args.fasta)
+	command = "module load kallisto bedops/2.4.41 samtools/1.7;kallisto index -i myKallistoIndex %s"%(args.fasta)
 	os.system(command)
 	for f in args.file:
 		label = f.split("/")[-1].split(".fastq")[0]
 		print (f)
 		if args.paired:
 			R2 = f.replace("R1","R2")
-			command = "module load kallisto bedops;kallisto quant -i myKallistoIndex -o {0}.count --pseudobam {1} {2} > {0}.sam;sam2bed < {0}.sam | cut -f 1-6 - > {0}.bed".format(label,f,R2)
+			command = "module load kallisto bedops/2.4.41 samtools/1.7;kallisto quant -i myKallistoIndex -o {0}.count --pseudobam {1} {2} > {0}.sam;sam2bed < {0}.sam | cut -f 1-6 - > {0}.bed".format(label,f,R2)
 		else:
-			command = "module load kallisto bedops;kallisto quant -i myKallistoIndex -o {0}.count --single -l 150 -s 10 --pseudobam {1} > {0}.sam;sam2bed < {0}.sam | cut -f 1-6 - > {0}.bed".format(label,f)
+			command = "module load kallisto bedops/2.4.41 samtools/1.7;kallisto quant -i myKallistoIndex -o {0}.count --single -l 150 -s 10 --pseudobam {1} > {0}.sam;sam2bed < {0}.sam | cut -f 1-6 - > {0}.bed".format(label,f)
 		os.system(command)
 		print (command)
 	df_list = []

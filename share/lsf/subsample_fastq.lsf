@@ -1,0 +1,20 @@
+#!shell
+
+=cut seq 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+# q=priority
+
+module load seqtk 
+
+
+# seqtk sample [-2] [-s seed=11] <in.fa> <frac>|<number>
+
+label=$(basename ${COL1} .gz)
+echo $label
+seqtk sample -s100 ${COL1} {{seqtk_sample_number}} > {{jid}}/$label
+gzip {{jid}}/$label
+

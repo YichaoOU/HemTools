@@ -1,0 +1,37 @@
+#!shell
+
+=cut nfCUT 1 
+
+ncore=1
+mem=4000
+
+
+module load nextflow/23.04.1
+
+#echo "process.executor='lsf'" > nextflow.config
+
+echo "process {
+    executor = 'lsf'
+   
+    withLabel:process_medium {
+                             queue = 'standard'
+                           }
+    withLabel:process_low {
+                            memory = 10G
+                             queue = 'standard'
+                           }
+    withLabel:process_high {
+                         queue = 'standard'
+                             }
+}" > nextflow.config
+
+
+# nextflow run nf-core/cutandrun -c nextflow.config -r 3.2.2 --input {{input}}  --genome {{genome}} -profile singularity   --outdir {{jid}} --bowtie2 {{bowtie2_index}} {{addon_parameters}}
+nextflow run nf-core/cutandrun -c nextflow.config -r 3.2.2 --input {{input}}  -profile singularity   --outdir {{jid}} {{addon_parameters}}
+
+=cut email 3 all
+
+
+module load python/2.7.13
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}

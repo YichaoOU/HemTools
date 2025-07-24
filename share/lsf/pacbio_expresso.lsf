@@ -4,41 +4,35 @@
 
 =cut iso 1 
 
-ncore=5
-mem=30000
+ncore=16
+mem=12000
 
-inputFile=input
+
 # input sorted algined bam or sam file
-
-
-# pacbio bam file, this is basically a fastq file
-# sam=$COL1, give abs path
-# label=$COL2
-# give abs path
+gtf=/home/yli11/Data/Human/hg38/annotations/GCF_000001405.40.refseqNCBI.gtf
 genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
-# genomeFasta=/home/yli11/Programs/espresso/test_data/test_data_espresso_sirv/SIRV2.fasta
-# gtf=/home/yli11/Programs/espresso/test_data/test_data_espresso_sirv/SIRV_C.gtf
-gtf=/home/yli11/Data/Human/hg38/annotations/gencode_v40/gencode.v40.annotation.gtf
-module load conda3/202011
 
-source activate captureC
-
+module load bedtools/2.30.0 samtools/1.15.1
 module load hmmer/3.3.2 perl/5.28.1  blast/2.9.0  samtools/1.9 ucsc
 
 cd {{jid}}
 
-echo $COL1$'\t'$COL2 > ${COL2}.sample.tsv
+cp ../samples.tsv .
 
-src=/home/yli11/Programs/espresso/src
 
-perl $src/ESPRESSO_S.pl -A $gtf -L ${COL2}.sample.tsv -F $genomeFasta -O ${COL2}_result -T 5
+src=/home/yli11/Programs/espresso_v_1_4_0/src
 
-perl $src/ESPRESSO_C.pl -I ${COL2}_result -F $genomeFasta -X 0 -T 5
 
-perl $src/ESPRESSO_Q.pl -T 5 -A $gtf -L ${COL2}_result/${COL2}.sample.tsv.updated -V ${COL2}_result/${COL2}_isoform.tsv
+perl $src/ESPRESSO_S.pl -A $gtf -L samples.tsv -F $genomeFasta -O work_dir -T $ncore
 
-# python $src/visualize.py --genome-fasta $genomeFasta --updated-gtf ${COL2}_result/sample_N2_R0_updated.gtf --abundance-esp ${COL2}_result/sample_N2_R0_abundance.esp --target-gene SIRV2 --minimum-count 1 --descriptive-name SIRV --output-dir ${COL2}_result/visualization
-python $src/visualize.py --genome-fasta $genomeFasta --updated-gtf ${COL2}_result/sample_N2_R0_updated.gtf --abundance-esp ${COL2}_result/sample_N2_R0_abundance.esp --target-gene BCL11A --minimum-count 1 --descriptive-name BCL11A --output-dir ${COL2}_result/visualization
+awk '{print NR-1}' samples.tsv | while read line_number; do
+  echo $line_number
+  perl $src/ESPRESSO_C.pl -I work_dir -F $genomeFasta -X $line_number -T $ncore
+done
+
+perl $src/ESPRESSO_Q.pl -T $ncore -A $gtf -L work_dir/samples.tsv.updated -V work_dir/samples.compatible_isoform.tsv
+
+# /home/yli11/.conda/envs/captureC/bin/python /home/yli11/HemTools/bin/Espresso_subset_bam.py $COL2
 
 
 

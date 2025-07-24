@@ -9,7 +9,7 @@ inputFile=design_matrix
 ncore=1
 mem=50000
 
-module load bedtools
+module load bedtools/2.31.0
 
 uid=`openssl rand -hex 12`
 
@@ -81,7 +81,11 @@ module load conda3
 
 source activate /home/yli11/.conda/envs/rgt_hint
 
-module load ucsc/041619
+if [ "$(whoami)" != "yli11" ]; then
+    cp -rf /home/yli11/rgtdata ~/rgtdata
+fi
+
+module load ucsc/051223
 
 cd {{jid}}
 
@@ -110,9 +114,9 @@ mem=20000
 
 # module load homer/4.9.1
 module load homer/4.10
-# module load samtools
+module load samtools/1.7
 
-module load ucsc
+module load ucsc/051223
 # module load ucsc/041619
 module load bedtools/2.29.2
 
@@ -120,15 +124,16 @@ module load bedtools/2.29.2
 
 cd {{jid}}
 
-makeTagDirectory ${COL3}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL3}.bam
+# makeTagDirectory ${COL3}_tag -keepAll -format sam -genome {{genome}} -checkGC ${COL3}.bam
+makeTagDirectory ${COL3}_tag -fragLength 200 -format sam -genome {{genome}} -checkGC ${COL3}.bam
 removeOutOfBoundsReads.pl ${COL3}_tag {{genome}} -chromSizes {{genome_chrom_size}}
 # makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100> log_files/${COL3}-bigWig.trackInfo.txt
 # makeUCSCfile  ${COL3}_tag -o ${COL3}.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
-makeUCSCfile  ${COL3}_tag -o ${COL3}.bedgraph -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+makeUCSCfile  ${COL3}_tag -o ${COL3}.bedgraph -res 10 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
 bedtools intersect -a ${COL3}.bedgraph.gz -b {{chrom_size_bed}} -u -f 1 > ${COL3}.clean.bedgraph
 bedGraphToBigWig ${COL3}.clean.bedgraph {{genome_chrom_size}} ${COL3}.bw
 rm ${COL3}.bedgraph.gz
-
+rm ${COL3}.clean.bedgraph
 
 =cut homer_deseq2 2 homer_norm
 
@@ -140,17 +145,17 @@ mem=50000
 
 ## merge peak for each comparison
 
-module load bedtools
+# module load bedtools/2.31.0
 
 
-echo $PATH
+# echo $PATH
 
 
 PATH=/home/yli11/HemTools/bin:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/etc:/hpcf/lsf/lsf_prod/10.1/linux3.10-glibc2.17-x86_64/bin:/usr/lpp/mmfs/bin:/usr/lpp/mmfs/lib:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/sbin:/cm/local/apps/environment-modules/3.2.10/bin:/opt/puppetlabs/bin
 
 echo $PATH
 
-module load bedtools
+module load bedtools/2.31.0
 
 cd {{jid}}
 
@@ -168,7 +173,7 @@ bedtools merge -d "{{merge_distance}}" -c 4 -o collapse -i ${COL3}.homer_deseq2.
 
 module load homer/4.10
 
-module load R/3.6.1
+module load R/4.1.0-rhel8
 
 mkdir -p homer_deseq2_results
 
@@ -215,9 +220,9 @@ cd {{jid}}
 
 module load homer/4.10
 
-module load bedtools
+module load bedtools/2.31.0
 
-module load R/3.6.1
+module load R/4.1.0-rhel8
 
 mkdir -p homer_deseq2_results
 
@@ -243,7 +248,7 @@ mem=16000
 
 
 
-module load bedtools
+module load bedtools/2.31.0
 
 uid=`openssl rand -hex 12`
 
@@ -289,7 +294,7 @@ samtools merge $uid.${COL2}.merge.bam ${COL2}*.bam
 
 module load homer/4.10
 
-module load ucsc
+module load ucsc/051223
 
 ## -format sam, interesting homer use sam for bam
 
@@ -299,15 +304,15 @@ makeTagDirectory $uid.${COL1}.merge.tag -keepAll -format sam -genome {{genome}} 
 makeTagDirectory $uid.${COL2}.merge.tag -keepAll -format sam -genome {{genome}} -checkGC $uid.${COL2}.merge.bam
 removeOutOfBoundsReads.pl $uid.${COL1}.merge.tag {{genome}} -chromSizes {{genome_chrom_size}}
 removeOutOfBoundsReads.pl $uid.${COL2}.merge.tag {{genome}} -chromSizes {{genome_chrom_size}}
-makeUCSCfile  $uid.${COL1}.merge.tag -o ${COL1}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
-makeUCSCfile  $uid.${COL2}.merge.tag -o ${COL2}.merge.bw -bigWig {{genome_chrom_size}} -res 1 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+makeUCSCfile  $uid.${COL1}.merge.tag -o ${COL1}.merge.bw -bigWig {{genome_chrom_size}} -res 10 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
+makeUCSCfile  $uid.${COL2}.merge.tag -o ${COL2}.merge.bw -bigWig {{genome_chrom_size}} -res 10 -avg -noheader -skipChr {{skip_chrom_size}} -fragLength 200 -norm 10000000 -normLength 100
 
 
 
 ## homer diff peak
 
 
-module load R/3.6.1
+module load R/4.1.0-rhel8
 
 mkdir -p homer_diff_results
 

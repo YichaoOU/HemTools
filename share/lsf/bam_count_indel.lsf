@@ -1,3 +1,4 @@
+#!shell
 =cut bam 1
 
 inputFile=input
@@ -9,6 +10,4 @@ module load samtools/1.9
 module load bam-readcount/0.8.0
 
 bam-readcount -f ~/Data/Human/hg38/fasta/hg38.main.fa -l {{region_bed}} -w 1 -i ${COL1} > {{jid}}/$(basename ${COL1}).bam_readcount.tsv
-
-
 

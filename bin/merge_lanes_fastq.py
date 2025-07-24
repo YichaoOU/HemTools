@@ -31,14 +31,14 @@ def my_args():
 	args = mainParser.parse_args()	
 	return args
 def define_fastq_label(x):
-	lanes = ['L001','L002','L003','L004']
+	lanes = ['L001','L002','L003','L004','L005','L006','L007','L008']
 	for i in lanes:
 		x = x.replace("%s_"%(i),"")
 	return x.split("/")[-1]
 
 
 def is_lane(x,y):
-	lanes = ['L001','L002','L003','L004']
+	lanes = ['L001','L002','L003','L004','L005','L006','L007','L008']
 	items1 = re.split("_|-|\.",x)
 	items2 = re.split("_|-|\.",y)
 	num_diff = 0
@@ -66,7 +66,7 @@ def main():
 	args = my_args()
 	groups = {}
 	used = []
-	print (args.file)
+	# print (args.file)
 	for i in args.file:
 		if i in used:
 			continue

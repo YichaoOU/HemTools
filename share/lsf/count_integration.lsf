@@ -29,7 +29,7 @@ mkdir {{jid}}/${COL3}_results
 fastqc ${COL1} -o {{jid}}/log_files/
 fastqc ${COL2} -o {{jid}}/log_files/
 
-trimmomatic PE ${COL1} ${COL2} -threads 4 -baseout {{jid}}/${COL3}_results/${COL3} ILLUMINACLIP:/hpcf/apps/trimmomatic/install/0.36/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3
+trimmomatic PE ${COL1} ${COL2} -threads 4 -baseout {{jid}}/${COL3}_results/${COL3} ILLUMINACLIP:/hpcf/apps/trimmomatic/install/0.36/adapters/TruSeq3-PE.fa:2:30:10:2:True LEADING:3
 
 
 # Run flash to combine reads 
@@ -54,7 +54,7 @@ cd ../..
 
 #bed_fix.py ${COL4} output.bed
 
-/home/yli11/.conda/envs/cutadaptenv/bin/python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/src/cas9engineering/count_indels_integrations2.py --bed ${COL4} --ref /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38.fa --bam {{jid}}/${COL3}_results/${COL3}.bam --out {{jid}}/${COL3}_results/${COL3}.counts.tsv --setting {{setting}} --site ${COL5}
+/home/yli11/.conda/envs/cutadaptenv/bin/python /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/src/cas9engineering/count_indels_integrations2.py --bed ${COL4} --ref /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38.fa --bam {{jid}}/${COL3}_results/${COL3}.bam --out {{jid}}/${COL3}_results/${COL3}.counts.tsv --setting {{setting}} --site ${COL5} {{addon_parameters}}
 
 =cut email 3 all
 

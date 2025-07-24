@@ -23,6 +23,7 @@ def my_args():
 	mainParser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 	mainParser.add_argument('-j',"--jid",  help="enter a job ID, which is used to make a new directory. Every output will be moved into this folder.", default=current_file_base_name+'_'+username+"_"+str(datetime.date.today()))	
 	mainParser.add_argument("--bamCoverage_addon",  help="for PE data, you add --center to get sharper peaks", default="")
+	mainParser.add_argument("--MNase",  help="bw for MNase",action='store_true')		
 	mainParser.add_argument('file', type=str, nargs='+')
 	mainParser.add_argument("--no_filter",  help="no_filter for input bam",action='store_true')
 	mainParser.add_argument('--input', help=argparse.SUPPRESS)
@@ -61,6 +62,8 @@ def main():
 	pipeline_name = current_file_base_name
 	if args.no_filter:
 		pipeline_name+="_no_filter"
+	if args.MNase:
+		pipeline_name="bam_MNase_coverage"
 	submit_pipeline_jobs(myPipelines[pipeline_name],args)
 	# bam_to_bw_no_filter
 	

@@ -1,0 +1,56 @@
+#!shell
+
+
+=cut BaseE 1
+
+inputFile=input
+
+ncore=1
+mem=20000
+q=priority
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/cutadaptenv/
+
+module load bedtools fastp
+
+module load seqtk
+
+seqtk trimfq -B {{read_length}}  ${COL1} > {{jid}}/${COL3}.trim.fastq
+
+cd {{jid}}
+
+# version: 2.2.7
+# CRISPResso -r1 ${COL1} --amplicon_seq {{amplicon_seq}} --guide_seq {{guide_seq}} -o {{jid}}/${COL3} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --keep_intermediate --dump {{trim}}
+CRISPResso -r1 ${COL3}.trim.fastq --amplicon_seq {{amplicon_seq}} --guide_seq {{guide_seq}} -o ${COL3} --quantification_window_size 10 --quantification_window_center -10 --base_editor_output --keep_intermediate --dump
+
+
+=cut email 2 BaseE
+
+
+ncore=1
+mem=10000
+q=priority
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+summarize_methyl_amplicon.py {{genomic_chr}} {{genomic_start}}
+
+cd ..
+
+module load ucsc/051223 bedtools
+
+for i in `cut -f 3 {{input}}`;do bedGraphToBigWig {{jid}}/${i}.bdg {{chrom_size}} {{jid}}/$i.bw;done
+
+# for i in `cut -f 3 fastq.tsv`;do bedGraphToBigWig Methyl_seq_yli11_2024-04-18/${i}.bdg /home/yli11/Data/Human/hg19/annotations/hg19.chrom.sizes Methyl_seq_yli11_2024-04-18/$i.bw;done
+
+cd {{jid}}
+
+send_email_v1.py -a QC.stats.csv,Methylation_percentage.csv -m "{{jid}} is finished" -j {{jid}} --common
+
+
+

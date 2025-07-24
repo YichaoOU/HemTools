@@ -12,7 +12,7 @@ module load fastqc/0.11.5
 
 module load bbmap/38.86
 
-module load seqtk
+module load seqtk/1.4-r132-dirty
 
 fastqc ${COL1} -o {{jid}}
 
@@ -48,29 +48,29 @@ seqtk sample ${COL2}.split.1.fq 100 | seqtk seq -a > ${COL2}.split.1.fa
 weblogo -f ${COL2}.split.1.fa -F png -o ${COL2}.split.1.png
 
 
-# seqtk sample ${COL2}.split.2.fq 100 | seqtk seq -a > ${COL2}.split.2.fa
-# weblogo -f ${COL2}.split.2.fa -F png -o ${COL2}.split.2.png
+seqtk sample ${COL2}.split.2.fq 100 | seqtk seq -a > ${COL2}.split.2.fa
+weblogo -f ${COL2}.split.2.fa -F png -o ${COL2}.split.2.png
 
-# seqtk sample ${COL2}.split.3.fq 100 | seqtk seq -a > ${COL2}.split.3.fa
-# weblogo -f ${COL2}.split.3.fa -F png -o ${COL2}.split.3.png
+seqtk sample ${COL2}.split.3.fq 100 | seqtk seq -a > ${COL2}.split.3.fa
+weblogo -f ${COL2}.split.3.fa -F png -o ${COL2}.split.3.png
 
-# seqtk sample ${COL2}.split.4.fq 100 | seqtk seq -a > ${COL2}.split.4.fa
-# weblogo -f ${COL2}.split.4.fa -F png -o ${COL2}.split.4.png
+seqtk sample ${COL2}.split.4.fq 100 | seqtk seq -a > ${COL2}.split.4.fa
+weblogo -f ${COL2}.split.4.fa -F png -o ${COL2}.split.4.png
 
-# seqtk sample ${COL2}.split.5.fq 100 | seqtk seq -a > ${COL2}.split.5.fa
-# weblogo -f ${COL2}.split.5.fa -F png -o ${COL2}.split.5.png
+seqtk sample ${COL2}.split.5.fq 100 | seqtk seq -a > ${COL2}.split.5.fa
+weblogo -f ${COL2}.split.5.fa -F png -o ${COL2}.split.5.png
 
-# seqtk sample ${COL2}.split.6.fq 100 | seqtk seq -a > ${COL2}.split.6.fa
-# weblogo -f ${COL2}.split.6.fa -F png -o ${COL2}.split.6.png
+seqtk sample ${COL2}.split.6.fq 100 | seqtk seq -a > ${COL2}.split.6.fa
+weblogo -f ${COL2}.split.6.fa -F png -o ${COL2}.split.6.png
 
-# seqtk sample ${COL2}.split.7.fq 100 | seqtk seq -a > ${COL2}.split.7.fa
-# weblogo -f ${COL2}.split.7.fa -F png -o ${COL2}.split.7.png
+seqtk sample ${COL2}.split.7.fq 100 | seqtk seq -a > ${COL2}.split.7.fa
+weblogo -f ${COL2}.split.7.fa -F png -o ${COL2}.split.7.png
 
-# seqtk sample ${COL2}.split.8.fq 100 | seqtk seq -a > ${COL2}.split.8.fa
-# weblogo -f ${COL2}.split.8.fa -F png -o ${COL2}.split.8.png
+seqtk sample ${COL2}.split.8.fq 100 | seqtk seq -a > ${COL2}.split.8.fa
+weblogo -f ${COL2}.split.8.fa -F png -o ${COL2}.split.8.png
 
-# seqtk sample ${COL2}.split.9.fq 100 | seqtk seq -a > ${COL2}.split.9.fa
-# weblogo -f ${COL2}.split.9.fa -F png -o ${COL2}.split.9.png
+seqtk sample ${COL2}.split.9.fq 100 | seqtk seq -a > ${COL2}.split.9.fa
+weblogo -f ${COL2}.split.9.fa -F png -o ${COL2}.split.9.png
 
 seqtk sample ${COL2}.split.0.fq 100 | seqtk seq -a > ${COL2}.split.0.fa
 weblogo -f ${COL2}.split.0.fa -F png -o ${COL2}.split.0.png

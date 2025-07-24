@@ -4,7 +4,7 @@
 
 ncore=2
 mem={{memory}}
-# q=priority
+q=priority
 
 echo $PATH
 
@@ -15,7 +15,8 @@ echo $PATH
 
 module load conda3/202011
 
-source activate /home/yli11/.conda/envs/captureC
+# source activate /home/yli11/.conda/envs/captureC
+source activate /home/yli11/.conda/envs/jupyterlab_2024
 
 module load texlive/20190410
 

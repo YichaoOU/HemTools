@@ -20,6 +20,7 @@ def my_args():
 	mainParser.add_argument('-f',"--input",  help="one motif sequence",required=True)
 	mainParser.add_argument("--check",  help="run bedtools to check (only for custom genome)",default="")
 	mainParser.add_argument('-l',"--motif_length",  help="motif_length")
+	mainParser.add_argument("--user_bed",  help="user peak file to overlap",default=None)
 	mainParser.add_argument('-n',"--num_mismatches",  help="Number of allowed mis-matches in the gRNA, excluding PAM sequence",default=0)
 
 	genome=mainParser.add_argument_group(title='Genome Info')
@@ -69,9 +70,14 @@ def main():
 	if args.genome == "custom":
 		args.check = "bedtools getfasta -fi %s -bed matches.bed.bed -fo test.fa -s -name"%(args.chr_fa)
 		
-
-	pipeline_name = current_file_base_name
-	submit_pipeline_jobs(myPipelines[pipeline_name],args)
+	if args.user_bed:
+		if not os.path.isfile(args.user_bed):
+			print (args.user_bed,"not found")
+		else:
+			submit_pipeline_jobs(myPipelines["bed_overlap_string"],args)
+	else:
+		pipeline_name = current_file_base_name
+		submit_pipeline_jobs(myPipelines[pipeline_name],args)
 	
 	
 	

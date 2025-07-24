@@ -78,7 +78,7 @@ cut -f 1-7 {{sample_id}}.allValidPairs > {{sample_id}}.allValidPairs.homer
 
 makeTagDirectory {{sample_id}}_homer_tag -format HiCsummary {{sample_id}}.allValidPairs.homer
 
-module load R/3.5.1
+module load R/4.1.0-rhel8
 
 ## add homer AB compartment
 # runHiCpca.pl {{sample_id}}_homer_PCA {{sample_id}}_homer_tag -cpu 8 -genome {{genome}}

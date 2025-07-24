@@ -6,7 +6,7 @@
 inputFile=input_list
 
 ncore=1
-mem=8000
+mem=20000
 q={{queue}}
 
 module load conda3/202011
@@ -16,7 +16,7 @@ source activate /home/yli11/.conda/envs/cutadaptenv/
 module load bedtools
 
 # version: 2.2.7
-CRISPResso --min_paired_end_reads_overlap {{min_overlap}} -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL3} --guide_seq ${COL4} -o {{jid}}/${COL5} {{base_editor_commands}}
+CRISPResso --min_paired_end_reads_overlap {{min_overlap}} --max_paired_end_reads_overlap {{max_overlap}} -r1 ${COL1} -r2 ${COL2} --amplicon_seq ${COL3} --guide_seq ${COL4} -o {{jid}}/${COL5} {{base_editor_commands}}
 
 # =cut email 2 BaseE[*]
 

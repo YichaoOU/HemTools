@@ -2,12 +2,30 @@
 
 =cut rnaseq 1
 
-ncore=16
-mem=12000
+# ncore=16
+# mem=12000
+ncore=1
+mem=4000
 
-module load nextflow/21.10.5 singularity
+# module load nextflow/21.10.5 singularity
+module load nextflow/23.04.1
 
-nextflow run nf-core/rnaseq --input {{jid}}.sample.csv --outdir {{jid}}/nfcore_RNA_seq_results --genome {{nfcore_genome}} -profile singularity --aligner star_rsem --pseudo_aligner salmon
+echo "process {
+    executor = 'lsf'
+   
+    withLabel:process_medium {
+                             queue = 'standard'
+                           }
+    withLabel:process_low {
+                            memory = 10G
+                             queue = 'standard'
+                           }
+    withLabel:process_high {
+                         queue = 'standard'
+                             }
+}" > nextflow.config
+
+nextflow run nf-core/rnaseq -c nextflow.config -r 3.12.0 --input {{jid}}.sample.csv --outdir {{jid}}/nfcore_RNA_seq_results --genome {{nfcore_genome}} -profile singularity --aligner star_rsem --pseudo_aligner salmon
 
 
 
@@ -20,7 +38,7 @@ module load kallisto/0.43.1
 inputFile=fastq_tsv
 
 ncore=4
-mem=2000
+mem=8000
 
 kallisto quant {{strandness}} {{single}} -i {{index_file}} --threads=$ncore --bootstrap-samples=100 --output-dir={{jid}}/${COL3}_group_${COL4} ${COL1} ${COL2}
 
@@ -33,31 +51,46 @@ module load python/2.7.13
 inputFile=design_matrix
 
 ncore=1
-mem=16000
+mem=80000
 
 cd {{jid}}
 
 mkdir ${COL3}_sleuth
 
+rm /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
+rm /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
 touch /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
-
 touch /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
-
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
-
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
+
 # run_sleuth.py -t ${COL1} -c ${COL2} -o ${COL3} -g hg19_lncRNA --gene_info /home/yli11/Data/Human/hg19/lncRNA/lncRNA.hg19.t2g
 run_sleuth.py -t ${COL1} -c ${COL2} -o ${COL3} -g {{genome}} --gene_info {{gene_info}}
 
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/ldpaths
-
 chmod 777 /home/yli11/.conda/envs/sleuth/lib/R/etc/Makeconf
 
 mv ${COL3}*.csv ${COL3}_sleuth
 
 cd ${COL3}_sleuth
 
-awk -F "," '{print $4"\t"$13"\t"$3}' ${COL3}.gene.final.combined.tpm.csv > tmp.tsv
+# awk -F "," '{print $4"\t"$13"\t"$3}' ${COL3}.gene.final.combined.tpm.csv > tmp.tsv
+
+
+awk -F ',' 'BEGIN {OFS = ","} {
+    if (NR == 1) {
+        for (i = 1; i <= NF; i++) {
+            if ($i == "\"ext_gene\"") ext_gene_col = i;
+            if ($i == "\"logFC\"") logFC_col = i;
+            if ($i == "\"qval\"") qval_col = i;
+        }
+        print $ext_gene_col, $logFC_col, $qval_col;
+    } else {
+        print $ext_gene_col, $logFC_col, $qval_col;
+    }
+}' ${COL3}.gene.final.combined.tpm.csv > tmp.csv
+
+
 
 mkdir GO_pathway_analysis
 
@@ -67,9 +100,9 @@ source activate /home/yli11/.conda/envs/captureC
 
 echo `which python`
 
-/home/yli11/.conda/envs/captureC/bin/python /home/yli11/HemTools/bin/run_GSEA.py tmp.tsv 1 0.05 logFC qval GO_pathway_analysis/${COL3}
+/home/yli11/.conda/envs/captureC/bin/python /home/yli11/HemTools/bin/run_GSEA.py tmp.csv 1 0.05 logFC qval GO_pathway_analysis/${COL3}
 
-rm tmp.tsv
+rm tmp.csv
 
 mkdir replicate_correlation
 

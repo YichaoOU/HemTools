@@ -52,7 +52,7 @@ perl $src/MCC_splitter.pl -f ${COL3}.extendedFrags.fastq -p ${COL3}.read.psl -r 
 module load bowtie2
 module load samtools/1.7
 module load macs2 bedtools
-module load ucsc/041619
+module load ucsc/051223
 
 mv ${COL3}_${COL4}_split_800bp.fa ${COL3}_read_split
 

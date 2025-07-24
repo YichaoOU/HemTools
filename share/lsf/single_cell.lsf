@@ -7,13 +7,18 @@
 module load cellranger/7.0.0
 
 ncore=10
-mem=12000
+mem=15000
 
 inputFile=input_list
 
-mkdir ${COL1}_results
+path={{cellranger_refdata}}
+basename=$(basename "$path")
 
-cd ${COL1}_results
+
+
+mkdir ${COL1}_${basename}
+
+cd ${COL1}_${basename}
 
 ln -s ../${COL1}*.gz .
 
@@ -47,18 +52,18 @@ cellranger count --id=${COL1} --project=${COL1} --fastqs=. --transcriptome={{cel
 # gzip filtered_feature_bc_matrix/features.tsv 
 
 
-=cut qc 2 all
+# =cut qc 2 all
 
-ncore=1
-mem=30000
+# ncore=1
+# mem=30000
 
-cd {{jid}}
+# cd {{jid}}
 
-module load conda3
+# module load conda3
 
-source activate /home/yli11/.conda/envs/single_cell
+# source activate /home/yli11/.conda/envs/single_cell
 
-scRNA_qc.py
+# scRNA_qc.py
 
 =cut email 3 all
 

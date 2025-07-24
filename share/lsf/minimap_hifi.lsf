@@ -1,0 +1,51 @@
+#!shell
+=cut mini 1
+
+inputFile=input
+
+ncore=10
+
+mem=10000
+
+
+module load conda3/202402 
+
+source activate long_reads
+
+module load bedtools/2.30.0 samtools/1.17
+
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+
+
+label=$COL2
+
+minimap2 -t $ncore -ax map-hifi $genomeFasta $COL1 > $label.sam 
+
+samtools view -bS $label.sam > $label.bam
+samtools sort -@ $ncore -o $label.st.bam $label.bam
+samtools index $label.st.bam
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "{{jid}} is finished" -j {{jid}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

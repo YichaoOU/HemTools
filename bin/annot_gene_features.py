@@ -42,6 +42,7 @@ def my_args():
 	mainParser.add_argument('--coding',  help="focus on coding genes only ", action='store_true')
 	mainParser.add_argument("-d1",help="extend query bed for intersection",default=0,type=int)	
 	mainParser.add_argument("-d2",help="extending genomic features for intersection",default=0,type=int)	
+	mainParser.add_argument("-p",'--priority',help="priority for assigning the features",default="Exon_gene,Promoter_gene,5UTR_gene,3UTR_gene,Intron_gene",type=str)	
 	
 	mainParser.add_argument('-o',"--output",  help="output intermediate file",default="output")
 	mainParser.add_argument("--gene_names",  help="use gene names instead of gene id, only works for hg19 now", action='store_true')
@@ -61,6 +62,12 @@ def get_feature(r):
 		return "3UTR"
 	if r['Intron_gene'] != ".":
 		return "Intron"
+	return "Intergenic"	
+	
+def get_feature_user(r,myList):
+	for i in myList:
+		if r[i] != ".":
+			return i.split("_")[0]
 	return "Intergenic"	
 	
 def get_annotation_data(args):
@@ -127,7 +134,8 @@ def main():
 	my_query.print_log()
 	df = my_query.df
 	# print (df.head())
-	df['Genomic_features'] = df.apply(get_feature,axis=1)
+	# df['Genomic_features'] = df.apply(get_feature,axis=1)
+	df['Genomic_features'] = df.apply(lambda r:get_feature_user(r,args.priority.split(",")),axis=1)
 	if args.gene_names:
 
 		df2 = pd.read_csv(args.gene_name_list)

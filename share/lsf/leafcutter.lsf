@@ -1,0 +1,59 @@
+#!shell
+
+=cut STAR 1 
+
+
+inputFile=input
+
+## n cpu and memory
+ncore=4
+mem=20000
+
+module load star/2.5.3a
+
+
+## specify the command
+
+STAR --quantMode GeneCounts --twopassMode Basic --genomeDir {{STAR_index}} --readFilesIn ${COL1} $COL2 --readFilesCommand gunzip -c --runThreadN $ncore --outFileNamePrefix {{jid}}/${COL3} --outSAMtype BAM SortedByCoordinate --outSAMstrandField intronMotif --outFilterMultimapNmax 1
+
+cd {{jid}}
+
+module load samtools/1.9
+
+samtools index ${COL3}Aligned.sortedByCoord.out.bam
+
+module load singularity/3.1.1
+export SIF=/hpcf/authorized_apps/rhel8_apps/leafcutter/vendor/leafcutter_latest.sif
+singularity exec $SIF regtools junctions extract -s 0 -a 8 -m 50 -M 500000 ${COL3}Aligned.sortedByCoord.out.bam -o ${COL3}.junc
+
+=cut LC 2 STAR
+
+
+## n cpu and memory
+ncore=1
+mem=100000
+
+cd {{jid}}
+
+module load singularity/3.1.1
+export SIF=/hpcf/authorized_apps/rhel8_apps/leafcutter/vendor/leafcutter_latest.sif
+ls *junc > input.list
+singularity exec $SIF python /opt/leafcutter/clustering/leafcutter_cluster_regtools.py -j input.list -m 50 -o junction_counts.merged -l 500000
+
+module load mamba
+
+mamba activate /home/yli11/.conda/envs/leafcutter_env8
+
+# leafcutter_ds.R H2.count.txt H2.design.txt -i 2 -e /home/yli11/HemTools/share/NGS_pipeline/leafcutter.gencode19_exons.txt.gz
+leafcutter_ds.R junction_counts.merged_perind_numers.counts.gz {{design_matrix}} -i 2 -e /home/yli11/HemTools/share/NGS_pipeline/leafcutter.gencode19_exons.txt.gz
+
+mamba activate /home/yli11/.conda/envs/jupyterlab_2024
+
+leafcutter_results.py
+
+# leafcutter_quantify_psi.R junction_counts.merged_perind_numers.counts.gz
+
+# https://groups.google.com/g/leafcutter-users/c/ZmiMw0LwR14
+
+# https://github.com/francois-a/leafcutter/tree/master
+# https://github.com/davidaknowles/leafcutter/blob/psi_2019/scripts/leafcutter_quantify_psi.R

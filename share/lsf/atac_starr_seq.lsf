@@ -5,11 +5,13 @@
 inputFile=input
 
 ncore=4
-mem=10000
+mem=30000
 
 module load conda3/202011
 
 source activate /home/yli11/.conda/envs/cutadaptenv
+
+module load fastqc
 
 # module load trimgalore/0.6.6 
 # this program is inside hemtools, 0.6.4_dev
@@ -22,7 +24,7 @@ trim_galore --gzip --fastqc --paired ${COL1} ${COL2} --basename ${COL3} --output
 module load bowtie2
 
 #mapping
-bowtie2 -p 4 -X 500 --sensitive --no-discordant --no-mixed -x {{bowtie2_index}} -1 {{jid}}/${COL3}/${COL3}_val_1.fq.gz -2 {{jid}}/${COL3}/${COL3}_val_2.fq.gz -S {{jid}}/${COL3}/${COL3}.sam
+bowtie2 -p $ncore -X 500 --sensitive --no-discordant --no-mixed -x {{bowtie2_index}} -1 {{jid}}/${COL3}/${COL3}_val_1.fq.gz -2 {{jid}}/${COL3}/${COL3}_val_2.fq.gz -S {{jid}}/${COL3}/${COL3}.sam
 
 module load samtools/1.9
 # Filter and UMI dedup
@@ -31,7 +33,7 @@ samtools view -b ${COL3}.sam > ${COL3}.bam
 samtools flagstat ${COL3}.bam > ${COL3}_raw.flagstat
 
 samtools view -b -f 2 -q {{MAPQ}} ${COL3}.bam > ${COL3}.filter.bam
-samtools sort -@ 6 -o ${COL3}.st.bam ${COL3}.filter.bam
+samtools sort -@ $ncore -o ${COL3}.st.bam ${COL3}.filter.bam
 samtools index ${COL3}.st.bam
 samtools stats ${COL3}.st.bam > ${COL3}.st.stats
 samtools flagstat ${COL3}.st.bam > ${COL3}_filtered.flagstat
@@ -51,7 +53,7 @@ preseq lc_extrap -pe -verbose -o ${COL3}.preseq.txt -bam ${COL3}.st.bam
 
 # picard insertion size
 module load picard/2.9.4
-module load R/3.5.1
+module load R/4.1.0-rhel8
 java -jar /hpcf/apps/picard/install/2.9.4/picard.jar CollectInsertSizeMetrics  I=${COL3}.st.bam O=${COL3}.picard-CISM.txt H=${COL3}_histogram.pdf
 
 
@@ -60,7 +62,7 @@ java -jar /hpcf/apps/picard/install/2.9.4/picard.jar CollectInsertSizeMetrics  I
 
 
 ncore=1
-mem=80000
+mem=100000
 
 src=/home/yli11/Tools/ATAC_STARR_seq_analysis
 
@@ -75,15 +77,16 @@ macs2 callpeak --nomodel --shift -100 --extsize 200 -p 0.01 -t */*dedup.bam -g {
 
 bedtools intersect -a Merged_peaks.narrowPeak -b {{black_list}} -v -wa > Merged_peaks.rmblck.narrowPeak
 
-module load conda3/202011
+module load conda3/202402
 
 source activate /home/yli11/.conda/envs/captureC
 
 module load texlive/20190410
 
 mkdir Differential_analysis
+module load subread/2.0.5  
 
-python $src/call_ATAC-STARR_regulatory-regions.py -i Merged_peaks.rmblck.narrowPeak -o Differential_analysis/ -q 0.1 -d */*group.DNA.dedup.bam -r */*group.RNA.dedup.bam
+/home/yli11/.conda/envs/captureC/bin/python $src/call_ATAC-STARR_regulatory-regions.py -i Merged_peaks.rmblck.narrowPeak -o Differential_analysis/ -q 0.1 -d */*group.DNA.dedup.bam -r */*group.RNA.dedup.bam
 
 cd Differential_analysis
 

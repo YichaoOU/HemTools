@@ -1,0 +1,115 @@
+#!shell
+
+
+=cut idr 2 
+
+inputFile=input
+
+ncore=1
+mem=10000
+
+module load conda3/202402
+source activate /home/yli11/.conda/envs/captureC
+module load samtools/1.9
+module load perl
+module load R/3.5.1
+src="/home/yli11/Programs/merge_peaks/bin/perl"
+src2="/home/yli11/Programs/merge_peaks/bin"
+
+B1=$COL1
+P1=$COL2
+B2=$COL3
+P2=$COL4
+I1=$COL5
+I2=$COL6
+label=$COL7
+
+
+samtools view -c $B1 > {{jid}}/$label.R1.readnum.txt
+samtools view -c $B2 > {{jid}}/$label.R2.readnum.txt
+samtools view -c $I1 > {{jid}}/$label.I1.readnum.txt
+samtools view -c $I2 > {{jid}}/$label.I2.readnum.txt
+
+perl $src/overlap_peakfi_with_bam.pl $B1 $I1 $P1 {{jid}}/$label.R1.readnum.txt {{jid}}/$label.I1.readnum.txt {{jid}}/$label.R1.bed
+
+perl $src/overlap_peakfi_with_bam.pl $B2 $I2 $P2 {{jid}}/$label.R2.readnum.txt {{jid}}/$label.I2.readnum.txt {{jid}}/$label.R2.bed
+
+cd {{jid}}
+
+perl $src/compress_l2foldenrpeakfi_for_replicate_overlapping_bedformat_outputfull.pl $label.R1.bed.full $label.R1.compressed2.bed $label.R1.compressed2.bed.full
+
+perl $src/compress_l2foldenrpeakfi_for_replicate_overlapping_bedformat_outputfull.pl $label.R2.bed.full $label.R2.compressed2.bed $label.R2.compressed2.bed.full
+
+perl $src/make_informationcontent_from_peaks.pl $label.R1.compressed2.bed.full $label.R1.readnum.txt $label.I1.readnum.txt $label.R1.entropy.full $label.R1.entropy.excessreads
+
+perl $src/make_informationcontent_from_peaks.pl $label.R2.compressed2.bed.full $label.R2.readnum.txt $label.I2.readnum.txt $label.R2.entropy.full $label.R2.entropy.excessreads
+
+python $src2/full_to_bed.py --input $label.R1.entropy.full --output $label.R1.entropy.full.bed
+
+python $src2/full_to_bed.py --input $label.R2.entropy.full --output $label.R2.entropy.full.bed
+
+source activate /home/yli11/.conda/envs/idr/
+
+
+
+idr --samples $label.R1.entropy.full.bed $label.R2.entropy.full.bed --input-file-type bed --peak-merge-method max --plot -o ${label}.idr_peaks.ori.bed --rank 4
+
+source activate /home/yli11/.conda/envs/captureC
+module load perl
+module load bedtools/2.29.2
+
+
+perl $src/parse_idr_peaks.pl ${label}.idr_peaks.ori.bed $label.R1.entropy.full $label.R2.entropy.full ${label}.idr_peaks.bed
+
+cd ..
+
+perl $src/overlap_peakfi_with_bam.pl $B1 $I1 {{jid}}/${label}.idr_peaks.bed {{jid}}/$label.R1.readnum.txt {{jid}}/$label.I1.readnum.txt {{jid}}/$label.R1.idr.bed
+
+perl $src/overlap_peakfi_with_bam.pl $B2 $I2 {{jid}}/${label}.idr_peaks.bed {{jid}}/$label.R2.readnum.txt {{jid}}/$label.I2.readnum.txt {{jid}}/$label.R2.idr.bed
+
+cd {{jid}}
+
+perl $src/get_reproducing_peaks.pl $label.R1.idr.bed.full $label.R2.idr.bed.full $label.R1.idr.bed.full.out $label.R2.idr.bed.full.out $label.idr_peaks.final.bed $label.idr_peaks.final.custombed $label.R1.entropy.full $label.R2.entropy.full $label.idr_peaks.ori.bed
+
+
+bedtools intersect -a ${label}.idr_peaks.final.bed -b {{black_list}} -v -wa > ${label}.idr_peaks.rmblck.bed
+
+source activate /home/yli11/.conda/envs/share_url/
+
+
+pyGREAT.py -f ${label}.idr_peaks.rmblck.bed -g {{genome}} --email
+
+
+module load homer/4.10
+
+annotatePeaks.pl ${label}.idr_peaks.rmblck.bed {{genome}} > ${label}.idr_peaks.rmblck.homer.annotated.tsv
+
+source activate /home/yli11/.conda/envs/py2
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+annot_gene_features.py -f ${label}.idr_peaks.rmblck.bed -o ${label}.idr_peaks.rmblck.gene.annot.tsv -g {{genome}}
+
+pie_plot.py -f ${label}.idr_peaks.rmblck.gene.annot.tsv --order Exon,Promoter,5UTR,3UTR,Intron,Intergenic --use_col -1 --header -o ${label}.idr_peaks.rmblck.genomic_features.pie_chart
+
+sort -k5,5nr ${label}.idr_peaks.rmblck.bed | head -n 1000 > ${label}.top1000_IDR.peaks
+
+# head -n 1000 ${label}.idr_peaks.rmblck.bed > ${label}.top1000_IDR.peaks
+
+findMotifsGenome.pl ${label}.top1000_IDR.peaks {{genome}} homer_motifs_result -size 100 -preparsedDir ${label}.homer_genome_dir 
+
+# findMotifsGenome.pl ${label}.top1000_IDR.peaks {{genome}} homer_motifs_result_short2 -size 100 -preparsedDir ${label}.homer_genome_dir -len 4,5,6,7 -p 12
+findMotifsGenome.pl ${label}.top1000_IDR.peaks {{genome}} homer_motifs_result_short -size 100 -preparsedDir ${label}.homer_genome_dir -len 4,5,6
+
+
+=cut email 4 all
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -m "IDR peaks pipeline is finished!" -j {{jid}}
+
+
+
+
+

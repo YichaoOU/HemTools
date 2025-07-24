@@ -61,13 +61,17 @@ def is_edit2(r,ref,alt,gRNA_length,SNP_dict=None):
 	offset = 20-gRNA_length
 	read = r.Aligned_Sequence[10+offset:30]
 	gRNA = r.Reference_Sequence[10+offset:30]
-	if read == gRNA:
+	if read == gRNA and SNP_dict==None:
 		return False
 	count = 1
-	
+
 	for i in range(3,10):
+	# for i in range(0,10): # for Varun ABE paper
 		a = read[i]
 		b = gRNA[i]
+		# if gRNA=="TTGTTGCCCGCAAGGTTTGG" and count == 6 and r['%Reads']>50:
+			
+			# print (i,count,a,b,SNP_dict,read,gRNA)
 		try:
 			SNP_base = SNP_dict[count]
 			b = SNP_base
@@ -76,6 +80,8 @@ def is_edit2(r,ref,alt,gRNA_length,SNP_dict=None):
 		except:
 			pass
 		if (b == ref) and (a == alt):
+			# if gRNA=="TTGTTGCCCGCAAGGTTTGG":
+				# print ("True",r['%Reads'])
 			return True
 		count += 1
 	return False
@@ -158,11 +164,13 @@ def parse_df(f,gRNA,ref,alt,snp):
 		# SNP_pos = 0
 		# SNP_base = None
 		SNP_dict = None
-	# print (f)
+	# print (f,SNP_dict)
 	# df['is_edit'] = df.apply(lambda r: is_edit(r,ref,alt,SNP_pos,SNP_base),axis=1)
 	df['is_edit'] = df.apply(lambda r: is_edit2(r,ref,alt,len(gRNA),SNP_dict),axis=1)
-	edited_N = df[(df.Unedited == False)&(df.is_edit == True)]['#Reads'].sum()
-	edited_P = df[(df.Unedited == False)&(df.is_edit == True)]['%Reads'].sum()
+	# edited_N = df[(df.Unedited == False)&(df.is_edit == True)]['#Reads'].sum()
+	# edited_P = df[(df.Unedited == False)&(df.is_edit == True)]['%Reads'].sum()
+	edited_N = df[(df.is_edit == True)]['#Reads'].sum()
+	edited_P = df[(df.is_edit == True)]['%Reads'].sum()
 	return edited_N,edited_P
 
 def parse_snp(f):

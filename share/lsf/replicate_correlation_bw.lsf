@@ -23,7 +23,7 @@ bedtools merge -c 4 -o collapse -i $id.merged.st.bed > $id.merged.st.bedtools.be
 
 cd ..
 
-module load ucsc/041619
+module load ucsc/051223
 
 bigWigAverageOverBed ${COL1}  {{jid}}/$id.merged.st.bedtools.bed {{jid}}/$id.rep1.tsv  
 

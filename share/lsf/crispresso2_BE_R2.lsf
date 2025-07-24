@@ -6,7 +6,7 @@
 inputFile=input_list
 
 ncore=1
-mem=8000
+mem=20000
 q={{queue}}
 
 module load conda3
@@ -62,7 +62,7 @@ module load python/2.7.13
 
 cd {{jid}}
 
-crispresso2_BE_get_eff.py ../{{tsv}} {{ref}} {{alt}}
+crispresso2_BE_get_eff.py ../{{tsv}} 3 4 {{ref}} {{alt}}
 {{custom_mutation}}
 
 send_email_v1.py -m "{{jid}} is finished!" -j {{jid}}

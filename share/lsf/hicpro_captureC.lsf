@@ -40,7 +40,7 @@ sort -k1,1 -k2,2n {{sample_id}}.e2kb.bdg > {{sample_id}}.e2kb.st.bdg
 module purge
 module load python/2.7.13
 
-module load ucsc/041619
+module load ucsc/051223
 
 bdg_correction.py {{sample_id}}.e1kb.st.bdg
 bdg_correction.py {{sample_id}}.e2kb.st.bdg

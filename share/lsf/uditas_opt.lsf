@@ -3,8 +3,8 @@
 
 inputFile=input
 
-ncore=8
-mem=4000
+ncore=4
+mem=10000
 
 
 module load conda3/202011
@@ -21,7 +21,7 @@ module load java/1.8.0_181 samtools/1.12
 
 # uditas $PWD -process_amplicon ${COL1} -ncpu 8 -skip_demultiplexing 1 -skip_trimming 1 -skip_genome_local_alignment 1 -skip_amplicon_global_alignment 1 -skip_plasmid_alignment 1
 # uditas $PWD -process_amplicon 23 -ncpu 8 -skip_demultiplexing 1 -skip_trimming 1 -skip_genome_local_alignment 1 -skip_amplicon_global_alignment 1 -skip_plasmid_alignment 1 -skip_genome_global_alignment 1
-uditas $PWD -process_amplicon ${COL1} -ncpu 8
+uditas $PWD -process_amplicon ${COL1} -ncpu 4
 # for testing
 # python ~/Tools/uditas_opt/uditas/uditas.py $PWD -skip_demultiplexing 1 -skip_trimming 1 -ncpu 60
 =cut summary 2 Uditas
@@ -48,7 +48,7 @@ source activate /home/yli11/.conda/envs/multiQC/
 export LC_ALL=en_US.utf-8
 export LANG=en_US.utf-8
 
-multiqc .
+multiqc -s .
 
 
 

@@ -9,7 +9,7 @@ ncore=1
 mem=16000
 q=priority
 
-module load R/3.5.1
+module load R/4.1.0-rhel8
 module load meme
 module load homer/4.10
 module load python/2.7.13

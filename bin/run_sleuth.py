@@ -314,7 +314,7 @@ def main(R_command):
 	else:
 		R_command = multireplace(R_command,vars(args))
 	write_file(args.output_name+".sleuth.R",R_command)
-	os.system("Rscript --vanilla "+args.output_name+".sleuth.R")
+	os.system("/home/yli11/.conda/envs/sleuth/bin/Rscript --vanilla "+args.output_name+".sleuth.R")
 
 	
 if __name__ == "__main__":

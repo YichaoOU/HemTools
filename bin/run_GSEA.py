@@ -33,13 +33,14 @@ def run_GSEA(rnk,gene_sets,out_file):
 	pre_res = gp.prerank(rnk=rnk, gene_sets=gene_sets,processes=8,permutation_num=100,no_plot =True,max_size =1000)
 	res = pre_res.res2d
 	os.system(f"mkdir -p {out_dir}/GSEA_plots_FDR_0.1")
-	fdr = 0.1
-	if len(gene_sets)<40:
+	fdr = 0.2
+	gene_sets = gene_sets.split("/")[-1]
+	if len(gene_sets)<100:
 		res.to_csv(f"{out_file}.GSEA.{gene_sets}.stats.csv")
 	else:
 		res.to_csv(f"{out_file}.GSEA.MSigDB.stats.csv")
-	res = res[res.fdr<=fdr]
-	for i in res.index.tolist():
+	res = res[res['FDR q-val']<=fdr]
+	for i in res.Term.tolist():
 		name = i.replace(" ","_").replace("/","_")
 		try:
 			gseaplot(rank_metric=pre_res.ranking, term=i, ofname=f'{out_dir}/GSEA_plots_FDR_0.1/{name}.pdf', **pre_res.results[i])
@@ -59,22 +60,39 @@ out_file=sys.argv[6]
 
 genesets=["GO_Biological_Process_2021","GO_Cellular_Component_2021","GO_Molecular_Function_2021","KEGG_2019_Mouse","KEGG_2021_Human","KEGG_2016","Reactome_2016"]
 msigdb = "/home/yli11/Data/Human/MSigDB/msigdb.v7.5.1.symbols.gmt"
+msigdb=["/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/KEGG_2021_Human.txt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c2.all.v2024.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c3.all.v2024.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c6.all.v2024.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/c7.all.v2024.1.Hs.symbols.gmt","/research/rgs01/home/clusterHome/yli11/Data/Human/MSigDB/h.all.v2024.1.Hs.symbols.gmt"]
 
 
 df = pd.read_csv(file,sep=guess_sep(file),index_col=0)
 df.index = [x.upper() for x in df.index]
-print (df.head())
-diff_list = df[df[logFC_col_name].abs()>=logFC_cutoff]
-diff_list = diff_list[diff_list[pvalue_col_name]<=pvalue_cutoff].index.tolist()
-run_enrichR(diff_list,genesets,out_file)
-# exit()
+# print (df.head())
+try:
+	diff_list = df[df[logFC_col_name].abs()>=logFC_cutoff]
+	diff_list = diff_list[diff_list[pvalue_col_name]<=pvalue_cutoff].index.tolist()
+	# print (diff_list)
+	if len(diff_list)<10:
+		logFC_cutoff = logFC_cutoff/2
+		pvalue_cutoff = pvalue_cutoff*2
+		print ("increasing diff gene size,logFC_cutoff and pvalue_cutoff are:")
+		print (logFC_cutoff)
+		print (pvalue_cutoff)
+		diff_list = df[df[logFC_col_name].abs()>=logFC_cutoff]
+		diff_list = diff_list[diff_list[pvalue_col_name]<=pvalue_cutoff].index.tolist()
+	run_enrichR(diff_list,genesets,out_file)
+except Exception as e:
+	print ("EnrichR failed, likely to be caused by no matching genes. see Errors below")
+	print (e)
 rnk = df[logFC_col_name].reset_index()
-rnk = rnk[rnk[logFC_col_name].abs()>0.5]
+rnk = rnk[rnk[logFC_col_name].abs()>=0.5]
 print (rnk.shape)
 # run_GSEA(rnk,genesets,out_file)
 # run_GSEA(rnk,[msigdb],out_file)
-for g in genesets[3:]+[msigdb]:
+for g in genesets[3:]+msigdb:
 	print ("Running GSEA",g)
-	run_GSEA(rnk,g,out_file)
+	try:
+		run_GSEA(rnk,g,out_file)
+	except Exception as e:
+		print (e)
+		print (g,"failed")
 os.system(f"mv {out_file}.enrichR* Enrichr")
 os.system(f"mv {out_file}.GSEA* GSEA_Prerank")

@@ -31,6 +31,7 @@ def my_args():
 	mainParser.add_argument('--alt',  help="alternative base",default="G",type=str)
 	mainParser.add_argument('--cas9',  help="not running in base editor mode",action='store_true')
 	mainParser.add_argument('--SNP',  help="3-col tsv file, gRNA seq, position, SNP",default="",type=str)
+	mainParser.add_argument('--addon_parameters',  help="additional paramteeres, such as --min_paired_end_reads_overlap for crispresso",default="",type=str)
 	# mainParser.add_argument("--info_tsv", help=argparse.SUPPRESS)
 	mainParser.add_argument("--input_list", help=argparse.SUPPRESS)
 	mainParser.add_argument('--queue',  help="which queue to use",default='standard')

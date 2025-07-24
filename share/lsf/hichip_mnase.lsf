@@ -5,7 +5,7 @@
 inputFile=fastq_tsv
 
 ncore=6
-mem=10000
+mem=40000
 
 module load conda3/202011
 
@@ -102,9 +102,10 @@ printf "ValidPairs=$PWD/$COL3.hicpro_mapped.pairs.gz \nInterval= \nMatrix= \nBed
 
 # generate bedpe
 
-cut -f 1-7 ./fihichip_results/FitHiChIP_Peak2Peak_b2500_L10000_U2000000/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.counts.bedpe
+cut -f 1-7 ./fihichip_results/FitHiChIP_Peak2*/P2PBckgr_0/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.counts.bedpe
 
-cut -f 1-6,8 ./fihichip_results/FitHiChIP_Peak2Peak_b2500_L10000_U2000000/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.pvalue.bedpe
+# cut -f 1-6,8 ./fihichip_results/FitHiChIP_Peak2Peak_b2500_L10000_U2000000/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.pvalue.bedpe
+cut -f 1-6,8 ./fihichip_results/FitHiChIP_Peak2*/P2PBckgr_0/Coverage_Bias/FitHiC_BiasCorr/Merge_Nearby_Interactions/$COL3.*.bed > $COL3.fithic.merged.pvalue.bedpe
 
 sed -i '1d' $COL3.fithic.merged.counts.bedpe
 
@@ -119,3 +120,17 @@ ln -s ../*merged.counts.bedpe .
 ln -s ../*macs2_peaks.narrowPeak .
 cp $peak_bed .
 ln -s ../*mapped.PT.bw .
+
+
+=cut email 3 all
+
+ncore=1
+mem=4000
+
+
+module load python/2.7.13
+
+cd {{jid}}
+
+send_email_v1.py -a */hichip_qc_summary.html -m "HiChIP finished" -j {{jid}}  --common
+

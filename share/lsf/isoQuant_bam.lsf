@@ -1,0 +1,46 @@
+#!shell
+
+=cut PB 1
+
+ncore=30
+mem=25000
+
+
+module load conda3/202402
+
+source activate /home/yli11/.conda/envs/isoquant/
+
+output="{{jid}}_isoQuant_isoseq_default_pacbio_polyA_countExon_unique_only"
+# output="{{jid}}_isoQuant_isoseq_default_pacbio_polyA_countExon_with_ambiguous"
+gtf=/home/yli11/Data/Human/hg38/annotations/gencode_v47/ISO_Tequila_JJ_all.gtf
+genomeFasta=/home/yli11/Data/Human/hg38/fasta/hg38.fa
+
+isoquant.py -d pacbio_ccs \
+  --bam *.bam \
+  --reference $genomeFasta \
+  --genedb $gtf \
+  --complete_genedb \
+  --high_memory  \
+  --no_gzip  \
+  --count_exons  \
+  --splice_correction_strategy default_pacbio  \
+  --model_construction_strategy default_pacbio    \
+  --polya_requirement always \
+  --matching_strategy precise  \
+  --transcript_quantification unique_only   \
+  --no_model_construction  \
+  --output $output \
+  --threads  $ncore
+
+module load ucsc/051223 bedtools
+cd $output
+cd OUT
+gtfToGenePred OUT.extended_annotation.gtf OUT.extended_annotation.genePred
+genePredToBed OUT.extended_annotation.genePred OUT.extended_annotation.bed12
+bedtools getfasta -fi /home/yli11/Data/Human/hg38/fasta/hg38.fa -bed OUT.extended_annotation.bed12 -s -split -name -fo OUT.extended_annotation.fa
+get_BCL11A_novel_transcript_ID.py
+
+source activate /home/yli11/.conda/envs/captureC/
+
+cpat.py -x /home/yli11/Data/Human/cpat/dat/Human_Hexamer.tsv --antisense -d /home/yli11/Data/Human/cpat/dat/Human_logitModel.RData --top-orf=5 -g OUT.extended_annotation.fa -o cpat.predict
+

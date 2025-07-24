@@ -7,7 +7,7 @@ inputFile=PE_input
 
 
 ncore=1
-mem=12000
+mem=20000
 
 # Read1	Read2	Output_Name	Forward primer	Reverse primer	pegRNA spacer sequence	pegRNA extesion sequence	ngRNA sequence
 

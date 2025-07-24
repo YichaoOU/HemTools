@@ -1,0 +1,24 @@
+#!shell
+
+
+=cut RNAVelo 1
+
+inputFile=input
+
+ncore=5
+mem=25000
+
+module load conda3/202011
+
+source activate /home/yli11/.conda/envs/captureC
+
+repeats=/home/yli11/Data/Mouse/mm10/annotation/mm10_rmsk.gtf
+transcriptome=/research/rgs01/home/clusterHome/yli11/Data/Mouse/mm10/index/10x_feng/mm10-2020-A_build/mm10_feng/genes/genes_fixExonNumber.gtf
+
+
+# repeats=/research/rgs01/home/clusterHome/yli11/Data/Human/hg38/annotations/hg38_rmsk.gtf
+# transcriptome=/research/dept/hem/common/sequencing/chenggrp/pipelines/hg38/cellranger_arc/hg38_rmHBGnoise/genes/genes.gtf.gz
+module load samtools/1.7
+velocyto run10x --samtools-threads $ncore -m $repeats $COL1 $transcriptome
+
+

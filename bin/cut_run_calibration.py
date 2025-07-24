@@ -28,7 +28,7 @@ def my_args():
 	mainParser.add_argument('-f',"--fastq_tsv",  help="TSV file, 3 columns, peak, bam, output, need absolute path to file",required=True)
 	mainParser.add_argument('-d',"--peakcall_tsv",  help="TSV file, 3 columns, peak, bam, output, need absolute path to file",required=True)
 	mainParser.add_argument("--scale_multiplier",default=10000)
-	mainParser.add_argument("--Ecoli_index_file",default="/home/yli11/Data/E_coli/MG1655.fa")
+	mainParser.add_argument("--Ecoli_index_file",default="/home/yli11/Data/E_coli/MG1655.fa",help="Yeast: /home/yli11/Data/E_coli/Yeast/sacCer3.fa")
 	# mainParser.add_argument("--only_cut_sites_bw", action='store_true')
 	# mainParser.add_argument("--Liu_Nan_pipeline_path_atactk", help="not for end-user", default="/home/yli11/Programs/cut_run_pipeline_Nan_Liu/git/atactk/scripts")
 	# mainParser.add_argument("--Liu_Nan_pipeline_path_root", help="not for end-user", default="/home/yli11/Programs/cut_run_pipeline_Nan_Liu")

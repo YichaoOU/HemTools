@@ -231,3 +231,29 @@ Single-end: /home/yli11/HemPortal/RNA_seq/blood/GSE61566_GSE53983
 
 BE-editor: /research/rgs01/project_space/chenggrp/blood_regulome/chenggrp/Projects/BE_editor/GSE121668
 
+Hudep2 histone marks
+-------------
+
+::
+
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K27ac_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K27me3_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K36me3_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K4me1_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K4me3_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K9ac_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day0/chip_seq_single_yli11_2020-06-12/bw_files/H3K9me3_H2_D0.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K27ac_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K27ac_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K27me3_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K27me3_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K36me3_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K36me3_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K4me1_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K4me1_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K4me3_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K4me3_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K9ac_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K9ac_H2_D3_rep2.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K9me3_H2_D3_rep1.rmdup.uq.bw
+	/research_jude/rgs01_jude/groups/chenggrp/projects/blood_regulome/chenggrp/HemPortal/HemTools_uniform_processed_files/Hudep2/Day3/chip_seq_single_yli11_2022-08-17/bw_files/H3K9me3_H2_D3_rep2.rmdup.uq.bw

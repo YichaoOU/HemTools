@@ -1,0 +1,280 @@
+#!shell
+=cut eCLIP 1
+
+ncore=5
+mem=20000
+
+inputFile=input
+
+module load conda3/202402
+# for single-end eclip-seq R1 read
+# https://www.encodeproject.org/documents/3b1b2762-269a-4978-902e-0e1f91615782/@@download/attachment/eCLIP_analysisSOP_v2.0.pdf
+# https://www.encodeproject.org/documents/739ca190-8d43-4a68-90ce-1a0ddfffc6fd/@@download/attachment/eCLIP_analysisSOP_v2.2.pdf
+# https://www.biorxiv.org/content/10.1101/2021.08.27.457890v1.full.pdf
+source activate /home/yli11/.conda/envs/cutadaptenv
+
+module load samtools/1.10 star/2.7.10a fastqc
+
+R1=$COL1
+R2=$COL2
+label=$COL3
+jid={{jid}}
+
+if [ -n "$COL3" ]; then
+    label="$COL3"
+else
+    label="$COL2"
+fi
+
+mkdir -p $jid
+
+repBase_index={{repBase_index}}
+genome_index={{STAR_index}}
+chromSize={{main_chrom_size}}
+genomeFasta={{main_genome_fasta}}
+genome={{genome}}
+# repBase_index=/home/yli11/Data/Human/RepBase/STARindex
+# genome_index=/home/yli11/dirs/pipelines/hg19/hg19_star_253a_index
+# chromSize=/home/yli11/Data/Human/hg19/fasta/Homo_sapiens.add_chr.GRCh37.dna.primary_assembly.chrom.sizes
+# src=
+# v4.0
+# STJUDE protocol having UMI in R1
+umi_tools extract --bc-pattern=NNNNNNNNNN --stdin $R1 --stdout $jid/$label.r1.fastq -L extract.log
+
+cd $jid
+
+
+cutadapt \
+--match-read-wildcards \
+--times 1 \
+-j $ncore \
+--json=$label.1.cutadapt.json \
+-e 0.1 \
+-O 5 \
+--quality-cutoff 6 \
+-m 15 \
+-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
+-a AACTTGTAGATCGGA \
+-a AGGACCAAGATCGGA \
+-a ACTTGTAGATCGGAA \
+-a GGACCAAGATCGGAA \
+-a CTTGTAGATCGGAAG \
+-a GACCAAGATCGGAAG \
+-a TTGTAGATCGGAAGA \
+-a ACCAAGATCGGAAGA \
+-a TGTAGATCGGAAGAG \
+-a CCAAGATCGGAAGAG \
+-a GTAGATCGGAAGAGC \
+-a CAAGATCGGAAGAGC \
+-a TAGATCGGAAGAGCG \
+-a AAGATCGGAAGAGCG \
+-a AGATCGGAAGAGCGT \
+-a GATCGGAAGAGCGTC \
+-a ATCGGAAGAGCGTCG \
+-a TCGGAAGAGCGTCGT \
+-a CGGAAGAGCGTCGTG \
+-a GGAAGAGCGTCGTGT \
+-o $label.trim1.R1.fq \
+$label.r1.fastq > $label.trim1.runInfo.txt
+
+
+cutadapt \
+--match-read-wildcards \
+--times 1 \
+-j $ncore \
+--json=$label.2.cutadapt.json \
+-e 0.1 \
+-O 5 \
+--quality-cutoff 6 \
+-m 15 \
+-a AACTTGTAGATCGGA \
+-a AGGACCAAGATCGGA \
+-a ACTTGTAGATCGGAA \
+-a GGACCAAGATCGGAA \
+-a CTTGTAGATCGGAAG \
+-a GACCAAGATCGGAAG \
+-a TTGTAGATCGGAAGA \
+-a ACCAAGATCGGAAGA \
+-a TGTAGATCGGAAGAG \
+-a CCAAGATCGGAAGAG \
+-a GTAGATCGGAAGAGC \
+-a CAAGATCGGAAGAGC \
+-a TAGATCGGAAGAGCG \
+-a AAGATCGGAAGAGCG \
+-a AGATCGGAAGAGCGT \
+-a GATCGGAAGAGCGTC \
+-a ATCGGAAGAGCGTCG \
+-a TCGGAAGAGCGTCGT \
+-a CGGAAGAGCGTCGTG \
+-a GGAAGAGCGTCGTGT \
+-o $label.trim2.R1.fq \
+$label.trim1.R1.fq > $label.2.runInfo.txt
+
+fastq-sort --id $label.trim2.R1.fq >$label.st.R1.fq
+
+
+STAR \
+--runMode alignReads \
+--runThreadN $ncore \
+--genomeDir $repBase_index \
+--genomeLoad NoSharedMemory \
+--alignEndsType EndToEnd \
+--outSAMunmapped Within \
+--outFilterMultimapNmax 50 \
+--outFilterMultimapScoreRange 1 \
+--outFileNamePrefix $label.sorted.STAR \
+--outSAMtype BAM Unsorted \
+--outFilterType BySJout \
+--outBAMcompression 10 \
+--outReadsUnmapped Fastx \
+--outFilterScoreMin 10 \
+--outSAMattrRGline ID:foo \
+--outSAMattributes All \
+--outSAMmode Full \
+--outStd Log \
+--readFilesIn $label.st.R1.fq 
+
+mv $label.sorted.STARAligned.out.bam $label.repeat-mapped.bam
+mv $label.sorted.STARUnmapped.out.mate1 $label.R1.repeat-unmapped.fq
+
+
+fastq-sort --id $label.R1.repeat-unmapped.fq > $label.R1.repeat-unmapped.sorted.fq
+
+fastqc $label.R1.repeat-unmapped.sorted.fq
+
+module load star/2.5.3a
+
+STAR \
+--runMode alignReads \
+--runThreadN $ncore \
+--genomeDir $genome_index \
+--genomeLoad NoSharedMemory \
+--outFilterScoreMinOverLread 0 \
+--outFilterMatchNminOverLread 0 \
+--outFilterMatchNmin 0 \
+--outFilterMismatchNoverReadLmax 10 \
+--outFilterMismatchNoverLmax 10 \
+--outFilterMismatchNmax 30 \
+--readFilesIn \
+$label.R1.repeat-unmapped.sorted.fq \
+--outSAMunmapped Within \
+--outFilterMultimapNmax 10 \
+--outFilterMultimapScoreRange 10 \
+--outFileNamePrefix $label.repeat-unmapped.sorted.STAR \
+--outSAMattributes All \
+--outSAMtype BAM Unsorted \
+--outFilterType BySJout \
+--outReadsUnmapped Fastx \
+--outFilterScoreMin 10 \
+--outSAMattrRGline ID:foo \
+--outStd Log \
+--alignEndsType EndToEnd \
+--outBAMcompression 10 \
+--outSAMmode Full
+
+
+
+samtools sort -o $label.repeat-unmapped.sorted.st.STARAligned.out.bam $label.repeat-unmapped.sorted.STARAligned.out.bam
+
+samtools index $label.repeat-unmapped.sorted.st.STARAligned.out.bam
+
+module load java/10.0.2
+
+java -jar /research/rgs01/home/clusterHome/yli11/Programs/jvarkit/dist/bamrenamechr.jar -i -f /home/yli11/Tools/ENCODE_eclip_seq/replace.tsv -o $label.genome-mapped.bam --samoutputformat BAM $label.repeat-unmapped.sorted.st.STARAligned.out.bam
+
+# samtools sort -o $label.repeat-unmapped.sorted.st.STARAligned.out.rename_chr.st.bam $label.repeat-unmapped.sorted.st.STARAligned.out.rename_chr.bam
+
+# samtools index $label.repeat-unmapped.sorted.st.STARAligned.out.rename_chr.st.bam
+
+
+# region="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY chrM"
+# samtools view -b $label.repeat-unmapped.sorted.st.STARAligned.out.rename_chr.st.bam $region > $label.genome-mapped.bam
+
+samtools sort -n -o $label.genome-mapped.st.bam $label.genome-mapped.bam
+
+samtools sort -o $label.bam $label.genome-mapped.st.bam
+
+samtools index $label.bam
+
+samtools view -F 2304 -b $label.bam > $label.pri.bam
+
+samtools index $label.pri.bam
+
+samtools flagstat $label.pri.bam > $label.before_UMI.flagstat
+
+umi_tools dedup --stdin=$label.pri.bam --log=$label.dedup.log > $label.dedup.bam
+
+samtools index $label.dedup.bam
+
+samtools flagstat $label.dedup.bam > $label.after_UMI.flagstat
+
+# samtools view -F 2304 -b $label.dedup.bam > $label.R1.bam
+
+# samtools index $label.R1.bam
+
+# samtools flagstat $label.R1.bam > $label.final.flagstat
+
+module load ucsc/051223 bedtools/2.30.0
+
+makebigwigfiles \
+--bw_pos $label.R1.norm.pos.bw \
+--bw_neg $label.R1.norm.neg.bw \
+--bam $label.dedup.bam \
+--genome $chromSize \
+--direction r
+
+pureclip -i $label.dedup.bam -bai $label.dedup.bam.bai -g $genomeFasta -nt $ncore -o $label.PureCLIP.crosslink_sites.default.bed -or $label.PureCLIP.binding_sites.default.bed
+
+pureclip -i ${label}.dedup.bam -bai ${label}.dedup.bam.bai -g ${genomeFasta} -nt ${ncore} -o ${label}.PureCLIP.crosslink_sites.larger.bed -or ${label}.PureCLIP.binding_sites.larger.bed -bdwn 100 -antp -b2p 0.01 -b2p 0.1
+
+pureclip -i ${label}.dedup.bam -bai ${label}.dedup.bam.bai -g ${genomeFasta} -nt ${ncore} -o ${label}.PureCLIP.crosslink_sites.shorter.bed -or ${label}.PureCLIP.binding_sites.shorter.bed -bdw 25
+
+pureclip -i ${label}.dedup.bam -bai ${label}.dedup.bam.bai -g ${genomeFasta} -nt ${ncore} -o ${label}.PureCLIP.crosslink_sites.larger2.bed -or ${label}.PureCLIP.binding_sites.larger2.bed -bc 1 -b2p 0.03
+
+pureclip -i ${label}.dedup.bam -bai ${label}.dedup.bam.bai -g ${genomeFasta} -nt ${ncore} -o ${label}.PureCLIP.crosslink_sites.larger2b.bed -or ${label}.PureCLIP.binding_sites.larger2b.bed -bc 1
+
+clipper \
+-s $genome \
+-b $label.dedup.bam \
+--reverse_strand \
+-o $label.dedup.clipper.default.bed # this is poisson 0.05
+
+
+clipper -b $label.dedup.bam -s $genome --poisson-cutoff 1 --disable_global_cutoff -o $label.dedup.clipper.all.bed --reverse_strand
+
+# clipper -b $label.dedup.bam -s $genome --poisson-cutoff 0.01 -o $label.dedup.clipper.poisson-cutoff.01.bed
+
+# now is always is True
+# clipper -b $label.R1.bam -s $genome --premRNA -o $label.R1.clipper.premRNA.bed
+
+# clipper -b $label.R1.bam -s $genome --superlocal -o $label.R1.clipper.superlocal.bed
+
+# clipper -b $label.dedup.bam -s $genome --disable_global_cutoff -o $label.dedup.clipper.disable_global_cutoff.bed
+
+
+mkdir ${label}_results
+
+mv $label.* ${label}_results
+
+# https://github.com/YeoLab/merge_peaks/blob/master/bin/perl/overlap_peakfi_with_bam.pl
+
+=cut email 3 all
+
+cd {{jid}}
+
+module load conda3/202402
+source activate /home/yli11/.conda/envs/multiQC/
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+cp /home/yli11/HemTools/share/NGS_pipeline/multiqc_config.yaml .
+
+multiqc .
+
+export PATH=$PATH:"/home/yli11/HemTools/bin"
+
+module load python/2.7.13
+
+mv multiqc_report.html eclip_QC.html
+
+send_email_v1.py -a eclip_QC.html -m "{{jid}} is finished" -j {{jid}} --common
+

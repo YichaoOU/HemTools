@@ -15,7 +15,7 @@ ncore=1
 mem=40000
 q=priority
 
-bamCoverage -b ${COL1} -o ${COL2} -of bedgraph --ignoreForNormalization chrX chrM   --numberOfProcessors 10 -bs {{binSize}} --smoothLength {{smoothLength}} --blackListFileName {{black_list}}
+bamCoverage -b ${COL1} -o ${COL2} -of bedgraph --ignoreForNormalization chrX chrM   --numberOfProcessors 1 -bs {{binSize}} --smoothLength {{smoothLength}} --blackListFileName {{black_list}}
 # GM12878output1.s3norm.bdg.s3norm.bedgraph
 module load bedtools
 
@@ -35,14 +35,20 @@ fi
 
 =cut S3norm 2 bamtobdg
 
-module load conda3
+
+
+
+module load conda3/202402
 
 source activate /home/yli11/.conda/envs/S3norm
 
-module load R/3.5.1
+module load R/4.2.0
+
+alias python='/home/yli11/.conda/envs/S3norm/bin/python'
+unset PYTHONPATH
 
 ncore=1
-mem=100000
+mem=200000
 q=priority
 
 S3norm_src=/home/yli11/HemTools/share/script/S3norm
@@ -60,7 +66,7 @@ ncore=1
 mem=30000
 q=priority
 
-module load ucsc/041619
+module load ucsc/051223
 
 cd S3norm_NBP_bedgraph
 
@@ -76,6 +82,8 @@ bedGraphToBigWig ${COL1} {{chrom_size}} ${COL2}
 =cut email 4 all
 
 module load python/2.7.13
+
+q=priority
 
 mv -f S3norm_NBP_bedgraph {{jid}}
 mv -f S3norm_rc_bedgraph {{jid}}

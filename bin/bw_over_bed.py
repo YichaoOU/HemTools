@@ -114,8 +114,8 @@ def main():
 		# os.system("rm %s"%(i))
 		### main ####
 		summary_output("%s%s.csv"%(i.replace(".bed4",""),args.output),output_files)
-		# for x in output_files:
-			# os.system("rm %s"%(x))
+		for x in output_files:
+			os.system("rm %s"%(x))
 
 if __name__ == "__main__":
 	main()
