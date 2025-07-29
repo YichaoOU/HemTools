@@ -21,6 +21,30 @@ Using Git version control
 
 https://stackoverflow.com/questions/11403407/git-asks-for-username-every-time-i-push
 
+
+Git to permenantly delete a file
+----------------------------
+
+
+
+.. code:: bash
+
+	pip install git-filter-repo
+	git filter-repo --path bin/GEO_shengdar.sh --invert-paths --force
+	git reflog expire --expire=now --all
+	# SLOW
+	git gc --prune=now --aggressive
+	git remote add origin https://github.com/YichaoOU/HemTools
+	# SLOW
+	git push origin --force --all
+	git push origin --force --tags
+
+
+
+
+
+
+
 Add existing project to github
 ------------
 

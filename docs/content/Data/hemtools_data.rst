@@ -18,15 +18,20 @@ TSS data
 ----
 
 
-*hg19 non-redundant TSS from ensembl*
+*Hg19 gencodev45 canonical TSS*
 
-/home/yli11/Data/Human/hg19/Ensembl_v99_2020_Jan/hg19.ensembl.TSS.gene_name.bed
+::
 
-*hg19 redundant TSS (ensembl + gencode)*
+	/home/yli11/Data/Human/hg19/annotations/gencode45/gencode.v45lift37.canonical.gtf.TSS.bed
 
-In this dataset, each gene can have multiple TSSs, but gene-TSS combination is unique
 
-/home/yli11/Data/Human/hg19/gencode33/hg19.redundant.tss.bed
+*Hg38 gencodev47 canonical TSS*
+
+::
+
+	/home/yli11/Data/Human/hg38/annotations/gencode_v47/gencode.v47.canonical.gtf.TSS.bed
+
+
 
 hg19 data
 ---------
