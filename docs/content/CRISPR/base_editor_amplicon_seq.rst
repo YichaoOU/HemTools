@@ -62,6 +62,7 @@ Crispresso2 for Base editor
 	                        ndex/bwa_16a_index/hg19.fa)
 
 
+.. note:: Amplicon sequence and gRNA sequence should be upper case.
 
 
 Summary
@@ -115,8 +116,8 @@ A 5-column tsv file: R1.fastq, R2.fastq, amplicon_seq,  gRNA_seq, output_name
 
 ::
 
-	12_S12_L001_R1_001.fastq.gz	12_S12_L001_R2_001.fastq.gz	Amplicon_seq	cttgaccaatagccttgaca	test1
-	XXXX_L001_R1_001.fastq.gz	XXXX_L001_R2_001.fastq.gz	Amplicon_seq	cttgaccaatagccttgaca	Bababa
+	12_S12_L001_R1_001.fastq.gz	12_S12_L001_R2_001.fastq.gz	Amplicon_seq	CTTGACCAATAGCCTTGACA	test1
+	XXXX_L001_R1_001.fastq.gz	XXXX_L001_R2_001.fastq.gz	Amplicon_seq	CTTGACCAATAGCCTTGACA	Bababa
 
 Option 2: User input Primer sequence and gRNA sequence (``--gRNA_and_primers``)
 -------------------
