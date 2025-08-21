@@ -156,6 +156,21 @@ each design.tsv file corresponse to the same control file, if you have two group
 
 In the crispresso jid folder, where you have allele_edit.tsv and eff_edit.tsv
 
-``hybrid_capture_chi_square.py design.tsv`` default is 3 samples per gRNA group, 2 samples per control. Code is for ABE.
+::
 
-Output is ``Your_group_label.hybrid_capture.pivot_tabe.add_chi_square_stats.csv``
+	hpcf_interactive
+
+	module load conda3/202402
+
+	source activate /home/yli11/.conda/envs/jupyterlab_2024
+
+	hybrid_capture_chi_square.py design.tsv
+
+
+3. Outputs
+-----------
+
+The stats tables are provided for ABE and Cas9 (indel%). You should select one of them based on your assay.
+
+Outputs are ``Your_group_label.hybrid_capture.pivot_tabe.add_chi_square_stats.ABE.csv`` and ``Your_group_label.hybrid_capture.pivot_tabe.add_chi_square_stats.Cas9.csv``
+
