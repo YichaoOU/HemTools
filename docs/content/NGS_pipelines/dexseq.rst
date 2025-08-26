@@ -26,6 +26,10 @@ Summary
 
 Differential exon analysis to identify exon skip events.
 
+.. image:: ../../images/DEU.png
+	:align: center
+
+
 
 **8/26/2025**
 
