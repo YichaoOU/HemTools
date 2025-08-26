@@ -3,33 +3,22 @@ Differential exon analysis
 
 ::
 
-	usage: DEXseq.py [-h] [-j JID] -f BAM_TSV -d DESIGN_MATRIX [--cores CORES]
-	                 [--src SRC] [--count_cutoff COUNT_CUTOFF] [-g GENOME]
-	                 [-gff GFF]
+	usage: DEXseq.py [-h] [-j JID] -f BAM_TSV -d DESIGN_MATRIX [--paired] [-g GENOME] [--gtf GTF]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
-	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
-	                        Every output will be moved into this folder. (default:
-	                        DEXseq_yli11_2022-05-20)
+	  -j JID, --jid JID     enter a job ID, which is used to make a new directory. Every output will be moved into this folder. (default:
+	                        DEXseq_yli11_2025-08-26)
 	  -f BAM_TSV, --bam_tsv BAM_TSV
-	                        TSV file, 3 columns, bam file, sample name, group name
-	                        (default: None)
+	                        TSV file, 3 columns, bam file, sample name, group name (default: None)
 	  -d DESIGN_MATRIX, --design_matrix DESIGN_MATRIX
-	                        TSV file, 3 columns, group ID, group ID, output_prefix
-	                        (default: None)
-	  --cores CORES         Number of CPUs (default: 10)
-	  --src SRC             DEX src (default:
-	                        /home/yli11/Programs/DEXSeq/inst/python_scripts)
-	  --count_cutoff COUNT_CUTOFF
-	                        filter exons by sum read count, more samples should
-	                        increase this cutoff (default: 10)
+	                        TSV file, 3 columns, group ID, group ID, output_prefix (default: None)
+	  --paired              if input samples are paired, note, paired and unpared samples comparisons can't run together (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
 	                        genome version: hg19, hg38, mm9, mm10 (default: hg19)
-	  -gff GFF              DEXseq gff file (default: /home/yli11/Programs/DEXSeq/
-	                        inst/python_scripts/gencode.v30.hg19.noagg.gff)
+	  --gtf GTF             DEXseq gff file (default: /home/yli11/Data/Human/hg19/annotations/hg19.ncbiRefSeq.gtf)
 
 
 Summary
@@ -38,12 +27,11 @@ Summary
 Differential exon analysis to identify exon skip events.
 
 
-**5/20/2022**
+**8/26/2025**
 
-Only works for hg19.
+Only works for hg19/hg38.
 
 Only works for paired-end RNA-seq data.
-
 
 
 
@@ -87,20 +75,16 @@ Usage
 
     module load python/2.7.13
 
-    DEXseq.py -f bam.tsv -d design.tsv
+    DEXseq.py -f bam.tsv -d design.tsv -g hg38
 
 Output
 ^^^^^^
 
-Results are stored in the $jid folder. 
+Results are stored in the $jid folder. Each comparison has their own result folder.
 
-``.out`` files are exon read counts; these are inputs to DEXseq program.
+``DEXseq.result.csv`` is the differential exon usage result. 
 
-``.png`` files showing mean-variance, MA plot, and p-value distribution.
-
-``.csv`` files are the final outputs, containing p-value and fold change, just as different gene expression data.
-
-``_results`` folder contains some HTML results summary.
+``.pdf`` files are plots for HBG related genes.
 
 
 
