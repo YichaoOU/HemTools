@@ -60,6 +60,8 @@ Usage
 
 	source activate /home/yli11/.conda/envs/jupyterlab_2024
 
+	module load gcc/13.1.0
+
 	merge_2_table_heatmap.py -f1 BCL11Ako_vs_control.DMR_results.annot.csv -f2 BCL11AKO_vs_AAVS.gene.final.combined.csv -m1 "Gene Name" -m2 ext_gene -s qvalue -a -c1 PB_g1617_rep1 PB_g1617_rep2 PB_AAVS_rep1 PB_AAVS_rep2 -c2 PB_g1617_rep1 PB_g1617_rep2 PB_AAVS_rep1 PB_AAVS_rep2 -e "(df.qvalue<=0.01)&(df['meth.diff']>0)&(df['Gene Type']=='protein-coding')" -o BCL11Ako.hyperM
 
 	merge_2_table_heatmap.py -f1 BCL11Ako_vs_control.DMR_results.annot.csv -f2 BCL11AKO_vs_AAVS.gene.final.combined.csv -m1 "Gene Name" -m2 ext_gene -s qvalue -a -c1 PB_g1617_rep1 PB_g1617_rep2 PB_AAVS_rep1 PB_AAVS_rep2 -c2 PB_g1617_rep1 PB_g1617_rep2 PB_AAVS_rep1 PB_AAVS_rep2 -e "(df.qvalue<=0.01)&(df['meth.diff']<0)&(df['Gene Type']=='protein-coding')" -o BCL11Ako.hypoM
