@@ -1,4 +1,4 @@
-Differential RNA splicing analysis
+Differential RNA splicing analysis using leafcutter
 ==================================================
 
 Summary
@@ -6,7 +6,7 @@ Summary
 
 Differential splicing analysis using leafcutter, one of the best tools.
 
-Only works for hg19.
+Only works for hg19 or hg38.
 
 Only works for paired-end RNA-seq data.
 
@@ -18,6 +18,8 @@ Example data dir: Projects/Siqi_data/RNAseq_data/Differential_Exon_Analysis/test
 
 1. fastq.tsv
 ----------
+
+3-col tsv, R1 R2 label.
 
 Use ``run_lsf.py --guess_input`` to generate.
 
@@ -46,7 +48,7 @@ Usage
 
     module load python/2.7.13
 
-    run_lsf.py -f fastq.tsv -p leafcutter -g hg19 --design_matrix $PWD/design.tsv
+    run_lsf.py -f fastq.tsv -p leafcutter -g hg38 --design_matrix $PWD/design.tsv
 
 Output
 ^^^^^^
