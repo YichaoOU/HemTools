@@ -127,6 +127,19 @@ Input file syntax:
 3. Leave the last line blank.
 
 
+How to get union_peak.bed
+^^^^^^^^^^^^^^^^^^^
+
+Go to your hemtools job folder ``peak_files``, e.g., ``atac_seq_yli11_2024-02-06/peak_files``,
+
+::
+
+	module load python3 bedtools
+
+	merge_peak_on_summit.py -o union_peak.bed -e rmdup.uq.rmchrM_summits.bed
+
+	bedtools intersect -a union_peak.bed -b hg38.blacklist.bed -v > union_peak.rmblck.bed
+
 Output
 ^^^^^^
 

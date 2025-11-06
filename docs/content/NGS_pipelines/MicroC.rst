@@ -58,7 +58,10 @@ Summary
 
 Pipeline adopted and customized from https://github.com/jojdavies/Micro-Capture-C
 
-Only work for hg19/mm9 right now, by 2/16/2022.
+.. warning::
+	
+	Only work for hg19/mm9 right now, by 2/16/2022.
+	
 
 Input
 ^^^^^
@@ -134,13 +137,16 @@ multiqc_report.html
 
 ``FastQC``, in this section, we may look at ``Sequence Quality Histograms``. 
 
-``FLASH``, we can look at the fragment length distribution
+``FLASH``, we can look at the fragment length distribution. ``Should be a broad peak around 170-200bp``
+
+.. image:: ../../images/mcc_flash.png
+	:align: center
 
 
 MicroC_summary.html
 -----------------
 
-In the summary table, we can look at capture efficiency, read duplication rate and number of unique interactions. If ``number of unique interactions`` less than 10k, might consider sequencing more. >100k is consdered to be deep. 
+In the summary table, we can look at capture efficiency (ranging from 3% to 20%), read duplication rate (usually very high, ~95%) and number of unique interactions. If ``number of unique interactions`` less than 10k, might consider sequencing more. >100k is consdered to be deep. 
 
 Some numbers
 ^^^^^^^
