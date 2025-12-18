@@ -10,26 +10,9 @@ Pipeline has been tested using the ENCODE data from K562: blood_regulome/chenggr
 
 Our lab uses https://eclipsebio.com/capabilities/rbp-eclip/
 
-R1 reads contain UMI and it is the opposite direction of the actual gene strand
-
-10/1/2024 update
-^^^^^
-
-Now, the pipeline supports both human or mouse.
-
-.. code:: bash
-
-	hpcf_interactive
-
-	module load python/2.7.13
-
-	run_lsf.py --guess_input
-
-	# for paired-end data, only use R1
-	run_lsf.py -f fastq.tsv -p eclip -g hg19
-	run_lsf.py -f fastq.tsv -p eclip -g mm10
 
 
+.. note:: R1 reads contain UMI and it is the opposite direction of the actual gene strand.
 
 
 Input
@@ -52,7 +35,9 @@ OR
 	Banana_R1.fastq.gz	Banana_lovers
 	Orange_R1.fastq.gz	Orange_lovers
 
-Either one, only R1 read is used.
+.. note:: No matter which one, only R1 read is used.
+
+
 
 Usage
 ^^^^^
@@ -63,12 +48,18 @@ Usage
 
 	module load python/2.7.13
 
-	# for paired-end data
-	run_lsf.py -f fastq.tsv -p eclip_pe
+	run_lsf.py -f fastq.tsv -p eclip_main -g hg19	
 
-	# for single-end data
-	run_lsf.py -f fastq.tsv -p eclip_se
+	run_lsf.py -f fastq.tsv -p eclip_main -g hg38	
+	
+	run_lsf.py -f fastq.tsv -p eclip_main -g mm10	
 
+
+Note
+^^^^^
+
+
+``eclip_main`` is the same as ENCODE paired-end eCLIP-seq data. For Siqi's protocol, please use ``seCLIP``, input format is the same. In seCLIP, just R1 is used.
 
 Output
 ^^^^^^

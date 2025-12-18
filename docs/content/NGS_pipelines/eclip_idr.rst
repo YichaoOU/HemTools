@@ -6,8 +6,7 @@ Summary
 
 Pipeline adopted from https://github.com/YeoLab/merge_peaks
 
-Assumming R1 reads, which captures the reverse of the actual gene strand 
-
+bam should be R1 reads.
 
 
 Input

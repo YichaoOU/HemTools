@@ -3,6 +3,13 @@ All errors and how it was solved
 
 
 
+shell: line 65: source: activate: file not found
+^^^^^^^^^^^^^^^^
+
+Likely caused by conda init in your ``.bashrc`` file. Your automatic login looks like ``(base) [yli11@noderome111``, always has the ``base``
+
+open ``.bashrc`` file and delete conda init commands, several lines.
+
 
 Faster way to grep
 ^^^^^^^^^^^^

@@ -5,7 +5,7 @@ long-read RNA-seq quantification using espresso
 Summary
 ^^^^^^^
 
-long-read RNA-seq quantification using espresso 1.4
+long-read RNA-seq quantification using espresso 1.6.0
 
 https://github.com/Xinglab/espresso
 
@@ -13,7 +13,7 @@ Input
 ^^^^^
 
 
-Aligned bam files. Save as ``samples.tsv`` in your working dir. ALso need .bai in current dir.
+Aligned bam files. Save as ``samples.tsv`` in your working dir. ALso need .bai in current dir. Abs path.
 
 ::
 

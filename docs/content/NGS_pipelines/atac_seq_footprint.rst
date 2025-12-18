@@ -4,7 +4,7 @@ Footprint analysis for ATAC-seq data
 ::
 
 	usage: atac_seq_footprint.py [-h] [-j JID] -f INPUT [-t TREATMENT]
-	                             [-c CONTROL] [-g GENOME]
+	                             [-c CONTROL] [--fpr FPR] [-g GENOME]
 
 	RGT_HINT atac-seq footprint with bias correction
 
@@ -12,7 +12,7 @@ Footprint analysis for ATAC-seq data
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        atac_seq_footprint_yli11_2020-07-04)
+	                        atac_seq_footprint_yli11_2025-12-18)
 	  -f INPUT, --input INPUT
 	                        3-col tsv, bam,bed,output-prefix (default: None)
 	  -t TREATMENT, --treatment TREATMENT
@@ -23,6 +23,8 @@ Footprint analysis for ATAC-seq data
 	  -c CONTROL, --control CONTROL
 	                        default is the second row. control output-prefix for
 	                        differential footprint analysis (default: None)
+	  --fpr FPR             motif matching False positive rate cutoff (default:
+	                        1e-4)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -31,6 +33,7 @@ Footprint analysis for ATAC-seq data
 	                        index file, black list, chrom size and
 	                        effectiveGenomeSize, unless a user explicitly sets
 	                        those options. (default: hg19)
+
 
 
 Summary
@@ -42,6 +45,12 @@ This pipeline applies HINT-ATAC (v0.13) and output bias-corrected footprint bed 
 Additionally, if ``-t`` and ``-c`` options are given, this program will perform differential footprint analysis. Example: https://www.regulatory-genomics.org/hint/tutorial/.
 
 By default, ``-t`` uses the name in the first row of the input file. and ``-c`` uses the name in the second row.
+
+
+Differential footprint analysis note
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Peak size will affect results, also added ``--fpr`` to control motif matching.
 
 Input
 ^^^^^

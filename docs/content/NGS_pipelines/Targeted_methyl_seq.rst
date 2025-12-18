@@ -48,7 +48,14 @@ Need read length in order to estimate FLASH min,max overlap length, to remove so
 
 
 
+Methyl percentage by indel reads types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+To output Methylation frequency for each CpG sites, stratified by each indel type.
+
+Output file is a table named ``{label}.Indel_reads_and_Methy_percent.csv`` for each sample.
+
+First column is indel type, e.g., -13, -4, 1. If it is 0, then it is WT. second column is total reads for that indel. The rest column is CpG sites. Values are Mehtylation percentages.
 
 
 
@@ -62,6 +69,11 @@ Usage
 	module load python/2.7.13
 
 	methyl_amplicon.py -f fastq.tsv -a amp.fa --read_length 250 --genomic_chr chr11 --genomic_start 5271011
+
+
+	# to calculate Methyl percentage by indel reads types, you must give the correct gRNA sequence --guide_seq. Here C is all converted into T.
+
+	methyl_amplicon.py -f fastq.tsv -a /home/yli11/HemTools/share/misc/HBG1_methy.fa --read_length 250 --genomic_chr chr11 --genomic_start 5271011 --guide_seq TTTGTTAAGGTTATTGGTTAAGG5271011
 
 HBG1 amplicon run
 ------

@@ -3,9 +3,9 @@ DESEQ2 for differential peak analysis
 
 ::
 
-	usage: diffPeak.py [-h] [-b BAMS] [-d DESIGN_MATRIX] [-p PEAKS] [-x DRY_RUN]
-	                [-z SUBMIT_JOB] [-r FLAG] [--include_unmapped_reads] [-s]
-	                [-j JID]
+	usage: DiffPeak [-h] [-b BAMS] [-d DESIGN_MATRIX] [-p PEAKS] [-x DRY_RUN]
+	                [-g GENOME] [-z SUBMIT_JOB] [-r FLAG]
+	                [--include_unmapped_reads] [-s] [-mm] [-j JID]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -22,6 +22,8 @@ DESEQ2 for differential peak analysis
 	                        newline character).
 	  -x DRY_RUN, --dry_run DRY_RUN
 	                        1 or 0. 1: dry run, to check system commands
+	  -g GENOME, --genome GENOME
+	                        genome version
 	  -z SUBMIT_JOB, --submit_job SUBMIT_JOB
 	                        1 or 0. 1: submit this job to HPC
 	  -r FLAG, --flag FLAG  1 or 0. 1: run this job in terminal. 0: submit this
@@ -30,8 +32,11 @@ DESEQ2 for differential peak analysis
 	                        Expecting global change, need normalization by total
 	                        reads
 	  -s, --single          run featureCount in single-end mode
+	  -mm, --mm_reads       including multi-mapped reads, this is for HBG promoter
+	                        reads
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder.
+
 
 Summary
 ^^^^^^^
@@ -71,7 +76,7 @@ Usage
 	dos2unix design_matrix
 	dos2unix peaks.list
 
-	diffPeak.py -b bams.list -d design_matrix -p peaks.list -z 1 
+	diffPeak.py -b bams.list -d design_matrix -p peaks.list -z 1 -g hg38 -mm
 
 ``-z 1 `` tells the program to submit this job to HPC. Otherwise, diffPeak will just run interactively.
 
@@ -134,7 +139,7 @@ Go to your hemtools job folder ``peak_files``, e.g., ``atac_seq_yli11_2024-02-06
 
 ::
 
-	module load python3 bedtools
+	module load python3 bedtools 
 
 	merge_peak_on_summit.py -o union_peak.bed -e rmdup.uq.rmchrM_summits.bed
 
