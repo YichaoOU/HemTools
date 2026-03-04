@@ -38,6 +38,11 @@ Summary
 Input a bed file to look for baits. Steps include: (1) general all 120bp baits with stepsize of 50. (2) BLAT all baits to check multi-hits (3) baittools to check for GC and melting TM.
 
 
+Method
+^^^
+
+MCC baits of 120 bp were identified using a 25 bp sliding window at your input target. Candidate baits with multiple genomic occurrences were filtered out using BLAT. Finally, BaitsTools was used to calculate the melting temperature (Tm) of each remaining sequence.
+
 Input
 ^^^^^
 

@@ -16,6 +16,7 @@ Creat data table of tracks on protein paint
 
 
 
+
 Example
 ^^^^^^^
 
@@ -56,3 +57,16 @@ Usage
 	create_ppr_facet_table.py -f chris2.tsv -d /home/yli11/dirs/genome_browser/yli11/Chris/ppr_table2 --name hub_table --copy
 
 
+A simpler way to generate the Input tsv
+^^^^^^
+
+This code glob all bw files in a given dir and output the tsv needed for ppr table.
+
+It assumes each bw is named with pattern ``[sample_label].[level1_feature].antyhing_more.bw``. Color will be randomly assigned. Level1 feature is currently fixed to either nuclease or control.
+
+
+.. code:: bash
+
+	hpcf_interactive
+
+	glob_to_ppr_table.py my_dir out.tsv

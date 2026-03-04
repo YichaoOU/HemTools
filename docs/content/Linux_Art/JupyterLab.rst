@@ -15,6 +15,44 @@ Start JupyterLab in HPC
 You will receive an email with the link to the jupyter notebook within 5 minutes.
 
 
+
+Start JupyterLab-AI in HPC
+=========================
+
+
+.. code:: bash
+
+	hpcf_interactive
+
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+	
+	module load python/2.7.13
+
+	run_lsf.py -p run_jupyterai --memory 20000
+
+You will receive an email with the link to the jupyter notebook within 5 minutes.
+
+first go to jid folder ``tail litellm.log`` to find the port for AI server. 
+
+Then go to jupyternaut setting, set ``openai/gpt-5`` and ``http://localhost:48219``
+
+Model used is ``llama3.3-70b-instruct-vllm``, not gpt-5: ``gpt-oss-120b-16bit-vllm``, because of speed. But I still name it as ``openai/gpt-5``.
+
+
+Open a jupyter notebook and set
+
+::
+	
+	%reload_ext jupyter_ai_magic_commands
+
+	%config AiMagics.initial_language_model = "openai/gpt-5"
+
+	%%ai -f code
+	A function that computes the lowest common multiples of two integers, and
+	a function that runs 5 test cases of the lowest common multiple function
+
+You can also use the chat box
+
 Set up env (my notes for installation)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
