@@ -15,8 +15,46 @@ Start JupyterLab in HPC
 You will receive an email with the link to the jupyter notebook within 5 minutes.
 
 
+Start JupyterLab-AI in HPC (qwen3.5)
+=========================
 
-Start JupyterLab-AI in HPC
+
+.. code:: bash
+
+	hpcf_interactive
+
+	export PATH=$PATH:"/home/yli11/HemTools/bin"
+	
+	module load python/2.7.13
+
+	run_lsf.py -p jupyterai_qwen --memory 50000
+
+
+Then go to jupyternaut setting, set ``openai/Qwen/Qwen3.5-27B-FP8``
+
+Note, using the chat box is faster
+
+Open a jupyter notebook and set
+
+::
+	
+	%reload_ext jupyter_ai_magic_commands
+
+	%ai alias my_model openai/Qwen/Qwen3.5-27B-FP8
+
+	%config AiMagics.initial_language_model = "my_model"
+
+	%%ai -f code
+	write hello world
+
+	%%ai -f code
+	A function that computes the lowest common multiples of two integers, and
+	a function that runs 5 test cases of the lowest common multiple function
+
+
+
+
+Start JupyterLab-AI in HPC (llama3.3-70b)
 =========================
 
 
@@ -37,6 +75,7 @@ first go to jid folder ``tail litellm.log`` to find the port for AI server.
 Then go to jupyternaut setting, set ``openai/gpt-5`` and ``http://localhost:48219``
 
 Model used is ``llama3.3-70b-instruct-vllm``, not gpt-5: ``gpt-oss-120b-16bit-vllm``, because of speed. But I still name it as ``openai/gpt-5``.
+
 
 
 Open a jupyter notebook and set
@@ -94,3 +133,10 @@ Previously I have setup a code to run ``jupyter notebook`` as below:
 
 	You will receive an email with the link to the jupyter notebook.
 
+To use jupyter ai locally, I have modified
+===============
+
+::
+	/home/yli11/.conda/envs/jupyter_ai/lib/python3.13/site-packages/jupyter_ai_jupyternaut/jupyternaut/jupyternaut.py # streaming to false
+	aiohttp_transport.py # ssl verify to false
+	chat_models.py # disable audio and catch token
