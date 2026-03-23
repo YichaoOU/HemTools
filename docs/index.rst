@@ -27,6 +27,7 @@ HemTools: *a collection of NGS pipelines and bioinformatic analyses*
    content/Machine_learning/index
    content/CRISPR/index
    content/Bioinformatics_Core_Competencies/index
+   content/HemAgent/index
 
 Ask question here
 ^^^^^^^^^^^^^^^^^
