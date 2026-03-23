@@ -18,7 +18,9 @@ Use the latest AI-powered bioinformatics data analysis tools. After submitting t
 
 The default working dir is the HPC location where you submit the job. Click ``+ New Session``, under the "opencode" logo, to open the AI session in this dir. 
 
-If you need to go to another directory, clock ``+`` in the left sidebar to open a new project. You can have multiple session in one project, each project is sticked to its working dir. 
+If you need to go to another directory, click ``+`` in the left sidebar to open a new project. You can have multiple session in one project, each project is sticked to its own working dir. 
+
+
 
 Usage
 ^^^^^^^^^
