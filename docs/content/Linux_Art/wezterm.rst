@@ -22,7 +22,6 @@ Local Configuration: `.wezterm.lua`
 Create or edit your config at ``C:\Users\<YourUser>\.wezterm.lua``. This setup uses the **Acrylic** blur effect and includes a custom mapping for Windows Explorer.
 
 .. code-block:: lua
-   :linenos:
 
    local wezterm = require("wezterm")
    local act = wezterm.action
@@ -98,7 +97,6 @@ The `.zshrc` File
 -----------------
 
 .. code-block:: zsh
-   :linenos:
 
    # Enable Powerlevel10k instant prompt
    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -125,6 +123,11 @@ The `.zshrc` File
    add-zsh-hook chpwd __wezterm_osc7
    __wezterm_osc7
 
+   # Emulate bash while sourcing .bashrc
+   if [ -f ~/.bashrc ]; then
+      emulate bash -c "source ~/.bashrc"
+   fi
+
 Features
 ========
 
@@ -135,3 +138,17 @@ To view PNG files (plots/graphs) directly in the terminal, use the ``imgcat`` sc
 Windows Explorer Sync
 ---------------------
 By pressing **CTRL + SHIFT + E**, WezTerm will detect your current working directory on the HPC and open the corresponding folder on your mapped **Z: Drive** in Windows Explorer.
+
+
+::
+
+    module load zsh;zsh
+
+
+Autocomplete failed
+---------
+
+::
+
+    rm -f ~/.zcompdump; compinit
+    source ~/.zshrc
