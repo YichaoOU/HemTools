@@ -16,7 +16,10 @@ Use the latest AI-powered bioinformatics data analysis tools, each analysis is p
 
 .. image:: ../../images/HemAgent.PNG
 
-Here, choose HemAgent as the AI model. It's a QWEN3.5 model, locally served at St. Jude.
+
+
+.. note:: Here, choose ``HemAgent`` as the AI model. It's a QWEN3.5 model, locally served at St. Jude.
+
 
 
 .. image:: ../../images/HemAgent.provider.JPG
