@@ -115,7 +115,6 @@ Run HemAgent
 
    run_lsf.py -p HemAgent
 
-   ## you can use --ncores and --memory to request more. default is 2 cpu, each is 10G.
+   ## you can also use --ncores and --memory to request more. default is 2 cpu, each is 10G.
 
-   run_lsf.py -p HemAgent --ncores 5 --memory 10000
 
