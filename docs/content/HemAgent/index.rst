@@ -16,23 +16,33 @@ Use the latest AI-powered bioinformatics data analysis tools, each analysis is p
 
 .. image:: ../../images/HemAgent.PNG
 
+Here, choose HemAgent as the AI model. It's a QWEN3.5 model, locally served at St. Jude.
+
+
+.. image:: ../../images/HemAgent.provider.JPG
+
+
 The default working dir is the HPC location where you submit the job. Click ``+ New Session``, under the "opencode" logo, to open the AI session in this dir. 
 
-If you need to go to another directory, click ``+`` in the left sidebar to open a new project. You can have multiple session in one project, each project is sticked to its own working dir. 
+If you need to go to another directory, click ``+`` in the left sidebar to open a new project. It doesn't have a nice UI to use your mouse to open a dir, you have to type the exact dir here.
+
+You can have multiple session in one project, each project is sticked to its own working dir. 
 
 
-3-23-2026 updates
+3-24-2026 updates
 ^^^^^^^^^^^^
 
 Current supported analysis:
 
-- literature review: automatical literature search, review, pdf download and summarize. Multi-agent and agnostic style.
+- literature review: automatical literature search, review, pdf download, data download and summarize. Multi-agent run in parallel.
 
-- gene function deep research: automatically search multiple databases and literatures to find gene functions, co-factors, and current research topics.
+- bioinformatics tool paper writing: Designing, implementing, benchmarking, and publishing a bioinformatics software tool using a multi-agent adversarial research design
 
 - Existing HemTools analysis/pipelines
 
 - Common bioinformatics plots
+
+- run custom pipeline in nextflow, user needs to summarize each process.
 
 TODO
 ----
@@ -52,7 +62,7 @@ Examples
 
 To run a simple one step or two step bioinformatics analysis.
 
-.. image:: ../../images/HemAgent.nextflow.BWA.PNG
+.. image:: ../../images/HemAgent.nextflow.BWA.PNG.jpg
 
 
 2. Run HemTools atac-seq pipeline
@@ -62,8 +72,13 @@ To involke existing pipelines in HemTools, not AI generated nextflow pipelines, 
 
 .. image:: ../../images/HemAgent.HemTools.ATAC.PNG
 
+3. Literature search
+-----------
+
+Still not fully automatic, total process need human involvement, also because 200K context token can be consumed quickly, causing AI to loose focus. 
 
 
+.. image:: ../../images/HemAgent.paper.PNG
 
 
 
@@ -99,4 +114,8 @@ Run HemAgent
    module load python/2.7.13
 
    run_lsf.py -p HemAgent
+
+   ## you can use --ncores and --memory to request more. default is 2 cpu, each is 10G.
+
+   run_lsf.py -p HemAgent --ncores 5 --memory 10000
 
