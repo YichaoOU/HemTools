@@ -59,8 +59,12 @@ TODO
 Examples
 ^^^^^^^
 
+1. create, upload, to a private repo
+----------------
 
-1. Run a simple bwa mem paired end or single end fastq mapping
+.. image:: ../../images/HemAgent.git.PNG
+
+2. Run a simple bwa mem paired end or single end fastq mapping
 ---------------
 
 To run a simple one step or two step bioinformatics analysis.
@@ -68,20 +72,22 @@ To run a simple one step or two step bioinformatics analysis.
 .. image:: ../../images/HemAgent.nextflow.BWA.PNG.jpg
 
 
-2. Run HemTools atac-seq pipeline
+3. Run HemTools atac-seq pipeline
 ----------------
 
 To involke existing pipelines in HemTools, not AI generated nextflow pipelines, you must use the keyword ``HemTools``
 
 .. image:: ../../images/HemAgent.HemTools.ATAC.PNG
 
-3. Literature search
+4. Literature search
 -----------
 
 Still not fully automatic, total process need human involvement, also because 200K context token can be consumed quickly, causing AI to loose focus. 
 
 
 .. image:: ../../images/HemAgent.paper.PNG
+
+
 
 
 
