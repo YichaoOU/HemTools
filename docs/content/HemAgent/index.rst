@@ -1,4 +1,4 @@
-HemAgent Usage
+HemAgent: Autonomous and Reproducible Bioinformatics
 ===============================
 
 .. toctree::
@@ -11,7 +11,7 @@ HemAgent Usage
 Summary
 ^^^^^^^^^
 
-Use the latest AI-powered bioinformatics data analysis tools. After submitting the ``HemAgent`` job, you will receive an email to the link to use the HemAgent web portal.
+Use the latest AI-powered bioinformatics data analysis tools, each analysis is pre-defined to ensure tools version control and 100% reproducibility. After submitting the ``HemAgent`` job, you will receive an email to the link to use the HemAgent web portal.
 
 
 .. image:: ../../images/HemAgent.PNG
@@ -19,6 +19,51 @@ Use the latest AI-powered bioinformatics data analysis tools. After submitting t
 The default working dir is the HPC location where you submit the job. Click ``+ New Session``, under the "opencode" logo, to open the AI session in this dir. 
 
 If you need to go to another directory, click ``+`` in the left sidebar to open a new project. You can have multiple session in one project, each project is sticked to its own working dir. 
+
+
+3-23-2026 updates
+^^^^^^^^^^^^
+
+Current supported analysis:
+
+- literature review: automatical literature search, review, pdf download and summarize. Multi-agent and agnostic style.
+
+- gene function deep research: automatically search multiple databases and literatures to find gene functions, co-factors, and current research topics.
+
+- Existing HemTools analysis/pipelines
+
+- Common bioinformatics plots
+
+TODO
+----
+
+- other Bioinformatics analysis not covered by HemTools.
+
+- pipeline rewritten in markdown.
+
+
+
+Examples
+^^^^^^^
+
+
+1. Run a simple bwa mem paired end or single end fastq mapping
+---------------
+
+To run a simple one step or two step bioinformatics analysis.
+
+.. image:: ../../images/HemAgent.nextflow.BWA.PNG
+
+
+2. Run HemTools atac-seq pipeline
+----------------
+
+To involke existing pipelines in HemTools, not AI generated nextflow pipelines, you must use the keyword ``HemTools``
+
+.. image:: ../../images/HemAgent.HemTools.ATAC.PNG
+
+
+
 
 
 
