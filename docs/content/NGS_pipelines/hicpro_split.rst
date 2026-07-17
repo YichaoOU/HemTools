@@ -250,6 +250,8 @@ Prepair input.list
 	3D11
 	CMY
 
+You need to copy ``hicpro.config.txt`` from one of the run to your working dir. 
+
 Then submit the job
 
 ::
