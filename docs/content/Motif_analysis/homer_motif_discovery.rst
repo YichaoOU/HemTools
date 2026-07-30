@@ -6,14 +6,14 @@ Homer motif discovery
 	usage: homer_motif_discovery.py [-h] [-j JID] -f PEAK_LIST
 	                                [-s HOMER_REGION_SIZE] [-n NUMBER_MOTIF]
 	                                [-m MISMATCH] [--homer_addon HOMER_ADDON]
-	                                [-p FIMO_CUTOFF] [-g GENOME]
+	                                [-p FIMO_CUTOFF] [-rna] [-g GENOME]
 	                                [--genome_fasta GENOME_FASTA]
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -j JID, --jid JID     enter a job ID, which is used to make a new directory.
 	                        Every output will be moved into this folder. (default:
-	                        homer_motif_discovery_yli11_2021-08-25)
+	                        homer_motif_discovery_yli11_2026-07-30)
 	  -f PEAK_LIST, --peak_list PEAK_LIST
 	                        a list of peak files (default: None)
 	  -s HOMER_REGION_SIZE, --homer_region_size HOMER_REGION_SIZE
@@ -23,6 +23,9 @@ Homer motif discovery
 	                        you can add -norevopp to search only one strand
 	                        (default: -mask)
 	  -p FIMO_CUTOFF, --fimo_cutoff FIMO_CUTOFF
+	  -rna                  RNA motif discovery using homer and RBPmap database,
+	                        homer parameters are fixed -s -n -m do not work
+	                        (default: False)
 
 	Genome Info:
 	  -g GENOME, --genome GENOME
@@ -30,6 +33,12 @@ Homer motif discovery
 	  --genome_fasta GENOME_FASTA
 	                        genome version: hs, mm (default:
 	                        /home/yli11/Data/Human/hg19/fasta/hg19.fa)
+
+
+7/30/2026 updates
+^^^^^^^^^^^^^^^
+
+Added ``-rna`` option for RNA motif discovery, database is RBPmap human, contains 225 motifs.
 
 Usage
 ^^^^^
@@ -80,6 +89,13 @@ Sometimes I only want to search on one strand, for NFIX motif, because it is a p
 
 	homer_motif_discovery.py -f input.list -g mm9 -s given --homer_addon " -norevopp" -m 3
 
+
+RNA motif discovery
+---------------
+
+::
+
+	homer_motif_discovery.py -f input.list -g hg38 -rna
 
 
 
