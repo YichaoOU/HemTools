@@ -51,13 +51,13 @@ Please copy (or softlink) methylKit files (e.g.,  ``.markdup.sorted_CpG.methylKi
 2. design matrix
 ----------------
 
-This is similar to peak_call.tsv. The columns are group 1, group 2, output prefix.
+This is similar to peak_call.tsv. The columns are group 1, group 2, output prefix. ``Group 1 is control``, group 2 is treatment.
 
 ::
 
 	==> design.tsv <==
-	ZBTB7Ako	Control	ZBTB7Ako_vs_control
-	BCL11Ako	Control	BCL11Ako_vs_control
+	Control	ZBTB7Ako	ZBTB7Ako_vs_control
+	Control	BCL11Ako	BCL11Ako_vs_control
 
 Each line will be used as a comparison. For example, if you have three groups and possibly 3 comparisons (e.g., 1 vs 2, 1 vs 3, and 2 vs 3), then you can write down the comparisons in three lines. Again, this is same as the peak_call.tsv.
 
