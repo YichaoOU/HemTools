@@ -1,5 +1,6 @@
 sphinx<7
 docutils
+setuptools<81
 sphinx-rtd-theme
 sphinxcontrib-jquery==3.0.0
 sphinx-argparse
